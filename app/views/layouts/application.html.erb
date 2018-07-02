@@ -13,8 +13,9 @@
     <p>
       <% if user_signed_in? %>
         You are logged in as <%= session[:current_user]['name'] %>
+        (<%= link_to 'Logout', logout_path, method: :delete %>)
       <% else %>
-        <%= link_to 'Login (developer)', '/auth/developer' %>
+        <%= link_to 'Login (AzureAD)', '/auth/azureactivedirectory' %>
       <% end %>
     </p>
 

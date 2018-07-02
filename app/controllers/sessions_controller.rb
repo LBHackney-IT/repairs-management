@@ -2,11 +2,13 @@ class SessionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: :create
 
   def create
-    session[:current_user] = {
-      name: auth_hash.info.name,
-      email: auth_hash.info.email
-    }
+    logger.info auth_hash
+    session[:current_user] = { name: auth_hash.info.name }
+    redirect_to root_path
+  end
 
+  def destroy
+    session.delete(:current_user)
     redirect_to root_path
   end
 
