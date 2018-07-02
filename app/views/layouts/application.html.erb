@@ -10,6 +10,14 @@
   </head>
 
   <body>
+    <p>
+      <% if user_signed_in? %>
+        You are logged in as <%= session[:current_user]['name'] %>
+      <% else %>
+        <%= link_to 'Login (developer)', '/auth/developer' %>
+      <% end %>
+    </p>
+
     <%= yield %>
   </body>
 </html>
