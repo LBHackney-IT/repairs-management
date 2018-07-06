@@ -1,6 +1,7 @@
 {
   "name": "repairs-management",
   "scripts": {
+    "postdeploy": "bundle exec rake db:schema:load"
   },
   "env": {
     "LANG": {
