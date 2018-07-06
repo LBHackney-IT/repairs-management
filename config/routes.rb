@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root 'stuffs#index'
 
-  post '/auth/:provider/callback', to: 'sessions#create'
+  get '/login', to: 'sessions#new'
+  match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   get '/logout', to: 'sessions#destroy'
 end

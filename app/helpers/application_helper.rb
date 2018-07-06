@@ -1,6 +1,6 @@
 module ApplicationHelper
   def user_signed_in?
-    session[:current_user].present?
+    session.key?(:current_user)
   end
 
   def azure_active_directory_login_url
