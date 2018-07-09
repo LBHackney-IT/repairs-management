@@ -21,6 +21,12 @@
     },
     "SECRET_KEY_BASE": {
       "required": true
+    },
+    "AAD_CLIENT_ID": {
+      "required": true
+    },
+    "AAD_TENANT": {
+      "required": true
     }
   },
   "formation": {
