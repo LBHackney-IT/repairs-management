@@ -27,3 +27,7 @@
 
 # Ignore local environments
 .env
+
+# Ignore neo4j development and test environments
+/db/neo4j/development
+/db/neo4j/test

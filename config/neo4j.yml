@@ -1,0 +1,11 @@
+development:
+  type: http
+  url: http://localhost:7474
+
+test:
+  type: http
+  url: http://localhost:7575
+
+production:
+  type: http
+  url: <%= ENV['GRAPHENEDB_URL'] %>
