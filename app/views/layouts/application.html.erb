@@ -35,22 +35,30 @@
 
       <div class="govuk-header__logo">
         <a href="/" class="govuk-header__link govuk-header__link--homepage">
-        <span class="govuk-header__logotype">
-          <span class="govuk-header__logotype-text">
-            Hackney
+          <span class="govuk-header__logotype">
+            <span class="govuk-header__logotype-text">
+              Hackney
+            </span>
           </span>
+        </a>
+      </div><!--
+      --><div class="govuk-header__content">
+        <span class="govuk-header__link user-sign-out">
+          <%= link_to 'Sign out', azure_active_directory_logout_url, class: 'govuk-header__link' %>
         </span>
-      </a>
       </div>
     </div>
   </header>
 
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper " id="main-content" role="main">
-      <p class="govuk-body">
-        You are logged in as <%= session[:current_user]['name'] %>
-        (<%= link_to 'logout', azure_active_directory_logout_url, class: 'govuk-link' %>)
-      </p>
+      <% if flash[:notice].present? %>
+        <div class="flash-message">
+          <p>
+            <%= flash[:notice] %>
+          </p>
+        </div>
+      <% end %>
 
       <%= yield %>
     </main>
@@ -66,5 +74,3 @@
     window.GOVUKFrontend.initAll()
   </script>
 </body>
-
-</html>
