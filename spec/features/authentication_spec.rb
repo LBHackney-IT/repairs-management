@@ -6,10 +6,10 @@ RSpec.describe 'Authentication' do
 
     expect(page).to have_current_path('/login')
 
-    click_link 'Login'
+    click_link 'Sign in with Microsoft'
 
     expect(page).to have_current_path('/')
     expect(page).to have_content 'You are logged in as Mike Ross'
-    expect(page).to have_link 'Logout', href: %r{login.microsoftonline.com/.*/oauth2/logout\?post_logout_redirect_uri=.*logout}
+    expect(page).to have_link 'logout', href: %r{login.microsoftonline.com/.*/oauth2/logout\?post_logout_redirect_uri=.*logout}
   end
 end

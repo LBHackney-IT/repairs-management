@@ -1,24 +1,13 @@
-# README
+# Repairs management
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Getting started
 
-Things you may want to cover:
+Run the setup binstub: `./bin/setup`.
 
-* Ruby version
+## Deployments
 
-* System dependencies
+App is hosted on Unboxed's Heroku: [hackney-repairs pipeline](https://dashboard.heroku.com/pipelines/9820fae2-6834-4969-a4d6-774d00af55f1)
 
-* Configuration
+## GOV.UK Frontend
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[https://github.com/alphagov/govuk-frontend](https://github.com/alphagov/govuk-frontend)
