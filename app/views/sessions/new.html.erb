@@ -6,6 +6,14 @@
   </head>
 
   <body>
-    <%= link_to 'Login (AzureAD)', azure_active_directory_login_url %>
+    <div class="govuk-width-container">
+      <main class="govuk-main-wrapper">
+        <p class="govuk-body-s">
+          Please sign in with your Hackney account to proceed
+        </p>
+
+        <%= link_to image_tag('ms_signin_light.svg', alt: 'Sign in with Microsoft'), azure_active_directory_login_url %>
+      </main>
+    </div>
   </body>
 </html>
