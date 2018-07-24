@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+include FileUtils
+
+# path to your application root.
+APP_ROOT = File.expand_path('..', __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+chdir APP_ROOT do
+  puts '== Booting up neo4j test db =='
+  system! 'docker-compose up --detach neo4j_db_test'
+
+  puts '== Booting up postgres db =='
+  system! 'docker-compose up --detach pg_db'
+
+  puts '== Updating postgres and neo4j schemas =='
+  system! 'docker-compose run --no-deps -e RAILS_ENV=test rails_app bin/rails db:migrate'
+
+  puts '== Running RSpec =='
+  system! 'docker-compose run --no-deps -e RAILS_ENV=test rails_app rspec'
+end

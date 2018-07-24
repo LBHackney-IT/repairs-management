@@ -19,8 +19,8 @@ chdir APP_ROOT do
   puts "\n== Installing dependencies =="
   system! 'docker-compose run rails_app bin/yarn'
 
-  # puts "\n== Preparing postgres database =="
-  # system! 'docker-compose run rails_app bin/rails db:setup'
+  puts "\n== Preparing postgres database =="
+  system! 'docker-compose run rails_app bin/rails db:setup'
 
   puts "\n== Removing old logs and tempfiles =="
   system! 'docker-compose run rails_app bin/rails log:clear tmp:clear'
