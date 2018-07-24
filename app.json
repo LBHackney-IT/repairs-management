@@ -1,7 +1,7 @@
 {
   "name": "repairs-management",
   "scripts": {
-    "postdeploy": "bundle exec rake db:schema:load"
+    "postdeploy": "bundle exec rake neo4j:schema:load"
   },
   "env": {
     "LANG": {
@@ -36,6 +36,7 @@
     }
   },
   "addons": [
+    "graphenedb",
     "heroku-postgresql"
   ],
   "buildpacks": [
