@@ -50,11 +50,9 @@
 
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper " id="main-content" role="main">
-      <% if flash[:notice].present? %>
-        <div class="flash-message">
-          <p>
-            <%= flash[:notice] %>
-          </p>
+      <% flash.each do |name, message| %>
+        <div class='flash-message'>
+          <p><%= message %></p>
         </div>
       <% end %>
 
