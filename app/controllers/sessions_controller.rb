@@ -12,6 +12,7 @@ class SessionsController < ApplicationController
 
   def create
     session[:current_user] = { name: auth_hash.info.name }
+    flash[:notice] = "You have logged in as #{auth_hash.info.name}"
     redirect_to root_path
   end
 

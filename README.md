@@ -2,7 +2,11 @@
 
 ## Getting started
 
-Run the setup binstub: `./bin/setup`.
+Ensure that you have [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install/). Then run `./bin/setup`.
+
+To start the application, use `./bin/start` (there might not be any output until you try to visit [localhost:3000](http://localhost:3000/))
+
+Run the tests with `./bin/test`.
 
 ## Deployments
 
