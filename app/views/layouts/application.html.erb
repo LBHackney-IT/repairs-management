@@ -32,6 +32,9 @@
 
   <header class="govuk-header " role="banner" data-module="header">
     <div class="govuk-header__container govuk-width-container">
+      <span class="govuk-header__link user-sign-out">
+        <%= link_to 'Sign out', azure_active_directory_logout_url, class: 'govuk-header__link' %>
+      </span>
 
       <div class="govuk-header__logo">
         <a href="/" class="govuk-header__link govuk-header__link--homepage">
@@ -41,11 +44,6 @@
             </span>
           </span>
         </a>
-      </div><!--
-      --><div class="govuk-header__content">
-        <span class="govuk-header__link user-sign-out">
-          <%= link_to 'Sign out', azure_active_directory_logout_url, class: 'govuk-header__link' %>
-        </span>
       </div>
     </div>
   </header>
