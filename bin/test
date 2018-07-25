@@ -19,6 +19,7 @@ chdir APP_ROOT do
   puts '== Updating postgres and neo4j schemas =='
   system! 'docker-compose run --no-deps -e RAILS_ENV=test rails_app bin/rails db:migrate'
 
-  puts '== Running RSpec =='
-  system! 'docker-compose run --no-deps -e RAILS_ENV=test rails_app rspec'
+  test_command = "rspec #{ARGV.join(' ')}"
+  puts "== Running #{test_command} =="
+  system! "docker-compose run --no-deps -e RAILS_ENV=test rails_app #{test_command}"
 end
