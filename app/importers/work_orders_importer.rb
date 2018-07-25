@@ -1,6 +1,6 @@
 require './lib/hackney_repairs_client'
 
-class WorkOrderImporter
+class WorkOrdersImporter
   def initialize
     @client = HackneyRepairsClient.new
   end

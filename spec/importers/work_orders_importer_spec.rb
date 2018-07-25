@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe WorkOrderImporter, '#import' do
+describe WorkOrdersImporter, '#import' do
   it 'imports new work orders' do
     allow(ENV).to receive(:has_key?).with('http_proxy').and_return(true)
 
@@ -10,14 +10,14 @@ describe WorkOrderImporter, '#import' do
           'type' => 'work_order',
           'id' => '01572924',
           'attributes' => {
-            'status' => 'Complete'
+            'repair_request_reference' => '03249135'
           }
         },
         {
           'type' => 'work_order',
           'id' => '06183523',
           'attributes' => {
-            'status' => 'Appointment booked'
+            'repair_request_reference' => '03174913'
           }
         }
       ]
@@ -28,7 +28,7 @@ describe WorkOrderImporter, '#import' do
 
     expect(WorkOrder.count).to eq(0)
 
-    WorkOrderImporter.new.import
+    WorkOrdersImporter.new.import
 
     expect(WorkOrder.count).to eq(2)
     expect(WorkOrder.all.map(&:ref)).to contain_exactly('06183523', '01572924')
