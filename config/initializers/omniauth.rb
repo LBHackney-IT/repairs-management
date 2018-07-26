@@ -7,5 +7,12 @@ require 'net/http'
 OmniAuth.config.logger = Rails.logger
 
 Rails.application.config.middleware.use OmniAuth::Builder do
+
+  if Rails.env.development?
+    creds = Rails.application.credentials.google_auth_unboxed
+                 .slice(:client_id, :client_secret)
+    provider :google_oauth2, *creds.values
+  end
+
   provider :azure_activedirectory, ENV['AAD_CLIENT_ID'], ENV['AAD_TENANT']
 end
