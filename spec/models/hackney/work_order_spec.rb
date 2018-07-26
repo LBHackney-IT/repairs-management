@@ -1,24 +1,17 @@
 require 'rails_helper'
 
 describe Hackney::WorkOrder, '#build' do
-  it 'builds a work order for a given work order reference' do
-    api_response = {
-      "wo_ref" => "01572924",
-      "prop_ref" => "00003182",
-      "rq_ref" => "03249135",
-      "created" => "2018-07-26T10:42:12Z"
-    }
+  include Helpers::HackneyRepairsRequests
 
-    stub_request(:get, "https://hackneyrepairs/v1/workorders/01572924")
-      .to_return(status: 200, body: api_response.to_json)
+  it 'builds a work order for a given work order reference' do
+    stub_hackney_repairs_work_orders
 
     model = described_class.new('01572924').build
     expect(model.reference).to eq('01572924')
   end
 
   it 'raises a not found error when the resource is not found' do
-    stub_request(:get, "https://hackneyrepairs/v1/workorders/00000000")
-      .to_return(status: 404)
+    stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
 
     expect {
       described_class.new('00000000').build
@@ -26,8 +19,7 @@ describe Hackney::WorkOrder, '#build' do
   end
 
   it 'raises a generic error when the api returns a server error' do
-    stub_request(:get, "https://hackneyrepairs/v1/workorders/12345678")
-      .to_return(status: 500)
+    stub_hackney_repairs_work_orders(reference: '12345678', status: 500)
 
     expect {
       described_class.new('12345678').build
