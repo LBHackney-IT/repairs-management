@@ -1,28 +1,12 @@
 require 'rails_helper'
 
-describe Hackney::Property, '#build' do
+describe Hackney::Property, '.build' do
   include Helpers::HackneyRepairsRequestStubs
 
-  it 'builds a work order for a given work order reference' do
-    stub_hackney_repairs_properties
+  it 'builds a property from the API response' do
+    model = described_class.build(property_response_payload)
 
-    model = described_class.new('00014665').build
+    expect(model).to be_a(Hackney::Property)
     expect(model.reference).to eq('00014665')
-  end
-
-  it 'raises a not found error when the resource is not found' do
-    stub_hackney_repairs_properties(reference: '00000000', status: 404)
-
-    expect {
-      described_class.new('00000000').build
-    }.to raise_error Hackney::Property::RecordNotFound
-  end
-
-  it 'raises a generic error when the api returns a server error' do
-    stub_hackney_repairs_properties(reference: '12345678', status: 500)
-
-    expect {
-      described_class.new('12345678').build
-    }.to raise_error Hackney::Property::Error
   end
 end

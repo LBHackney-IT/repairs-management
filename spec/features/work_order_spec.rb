@@ -1,13 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe 'Work order' do
+  include Helpers::Authentication
   include Helpers::HackneyRepairsRequestStubs
 
+  before { sign_in }
+
   scenario 'search for a work order by reference' do
+    fill_in 'Work order reference', with: ''
+    click_on 'Search'
+
+    expect(page).to have_content 'Please provide a reference'
+
     stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
 
-    visit '/'
-    click_on 'Sign in with Microsoft'
     fill_in 'Work order reference', with: '00000000'
     click_on 'Search'
 

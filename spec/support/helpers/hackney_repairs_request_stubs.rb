@@ -1,9 +1,9 @@
 module Helpers
   module HackneyRepairsRequestStubs
-    def stub_hackney_repairs_work_orders(opts = {})
-      reference = opts.fetch(:reference, '01551932')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, {
+    # GET /v1/workorders/:reference
+
+    def work_order_response_payload
+      {
         "wo_ref" => "01551932  ",
         "sup_ref" => "H09         ",
         "prop_ref" => "00014665    ",
@@ -81,16 +81,22 @@ module Helpers
         "u_allocated_resource" => " ",
         "u_servitor_user" => " ",
         "act_cost" => 0
-      })
+      }
+    end
+
+    def stub_hackney_repairs_work_orders(opts = {})
+      reference = opts.fetch(:reference, '01551932')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, work_order_response_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/workorders/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 
-    def stub_hackney_repairs_repair_requests(opts = {})
-      reference = opts.fetch(:reference, '03209397')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, {
+    # GET /v1/repairs/:reference
+
+    def repair_request_response_payload
+      {
         "repairRequestReference" => "03209397",
         "problemDescription" => "TEST problem",
         "priority" => "N",
@@ -107,21 +113,33 @@ module Helpers
             "supplierReference" => "H09"
           }
         ]
-      })
+      }
+    end
+
+    def stub_hackney_repairs_repair_requests(opts = {})
+      reference = opts.fetch(:reference, '03209397')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, repair_request_response_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/repairs/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 
-    def stub_hackney_repairs_properties(opts = {})
-      reference = opts.fetch(:reference, '00014665')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, {
+    # GET /v1/properties/:reference
+
+    def property_response_payload
+      {
         "address" => "12 Banister House Homerton High Street",
         "postcode" => "E9 6BH",
         "propertyReference" => "00014665",
         "maintainable" => true
-      })
+      }
+    end
+
+    def stub_hackney_repairs_properties(opts = {})
+      reference = opts.fetch(:reference, '00014665')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, property_response_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}")
         .to_return(status: status, body: body.to_json)

@@ -1,28 +1,22 @@
+require 'pry'
 require 'rails_helper'
 
 describe Hackney::WorkOrder, '#build' do
   include Helpers::HackneyRepairsRequestStubs
 
-  it 'builds a work order for a given work order reference' do
-    stub_hackney_repairs_work_orders
-
-    model = described_class.new('01551932').build
+  it 'builds a work order from the API response' do
+    model = described_class.build(work_order_response_payload)
     expect(model.reference).to eq('01551932')
+    expect(model.rq_ref).to eq('03209397')
+    expect(model.prop_ref).to eq('00014665')
+    expect(model.created).to eq DateTime.new(2018,05,29,14,10,06)
   end
 
-  it 'raises a not found error when the resource is not found' do
-    stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
+  it "doesn't error when given an invalid date to parse" do
+    model = described_class.build(
+      work_order_response_payload.merge('created' => 'null')
+    )
 
-    expect {
-      described_class.new('00000000').build
-    }.to raise_error Hackney::WorkOrder::RecordNotFound
-  end
-
-  it 'raises a generic error when the api returns a server error' do
-    stub_hackney_repairs_work_orders(reference: '12345678', status: 500)
-
-    expect {
-      described_class.new('12345678').build
-    }.to raise_error Hackney::WorkOrder::Error
+    expect(model.created).to be_blank
   end
 end
