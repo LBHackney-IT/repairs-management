@@ -36,9 +36,9 @@ class Hackney::WorkOrder
   end
 
   def assign_attributes
-    self.reference = @resource['wo_ref']
-    self.rq_ref = @resource['rq_ref']
-    self.prop_ref = @resource['prop_ref']
+    self.reference = @resource['wo_ref'].strip
+    self.rq_ref = @resource['rq_ref'].strip
+    self.prop_ref = @resource['prop_ref'].strip
     self.created = @resource['created']
   end
 end

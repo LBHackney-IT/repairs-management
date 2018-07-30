@@ -36,7 +36,7 @@ class Hackney::RepairRequest
   end
 
   def assign_attributes
-    self.reference = @resource['repairRequestReference']
+    self.reference = @resource['repairRequestReference'].strip
     self.description = @resource['problemDescription']
   end
 end

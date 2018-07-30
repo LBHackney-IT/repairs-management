@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Hackney::WorkOrder, '#build' do
-  include Helpers::HackneyRepairsRequests
+  include Helpers::HackneyRepairsRequestStubs
 
   it 'builds a work order for a given work order reference' do
     stub_hackney_repairs_work_orders
 
-    model = described_class.new('01572924').build
-    expect(model.reference).to eq('01572924')
+    model = described_class.new('01551932').build
+    expect(model.reference).to eq('01551932')
   end
 
   it 'raises a not found error when the resource is not found' do

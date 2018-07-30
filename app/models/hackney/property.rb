@@ -36,7 +36,7 @@ class Hackney::Property
   end
 
   def assign_attributes
-    self.reference = @resource['propertyReference']
+    self.reference = @resource['propertyReference'].strip
     self.address = @resource['address']
     self.postcode = @resource['postcode']
   end

@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 describe Hackney::RepairRequest, '#build' do
-  include Helpers::HackneyRepairsRequests
+  include Helpers::HackneyRepairsRequestStubs
 
   it 'builds a repair request for the given repair request reference' do
     stub_hackney_repairs_repair_requests
 
-    model = described_class.new('03249135').build
-    expect(model.reference).to eq('03249135')
-    expect(model.description).to eq('Renew sealant around bath and splashback tiles')
+    model = described_class.new('03209397').build
+    expect(model.reference).to eq('03209397')
+    expect(model.description).to eq('TEST problem')
   end
 
   it 'raises a not found error when the resource is not found' do
