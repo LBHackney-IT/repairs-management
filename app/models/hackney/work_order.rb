@@ -39,6 +39,6 @@ class Hackney::WorkOrder
     self.reference = @resource['wo_ref'].strip
     self.rq_ref = @resource['rq_ref'].strip
     self.prop_ref = @resource['prop_ref'].strip
-    self.created = @resource['created']
+    self.created = @resource['created'].to_datetime
   end
 end

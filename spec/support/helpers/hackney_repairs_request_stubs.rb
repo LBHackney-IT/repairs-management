@@ -96,7 +96,9 @@ module Helpers
         "priority" => "N",
         "propertyReference" => "00014665",
         "contact" => {
-          "name" => "MR SULEYMAN ERBAS"
+          "name" => "MR SULEYMAN ERBAS",
+          "telephoneNumber" => "02012341234",
+          "emailAddress" => "s.erbas@example.com"
         },
         "workOrders" => [
           {

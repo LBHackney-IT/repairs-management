@@ -1,3 +1,34 @@
-Ref: <%= @page.work_order.reference %>
-Description: <%= @page.repair_request.description %>
-Property: <%= @page.property.address %> <%= @page.property.postcode %>
+<h1 class="govuk-heading-l">
+  <span class="govuk-caption-l">Work order</span>
+  <%= @page.work_order.reference %>
+</h1>
+
+<p class="govuk-body-l">
+  <%= @page.repair_request.description %>
+</p>
+
+<p class="govuk-body-l">
+  Reported on <%= @page.work_order.created.to_s(:govuk_date) %>
+</p>
+
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+<h2 class='govuk-heading-m'>
+  <span class="govuk-caption-l">Property</span>
+  <%= @page.property.address %> <br>
+  <%= @page.property.postcode %>
+</h2>
+
+<h2 class='govuk-heading-m'>
+  <span class="govuk-caption-l">Tenant</span>
+  <%= @page.repair_request.contact.name %>
+</h2>
+
+<ul class="govuk-list">
+  <li>
+    Telephone number: <%= @page.repair_request.contact.telephone_number %>
+  </li>
+  <li>
+    Email address: <%= @page.repair_request.contact.email_address %>
+  </li>
+</ul>

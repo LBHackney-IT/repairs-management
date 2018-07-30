@@ -20,8 +20,12 @@ RSpec.describe 'Work order' do
     fill_in 'Work order reference', with: '01551932'
     click_on 'Search'
 
-    expect(page).to have_content 'Ref: 01551932'
-    expect(page).to have_content 'Description: TEST problem'
-    expect(page).to have_content 'Property: 12 Banister House Homerton High Street E9 6BH'
+    expect(page).to have_content 'Work order 01551932'
+    expect(page).to have_content 'TEST problem'
+    expect(page).to have_content 'Reported on 2:10pm, 29 May 2018'
+    expect(page).to have_content 'Property 12 Banister House Homerton High Street E9 6BH'
+    expect(page).to have_content 'Tenant MR SULEYMAN ERBAS'
+    expect(page).to have_content 'Telephone number: 02012341234'
+    expect(page).to have_content 'Email address: s.erbas@example.com'
   end
 end

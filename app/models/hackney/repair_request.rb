@@ -4,7 +4,7 @@ class Hackney::RepairRequest
   class RecordNotFound < StandardError; end
   class Error < StandardError; end
 
-  attr_accessor :reference, :description
+  attr_accessor :reference, :description, :contact
 
   def initialize(reference)
     @client = HackneyRepairsClient.new
@@ -38,5 +38,10 @@ class Hackney::RepairRequest
   def assign_attributes
     self.reference = @resource['repairRequestReference'].strip
     self.description = @resource['problemDescription']
+    self.contact = Hackney::Contact.new(
+      name: @resource.dig('contact', 'name'),
+      telephone_number: @resource.dig('contact', 'telephoneNumber'),
+      email_address: @resource.dig('contact', 'emailAddress')
+    )
   end
 end

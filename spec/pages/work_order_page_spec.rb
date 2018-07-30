@@ -12,8 +12,13 @@ describe WorkOrderPage, '#new' do
 
     expect(page.work_order).to be_a(Hackney::WorkOrder)
     expect(page.work_order.reference).to eq('01551932')
+
     expect(page.repair_request).to be_a(Hackney::RepairRequest)
     expect(page.repair_request.reference).to eq('03209397')
+
+    expect(page.repair_request.contact).to be_a(Hackney::Contact)
+    expect(page.repair_request.contact.name).to eq('MR SULEYMAN ERBAS')
+
     expect(page.property).to be_a(Hackney::Property)
     expect(page.property.reference).to eq('00014665')
   end
