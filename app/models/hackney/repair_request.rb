@@ -21,7 +21,7 @@ class Hackney::RepairRequest
   private
 
   def make_request
-    @response = @client.connection.get("/v1/repairs/#{@reference}")
+    @response = @client.connection.get("v1/repairs/#{@reference}")
   end
 
   def check_response

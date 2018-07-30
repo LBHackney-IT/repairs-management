@@ -21,7 +21,7 @@ class Hackney::Property
   private
 
   def make_request
-    @response = @client.connection.get("/v1/properties/#{@reference}")
+    @response = @client.connection.get("v1/properties/#{@reference}")
   end
 
   def check_response

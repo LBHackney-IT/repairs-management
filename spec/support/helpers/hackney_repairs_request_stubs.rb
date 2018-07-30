@@ -84,7 +84,7 @@ module Helpers
       })
 
       stub_request(:get, "https://hackneyrepairs/v1/workorders/#{reference}")
-      .to_return(status: status, body: body.to_json)
+        .to_return(status: status, body: body.to_json)
     end
 
     def stub_hackney_repairs_repair_requests(opts = {})

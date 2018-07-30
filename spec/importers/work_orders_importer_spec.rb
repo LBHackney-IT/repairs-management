@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe WorkOrdersImporter, '#import' do
+describe WorkOrdersImporter, '#import', :db_connection do
   it 'imports new work orders' do
     api_response = {
       'data' => [

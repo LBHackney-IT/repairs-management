@@ -4,9 +4,20 @@
 
 Ensure that you have [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install/). Then run `./bin/setup`.
 
-To start the application, use `./bin/start` (there might not be any output until you try to visit [localhost:3000](http://localhost:3000/))
+The following commands are available:
 
-Run the tests with `./bin/test`.
+| Command        | Description |
+| -------------- | ----------- |
+| `./bin/setup`  | First-time project setup |
+| `./bin/start`  | Run the Rails application at [localhost:3000](http://localhost:3000/) |
+| `./bin/update` | Update gems, migrations and other dependencies |
+| `./bin/test`   | Run RSpec |
+| `./bin/test -f d path/to/file` | Run RSpec with options and files/directories |
+| `rspec --tag ~db_connection`   | Run tests that aren't reliant on neo4j/postgres |
+
+## Testing
+
+Test are configured two ways: (1) `./bin/test` will run all tests in Docker Compose, you should use this for a full test suite. (2) Some tests can be ran without Docker Compose, this is faster to run without Docker Compose, but it only covers a subset.
 
 ## Deployments
 
