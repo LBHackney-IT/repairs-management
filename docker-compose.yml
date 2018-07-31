@@ -5,6 +5,9 @@ services:
     command: bundle exec rails s -p 3000 -b 0.0.0.0
     volumes:
       - .:/app
+    environment:
+      - DATABASE_HOST=pg_db
+      - DATABASE_USERNAME=postgres
     ports:
       - '3000:3000'
     depends_on:
