@@ -12,11 +12,16 @@ describe HackneyRepairsClient, '#get' do
   end
 
   it 'raises a generic error when the response errors' do
-    stub_request(:get, 'https://example.com/endpoint').to_return(status: 500)
+    response_body = {
+      "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+      "userMessage" => "We had some problems processing your request"
+    }
+    stub_request(:get, 'https://example.com/endpoint').to_return(status: 500, body: response_body.to_json)
 
     client = described_class.new(base_url: 'https://example.com')
 
-    expect { client.get('endpoint') }.to raise_error HackneyRepairsClient::Error
+    expect { client.get('endpoint') }.to raise_error(HackneyRepairsClient::Error)
+      .with_message("endpoint, 500, #{response_body}")
   end
 
   it 'raises a generic error after a request timeout' do
@@ -24,7 +29,8 @@ describe HackneyRepairsClient, '#get' do
 
     client = described_class.new(base_url: 'https://example.com')
 
-    expect { client.get('endpoint') }.to raise_error HackneyRepairsClient::Error
+    expect { client.get('endpoint') }.to raise_error(HackneyRepairsClient::Error)
+      .with_message(/execution expired/)
   end
 
   it 'concatenates the full URL' do

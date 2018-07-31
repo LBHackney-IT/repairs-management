@@ -21,15 +21,15 @@ class HackneyRepairsClient
   def get(endpoint)
     response = connection.get(endpoint)
   rescue => error
-    raise Error.new
+    raise Error, "#{error} #{error.message}, caused by #{error.cause}"
   else
     case response.status
     when 200
       return response.body
     when 404
-      raise RecordNotFound.new
+      raise RecordNotFound, endpoint
     else
-      raise Error.new
+      raise Error, [endpoint, response.status, response.body].join(', ')
     end
   end
 
