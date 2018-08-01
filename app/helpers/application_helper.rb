@@ -3,13 +3,23 @@ module ApplicationHelper
     session.key?(:current_user)
   end
 
-  def azure_active_directory_login_url
-    '/auth/azureactivedirectory'
+  def omniauth_login_link
+    if Rails.env.development?
+      link_to 'Sign in with Google', '/auth/google_oauth2'
+    else
+      link_to image_tag('ms_signin_light.svg', alt: 'Sign in with Microsoft'),
+                        '/auth/azureactivedirectory'
+    end
   end
 
-  def azure_active_directory_logout_url
-    application_id = ENV['AAD_CLIENT_ID']
-    callback_url = url_encode(logout_url)
-    "https://login.microsoftonline.com/#{application_id}/oauth2/logout?post_logout_redirect_uri=#{callback_url}"
+  def omniauth_logout_url
+    if Rails.env.development?
+      logout_path
+    else
+      application_id = ENV['AAD_CLIENT_ID']
+      callback_url = url_encode(logout_url)
+      "https://login.microsoftonline.com/#{application_id}/oauth2/logout?post_logout_redirect_uri=#{callback_url}"
+    end
   end
+
 end
