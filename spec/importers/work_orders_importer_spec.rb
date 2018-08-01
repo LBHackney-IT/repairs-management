@@ -1,9 +1,7 @@
 require 'rails_helper'
 
-describe WorkOrdersImporter, '#import' do
+describe WorkOrdersImporter, '#import', :db_connection do
   it 'imports new work orders' do
-    allow(ENV).to receive(:has_key?).with('http_proxy').and_return(true)
-
     api_response = {
       'data' => [
         {

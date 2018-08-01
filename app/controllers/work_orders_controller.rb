@@ -1,7 +1,9 @@
 class WorkOrdersController < ApplicationController
+  rescue_from HackneyRepairsClient::RecordNotFound, with: :redirect_to_homepage
+
   def search
-    if params[:ref].present?
-      redirect_to action: :show, ref: params[:ref]
+    if reference.present?
+      redirect_to action: :show, ref: reference
     else
       flash.notice = 'Please provide a reference'
       redirect_to root_path
@@ -9,11 +11,17 @@ class WorkOrdersController < ApplicationController
   end
 
   def show
-    @work_order = WorkOrder.find_by(ref: params[:ref])
+    @page = WorkOrderPage.new(reference)
+  end
 
-    if @work_order.blank?
-      flash.notice = "Could not find a work order with reference #{params[:ref]}"
-      redirect_to root_path
-    end
+private
+
+  def redirect_to_homepage
+    flash.notice = "Could not find a work order with reference #{reference}"
+    redirect_to root_path
+  end
+
+  def reference
+    params[:ref]
   end
 end

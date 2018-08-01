@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Authentication' do
+  include Helpers::Authentication
+
   scenario 'prompting to login when not authenticated' do
     visit '/'
 

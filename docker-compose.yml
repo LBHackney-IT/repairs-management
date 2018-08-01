@@ -5,6 +5,9 @@ services:
     command: bundle exec rails s -p 3000 -b 0.0.0.0
     volumes:
       - .:/app
+    environment:
+      - DATABASE_HOST=pg_db
+      - DATABASE_USERNAME=postgres
     ports:
       - '3000:3000'
     depends_on:
@@ -16,7 +19,7 @@ services:
     volumes:
       - ./tmp/db/postgresql:/var/lib/postgresql/data
 
-  neo4j_db:
+  neo4j_db: &neo4j_db
     image: neo4j:3.4
     volumes:
       - ./tmp/db/neo4j/dev/data:/data
@@ -27,11 +30,9 @@ services:
       - '7474:7474'
 
   neo4j_db_test:
-    image: neo4j:3.4
+    <<: *neo4j_db
     volumes:
       - ./tmp/db/neo4j/test/data:/data
       - ./tmp/db/neo4j/test/logs:/logs
-    environment:
-      - NEO4J_AUTH=none
     ports:
       - '7475:7474'

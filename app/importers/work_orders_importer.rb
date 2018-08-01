@@ -1,5 +1,3 @@
-require './lib/hackney_repairs_client'
-
 class WorkOrdersImporter
   def initialize
     @client = HackneyRepairsClient.new
@@ -14,10 +12,10 @@ class WorkOrdersImporter
   private
 
   def work_orders
-    response.body.fetch('data')
+    response.fetch('data')
   end
 
   def response
-    @client.connection.get('/v1/workorders')
+    @client.get('/v1/workorders')
   end
 end

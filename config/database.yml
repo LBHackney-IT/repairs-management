@@ -1,8 +1,10 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: pg_db
-  username: postgres
+  host: <%= ENV.fetch('DATABASE_HOST', 'localhost') %>
+  # When left blank, postgres will use the default role. This is
+  # the same name as the operating system user that initialized the database.
+  username: <%= ENV.fetch('DATABASE_USERNAME', '') %>
   password:
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
