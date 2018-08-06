@@ -1,5 +1,5 @@
 class WorkOrderPage
-  attr_reader :work_order, :repair_request, :contact, :property
+  attr_reader :work_order, :repair_request, :contact, :property, :appointment
 
   def initialize(work_order_reference)
     @work_order_reference = work_order_reference
@@ -7,6 +7,7 @@ class WorkOrderPage
     build_work_order
     build_repair_request
     build_property
+    build_appointment
   end
 
   private
@@ -25,6 +26,11 @@ class WorkOrderPage
   def build_property
     response = client.get_property(property_reference)
     @property = Hackney::Property.build(response)
+  end
+
+  def build_appointment
+    response = client.get_work_order_appointment(@work_order_reference)
+    @appointment = Hackney::Appointment.build(response)
   end
 
   def client

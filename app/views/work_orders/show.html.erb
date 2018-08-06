@@ -39,3 +39,26 @@
     Email address: <%= @page.contact.email_address %>
   </li>
 </ul>
+
+<h2 class='govuk-heading-m'>
+  <span class="govuk-caption-l">Appointment</span>
+  Booked from <%= @page.appointment.begin_date.to_s(:govuk_date) %>
+</h2>
+
+<ul class="govuk-list">
+  <li>
+    Target date: <%= @page.appointment.target_date.to_s(:govuk_date) %>
+  </li>
+  <li>
+    Resource name: <%= @page.appointment.resource_name %>
+  </li>
+  <li>
+    Status: <%= @page.appointment.status %>
+  </li>
+  <li>
+    Priority: <%= @page.appointment.priority %>
+  </li>
+  <li>
+    Data source: <%= @page.appointment.data_source %>
+  </li>
+</ul>

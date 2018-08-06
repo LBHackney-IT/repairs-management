@@ -144,5 +144,28 @@ module Helpers
       stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
+
+    # GET /v1/work_orders/:workOrderReference/appointments
+
+    def work_order_appointment_response_payload
+      {
+        "beginDate" => "2018-06-10T14:56:00+01:00",
+        "endDate" => "2018-06-10T15:12:00+01:00",
+        "targetDate" => "2018-06-11T14:10:00.052+01:00",
+        "resourceName" => "(PLM) Brian Liverpool",
+        "status" => "PLANNED",
+        "priority" => "N",
+        "dataSource" => "DRS"
+      }
+    end
+
+    def stub_hackney_repairs_work_order_appointment(opts = {})
+      reference = opts.fetch(:reference, '01551932')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, work_order_appointment_response_payload)
+
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments")
+        .to_return(status: status, body: body.to_json)
+    end
   end
 end
