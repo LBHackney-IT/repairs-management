@@ -13,7 +13,7 @@ class WorkOrdersController < ApplicationController
   end
 
   def show
-    @page = WorkOrderPage.new(reference)
+    @work_order = Hackney::WorkOrder.find(reference)
   end
 
 private

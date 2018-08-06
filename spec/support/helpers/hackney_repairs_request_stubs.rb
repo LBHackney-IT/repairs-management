@@ -2,7 +2,7 @@ module Helpers
   module HackneyRepairsRequestStubs
     # GET /v1/work_orders/:reference
 
-    def work_order_response_payload
+    def work_order_response_payload(overrides = {})
       {
         "sorCode" => "08500110",
         "trade" => "Painting & Decorating",
@@ -18,7 +18,7 @@ module Helpers
         "dloStatus" => "1",
         "servitorReference" => "10162765",
         "propertyReference" => "00014665"
-      }
+      }.merge(overrides)
     end
 
     def stub_hackney_repairs_work_orders(opts = {})
@@ -32,7 +32,7 @@ module Helpers
 
     # GET /v1/repairs/:reference
 
-    def repair_request_response_payload
+    def repair_request_response_payload(overrides = {})
       {
         "repairRequestReference" => "03209397",
         "problemDescription" => "TEST problem",
@@ -50,7 +50,7 @@ module Helpers
             "supplierReference" => "H09"
           }
         ]
-      }
+      }.deep_merge(overrides)
     end
 
     def stub_hackney_repairs_repair_requests(opts = {})
@@ -243,6 +243,18 @@ module Helpers
 
       stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments")
         .to_return(status: status, body: body.to_json)
+    end
+
+    def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
+                                              body: [work_order_response_payload])
+       stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyreference=#{reference}")
+         .to_return(status: status, body: body.to_json)
+    end
+
+    def stub_hackney_repairs_for_property(reference: '00014665', status: 200,
+                                          body: [repair_request_response_payload])
+       stub_request(:get, "https://hackneyrepairs/v1/repairs?propertyReference=#{reference}")
+         .to_return(status: status, body: body.to_json)
     end
   end
 end

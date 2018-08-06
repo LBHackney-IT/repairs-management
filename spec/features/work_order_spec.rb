@@ -24,6 +24,16 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_work_orders_for_property(body: [
+      work_order_response_payload("workOrderReference" => "1234", "repairRequestReference" => "5678"),
+      work_order_response_payload("workOrderReference" => "4321", "repairRequestReference" => "8765"),
+    ])
+    stub_hackney_repairs_for_property(body: [
+      repair_request_response_payload("repairRequestReference" => "5678",
+                                      "problemDescription" => "Problem 1"),
+      repair_request_response_payload("repairRequestReference" => "8765",
+                                      "problemDescription" => "Problem 2")
+    ])
 
     fill_in 'Work order reference', with: '01551932'
     click_on 'Search'
@@ -53,6 +63,11 @@ RSpec.describe 'Work order' do
         "10:12am, 23 August 2018 by MOSHEA\nTenant called to confirm appointment",
       ])
     end
+
+    expect(page).to have_content 'Problem 1'
+    expect(page).to have_content 'Problem 2'
+    expect(page).to have_link("1234", href: work_order_path("1234"))
+    expect(page).to have_link("4321", href: work_order_path("4321"))
   end
 
   scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
@@ -63,6 +78,8 @@ RSpec.describe 'Work order' do
       body: work_order_note_response_payload__no_notes
     )
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_work_orders_for_property
+    stub_hackney_repairs_for_property
 
     visit work_order_path('01551932')
     expect(page).to have_content 'There are no notes for this work order.'
@@ -80,6 +97,8 @@ RSpec.describe 'Work order' do
       status: 500
     )
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_work_orders_for_property
+    stub_hackney_repairs_for_property
 
     visit work_order_path('01551932')
     expect(page).to have_content 'There are no notes for this work order.'
@@ -93,6 +112,8 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__out_of_target
     )
+    stub_hackney_work_orders_for_property
+    stub_hackney_repairs_for_property
 
     visit work_order_path('01551932')
 
@@ -107,6 +128,8 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__no_appointments
     )
+    stub_hackney_work_orders_for_property
+    stub_hackney_repairs_for_property
 
     visit work_order_path('01551932')
 
@@ -125,6 +148,8 @@ RSpec.describe 'Work order' do
       },
       status: 404
     )
+    stub_hackney_work_orders_for_property
+    stub_hackney_repairs_for_property
 
     visit work_order_path('01551932')
 
