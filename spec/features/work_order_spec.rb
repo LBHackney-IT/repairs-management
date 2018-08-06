@@ -6,7 +6,7 @@ RSpec.describe 'Work order' do
 
   before { sign_in }
 
-  scenario 'search for a work order by reference' do
+  scenario 'Search for a work order by reference' do
     fill_in 'Work order reference', with: ''
     click_on 'Search'
 
@@ -42,5 +42,21 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Status: PLANNED'
     expect(page).to have_content 'Priority: N'
     expect(page).to have_content 'Data source: DRS'
+  end
+
+  scenario 'A label is shown when the appointment date has passed the target date' do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_appointment(
+      body: work_order_appointment_response_payload.merge(
+        'endDate'    => '2018-08-10T12:00:00Z',
+        'targetDate' => '2018-08-01T12:00:00Z'
+      )
+    )
+
+    visit work_order_path('01551932')
+
+    expect(page).to have_content 'This appointment has passed its target date.'
   end
 end

@@ -16,3 +16,27 @@ describe Hackney::Appointment, '.build' do
     }.to raise_error(NoMethodError, "undefined method `strip' for nil:NilClass")
   end
 end
+
+describe Hackney::Appointment, '#out_of_target?' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  it 'returns true when the target date is past the end date' do
+    attributes = work_order_appointment_response_payload.merge(
+      'endDate'    => '2018-01-02T12:00:00Z',
+      'targetDate' => '2018-01-01T12:00:00Z'
+    )
+    model = described_class.build(attributes)
+
+    expect(model).to be_out_of_target
+  end
+
+  it 'returns false when the target date is ahead of the end date' do
+    attributes = work_order_appointment_response_payload.merge(
+      'endDate'    => '2018-01-01T12:00:00Z',
+      'targetDate' => '2018-01-25T12:00:00Z'
+    )
+    model = described_class.build(attributes)
+
+    expect(model).to_not be_out_of_target
+  end
+end

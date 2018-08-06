@@ -22,4 +22,8 @@ class Hackney::Appointment
       data_source: attributes['dataSource']
     )
   end
+
+  def out_of_target?
+    target_date < end_date
+  end
 end

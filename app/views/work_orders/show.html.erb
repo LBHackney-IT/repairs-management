@@ -40,10 +40,22 @@
   </li>
 </ul>
 
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
 <h2 class='govuk-heading-m'>
   <span class="govuk-caption-l">Appointment</span>
   Booked from <%= @page.appointment.begin_date.to_s(:govuk_date) %>
 </h2>
+
+<% if @page.appointment.out_of_target? %>
+  <div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      This appointment has passed its target date.
+    </strong>
+  </div>
+<% end %>
 
 <ul class="govuk-list">
   <li>
