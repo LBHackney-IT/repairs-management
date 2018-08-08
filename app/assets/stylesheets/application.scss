@@ -1,13 +1,12 @@
 @import "govuk-frontend/all";
 
-.user-sign-out {
-  margin-top: .3em;
-  float: right;
-}
+$hackney-color: #009CA6;
+
+@import 'hackney_header';
 
 .flash-message {
   @include govuk-font($size: 16);
-  background-color: govuk-colour("blue");
+  background-color: $hackney-color;
   color: govuk-colour("grey-4");
   padding: 10px 20px;
   margin-bottom: 10px;
