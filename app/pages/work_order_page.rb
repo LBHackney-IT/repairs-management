@@ -1,5 +1,5 @@
 class WorkOrderPage
-  attr_reader :work_order, :repair_request, :contact, :property, :latest_appointment
+  attr_reader :work_order, :repair_request, :contact, :property, :latest_appointment, :notes
 
   def initialize(work_order_reference)
     @work_order_reference = work_order_reference
@@ -8,6 +8,7 @@ class WorkOrderPage
     build_repair_request
     build_property
     build_latest_appointment
+    build_notes
   end
 
   private
@@ -34,6 +35,13 @@ class WorkOrderPage
       Hackney::Appointment.build(attributes)
     end
     @latest_appointment = appointments.sort_by{|a| a.visit_prop_end}.last
+  end
+
+  def build_notes
+    response = client.get_work_order_notes(@work_order_reference)
+    @notes = response
+              .map { |attributes| Hackney::Note.build(attributes) }
+              .sort_by { |note| note.logged_at }.reverse
   end
 
   def client

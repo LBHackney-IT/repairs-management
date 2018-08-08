@@ -27,3 +27,8 @@ $govuk-font-family: 'Arial', sans-serif;
   margin-bottom: 10px;
   padding: 10px 20px;
 }
+
+.hackney-note-info {
+  @include govuk-responsive-margin(2, "bottom");
+  color: $govuk-secondary-text-colour;
+}

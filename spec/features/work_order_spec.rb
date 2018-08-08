@@ -23,6 +23,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_notes
 
     fill_in 'Work order reference', with: '01551932'
     click_on 'Search'
@@ -42,6 +43,14 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Data source: UH'
 
     expect(page).to have_content 'Target date: 2:09pm, 27 June 2018'
+
+    expect(page).to have_content 'Notes'
+    within(find('h2', text: 'Notes').find('~ ul')) do
+      expect(all('li').map(&:text)).to eq([
+        "11:32am, 2 September 2018 by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath",
+        "10:12am, 23 August 2018 by MOSHEA\nTenant called to confirm appointment",
+      ])
+    end
   end
 
   scenario 'A label is shown when the appointment date has passed the target date' do
@@ -51,6 +60,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__out_of_target
     )
+    stub_hackney_repairs_work_order_notes
 
     visit work_order_path('01551932')
 
@@ -64,6 +74,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__no_appointments
     )
+    stub_hackney_repairs_work_order_notes
 
     visit work_order_path('01551932')
 
