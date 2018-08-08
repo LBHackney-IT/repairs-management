@@ -4,10 +4,22 @@ $hackney-color: #009CA6;
 
 @import 'hackney_header';
 
-.flash-message {
+.hackney-page-header {
+  background-color: govuk-colour("grey-4");
+  border-bottom: 1px solid govuk-colour("grey-2");
+  padding-top: 10px;
+}
+
+.hackney-width-container {
+  @include govuk-media-query($from: tablet) {
+    margin: 0 $govuk-gutter * 2;
+  }
+}
+
+.hackney-flash-message {
   @include govuk-font($size: 16);
   background-color: $hackney-color;
   color: govuk-colour("grey-4");
-  padding: 10px 20px;
   margin-bottom: 10px;
+  padding: 10px 20px;
 }

@@ -44,16 +44,30 @@
     </div>
   </header>
 
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper " id="main-content" role="main">
-      <% flash.each do |name, message| %>
-        <div class='flash-message'>
-          <p><%= message %></p>
-        </div>
-      <% end %>
+  <% flash.each do |name, message| %>
+    <div class='hackney-flash-message'>
+      <div class="govuk-width-container">
+        <p><%= message %></p>
+      </div>
+    </div>
+  <% end %>
 
+  <% if content_for :page_header %>
+    <div class="hackney-page-header">
+      <div class="govuk-width-container">
+        <div class="hackney-width-container">
+          <div class="govuk-main-wrapper ">
+            <%= yield :page_header %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="govuk-width-container">
+    <div class="govuk-main-wrapper ">
       <%= yield %>
-    </main>
+    </div>
   </div>
 
   <footer class="govuk-footer " role="contentinfo">
