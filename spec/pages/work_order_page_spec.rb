@@ -7,6 +7,7 @@ describe WorkOrderPage, '#new' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
 
     page = described_class.new('01551932')
 
@@ -21,6 +22,8 @@ describe WorkOrderPage, '#new' do
 
     expect(page.property).to be_a(Hackney::Property)
     expect(page.property.reference).to eq('00014665')
+
+    expect(page.notes).to all(be_a(Hackney::Note))
   end
 
   it 'raises a RecordNotFound error when a work order cannot be found' do

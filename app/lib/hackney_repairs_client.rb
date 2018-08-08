@@ -18,6 +18,10 @@ class HackneyRepairsClient
     get("v1/properties/#{reference}")
   end
 
+  def get_work_order_notes(reference)
+    get("v1/workorders/#{reference}/notes")
+  end
+
   def get(endpoint)
     response = connection.get(endpoint)
   rescue => error

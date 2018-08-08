@@ -39,3 +39,22 @@
     Email address: <%= @page.contact.email_address %>
   </li>
 </ul>
+
+<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+<h2 class='govuk-heading-m'>
+  Notes
+</h2>
+
+<ul class="govuk-list">
+  <% @page.notes.each do |note| %>
+  <li>
+    <p class="govuk-body">
+      <div class="hackney-note-info">
+        <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
+      </div>
+      <%= note.text %>
+    </p>
+  </li>
+  <% end %>
+</ul>
