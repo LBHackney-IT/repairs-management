@@ -3,6 +3,11 @@ $govuk-font-family: 'Arial', sans-serif;
 @import "hackney_colour";
 @import "hackney_header";
 
+.turbolinks-progress-bar {
+  height: 3px;
+  background-color: hackney-colour("housing-2");
+}
+
 .hackney-page-header {
   background-color: govuk-colour("grey-4");
   border-bottom: 1px solid govuk-colour("grey-2");
