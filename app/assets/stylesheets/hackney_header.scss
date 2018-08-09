@@ -1,0 +1,65 @@
+.hackney-header {
+  @include govuk-font($size: 16, $weight: bold, $line-height: 20px);
+  background-color: govuk-colour('black');
+  color: govuk-colour('white');
+  padding: 15px 0;
+  position: relative;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &:after {
+    background-image: linear-gradient(
+      to bottom,
+      hackney-colour('housing-1'),
+      hackney-colour('housing-1') 24%,
+      govuk-colour('black') 24%,
+      govuk-colour('black') 48%,
+      hackney-colour('housing-2') 48%,
+      hackney-colour('housing-2') 72%,
+      transparent 72%,
+      transparent 86%,
+      hackney-colour('housing-3') 86%,
+    );
+    bottom: -8px;
+    content: '';
+    height: 10px;
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.hackney-header__logo {
+  margin-bottom: -3px;
+  margin-right: 10px;
+  width: 100px;
+}
+
+.hackney-header__title {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.hackney_header__tag {
+  background-color: hackney-colour('housing-2');
+  color: govuk-colour('white');
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+.hackney-header__links {
+  @include govuk-font($size: 16);
+  @include govuk-media-query($until: tablet) {
+    margin-top: 5px;
+  }
+  @include govuk-media-query($from: tablet) {
+    text-align: right;
+  }
+}
