@@ -35,8 +35,8 @@
 }
 
 .hackney-header__logo {
+  margin-bottom: -3px;
   margin-right: 10px;
-  vertical-align: top;
   width: 100px;
 }
 
@@ -48,10 +48,10 @@
 .hackney_header__tag {
   background-color: hackney-colour('housing-2');
   color: govuk-colour('white');
+  display: inline-block;
   font-size: 12px;
   padding: 2px 8px;
   text-transform: uppercase;
-  vertical-align: top;
 }
 
 .hackney-header__links {
