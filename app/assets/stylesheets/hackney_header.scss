@@ -16,15 +16,15 @@
   &:after {
     background-image: linear-gradient(
       to bottom,
-      $hackney-color,
-      $hackney-color 24%,
+      hackney-colour('housing-1'),
+      hackney-colour('housing-1') 24%,
       govuk-colour('black') 24%,
       govuk-colour('black') 48%,
-      $hackney-color 48%,
-      $hackney-color 72%,
+      hackney-colour('housing-2') 48%,
+      hackney-colour('housing-2') 72%,
       transparent 72%,
       transparent 86%,
-      $hackney-color 86%,
+      hackney-colour('housing-3') 86%,
     );
     bottom: -8px;
     content: '';
@@ -46,7 +46,7 @@
 }
 
 .hackney_header__tag {
-  background-color: $hackney-color;
+  background-color: hackney-colour('housing-2');
   color: govuk-colour('white');
   font-size: 12px;
   padding: 2px 8px;

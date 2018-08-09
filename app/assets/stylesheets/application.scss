@@ -1,9 +1,7 @@
 $govuk-font-family: 'Arial', sans-serif;
 @import "govuk-frontend/all";
-
-$hackney-color: #009CA6;
-
-@import 'hackney_header';
+@import "hackney_colour";
+@import "hackney_header";
 
 .hackney-page-header {
   background-color: govuk-colour("grey-4");
@@ -19,7 +17,7 @@ $hackney-color: #009CA6;
 
 .hackney-flash-message {
   @include govuk-font($size: 16);
-  background-color: $hackney-color;
+  background-color: hackney-colour("housing-2");
   color: govuk-colour("grey-4");
   margin-bottom: 10px;
   padding: 10px 20px;
