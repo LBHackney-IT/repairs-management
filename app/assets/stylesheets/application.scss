@@ -1,14 +1,29 @@
+$govuk-font-family: 'Arial', sans-serif;
 @import "govuk-frontend/all";
+@import "hackney_colour";
+@import "hackney_header";
 
-.user-sign-out {
-  margin-top: .3em;
-  float: right;
+.turbolinks-progress-bar {
+  height: 3px;
+  background-color: hackney-colour("housing-2");
 }
 
-.flash-message {
+.hackney-page-header {
+  background-color: govuk-colour("grey-4");
+  border-bottom: 1px solid govuk-colour("grey-2");
+  padding-top: 10px;
+}
+
+.hackney-width-container {
+  @include govuk-media-query($from: tablet) {
+    margin: 0 $govuk-gutter * 2;
+  }
+}
+
+.hackney-flash-message {
   @include govuk-font($size: 16);
-  background-color: govuk-colour("blue");
+  background-color: hackney-colour("housing-2");
   color: govuk-colour("grey-4");
-  padding: 10px 20px;
   margin-bottom: 10px;
+  padding: 10px 20px;
 }

@@ -1,0 +1,9 @@
+$hackney-colours: (
+  "housing-1": #005f61,
+  "housing-2": #009ca6,
+  "housing-3": #2dccd3
+);
+
+@function hackney-colour($colour) {
+  @return map-get($hackney-colours, quote($colour));
+}

@@ -1,29 +1,35 @@
-<h1 class="govuk-heading-l">
-  <span class="govuk-caption-l">Work order</span>
-  <%= @page.work_order.reference %>
-</h1>
+<% content_for :page_header do %>
+  <h1 class="govuk-heading-l">
+    <span class="govuk-caption-l">Work order</span>
+    <%= @page.work_order.reference %>
+  </h1>
 
-<p class="govuk-body-l">
-  <%= @page.repair_request.description %>
-</p>
+  <p class="govuk-body-l">
+    <%= @page.repair_request.description %>
+  </p>
 
-<p class="govuk-body">
-  Reported on <%= @page.work_order.created.to_s(:govuk_date) %>
-</p>
-
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-<h2 class='govuk-heading-m'>
-  <span class="govuk-caption-l">Property</span>
-  <%= @page.property.address %> <%= @page.property.postcode %>
-</h2>
-
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-<h2 class='govuk-heading-m'>
-  <span class="govuk-caption-l">Tenant</span>
-  <%= @page.repair_request.contact.name %>
-</h2>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <p class="govuk-body-s">
+        <span class="govuk-!-font-weight-bold">
+          <%= @page.property.address %>
+        </span>
+        <%= @page.property.postcode %>
+      </p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <p class="govuk-body-s">
+        <span class="govuk-!-font-weight-bold">
+          <%= @page.repair_request.contact.name %>
+        </span>
+        reported on <%= @page.work_order.created.to_s(:govuk_date) %>
+      </p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <%# Appointments %>
+    </div>
+  </div>
+<% end %>
 
 <ul class="govuk-list">
   <li>

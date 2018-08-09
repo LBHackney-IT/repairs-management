@@ -5,7 +5,8 @@ module ApplicationHelper
 
   def omniauth_login_link
     if Rails.env.development?
-      link_to 'Sign in with Google', '/auth/google_oauth2'
+      link_to image_tag('btn_google_signin_light_normal_web.svg', alt: 'Sign in with Google'),
+                        '/auth/google_oauth2'
     else
       link_to image_tag('ms_signin_light.svg', alt: 'Sign in with Microsoft'),
                         '/auth/azureactivedirectory'
