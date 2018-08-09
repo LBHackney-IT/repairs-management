@@ -31,17 +31,17 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'TEST problem'
 
     expect(page).to have_content '12 Banister House Homerton High Street E9 6BH'
+
     expect(page).to have_content 'MR SULEYMAN ERBAS reported on 2:10pm, 29 May 2018'
+    expect(page).to have_content '02012341234'
+    expect(page).to have_content 's.erbas@example.com'
 
-    expect(page).to have_content 'Telephone number: 02012341234'
-    expect(page).to have_content 'Email address: s.erbas@example.com'
-
-    expect(page).to have_content 'Appointment Booked from 2:56pm, 10 June 2018'
-    expect(page).to have_content 'Target date: 2:10pm, 11 June 2018'
-    expect(page).to have_content 'Resource name: (PLM) Brian Liverpool'
-    expect(page).to have_content 'Status: PLANNED'
+    expect(page).to have_content 'Booked from 2:56pm, 10 June 2018 with (PLM) Brian Liverpool'
     expect(page).to have_content 'Priority: N'
+    expect(page).to have_content 'Status: PLANNED'
     expect(page).to have_content 'Data source: DRS'
+
+    expect(page).to have_content 'Target date: 2:10pm, 11 June 2018'
   end
 
   scenario 'A label is shown when the appointment date has passed the target date' do
@@ -57,6 +57,6 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
-    expect(page).to have_content 'This appointment has passed its target date.'
+    expect(page).to have_content 'The booked appointment has passed its target date.'
   end
 end

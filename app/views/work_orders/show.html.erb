@@ -24,35 +24,48 @@
         </span>
         reported on <%= @page.work_order.created.to_s(:govuk_date) %>
       </p>
+
+      <ul class="govuk-list govuk-body-s">
+        <li>
+          <%= @page.contact.telephone_number %>
+        </li>
+        <li>
+          <%= mail_to @page.contact.email_address %>
+        </li>
+      </ul>
     </div>
     <div class="govuk-grid-column-one-third">
-      <%# Appointments %>
+      <p class="govuk-body-s">
+        Booked from <%= @page.appointment.begin_date.to_s(:govuk_date) %>
+        <% if @page.appointment.resource_name.present? %>
+          with
+          <span class="govuk-!-font-weight-bold">
+            <%= @page.appointment.resource_name %>
+          </span>
+        <% end %>
+      </p>
+
+      <ul class="govuk-list govuk-body-s">
+        <li>
+          Priority: <%= @page.appointment.priority %>
+        </li>
+        <li>
+          Status: <%= @page.appointment.status %>
+        </li>
+        <li>
+          Data source: <%= @page.appointment.data_source %>
+        </li>
+      </ul>
     </div>
   </div>
 <% end %>
-
-<ul class="govuk-list">
-  <li>
-    Telephone number: <%= @page.contact.telephone_number %>
-  </li>
-  <li>
-    Email address: <%= @page.contact.email_address %>
-  </li>
-</ul>
-
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-<h2 class='govuk-heading-m'>
-  <span class="govuk-caption-l">Appointment</span>
-  Booked from <%= @page.appointment.begin_date.to_s(:govuk_date) %>
-</h2>
 
 <% if @page.appointment.out_of_target? %>
   <div class="govuk-warning-text">
     <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
     <strong class="govuk-warning-text__text">
       <span class="govuk-warning-text__assistive">Warning</span>
-      This appointment has passed its target date.
+      The booked appointment has passed its target date.
     </strong>
   </div>
 <% end %>
@@ -60,17 +73,5 @@
 <ul class="govuk-list">
   <li>
     Target date: <%= @page.appointment.target_date.to_s(:govuk_date) %>
-  </li>
-  <li>
-    Resource name: <%= @page.appointment.resource_name %>
-  </li>
-  <li>
-    Status: <%= @page.appointment.status %>
-  </li>
-  <li>
-    Priority: <%= @page.appointment.priority %>
-  </li>
-  <li>
-    Data source: <%= @page.appointment.data_source %>
   </li>
 </ul>
