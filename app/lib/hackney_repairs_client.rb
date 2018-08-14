@@ -1,46 +1,63 @@
 class HackneyRepairsClient
-  class RecordNotFound < StandardError; end
-  class Error < StandardError; end
+  HTTP_STATUS_OK = 200
+  HTTP_STATUS_NOT_FOUND = 404
+
+  API_CACHE_TIME_IN_SECONDS = 300
+
+  RecordNotFoundError = Class.new(StandardError)
+  ApiError = Class.new(StandardError)
 
   def initialize(opts = {})
     @base_url = opts.fetch(:base_url) { ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL') }
   end
 
   def get_work_order(reference)
-    get("v1/workorders/#{reference}")
+    request(
+      http_method: :get,
+      endpoint: "v1/workorders/#{reference}"
+    )
   end
 
   def get_repair_request(reference)
-    get("v1/repairs/#{reference}")
+    request(
+      http_method: :get,
+      endpoint: "v1/repairs/#{reference}"
+    )
   end
 
   def get_property(reference)
-    get("v1/properties/#{reference}")
+    request(
+      http_method: :get,
+      endpoint: "v1/properties/#{reference}"
+    )
   end
 
-  def get(endpoint)
-    response = connection.get(endpoint)
-  rescue => error
-    raise Error, "#{error} #{error.message}, caused by #{error.cause}"
-  else
+  def request(http_method:, endpoint:, cache_request: true, params: {})
+    response = begin
+      connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
+    rescue => e
+      raise ApiError, "#{e} #{e.message}, caused by #{e.cause}"
+    end
+
     case response.status
-    when 200
-      return response.body
-    when 404
-      raise RecordNotFound, endpoint
+    when HTTP_STATUS_OK
+      response.body
+    when HTTP_STATUS_NOT_FOUND
+      raise RecordNotFoundError, endpoint
     else
-      raise Error, [endpoint, response.status, response.body].join(', ')
+      raise ApiError, [endpoint, response.status, response.body].join(', ')
     end
   end
 
   private
 
-  def connection
+  def connection(cache_request:)
     @_connection ||= Faraday.new(@base_url) do |faraday|
+      faraday.use :manual_cache, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request
+      faraday.adapter Faraday.default_adapter
       faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
       faraday.response :json
       faraday.response :logger unless Rails.env.test?
-      faraday.adapter :net_http
     end
   end
 end

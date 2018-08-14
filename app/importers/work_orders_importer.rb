@@ -16,6 +16,9 @@ class WorkOrdersImporter
   end
 
   def response
-    @client.get('/v1/workorders')
+    @client.request(
+      http_method: :get,
+      endpoint: '/v1/workorders'
+    )
   end
 end

@@ -41,8 +41,10 @@ gem 'omniauth-azure-activedirectory'
 gem 'omniauth-google-oauth2'
 gem 'sentry-raven'
 gem 'neo4j'
+
 gem 'faraday'
 gem 'faraday_middleware'
+gem 'faraday-manual-cache'
 
 group :development, :test do
   gem 'pry'

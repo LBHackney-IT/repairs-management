@@ -86,6 +86,9 @@ GEM
     execjs (2.7.0)
     faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
+    faraday-manual-cache (0.1.1)
+      activesupport (>= 3.0.0)
+      faraday (~> 0.9)
     faraday_middleware (0.12.2)
       faraday (>= 0.7.4, < 1.0)
     faraday_middleware-multi_json (0.0.6)
@@ -288,6 +291,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   dotenv-rails
   faraday
+  faraday-manual-cache
   faraday_middleware
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
@@ -316,4 +320,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
