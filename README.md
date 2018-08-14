@@ -11,6 +11,7 @@ The following commands are available:
 | `./bin/setup`  | First-time project setup |
 | `./bin/start`  | Run the Rails application at [localhost:3000](http://localhost:3000/) |
 | `./bin/update` | Update gems, migrations and other dependencies |
+| `./bin/migrate`| Run migrations |
 | `./bin/test`   | Run RSpec |
 | `./bin/test -f d path/to/file` | Run RSpec with options and files/directories |
 | `rspec --tag ~db_connection`   | Run tests that aren't reliant on neo4j/postgres |
