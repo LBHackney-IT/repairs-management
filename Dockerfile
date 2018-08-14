@@ -20,6 +20,9 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 # commands.
 WORKDIR /app
 
+# Pre-install nokogiri so we don't have to recompile when adding gems
+RUN gem install nokogiri --version 1.8.3
+
 # Copy the Gemfile as well as the Gemfile.lock and install
 # the RubyGems. This is a separate step so the dependencies
 # will be cached unless changes to one of those two files
