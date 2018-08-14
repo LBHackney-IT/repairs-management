@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe HackneyRepairsClient, '#get' do
+describe HackneyAPI::RepairsClient, '#get' do
   include Helpers::HackneyRepairsRequestStubs
 
   it 'raises a RecordNotFoundError error when a resource is not found' do
@@ -8,7 +8,7 @@ describe HackneyRepairsClient, '#get' do
 
     client = described_class.new(base_url: 'https://example.com')
 
-    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error HackneyRepairsClient::RecordNotFoundError
+    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
   end
 
   it 'raises a generic error when the response errors' do
@@ -20,7 +20,7 @@ describe HackneyRepairsClient, '#get' do
 
     client = described_class.new(base_url: 'https://example.com')
 
-    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyRepairsClient::ApiError)
+    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyAPI::RepairsClient::ApiError)
       .with_message("endpoint, 500, #{response_body}")
   end
 
@@ -29,7 +29,7 @@ describe HackneyRepairsClient, '#get' do
 
     client = described_class.new(base_url: 'https://example.com')
 
-    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyRepairsClient::ApiError)
+    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyAPI::RepairsClient::ApiError)
       .with_message(/execution expired/)
   end
 

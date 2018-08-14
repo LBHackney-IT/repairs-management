@@ -1,5 +1,5 @@
 class WorkOrdersController < ApplicationController
-  rescue_from HackneyRepairsClient::RecordNotFoundError, with: :redirect_to_homepage
+  rescue_from HackneyAPI::RepairsClient::RecordNotFoundError, with: :redirect_to_homepage
 
   def search
     if reference.present?

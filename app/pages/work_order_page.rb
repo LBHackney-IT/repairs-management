@@ -28,7 +28,7 @@ class WorkOrderPage
   end
 
   def client
-    @_client ||= HackneyRepairsClient.new
+    @_client ||= HackneyAPI::RepairsClient.new
   end
 
   def repair_request_reference

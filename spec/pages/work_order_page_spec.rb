@@ -28,7 +28,7 @@ describe WorkOrderPage, '#new' do
 
     expect {
       described_class.new('01551932')
-    }.to raise_error HackneyRepairsClient::RecordNotFoundError
+    }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
   end
 
   it 'raises an error when the API fails to retrieve a work order' do
@@ -36,7 +36,7 @@ describe WorkOrderPage, '#new' do
 
     expect {
       described_class.new('01551932')
-    }.to raise_error HackneyRepairsClient::ApiError
+    }.to raise_error HackneyAPI::RepairsClient::ApiError
   end
 
   it 'raises an error when additional API calls fail' do
@@ -45,6 +45,6 @@ describe WorkOrderPage, '#new' do
 
     expect {
       described_class.new('01551932')
-    }.to raise_error HackneyRepairsClient::ApiError
+    }.to raise_error HackneyAPI::RepairsClient::ApiError
   end
 end

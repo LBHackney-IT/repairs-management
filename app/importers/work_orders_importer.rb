@@ -1,6 +1,6 @@
 class WorkOrdersImporter
   def initialize
-    @client = HackneyRepairsClient.new
+    @client = HackneyAPI::RepairsClient.new
   end
 
   def import
