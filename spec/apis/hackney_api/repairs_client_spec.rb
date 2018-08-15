@@ -1,53 +1,65 @@
 require 'rails_helper'
 
-describe HackneyAPI::RepairsClient, '#get' do
-  include Helpers::HackneyRepairsRequestStubs
+describe HackneyAPI::RepairsClient do
+  let(:base_url) { 'https://example.com' }
+  let(:api_client) { described_class.new(base_url: base_url) }
 
-  it 'raises a RecordNotFoundError error when a resource is not found' do
-    stub_request(:get, 'https://example.com/endpoint').to_return(status: 404)
+  describe '#request' do
+    context 'GET method' do
+      context '404 response code' do
+        before { stub_request(:get, 'https://example.com/endpoint').to_return(status: 404) }
 
-    client = described_class.new(base_url: 'https://example.com')
+        it 'raises a RecordNotFoundError error when a resource is not found' do
+          expect { api_client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+        end
+      end
 
-    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
-  end
+      context '500 response code' do
+        let(:response_body) do
+          {
+            'developerMessage' => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+            'userMessage' => 'We had some problems processing your request'
+          }
+        end
 
-  it 'raises a generic error when the response errors' do
-    response_body = {
-      "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
-      "userMessage" => "We had some problems processing your request"
-    }
-    stub_request(:get, 'https://example.com/endpoint').to_return(status: 500, body: response_body.to_json)
+        before { stub_request(:get, 'https://example.com/endpoint').to_return(status: 500, body: response_body.to_json) }
 
-    client = described_class.new(base_url: 'https://example.com')
+        it 'raises a ApiError error when the response errors' do
+          expect { api_client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyAPI::RepairsClient::ApiError)
+            .with_message("endpoint, 500, #{response_body}")
+        end
+      end
 
-    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyAPI::RepairsClient::ApiError)
-      .with_message("endpoint, 500, #{response_body}")
-  end
+      context 'timeout response' do
+        before { stub_request(:get, 'https://example.com/endpoint').to_timeout }
 
-  it 'raises a generic error after a request timeout' do
-    stub_request(:get, 'https://example.com/endpoint').to_timeout
+        it 'raises a ApiError error after a request timeout' do
+          expect { api_client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyAPI::RepairsClient::ApiError)
+            .with_message(/execution expired/)
+        end
+      end
 
-    client = described_class.new(base_url: 'https://example.com')
+      context 'URL contact' do
+        let(:base_url) { 'https://example.com/foo' }
+        let(:response_body) { {} }
 
-    expect { client.request(http_method: :get, endpoint: 'endpoint') }.to raise_error(HackneyAPI::RepairsClient::ApiError)
-      .with_message(/execution expired/)
-  end
+        before { stub_request(:get, 'https://example.com/foo/bar/baz').to_return(status: 200, body: response_body.to_json) }
 
-  it 'concatenates the full URL' do
-    stub = stub_request(:get, 'https://example.com/foo/bar/baz').to_return(status: 200)
+        it 'concatenates the full URL' do
+          expect(api_client.request(http_method: :get, endpoint: 'bar/baz')).to eq(response_body)
+        end
+      end
 
-    client = described_class.new(base_url: 'https://example.com/foo')
-    client.request(http_method: :get, endpoint: 'bar/baz')
+      context 'URL replacement' do
+        let(:base_url) { 'https://example.com/foo' }
+        let(:response_body) { {} }
 
-    expect(stub).to have_been_requested
-  end
+        before { stub_request(:get, 'https://example.com/bar/baz').to_return(status: 200, body: response_body.to_json) }
 
-  it 'replaces the subpath defined from base_url' do
-    stub = stub_request(:get, 'https://example.com/bar/baz').to_return(status: 200)
-
-    client = described_class.new(base_url: 'https://example.com/foo')
-    client.request(http_method: :get, endpoint: '/bar/baz')
-
-    expect(stub).to have_been_requested
+        it 'replaces the subpath defined from base_url' do
+          expect(api_client.request(http_method: :get, endpoint: '/bar/baz')).to eq(response_body)
+        end
+      end
+    end
   end
 end
