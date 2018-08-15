@@ -3,7 +3,7 @@ module HackneyAPI
     include HttpStatusCodes
     include ApiErrors
 
-    API_CACHE_TIME_IN_SECONDS = 300
+    API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url) { ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL') }

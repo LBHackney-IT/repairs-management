@@ -1,4 +1,6 @@
 module ApiErrors
-  RecordNotFoundError = Class.new(StandardError)
-  ApiError = Class.new(StandardError)
+  class HackneyApiError < StandardError; end
+
+  class RecordNotFoundError < HackneyApiError; end
+  class ApiError < HackneyApiError; end
 end
