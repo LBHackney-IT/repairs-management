@@ -36,7 +36,7 @@
     </div>
     <div class="govuk-grid-column-one-third">
       <p class="govuk-body-s">
-        Booked from <%= @page.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %>
+        Booked from <%= @page.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @page.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
       </p>
 
       <ul class="govuk-list govuk-body-s">
