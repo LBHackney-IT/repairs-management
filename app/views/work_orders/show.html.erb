@@ -24,18 +24,52 @@
         </span>
         reported on <%= @page.work_order.created.to_s(:govuk_date) %>
       </p>
+
+      <ul class="govuk-list govuk-body-s">
+        <li>
+          <%= @page.contact.telephone_number %>
+        </li>
+        <li>
+          <%= mail_to @page.contact.email_address %>
+        </li>
+      </ul>
     </div>
     <div class="govuk-grid-column-one-third">
-      <%# Appointments %>
+      <p class="govuk-body-s">
+        <% if @page.latest_appointment.present? %>
+          Booked from <%= @page.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @page.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
+        <% else %>
+          There are no booked appointments.
+        <% end %>
+      </p>
+
+      <ul class="govuk-list govuk-body-s">
+        <li>
+          Priority: <%= @page.repair_request.priority %>
+        </li>
+        <li>
+          Status: <%= @page.work_order.u_status_desc %>
+        </li>
+        <li>
+          Data source: UH
+        </li>
+      </ul>
     </div>
+  </div>
+<% end %>
+
+<% if out_of_target?(@page.work_order, @page.latest_appointment) %>
+  <div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      The booked appointment has passed its target date.
+    </strong>
   </div>
 <% end %>
 
 <ul class="govuk-list">
   <li>
-    Telephone number: <%= @page.contact.telephone_number %>
-  </li>
-  <li>
-    Email address: <%= @page.contact.email_address %>
+    Target date: <%= @page.work_order.date_due.to_s(:govuk_date) %>
   </li>
 </ul>

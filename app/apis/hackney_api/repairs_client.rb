@@ -30,6 +30,13 @@ module HackneyAPI
       )
     end
 
+    def get_work_order_appointments(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders/#{reference}/appointments"
+      )
+    end
+
     def request(http_method:, endpoint:, cache_request: true, params: {})
       response = begin
         connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
