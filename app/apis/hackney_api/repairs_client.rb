@@ -12,7 +12,7 @@ module HackneyAPI
     def get_work_order(reference)
       request(
         http_method: :get,
-        endpoint: "v1/workorders/#{reference}"
+        endpoint: "v1/work_orders/#{reference}"
       )
     end
 
@@ -51,7 +51,7 @@ module HackneyAPI
 
     def connection(cache_request:)
       @_connection ||= Faraday.new(@base_url) do |faraday|
-        faraday.use :manual_cache, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request
+        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request
         faraday.adapter Faraday.default_adapter
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
