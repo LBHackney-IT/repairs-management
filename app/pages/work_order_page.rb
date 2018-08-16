@@ -7,7 +7,7 @@ class WorkOrderPage
     build_work_order
     build_repair_request
     build_property
-    build_appointment
+    build_latest_appointment
   end
 
   private
@@ -28,7 +28,7 @@ class WorkOrderPage
     @property = Hackney::Property.build(response)
   end
 
-  def build_appointment
+  def build_latest_appointment
     response = client.get_work_order_appointments(@work_order_reference)
     appointments = response.map do |attributes|
       Hackney::Appointment.build(attributes)
