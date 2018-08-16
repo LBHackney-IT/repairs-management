@@ -16,6 +16,14 @@ The following commands are available:
 | `./bin/test -f d path/to/file` | Run RSpec with options and files/directories |
 | `rspec --tag ~db_connection`   | Run tests that aren't reliant on neo4j/postgres |
 
+## Enviroment variables
+
+Create a `.env` file and update it as needed using the `.env.test` as a template.
+
+## Rails credentials
+
+To run the app locally, you’ll need to have the Rails master key set in the app directory. Copy the password from the Hackney folder in Unboxed’s 1Password and save it to a `master.key` file in the config directory.
+
 ## Testing
 
 Test are configured two ways: (1) `./bin/test` will run all tests in Docker Compose, you should use this for a full test suite. (2) Some tests can be ran without Docker Compose, this is faster to run without Docker Compose, but it only covers a subset.
