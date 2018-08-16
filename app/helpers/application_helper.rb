@@ -22,5 +22,4 @@ module ApplicationHelper
       "https://login.microsoftonline.com/#{application_id}/oauth2/logout?post_logout_redirect_uri=#{callback_url}"
     end
   end
-
 end

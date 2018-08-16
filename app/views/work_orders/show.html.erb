@@ -36,31 +36,25 @@
     </div>
     <div class="govuk-grid-column-one-third">
       <p class="govuk-body-s">
-        Booked from <%= @page.appointment.begin_date.to_s(:govuk_date) %>
-        <% if @page.appointment.resource_name.present? %>
-          with
-          <span class="govuk-!-font-weight-bold">
-            <%= @page.appointment.resource_name %>
-          </span>
-        <% end %>
+        Booked from <%= @page.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %>
       </p>
 
       <ul class="govuk-list govuk-body-s">
         <li>
-          Priority: <%= @page.appointment.priority %>
+          Priority: <%= @page.repair_request.priority %>
         </li>
         <li>
-          Status: <%= @page.appointment.status %>
+          Status: <%= @page.work_order.u_status_desc %>
         </li>
         <li>
-          Data source: <%= @page.appointment.data_source %>
+          Data source: UH
         </li>
       </ul>
     </div>
   </div>
 <% end %>
 
-<% if @page.appointment.out_of_target? %>
+<% if out_of_target?(@page.work_order, @page.latest_appointment) %>
   <div class="govuk-warning-text">
     <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
     <strong class="govuk-warning-text__text">
@@ -72,6 +66,6 @@
 
 <ul class="govuk-list">
   <li>
-    Target date: <%= @page.appointment.target_date.to_s(:govuk_date) %>
+    Target date: <%= @page.work_order.date_due.to_s(:govuk_date) %>
   </li>
 </ul>

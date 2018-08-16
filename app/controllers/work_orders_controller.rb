@@ -1,6 +1,8 @@
 class WorkOrdersController < ApplicationController
   rescue_from HackneyRepairsClient::RecordNotFound, with: :redirect_to_homepage
 
+  helper WorkOrderHelper
+
   def search
     if reference.present?
       redirect_to action: :show, ref: reference

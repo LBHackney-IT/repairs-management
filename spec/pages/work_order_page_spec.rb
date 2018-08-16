@@ -7,7 +7,7 @@ describe WorkOrderPage, '#new' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_appointment
+    stub_hackney_repairs_work_order_appointments
 
     page = described_class.new('01551932')
 
@@ -23,8 +23,7 @@ describe WorkOrderPage, '#new' do
     expect(page.property).to be_a(Hackney::Property)
     expect(page.property.reference).to eq('00014665')
 
-    expect(page.appointment).to be_a(Hackney::Appointment)
-    expect(page.appointment.status).to eq('PLANNED')
+    expect(page.latest_appointment).to be_a(Hackney::Appointment)
   end
 
   it 'raises a RecordNotFound error when a work order cannot be found' do

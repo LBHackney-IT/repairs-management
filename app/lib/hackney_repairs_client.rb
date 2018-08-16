@@ -18,7 +18,7 @@ class HackneyRepairsClient
     get("v1/properties/#{reference}")
   end
 
-  def get_work_order_appointment(reference)
+  def get_work_order_appointments(reference)
     get("v1/work_orders/#{reference}/appointments")
   end
 
