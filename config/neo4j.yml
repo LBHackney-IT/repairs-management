@@ -1,6 +1,6 @@
 development:
   type: http
-  url: http://neo4j_db:7474
+  url: <%= "http://#{ ENV.fetch('NEO4J_HOST', 'localhost') }:7474" %>
 
 test:
   type: http
