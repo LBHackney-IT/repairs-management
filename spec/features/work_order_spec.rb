@@ -49,7 +49,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_appointments(
-      body: work_order_late_appointment_response_payload
+      body: work_order_appointment_response_payload__out_of_target
     )
 
     visit work_order_path('01551932')

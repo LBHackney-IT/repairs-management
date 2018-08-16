@@ -224,7 +224,7 @@ module Helpers
       ]
     end
 
-    def work_order_late_appointment_response_payload
+    def work_order_appointment_response_payload__out_of_target
       [
         {
           "visit_sid" => 152225691,
