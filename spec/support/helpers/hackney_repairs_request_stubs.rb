@@ -1,6 +1,6 @@
 module Helpers
   module HackneyRepairsRequestStubs
-    # GET /v1/workorders/:reference
+    # GET /v1/work_orders/:reference
 
     def work_order_response_payload
       {
@@ -89,7 +89,7 @@ module Helpers
       status = opts.fetch(:status, 200)
       body = opts.fetch(:body, work_order_response_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/workorders/#{reference}")
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 
@@ -150,14 +150,14 @@ module Helpers
     def work_order_notes_payload
       [
         {
-          "text": "Tenant called to confirm appointment",
-          "loggedAt": "2018-08-23T10:12:56+01:00",
-          "loggedBy": "MOSHEA"
+          "noteText": "Tenant called to confirm appointment",
+          "nDate": "2018-08-23T10:12:56+01:00",
+          "userID": "MOSHEA"
         },
         {
-          "text": "Further works required; Tiler required to renew splash back and reseal bath",
-          "loggedAt": "2018-09-02T11:32:14+01:00",
-          "loggedBy": "Servitor"
+          "noteText": "Further works required; Tiler required to renew splash back and reseal bath",
+          "nDate": "2018-09-02T11:32:14+01:00",
+          "userID": "Servitor"
         }
       ]
     end
@@ -167,7 +167,7 @@ module Helpers
       status = opts.fetch(:status, 200)
       body = opts.fetch(:body, work_order_notes_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/workorders/#{reference}/notes")
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/notes")
         .to_return(status: status, body: body.to_json)
     end
   end
