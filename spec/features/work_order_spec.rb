@@ -56,4 +56,17 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'The booked appointment has passed its target date.'
   end
+
+  scenario 'No appointments are booked' do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_appointments(
+      body: work_order_appointment_response_payload__no_appointments
+    )
+
+    visit work_order_path('01551932')
+
+    expect(page).to have_content 'There are no booked appointments.'
+  end
 end

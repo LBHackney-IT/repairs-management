@@ -265,6 +265,10 @@ module Helpers
       ]
     end
 
+    def work_order_appointment_response_payload__no_appointments
+      []
+    end
+
     def stub_hackney_repairs_work_order_appointments(opts = {})
       reference = opts.fetch(:reference, '01551932')
       status = opts.fetch(:status, 200)
