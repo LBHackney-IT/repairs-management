@@ -16,7 +16,7 @@ The following commands are available:
 | `./bin/test -f d path/to/file` | Run RSpec with options and files/directories |
 | `rspec --tag ~db_connection`   | Run tests that aren't reliant on neo4j/postgres |
 
-## Enviroment variables
+## Environment variables
 
 Create a `.env` file and update it as needed using the `.env.test` as a template.
 
