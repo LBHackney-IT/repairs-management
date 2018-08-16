@@ -1,6 +1,6 @@
 module Helpers
   module HackneyRepairsRequestStubs
-    # GET /v1/workorders/:reference
+    # GET /v1/work_orders/:reference
 
     def work_order_response_payload
       {
@@ -89,7 +89,7 @@ module Helpers
       status = opts.fetch(:status, 200)
       body = opts.fetch(:body, work_order_response_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/workorders/#{reference}")
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 

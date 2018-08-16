@@ -7,7 +7,7 @@ class HackneyRepairsClient
   end
 
   def get_work_order(reference)
-    get("v1/workorders/#{reference}")
+    get("v1/work_orders/#{reference}")
   end
 
   def get_repair_request(reference)
