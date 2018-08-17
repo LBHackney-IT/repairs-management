@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/unboxed/faraday-manual-cache.git
-  revision: 10a309e79f451c5145ae5453378a765dfabb7cd7
+  revision: 8aed53f7fe87ed1a84be0d7b312c66e1811e96cf
   branch: master
   specs:
-    faraday-manual-cache (0.3.1)
+    faraday-manual-cache (0.3.0)
       activesupport (>= 3.0.0)
       faraday (~> 0.9)
 
