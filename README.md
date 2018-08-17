@@ -11,9 +11,18 @@ The following commands are available:
 | `./bin/setup`  | First-time project setup |
 | `./bin/start`  | Run the Rails application at [localhost:3000](http://localhost:3000/) |
 | `./bin/update` | Update gems, migrations and other dependencies |
+| `./bin/migrate`| Run migrations |
 | `./bin/test`   | Run RSpec |
 | `./bin/test -f d path/to/file` | Run RSpec with options and files/directories |
 | `rspec --tag ~db_connection`   | Run tests that aren't reliant on neo4j/postgres |
+
+## Environment variables
+
+Create a `.env` file and update it as needed using the `.env.test` as a template.
+
+## Rails credentials
+
+To run the app locally, you’ll need to have the Rails master key set in the app directory. Copy the password from the Hackney folder in Unboxed’s 1Password and save it to a `master.key` file in the config directory.
 
 ## Testing
 

@@ -8,6 +8,7 @@ describe WorkOrderPage, '#new' do
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
 
     page = described_class.new('01551932')
 
@@ -24,14 +25,16 @@ describe WorkOrderPage, '#new' do
     expect(page.property.reference).to eq('00014665')
 
     expect(page.notes).to all(be_a(Hackney::Note))
+
+    expect(page.latest_appointment).to be_a(Hackney::Appointment)
   end
 
-  it 'raises a RecordNotFound error when a work order cannot be found' do
+  it 'raises a RecordNotFoundError error when a work order cannot be found' do
     stub_hackney_repairs_work_orders(status: 404)
 
     expect {
       described_class.new('01551932')
-    }.to raise_error HackneyRepairsClient::RecordNotFound
+    }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
   end
 
   it 'raises an error when the API fails to retrieve a work order' do
@@ -39,7 +42,7 @@ describe WorkOrderPage, '#new' do
 
     expect {
       described_class.new('01551932')
-    }.to raise_error HackneyRepairsClient::Error
+    }.to raise_error HackneyAPI::RepairsClient::ApiError
   end
 
   it 'raises an error when additional API calls fail' do
@@ -48,6 +51,6 @@ describe WorkOrderPage, '#new' do
 
     expect {
       described_class.new('01551932')
-    }.to raise_error HackneyRepairsClient::Error
+    }.to raise_error HackneyAPI::RepairsClient::ApiError
   end
 end

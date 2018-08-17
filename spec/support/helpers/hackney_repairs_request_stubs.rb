@@ -170,5 +170,138 @@ module Helpers
       stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/notes")
         .to_return(status: status, body: body.to_json)
     end
+
+    # GET /v1/work_orders/:workOrderReference/appointments
+
+    def work_order_appointments_response_payload
+      [
+        {
+          "visit_sid" => 152225691,
+          "visiting_sid" => 0,
+          "visitor_sid" => 43468469,
+          "reference_sid" => 152221260,
+          "visit_appoint" => "1900-01-01T00:00:00",
+          "visit_success" => false,
+          "visit_carded" => false,
+          "visit_comment" => "first                                             ",
+          "property_sid" => 0,
+          "visit_end" => "1900-01-01T00:00:00",
+          "visit_slot" => false,
+          "visit_prop_appointment" => "2018-05-30T08:00:00",
+          "visit_prop_end" => "2018-05-30T12:00:00",
+          "visit_prop_duration" => 300,
+          "visit_duration" => 300,
+          "hadiary_sid" => 0,
+          "visiting_table" => "          ",
+          "visitor_table" => "supplier  ",
+          "reference_table" => "UHOrder             ",
+          "visit_cat" => "   ",
+          "visit_outcome" => "   ",
+          "visit_outcometype" => "   ",
+          "visit_reason" => "   ",
+          "visit_actual" => "1900-01-01T00:00:00",
+          "comp_avail" => "                                                                                                                                                                                                        ",
+          "comp_display" => "                                                                                                                                                                                                        ",
+          "contacttype_lrf" => "   ",
+          "visit_book_cat" => 0,
+          "visit_reason_except" => "   ",
+          "visit_slot_type" => "   ",
+          "visit_processno" => 0,
+          "visit_hhref" => 0,
+          "visit_class" => "   ",
+          "visit_type" => "2  "
+        },
+        {
+          "visit_sid" => 152221261,
+          "visiting_sid" => 0,
+          "visitor_sid" => 43468469,
+          "reference_sid" => 152221260,
+          "visit_appoint" => "1900-01-01T00:00:00",
+          "visit_success" => false,
+          "visit_carded" => false,
+          "visit_comment" => "Morning",
+          "property_sid" => 0,
+          "visit_end" => "1900-01-01T00:00:00",
+          "visit_slot" => false,
+          "visit_prop_appointment" => "2018-05-29T08:00:00",
+          "visit_prop_end" => "2018-05-29T12:00:00",
+          "visit_prop_duration" => 240,
+          "visit_duration" => 240,
+          "hadiary_sid" => 0,
+          "visiting_table" => "          ",
+          "visitor_table" => "supplier  ",
+          "reference_table" => "UHOrder             ",
+          "visit_cat" => "REP",
+          "visit_outcome" => "   ",
+          "visit_outcometype" => "   ",
+          "visit_reason" => "   ",
+          "visit_actual" => "1900-01-01T00:00:00",
+          "comp_avail" => "                                                                                                                                                                                                        ",
+          "comp_display" => "                                                                                                                                                                                                        ",
+          "contacttype_lrf" => "   ",
+          "visit_book_cat" => 0,
+          "visit_reason_except" => "   ",
+          "visit_slot_type" => "   ",
+          "visit_processno" => 0,
+          "visit_hhref" => 0,
+          "visit_class" => "   ",
+          "visit_type" => "1  "
+        }
+      ]
+    end
+
+    def work_order_appointment_response_payload__out_of_target
+      [
+        {
+          "visit_sid" => 152225691,
+          "visiting_sid" => 0,
+          "visitor_sid" => 43468469,
+          "reference_sid" => 152221260,
+          "visit_appoint" => "1900-01-01T00:00:00",
+          "visit_success" => false,
+          "visit_carded" => false,
+          "visit_comment" => "first                                             ",
+          "property_sid" => 0,
+          "visit_end" => "1900-01-01T00:00:00",
+          "visit_slot" => false,
+          "visit_prop_appointment" => "2018-06-28T08:00:00",
+          "visit_prop_end" => "2018-06-28T12:00:00",
+          "visit_prop_duration" => 300,
+          "visit_duration" => 300,
+          "hadiary_sid" => 0,
+          "visiting_table" => "          ",
+          "visitor_table" => "supplier  ",
+          "reference_table" => "UHOrder             ",
+          "visit_cat" => "   ",
+          "visit_outcome" => "   ",
+          "visit_outcometype" => "   ",
+          "visit_reason" => "   ",
+          "visit_actual" => "1900-01-01T00:00:00",
+          "comp_avail" => "                                                                                                                                                                                                        ",
+          "comp_display" => "                                                                                                                                                                                                        ",
+          "contacttype_lrf" => "   ",
+          "visit_book_cat" => 0,
+          "visit_reason_except" => "   ",
+          "visit_slot_type" => "   ",
+          "visit_processno" => 0,
+          "visit_hhref" => 0,
+          "visit_class" => "   ",
+          "visit_type" => "2  "
+        }
+      ]
+    end
+
+    def work_order_appointment_response_payload__no_appointments
+      []
+    end
+
+    def stub_hackney_repairs_work_order_appointments(opts = {})
+      reference = opts.fetch(:reference, '01551932')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, work_order_appointments_response_payload)
+
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments")
+        .to_return(status: status, body: body.to_json)
+    end
   end
 end

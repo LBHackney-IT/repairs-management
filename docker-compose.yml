@@ -8,6 +8,7 @@ services:
     environment:
       - DATABASE_HOST=pg_db
       - DATABASE_USERNAME=postgres
+      - NEO4J_HOST=neo4j_db
     ports:
       - '3000:3000'
     depends_on:

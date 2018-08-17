@@ -1,8 +1,4 @@
 class WorkOrdersImporter
-  def initialize
-    @client = HackneyRepairsClient.new
-  end
-
   def import
     work_orders.each do |wo|
       WorkOrder.find_or_create_by(ref: wo['id'])
@@ -15,7 +11,11 @@ class WorkOrdersImporter
     response.fetch('data')
   end
 
+  def api_client
+    @_api_client ||= HackneyAPI::RepairsClient.new
+  end
+
   def response
-    @client.get('/v1/workorders')
+    api_client.get_work_orders
   end
 end

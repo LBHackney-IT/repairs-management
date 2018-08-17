@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/unboxed/faraday-manual-cache.git
+  revision: 8aed53f7fe87ed1a84be0d7b312c66e1811e96cf
+  branch: master
+  specs:
+    faraday-manual-cache (0.3.0)
+      activesupport (>= 3.0.0)
+      faraday (~> 0.9)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -98,7 +107,7 @@ GEM
     hashie (3.5.7)
     httpauth (0.2.1)
     httpclient (2.8.3)
-    i18n (1.0.1)
+    i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     io-like (0.3.0)
     jbuilder (2.7.0)
@@ -288,6 +297,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   dotenv-rails
   faraday
+  faraday-manual-cache!
   faraday_middleware
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
@@ -316,4 +326,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
