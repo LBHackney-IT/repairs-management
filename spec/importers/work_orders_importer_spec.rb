@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-describe WorkOrdersImporter, '#import', :db_connection do
-  it 'imports new work orders' do
-    api_response = {
+describe WorkOrdersImporter, :db_connection do
+  let(:service_instance) { described_class.new }
+  let(:api_response) do
+    {
       'data' => [
         {
           'type' => 'work_order',
@@ -19,16 +20,21 @@ describe WorkOrdersImporter, '#import', :db_connection do
           }
         }
       ]
-    }.to_json
+    }
+  end
 
-    stub_request(:get, "https://hackneyrepairs/v1/workorders")
-      .to_return(body: api_response)
+  describe '#import' do
+    subject { service_instance.import }
 
-    expect(WorkOrder.count).to eq(0)
+    before { stub_request(:get, "#{ENV['HACKNEY_REPAIRS_API_BASE_URL']}/v1/work_orders")
+      .to_return(body: api_response.to_json)
+    }
 
-    WorkOrdersImporter.new.import
-
-    expect(WorkOrder.count).to eq(2)
-    expect(WorkOrder.all.map(&:ref)).to contain_exactly('06183523', '01572924')
+    it 'imports new work orders' do
+      expect(WorkOrder.count).to eq(0)
+      subject
+      expect(WorkOrder.count).to eq(2)
+      expect(WorkOrder.all.map(&:ref)).to contain_exactly('06183523', '01572924')
+    end
   end
 end
