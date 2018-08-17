@@ -1,12 +1,22 @@
 module HackneyAPI
   class RepairsClient
     include HttpStatusCodes
-    include ApiErrors
+
+    class HackneyApiError < StandardError; end
+    class RecordNotFoundError < HackneyApiError; end
+    class ApiError < HackneyApiError; end
 
     API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
 
     def initialize(opts = {})
-      @base_url = opts.fetch(:base_url) { ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL') }
+      @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
+    end
+
+    def get_work_orders
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders"
+      )
     end
 
     def get_work_order(reference)
@@ -37,6 +47,8 @@ module HackneyAPI
       )
     end
 
+    private
+
     def request(http_method:, endpoint:, cache_request: true, params: {})
       response = begin
         connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
@@ -54,11 +66,9 @@ module HackneyAPI
       end
     end
 
-    private
-
     def connection(cache_request:)
       @_connection ||= Faraday.new(@base_url) do |faraday|
-        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request
+        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
         faraday.adapter Faraday.default_adapter
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
