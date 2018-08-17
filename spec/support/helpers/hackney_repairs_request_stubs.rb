@@ -303,31 +303,5 @@ module Helpers
       stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments")
         .to_return(status: status, body: body.to_json)
     end
-
-    # GET v1/work_orders/:reference/notes
-
-    def work_order_notes_payload
-      [
-        {
-          "noteText": "Tenant called to confirm appointment",
-          "nDate": "2018-08-23T10:12:56+01:00",
-          "userID": "MOSHEA"
-        },
-        {
-          "noteText": "Further works required; Tiler required to renew splash back and reseal bath",
-          "nDate": "2018-09-02T11:32:14+01:00",
-          "userID": "Servitor"
-        }
-      ]
-    end
-
-    def stub_hackney_repairs_work_order_notes(opts = {})
-      reference = opts.fetch(:reference, '01551932')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, work_order_notes_payload)
-
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/notes")
-        .to_return(status: status, body: body.to_json)
-    end
   end
 end

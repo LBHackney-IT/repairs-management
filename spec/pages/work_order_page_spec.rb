@@ -9,7 +9,6 @@ describe WorkOrderPage, '#new' do
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_notes
 
     page = described_class.new('01551932')
 
@@ -28,8 +27,6 @@ describe WorkOrderPage, '#new' do
     expect(page.notes).to all(be_a(Hackney::Note))
 
     expect(page.latest_appointment).to be_a(Hackney::Appointment)
-
-    expect(page.notes).to all(be_a(Hackney::Note))
   end
 
   it 'raises a RecordNotFoundError error when a work order cannot be found' do

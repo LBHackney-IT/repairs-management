@@ -24,7 +24,6 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_notes
 
     fill_in 'Work order reference', with: '01551932'
     click_on 'Search'
@@ -62,7 +61,6 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__out_of_target
     )
-    stub_hackney_repairs_work_order_notes
 
     visit work_order_path('01551932')
 
@@ -77,7 +75,6 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__no_appointments
     )
-    stub_hackney_repairs_work_order_notes
 
     visit work_order_path('01551932')
 
