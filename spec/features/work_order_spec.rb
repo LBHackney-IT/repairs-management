@@ -69,4 +69,21 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'There are no booked appointments.'
   end
+
+  scenario 'No appointments are booked' do # TODO: remove when the api returns [] in this case
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_appointments(
+      body: {
+        "developerMessage" => "Exception of type 'HackneyRepairs.Actions.MissingAppointmentsException' was thrown.",
+        "userMessage" => "Cannot find appointments for the work order reference"
+      },
+      status: 404
+    )
+
+    visit work_order_path('01551932')
+
+    expect(page).to have_content 'There are no booked appointments.'
+  end
 end
