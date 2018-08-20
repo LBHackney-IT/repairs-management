@@ -38,7 +38,7 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'Booked from 8:00am, 30 May 2018'
     expect(page).to have_content 'Priority: N'
-    expect(page).to have_content 'Status: Acknowlegement Received'
+    expect(page).to have_content 'Status: In Progress'
     expect(page).to have_content 'Data source: UH'
 
     expect(page).to have_content 'Target date: 2:09pm, 27 June 2018'

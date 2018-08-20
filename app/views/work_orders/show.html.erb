@@ -47,8 +47,8 @@
         <li>
           Priority: <%= @page.repair_request.priority %>
         </li>
-        <li>
-          Status: <%= @page.work_order.u_status_desc %>
+        <li title="DLO Status: <%= dlo_status_description(@page.work_order.dlo_status) %>">
+          Status: <%= work_order_status_description(@page.work_order.work_order_status) %>
         </li>
         <li>
           Data source: UH
