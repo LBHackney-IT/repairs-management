@@ -250,11 +250,5 @@ module Helpers
        stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyreference=#{reference}")
          .to_return(status: status, body: body.to_json)
     end
-
-    def stub_hackney_repairs_for_property(reference: '00014665', status: 200,
-                                          body: [repair_request_response_payload])
-       stub_request(:get, "https://hackneyrepairs/v1/repairs?propertyReference=#{reference}")
-         .to_return(status: status, body: body.to_json)
-    end
   end
 end

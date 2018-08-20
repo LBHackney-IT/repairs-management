@@ -3,7 +3,8 @@ class Hackney::WorkOrder
   include Hackney::Client
 
   attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
-                :work_order_status, :dlo_status, :servitor_reference
+                :work_order_status, :dlo_status, :servitor_reference,
+                :problem_description
 
   def self.find(reference)
     response = client.get_work_order(reference)
@@ -11,18 +12,9 @@ class Hackney::WorkOrder
   end
 
   def self.for_property(property_reference)
-    work_orders = client.get_work_orders_by_property(property_reference)
-      .map do |attributes|
+    client.get_work_orders_by_property(property_reference).map do |attributes|
       build(attributes)
     end
-
-    repairs_map = repair_request_map(property_reference)
-
-    work_orders.each do |work_order|
-      work_order.repair_request = repairs_map[work_order.rq_ref]
-    end
-
-    work_orders
   end
 
   def self.build(attributes)
@@ -35,6 +27,7 @@ class Hackney::WorkOrder
       work_order_status: attributes['workOrderStatus'].strip,
       dlo_status: attributes['dloStatus'].strip,
       servitor_reference: attributes['servitorReference'].strip,
+      problem_description: attributes['problemDescription']
     )
   end
 
@@ -59,20 +52,5 @@ class Hackney::WorkOrder
 
   def notes
     @_notes ||= Hackney::Note.for_work_order(reference)
-  end
-
-  class << self
-    private
-
-    def repair_request_map(property_reference)
-      repair_requests = Hash.new(Hackney::RepairRequest::NULL_OBJECT)
-
-      client.get_repair_requests_by_property(property_reference).each do |rr|
-        repair_request = Hackney::RepairRequest.build(rr)
-        repair_requests[repair_request.reference] = repair_request
-      end
-
-      repair_requests
-    end
   end
 end
