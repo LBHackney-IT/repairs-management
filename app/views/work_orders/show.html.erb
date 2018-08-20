@@ -47,8 +47,8 @@
         <li>
           Priority: <%= @page.repair_request.priority %>
         </li>
-        <li>
-          Status: <%= @page.work_order.u_status_desc %>
+        <li title="DLO Status: <%= dlo_status_description(@page.work_order.dlo_status) %>">
+          Status: <%= work_order_status_description(@page.work_order.work_order_status) %>
         </li>
         <li>
           Data source: UH
@@ -80,15 +80,21 @@
   Notes
 </h2>
 
-<ul class="govuk-list">
+<% if @notes.present? %>
+  <ul class="govuk-list">
   <% @page.notes.each do |note| %>
-  <li class='hackney-note'>
-    <p class="govuk-body">
-      <div class="hackney-note-info">
-        <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
-      </div>
-      <%= simple_format(note.text) %>
-    </p>
-  </li>
+    <li class='hackney-note'>
+      <p class="govuk-body">
+        <div class="hackney-note-info">
+          <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
+        </div>
+        <%= simple_format(note.text) %>
+      </p>
+    </li>
   <% end %>
-</ul>
+  </ul>
+<% else %>
+  <p class="govuk-body-s">There are no notes for this work order.</p>
+<% end %>
+
+

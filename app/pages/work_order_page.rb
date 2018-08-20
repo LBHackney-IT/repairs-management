@@ -30,10 +30,14 @@ class WorkOrderPage
   end
 
   def build_notes
-      response = client.get_work_order_notes(@work_order_reference)
-      @notes = response
-                .map { |attributes| Hackney::Note.build(attributes) }
-                .sort_by { |note| note.logged_at }.reverse
+    response = begin
+      client.get_work_order_notes(@work_order_reference)
+    rescue HackneyAPI::RepairsClient::ApiError
+      [] # The API currently returns 500 for notes... so patch it like this until the API is working
+    end
+    @notes = response
+      .map { |attributes| Hackney::Note.build(attributes) }
+      .sort_by { |note| note.logged_at }.reverse ||= nil
   end
 
   def build_latest_appointment

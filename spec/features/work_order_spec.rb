@@ -39,7 +39,7 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'Booked from 8:00am, 30 May 2018'
     expect(page).to have_content 'Priority: N'
-    expect(page).to have_content 'Status: Acknowlegement Received'
+    expect(page).to have_content 'Status: In Progress'
     expect(page).to have_content 'Data source: UH'
 
     expect(page).to have_content 'Target date: 2:09pm, 27 June 2018'
@@ -51,6 +51,23 @@ RSpec.describe 'Work order' do
         "10:12am, 23 August 2018 by MOSHEA\nTenant called to confirm appointment",
       ])
     end
+  end
+
+  scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes(
+      body: {
+        "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+        "userMessage" => "We had some problems processing your request"
+      },
+      status: 500
+    )
+    stub_hackney_repairs_work_order_appointments
+
+    visit work_order_path('01551932')
+    expect(page).to have_content 'There are no notes for this work order.'
   end
 
   scenario 'A label is shown when the appointment date has passed the target date' do
