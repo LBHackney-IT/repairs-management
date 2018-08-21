@@ -1,5 +1,5 @@
 class WorkOrderPage
-  attr_reader :work_order, :repair_request, :contact, :property, :latest_appointment
+  attr_reader :work_order, :repair_request, :contact, :property, :notes, :latest_appointment
 
   def initialize(work_order_reference)
     @work_order_reference = work_order_reference
@@ -7,6 +7,7 @@ class WorkOrderPage
     build_work_order
     build_repair_request
     build_property
+    build_notes
     build_latest_appointment
   end
 
@@ -26,6 +27,17 @@ class WorkOrderPage
   def build_property
     response = client.get_property(property_reference)
     @property = Hackney::Property.build(response)
+  end
+
+  def build_notes
+    response = begin
+      client.get_work_order_notes(@work_order_reference)
+    rescue HackneyAPI::RepairsClient::ApiError
+      [] # The API currently returns 500 for notes... so patch it like this until the API is working
+    end
+    @notes = response
+      .map { |attributes| Hackney::Note.build(attributes) }
+      .sort_by { |note| note.logged_at }.reverse
   end
 
   def build_latest_appointment

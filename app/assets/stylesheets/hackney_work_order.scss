@@ -1,0 +1,11 @@
+.hackney-work-order-header{
+  background-color: govuk-colour('white');
+  padding: 5px;
+}
+.hackney-work-order-header > p, ul {
+  color: hackney-colour('housing-2');
+  margin: 8px 5px;
+}
+.hackney-work-order-references > span {
+  margin-right: 20px;
+}

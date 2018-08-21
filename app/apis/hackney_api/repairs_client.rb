@@ -40,6 +40,13 @@ module HackneyAPI
       )
     end
 
+    def get_work_order_notes(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders/#{reference}/notes"
+      )
+    end
+
     def get_work_order_appointments(reference)
       request(
         http_method: :get,
