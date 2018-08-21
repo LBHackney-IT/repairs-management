@@ -38,10 +38,6 @@ class Hackney::WorkOrder
     @_repair_request = Hackney::RepairRequest::NULL_OBJECT
   end
 
-  def repair_request=(repair_request)
-    @_repair_request = repair_request
-  end
-
   def property
     @_property ||= Hackney::Property.find(prop_ref)
   end
