@@ -99,7 +99,7 @@ module Helpers
       ]
     end
 
-    def work_order_appointment_response_payload__no_notes
+    def work_order_note_response_payload__no_notes
       []
     end
 

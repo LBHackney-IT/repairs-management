@@ -60,6 +60,19 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes(
+      body: work_order_note_response_payload__no_notes
+    )
+    stub_hackney_repairs_work_order_appointments
+
+    visit work_order_path('01551932')
+    expect(page).to have_content 'There are no notes for this work order.'
+  end
+
+  scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes(
       body: {
         "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
         "userMessage" => "We had some problems processing your request"
@@ -104,6 +117,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: {
         "developerMessage" => "Exception of type 'HackneyRepairs.Actions.MissingAppointmentsException' was thrown.",
