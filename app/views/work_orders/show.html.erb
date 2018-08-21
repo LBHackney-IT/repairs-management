@@ -64,18 +64,17 @@
           <% end %>
         </p>
 
-          <ul class="govuk-list govuk-body-s">
-            <li>
-              Priority: <%= @page.repair_request.priority %>
-            </li>
-            <li title="DLO Status: <%= dlo_status_description(@page.work_order.dlo_status) %>">
-              Status: <%= work_order_status_description(@page.work_order.work_order_status) %>
-            </li>
-            <li>
-              Data source: UH
-            </li>
-          </ul>
-
+        <ul class="govuk-list govuk-body-s">
+          <li>
+            Priority: <%= @page.repair_request.priority %>
+          </li>
+          <li title="DLO Status: <%= dlo_status_description(@page.work_order.dlo_status) %>">
+            Status: <%= work_order_status_description(@page.work_order.work_order_status) %>
+          </li>
+          <li>
+            Data source: UH
+          </li>
+        </ul>
       </div>
     </div>
   </div>
