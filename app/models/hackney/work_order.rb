@@ -1,7 +1,8 @@
 class Hackney::WorkOrder
   include ActiveModel::Model
 
-  attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due, :work_order_status, :dlo_status
+  attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
+                :work_order_status, :dlo_status
 
   def self.build(attributes)
     new(

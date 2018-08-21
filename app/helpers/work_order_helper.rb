@@ -19,7 +19,8 @@ module WorkOrderHelper
      '900' => 'Complete'
    }[work_order_status]
   end
-   def dlo_status_description(dlo_status)
+
+  def dlo_status_description(dlo_status)
    {
      '0' => 'Gone to Servitor',
      '1' => 'DLO Acknowledged',
