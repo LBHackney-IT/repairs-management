@@ -14,28 +14,40 @@ end
 describe Hackney::Property, '#find' do
   include Helpers::HackneyRepairsRequestStubs
 
-  it 'finds a property' do
-    stub_hackney_repairs_properties
+  context 'when the API responds with a record' do
+    before do
+      stub_hackney_repairs_properties
+    end
 
-    property = described_class.find('00014665')
+    it 'finds a property' do
+      property = described_class.find('00014665')
 
-    expect(property).to be_a(Hackney::Property)
-    expect(property.reference).to eq('00014665')
+      expect(property).to be_a(Hackney::Property)
+      expect(property.reference).to eq('00014665')
+    end
   end
 
-  it 'raises a RecordNotFound error when a repair request cannot be found' do
-    stub_hackney_repairs_properties(status: 404)
+  context 'when the API responds with RecordNotFound' do
+    before do
+      stub_hackney_repairs_properties(status: 404)
+    end
 
-    expect {
-      described_class.find('00014665')
-    }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+    it 'raises a RecordNotFoundError error' do
+      expect {
+        described_class.find('00014665')
+      }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+    end
   end
 
-  it 'raises an error when the API fails to retrieve a repair request' do
-    stub_hackney_repairs_properties(status: 500)
+  context 'when the API fails' do
+    before do
+      stub_hackney_repairs_properties(status: 500)
+    end
 
-    expect {
-      described_class.find('00014665')
-    }.to raise_error HackneyAPI::RepairsClient::ApiError
+    it 'raises an api error' do
+      expect {
+        described_class.find('00014665')
+      }.to raise_error HackneyAPI::RepairsClient::ApiError
+    end
   end
 end
