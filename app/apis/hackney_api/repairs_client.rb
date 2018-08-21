@@ -57,7 +57,7 @@ module HackneyAPI
     def get_work_orders_by_property(reference)
       request(
         http_method: :get,
-        endpoint: "v1/work_orders?propertyreference=#{reference}"
+        endpoint: "v1/work_orders?propertyReference=#{reference}"
       )
     end
 

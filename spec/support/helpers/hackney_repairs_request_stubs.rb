@@ -247,7 +247,7 @@ module Helpers
 
     def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
                                               body: [work_order_response_payload])
-       stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyreference=#{reference}")
+       stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")
          .to_return(status: status, body: body.to_json)
     end
   end
