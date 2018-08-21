@@ -87,14 +87,14 @@ module Helpers
     def work_order_notes_payload
       [
         {
-          "noteText": "Tenant called to confirm appointment",
-          "nDate": "2018-08-23T10:12:56+01:00",
-          "userID": "MOSHEA"
+          "text": "Tenant called to confirm appointment",
+          "loggedAt": "2018-08-23T10:12:56+01:00",
+          "loggedBy": "MOSHEA"
         },
         {
-          "noteText": "Further works required; Tiler required to renew splash back and reseal bath",
-          "nDate": "2018-09-02T11:32:14+01:00",
-          "userID": "Servitor"
+          "text": "Further works required; Tiler required to renew splash back and reseal bath",
+          "loggedAt": "2018-09-02T11:32:14+01:00",
+          "loggedBy": "Servitor"
         }
       ]
     end

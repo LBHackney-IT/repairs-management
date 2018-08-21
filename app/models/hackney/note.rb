@@ -5,9 +5,9 @@ class Hackney::Note
 
   def self.build(attributes)
     new(
-      text: attributes['noteText'],
-      logged_at: attributes['nDate'].to_datetime,
-      logged_by: attributes['userID']
+      text: attributes['text'],
+      logged_at: attributes['loggedAt'].to_datetime,
+      logged_by: attributes['loggedBy']
     )
   end
 end
