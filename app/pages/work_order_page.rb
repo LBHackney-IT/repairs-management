@@ -37,7 +37,7 @@ class WorkOrderPage
     end
     @notes = response
       .map { |attributes| Hackney::Note.build(attributes) }
-      .sort_by { |note| note.logged_at }.reverse ||= nil
+      .sort_by { |note| note.logged_at }.reverse
   end
 
   def build_latest_appointment
