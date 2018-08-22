@@ -1,4 +1,4 @@
-.hackney-work-order-header{
+.hackney-work-order-header {
   background-color: govuk-colour('white');
   padding: 5px;
 }
@@ -8,4 +8,10 @@
 }
 .hackney-work-order-references > span {
   margin-right: 20px;
+}
+.hackney-appointment-info > li {
+  color: $govuk-secondary-text-colour;
+}
+.hackney-work-order-target-date {
+  color: $govuk-secondary-text-colour;
 }

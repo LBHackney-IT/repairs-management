@@ -24,8 +24,8 @@
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             <%= @work_order.property.address %>
-          </span><br>
-          <%= @work_order.property.postcode %>
+          </span>
+          <p class="govuk-body-xs"><%= @work_order.property.postcode %></p>
         </p>
       </div>
     </div>
@@ -36,18 +36,20 @@
           <span class="govuk-!-font-weight-bold">
             Contact:
             <%= @work_order.repair_request.contact.name %>
-          </span><br>
-          reported on <%= @work_order.created.to_s(:govuk_date) %>
+          </span>
+          <p class="govuk-body-xs">reported on <%= @work_order.created.to_s(:govuk_date) %></p>
         </p>
 
-        <ul class="govuk-list govuk-body-s">
-          <li>
-            <%= @work_order.repair_request.contact.telephone_number %>
-          </li>
-          <li>
-            <%= mail_to @work_order.repair_request.contact.email_address %>
-          </li>
-        </ul>
+        <% if @work_order.repair_request.contact.telephone_number.present? %>
+          <ul class="govuk-list govuk-body-s">
+            <li>
+              <%= @work_order.repair_request.contact.telephone_number %>
+            </li>
+            <li>
+              <%= mail_to @work_order.repair_request.contact.email_address %>
+            </li>
+          </ul>
+        <% end %>
       </div>
     </div>
 
@@ -55,16 +57,17 @@
       <div class="hackney-work-order-header">
         <p class="govuk-body-s">
           <% if @work_order.latest_appointment.present? %>
-          <span class="govuk-!-font-weight-bold">
-            Appointment booked
-          </span><br>
-            for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
+            <span class="govuk-!-font-weight-bold">
+              Appointment booked
+            </span>
+             <p class="govuk-body-xs"> for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
           <% else %>
-            There are no booked appointments.
+              There are no booked appointments.
+            </p>
           <% end %>
         </p>
 
-        <ul class="govuk-list govuk-body-s">
+        <ul class="govuk-list govuk-body-xs hackney-appointment-info">
           <li>
             Priority: <%= @work_order.repair_request.priority %>
           </li>
@@ -91,8 +94,8 @@
 <% end %>
 
 <ul class="govuk-list">
-  <li>
-    Target date: <%= @work_order.date_due.to_s(:govuk_date) %>
+  <li class='govuk-!-font-weight-bold'>
+    Target date: <span class='hackney-work-order-target-date'><%= @work_order.date_due.to_s(:govuk_date) %></span>
   </li>
 </ul>
 
@@ -101,11 +104,12 @@
 <h2 class='govuk-heading-m'>
   Notes
 </h2>
+
 <% if @work_order.notes.present? %>
-  <ul class="govuk-list">
+  <ul class="govuk-list hackney-note-timeline">
   <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
     <li class='hackney-note'>
-      <p class="govuk-body">
+      <p class="govuk-body hackney-note-timeline-breakpoint">
         <div class="hackney-note-info">
           <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
         </div>
@@ -117,7 +121,6 @@
 <% else %>
   <p class="govuk-body-s">There are no notes for this work order.</p>
 <% end %>
-
 
 <h2 class="govuk-heading-l">
   Repairs History
