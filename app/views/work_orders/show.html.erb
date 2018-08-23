@@ -109,7 +109,7 @@
         <div class="hackney-note-info">
           <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
         </div>
-        <%= simple_format(note.text) %>
+        <%= simple_format(note.text, class: 'hackney-note-info__content') %>
       </p>
     </li>
   <% end %>
