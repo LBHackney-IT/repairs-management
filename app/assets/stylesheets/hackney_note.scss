@@ -1,3 +1,9 @@
-.hackney-note{
+.hackney-note {
   border-bottom: 3px solid $govuk-border-colour;
+}
+
+.hackney-note-info {
+  &__content {
+    cursor: pointer;
+  }
 }

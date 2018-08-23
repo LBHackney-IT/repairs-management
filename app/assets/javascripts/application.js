@@ -15,3 +15,22 @@
 //= require turbolinks
 //= require govuk-frontend/all
 //= require_tree .
+
+(function() {
+  copyWorkOrderNotesContentToClipboard();
+})();
+
+function copyWorkOrderNotesContentToClipboard() {
+  var notes = document.getElementsByClassName('hackney-note-info__content');
+  for (i = 0; i < notes.length; i++) {
+    notes[i].addEventListener('dblclick', function(element) {
+      var tempTextArea = document.createElement('textarea');
+      tempTextArea.value = element.target.textContent;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.focus();
+      tempTextArea.select();
+      document.execCommand('copy');
+      tempTextArea.remove();
+    });
+  }
+}
