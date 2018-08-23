@@ -1,3 +1,31 @@
-.hackney-note{
-  border-bottom: 3px solid $govuk-border-colour;
+.hackney-note {
+    border-bottom: 2px solid $govuk-border-colour;
+    margin-left: 2rem;
+    letter-spacing: 0.5px;
+    position: relative;
+
+    &:before, &:after {
+      position: absolute;
+      display: block;
+      top: 0;
+    }
+
+    &:after {
+      left: -46px;
+      background: govuk-colour("grey-1");
+      border-radius: 50%;
+      height: 24px;
+      width: 24px;
+      content: "";
+    }
+
+    &:last-of-type {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border: none;
+    }
+}
+
+.hackney-note-timeline {
+  border-left: 4px solid govuk-colour("grey-1");
 }
