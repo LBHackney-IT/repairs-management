@@ -1,17 +1,26 @@
 .hackney-work-order-header {
   background-color: govuk-colour('white');
-  padding: 5px;
+  cursor: pointer;
 }
-.hackney-work-order-header > p, ul {
+.hackney-work-order-header p, ul {
   color: hackney-colour('housing-2');
   margin: 8px 5px;
 }
+.hackney-work-order-references {
+  padding-bottom: 10px
+}
 .hackney-work-order-references > span {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 .hackney-appointment-info > li {
   color: $govuk-secondary-text-colour;
 }
 .hackney-work-order-target-date {
   color: $govuk-secondary-text-colour;
+}
+.hackney-work-order-more-info {
+  color: govuk-colour('grey-2');
+  &:hover {
+    opacity: 0.8;
+  }
 }

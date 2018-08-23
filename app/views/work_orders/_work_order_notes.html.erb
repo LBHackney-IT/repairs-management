@@ -1,0 +1,21 @@
+<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="notes-tab">
+  <h2 class='govuk-heading-m'>
+    Notes
+  </h2>
+  <% if @work_order.notes.present? %>
+    <ul class="govuk-list">
+    <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
+      <li class='hackney-note'>
+        <p class="govuk-body">
+          <div class="hackney-note-info">
+            <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
+          </div>
+          <%= simple_format(note.text) %>
+        </p>
+      </li>
+    <% end %>
+    </ul>
+  <% else %>
+    <p class="govuk-body-s">There are no notes for this work order.</p>
+  <% end %>
+</div>
