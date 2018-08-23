@@ -37,13 +37,13 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Servitor ref: 10162765'
     expect(page).to have_content 'TEST problem'
 
-    expect(page).to have_content "12 Banister House Homerton High Street\nE9 6BH"
+    expect(page).to have_content "12 Banister House Homerton High Street E9 6BH"
 
-    expect(page).to have_content "MR SULEYMAN ERBAS\nreported on 2:10pm, 29 May 2018"
+    expect(page).to have_content "MR SULEYMAN ERBAS reported on 2:10pm, 29 May 2018"
     expect(page).to have_content '02012341234'
     expect(page).to have_content 's.erbas@example.com'
 
-    expect(page).to have_content "Appointment booked\nfor 8:00am, 30 May 2018 until 12:00pm, 30 May 2018"
+    expect(page).to have_content "Appointment booked for 8:00am, 30 May 2018 until 12:00pm, 30 May 2018"
     expect(page).to have_content 'Priority: N'
     expect(page).to have_content 'Status: In Progress'
     expect(page).to have_content 'Data source: UH'

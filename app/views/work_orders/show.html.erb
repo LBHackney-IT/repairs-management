@@ -38,99 +38,64 @@
     <%= @work_order.repair_request.description %>
   </p>
 
-  <!-- Collapsible work order key-info -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      <details class="govuk-details">
-        <summary class="govuk-details__summary hackney-work-order-header hackney-work-order-more-info">
-          <p class="govuk-body-s">
-            <span class="govuk-!-font-weight-bold">
-              <%= @work_order.property.address %>
-            </span>
-            <p class="govuk-body-xs"><%= @work_order.property.postcode %></p>
-          </p>
-        </summary>
-        <div class="govuk-details__text">
-          <% if @work_order.repair_request.contact.name.present? %>
-            <ul class="govuk-list govuk-body-s">
-              <li class='govuk-!-font-weight-bold'>
-                Tenancy:
-              </li>
-              <li>
-                <%= @work_order.repair_request.contact.name %>
-              </li>
-              <li>
-                <%= @work_order.repair_request.contact.telephone_number %>
-              </li>
-              <li>
-                <%= mail_to @work_order.repair_request.contact.email_address %>
-              </li>
-            </ul>
-          <% end %>
-        </div>
-      </details>
+      <div class="hackney-work-order-header">
+        <p class="govuk-body-s">
+          <span class="govuk-!-font-weight-bold">
+            <%= @work_order.property.address %>
+          </span><br>
+          <%= @work_order.property.postcode %>
+        </p>
+      </div>
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <details class="govuk-details">
-        <summary class="govuk-details__summary hackney-work-order-header hackney-work-order-more-info">
-          <p class="govuk-body-s">
-            <span class="govuk-!-font-weight-bold">
-              Contact:
-              <% if @work_order.repair_request.contact.name.present? %>
-                <%= @work_order.repair_request.contact.name %>
-              <% else %>
-                N/A
-              <% end %>
-            </span>
-            <p class="govuk-body-xs">reported on <%= @work_order.created.to_s(:govuk_date) %>
-            </p>
-          </p>
-        </summary>
-        <div class="govuk-details__text">
-          <% if @work_order.repair_request.contact.telephone_number.present? %>
-            <ul class="govuk-list govuk-body-s">
-              <li>
-                <%= @work_order.repair_request.contact.telephone_number %>
-              </li>
-              <li>
-                <%= mail_to @work_order.repair_request.contact.email_address %>
-              </li>
-            </ul>
-          <% end %>
-        </div>
-      </details>
+      <div class="hackney-work-order-header">
+        <p class="govuk-body-s">
+          <span class="govuk-!-font-weight-bold">
+            Contact:
+            <%= @work_order.repair_request.contact.name %>
+          </span><br>
+          reported on <%= @work_order.created.to_s(:govuk_date) %>
+        </p>
+
+        <ul class="govuk-list govuk-body-s">
+          <li>
+            <%= @work_order.repair_request.contact.telephone_number %>
+          </li>
+          <li>
+            <%= mail_to @work_order.repair_request.contact.email_address %>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <details class="govuk-details">
-        <summary class="govuk-details__summary hackney-work-order-header hackney-work-order-more-info">
-          <p class="govuk-body-s">
-            <% if @work_order.latest_appointment.present? %>
-              <span class="govuk-!-font-weight-bold">
-                Appointment booked
-              </span>
-              <p class="govuk-body-xs"> for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
-            <% else %>
-                There are no booked appointments.
-              </p>
-            <% end %>
-          </p>
-        </summary>
-        <div class="govuk-details__text">
-          <ul class="govuk-list govuk-body-xs hackney-appointment-info">
-            <li>
-              Priority: <%= @work_order.repair_request.priority %>
-            </li>
-            <li title="DLO Status: <%= dlo_status_description(@work_order.dlo_status) %>">
-              Status: <%= work_order_status_description(@work_order.work_order_status) %>
-            </li>
-            <li>
-              Data source: UH
-            </li>
-          </ul>
-        </div>
-      </details>
+      <div class="hackney-work-order-header">
+        <p class="govuk-body-s">
+          <% if @work_order.latest_appointment.present? %>
+          <span class="govuk-!-font-weight-bold">
+            Appointment booked
+          </span><br>
+            for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
+          <% else %>
+            There are no booked appointments.
+          <% end %>
+        </p>
+
+        <ul class="govuk-list govuk-body-xs">
+          <li>
+            Priority: <%= @work_order.repair_request.priority %>
+          </li>
+          <li title="DLO Status: <%= dlo_status_description(@work_order.dlo_status) %>">
+            Status: <%= work_order_status_description(@work_order.work_order_status) %>
+          </li>
+          <li>
+            Data source: UH
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 <% end %>

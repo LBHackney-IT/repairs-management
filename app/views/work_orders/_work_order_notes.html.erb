@@ -3,9 +3,9 @@
     Notes
   </h2>
   <% if @work_order.notes.present? %>
-    <ul class="govuk-list">
+    <ul class="govuk-list hackney-note-timeline">
     <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
-      <li class='hackney-note'>
+      <li class='hackney-note '>
         <p class="govuk-body">
           <div class="hackney-note-info">
             <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
