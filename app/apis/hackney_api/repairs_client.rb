@@ -54,6 +54,20 @@ module HackneyAPI
       )
     end
 
+    def get_work_orders_by_property(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders?propertyReference=#{reference}"
+      )
+    end
+
+    def get_repair_requests_by_property(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/repairs?propertyReference=#{reference}"
+      )
+    end
+
     private
 
     def request(http_method:, endpoint:, cache_request: true, params: {})

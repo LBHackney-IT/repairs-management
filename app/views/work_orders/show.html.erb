@@ -7,15 +7,15 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-caption-m hackney-work-order-references">
-        <span>UH ref: <%= @page.work_order.reference %></span>
+        <span>UH ref: <%= @work_order.reference %></span>
         <span> | </span>
-        <span>Servitor ref: <%= @page.work_order.servitor_reference %></span>
+        <span>Servitor ref: <%= @work_order.servitor_reference %></span>
       </h1>
     </div>
   </div>
 
   <p class="govuk-body-m">
-    <%= @page.repair_request.description %>
+    <%= @work_order.repair_request.description %>
   </p>
 
   <div class="govuk-grid-row">
@@ -23,9 +23,9 @@
       <div class="hackney-work-order-header">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
-            <%= @page.property.address %>
+            <%= @work_order.property.address %>
           </span><br>
-          <%= @page.property.postcode %>
+          <%= @work_order.property.postcode %>
         </p>
       </div>
     </div>
@@ -35,17 +35,17 @@
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             Contact:
-            <%= @page.repair_request.contact.name %>
+            <%= @work_order.repair_request.contact.name %>
           </span><br>
-          reported on <%= @page.work_order.created.to_s(:govuk_date) %>
+          reported on <%= @work_order.created.to_s(:govuk_date) %>
         </p>
 
         <ul class="govuk-list govuk-body-s">
           <li>
-            <%= @page.contact.telephone_number %>
+            <%= @work_order.repair_request.contact.telephone_number %>
           </li>
           <li>
-            <%= mail_to @page.contact.email_address %>
+            <%= mail_to @work_order.repair_request.contact.email_address %>
           </li>
         </ul>
       </div>
@@ -54,11 +54,11 @@
     <div class="govuk-grid-column-one-third">
       <div class="hackney-work-order-header">
         <p class="govuk-body-s">
-          <% if @page.latest_appointment.present? %>
+          <% if @work_order.latest_appointment.present? %>
           <span class="govuk-!-font-weight-bold">
             Appointment booked
           </span><br>
-            for <%= @page.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @page.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
+            for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
           <% else %>
             There are no booked appointments.
           <% end %>
@@ -66,10 +66,10 @@
 
         <ul class="govuk-list govuk-body-s">
           <li>
-            Priority: <%= @page.repair_request.priority %>
+            Priority: <%= @work_order.repair_request.priority %>
           </li>
-          <li title="DLO Status: <%= dlo_status_description(@page.work_order.dlo_status) %>">
-            Status: <%= work_order_status_description(@page.work_order.work_order_status) %>
+          <li title="DLO Status: <%= dlo_status_description(@work_order.dlo_status) %>">
+            Status: <%= work_order_status_description(@work_order.work_order_status) %>
           </li>
           <li>
             Data source: UH
@@ -80,7 +80,7 @@
   </div>
 <% end %>
 
-<% if out_of_target?(@page.work_order, @page.latest_appointment) %>
+<% if out_of_target?(@work_order, @work_order.latest_appointment) %>
   <div class="govuk-warning-text">
     <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
     <strong class="govuk-warning-text__text">
@@ -92,7 +92,7 @@
 
 <ul class="govuk-list">
   <li>
-    Target date: <%= @page.work_order.date_due.to_s(:govuk_date) %>
+    Target date: <%= @work_order.date_due.to_s(:govuk_date) %>
   </li>
 </ul>
 
@@ -101,9 +101,9 @@
 <h2 class='govuk-heading-m'>
   Notes
 </h2>
-<% if @page.notes.present? %>
+<% if @work_order.notes.present? %>
   <ul class="govuk-list">
-  <% @page.notes.each do |note| %>
+  <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
     <li class='hackney-note'>
       <p class="govuk-body">
         <div class="hackney-note-info">
@@ -119,3 +119,31 @@
 <% end %>
 
 
+<h2 class="govuk-heading-l">
+  Repairs History
+</h2>
+
+<table class="govuk-table hackney-history">
+  <thead class="govuk-table__head">
+  <tr>
+    <th class="govuk-table__header" scope="col">Reference</th>
+    <th class="govuk-table__header" scope="col">Date Raised</th>
+    <th class="govuk-table__header" scope="col">Status</th>
+    <th class="govuk-table__header" scope="col">Description</th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  <% @work_order.property.work_orders.sort_by(&:created).reverse.each do |work_order| %>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference) %></td>
+      <td class="govuk-table__cell"><%= work_order.created.to_s(:technical) %></td>
+      <td class="govuk-table__cell">
+        <span class="status status-<%= work_order.work_order_status %>">
+          <%= work_order_status_description(work_order.work_order_status).downcase %>
+        </span>
+      </td>
+      <td class="govuk-table__cell description"><%= work_order.problem_description %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
