@@ -6,4 +6,14 @@
 .hackney-work-order-tabs-info {
   border: none !important;
 }
+.govuk-tabs__tab {
+  @media (min-width: 641px) {
+    background-color: govuk-colour("grey-2") !important;
+    color: govuk-colour('white') !important;
+  }
+  &[aria-selected="true"] {
+    background-color: govuk-colour('white') !important;
+    color: govuk-colour('black') !important;
+  }
+}
 
