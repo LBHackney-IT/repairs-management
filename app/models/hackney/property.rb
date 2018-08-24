@@ -20,4 +20,8 @@ class Hackney::Property
   def work_orders
     @_work_orders ||= Hackney::WorkOrder.for_property(reference)
   end
+
+  def hierarchy
+    @_hierarchy ||= Hackney::PropertyHierarchy.for_property(reference)
+  end
 end

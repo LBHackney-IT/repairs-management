@@ -26,17 +26,10 @@ module HackneyAPI
       )
     end
 
-    def get_repair_request(reference)
+    def get_work_order_appointments(reference)
       request(
         http_method: :get,
-        endpoint: "v1/repairs/#{reference}"
-      )
-    end
-
-    def get_property(reference)
-      request(
-        http_method: :get,
-        endpoint: "v1/properties/#{reference}"
+        endpoint: "v1/work_orders/#{reference}/appointments"
       )
     end
 
@@ -44,13 +37,6 @@ module HackneyAPI
       request(
         http_method: :get,
         endpoint: "v1/work_orders/#{reference}/notes"
-      )
-    end
-
-    def get_work_order_appointments(reference)
-      request(
-        http_method: :get,
-        endpoint: "v1/work_orders/#{reference}/appointments"
       )
     end
 
@@ -65,6 +51,27 @@ module HackneyAPI
       request(
         http_method: :get,
         endpoint: "v1/repairs?propertyReference=#{reference}"
+      )
+    end
+
+    def get_repair_request(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/repairs/#{reference}"
+      )
+    end
+
+    def get_property(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/properties/#{reference}"
+      )
+    end
+
+    def get_property_hierarchy(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/properties/#{reference}/hierarchy"
       )
     end
 
