@@ -7,11 +7,31 @@
     </div>
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-caption-m hackney-work-order-references">
-        <span>UH ref: <%= @work_order.reference %></span>
+        <span>
+          <strong>UH ref:</strong> <%= @work_order.reference %>
+        </span>
         <span> | </span>
-        <span>Servitor ref: <%= @work_order.servitor_reference %></span>
+        <span>
+          <strong>Servitor ref:</strong> <%= @work_order.servitor_reference %>
+        </span>
       </h1>
     </div>
+  </div>
+
+  <% if out_of_target?(@work_order, @work_order.latest_appointment) %>
+    <div class="govuk-warning-text">
+      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        The booked appointment has passed its target date.
+      </strong>
+    </div>
+  <% end %>
+
+  <div class="govuk-body-m">
+    <p class='govuk-!-font-weight-bold'>
+      Target date: <span class='hackney-work-order-target-date'><%= @work_order.date_due.to_s(:govuk_date) %></span>
+    </p>
   </div>
 
   <p class="govuk-body-m">
@@ -64,7 +84,7 @@
           <% end %>
         </p>
 
-        <ul class="govuk-list govuk-body-s">
+        <ul class="govuk-list govuk-body-xs">
           <li>
             Priority: <%= @work_order.repair_request.priority %>
           </li>
@@ -80,70 +100,31 @@
   </div>
 <% end %>
 
-<% if out_of_target?(@work_order, @work_order.latest_appointment) %>
-  <div class="govuk-warning-text">
-    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-    <strong class="govuk-warning-text__text">
-      <span class="govuk-warning-text__assistive">Warning</span>
-      The booked appointment has passed its target date.
-    </strong>
-  </div>
-<% end %>
+<div class="govuk-tabs" data-module="tabs">
+  <h2 class="govuk-tabs__title">
+    Contents
+  </h2>
 
-<ul class="govuk-list">
-  <li>
-    Target date: <%= @work_order.date_due.to_s(:govuk_date) %>
-  </li>
-</ul>
-
-<hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-<h2 class='govuk-heading-m'>
-  Notes
-</h2>
-<% if @work_order.notes.present? %>
-  <ul class="govuk-list">
-  <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
-    <li class='hackney-note'>
-      <p class="govuk-body">
-        <div class="hackney-note-info">
-          <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
-        </div>
-        <%= simple_format(note.text) %>
-      </p>
+  <ul class="govuk-tabs__list hackney-tabs-list">
+    <li class="govuk-tabs__list-item hackney-tab">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#repair-history-tab">
+        Repair history
+      </a>
     </li>
-  <% end %>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#notes-tab">
+        Notes
+      </a>
+    </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#related-repairs-tab">
+        Related repairs
+      </a>
+    </li>
   </ul>
-<% else %>
-  <p class="govuk-body-s">There are no notes for this work order.</p>
-<% end %>
+  <%= render 'work_order_repairs_history' %>
+  <%= render 'work_order_notes' %>
+  <%= render 'work_order_related_repairs' %>
+</div>
 
 
-<h2 class="govuk-heading-l">
-  Repairs History
-</h2>
-
-<table class="govuk-table hackney-history">
-  <thead class="govuk-table__head">
-  <tr>
-    <th class="govuk-table__header" scope="col">Reference</th>
-    <th class="govuk-table__header" scope="col">Date Raised</th>
-    <th class="govuk-table__header" scope="col">Status</th>
-    <th class="govuk-table__header" scope="col">Description</th>
-  </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-  <% @work_order.property.work_orders.sort_by(&:created).reverse.each do |work_order| %>
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference) %></td>
-      <td class="govuk-table__cell"><%= work_order.created.to_s(:technical) %></td>
-      <td class="govuk-table__cell">
-        <span class="status status-<%= work_order.work_order_status %>">
-          <%= work_order_status_description(work_order.work_order_status).downcase %>
-        </span>
-      </td>
-      <td class="govuk-table__cell description"><%= work_order.problem_description %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
