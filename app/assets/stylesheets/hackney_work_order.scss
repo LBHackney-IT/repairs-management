@@ -1,6 +1,6 @@
 .hackney-work-order-header {
   background-color: govuk-colour('white');
-  padding: 5px 10px;
+  padding: 2px;
 }
 .hackney-work-order-header p, ul {
   color: hackney-colour('housing-2');
@@ -12,7 +12,7 @@
 .hackney-work-order-references > span {
   margin-right: 10px;
 }
-.hackney-appointment-info > li {
+.hackney-appointment-info {
   color: $govuk-secondary-text-colour;
 }
 .hackney-work-order-target-date {
@@ -22,5 +22,63 @@
   color: govuk-colour('grey-2');
   &:hover {
     opacity: 0.8;
+  }
+}
+
+.hackney-work-order-table {
+  td {
+    white-space: nowrap;
+
+    a {
+      color: hackney-colour('housing-2');
+      &:visited {
+        color: hackney-colour('housing-1');
+      }
+    }
+
+    &.description {
+      white-space: normal;
+    }
+    .status {
+      color: white;
+      padding: 4px 10px;
+      font-weight: bold;
+      display: inline-block;
+      width: 90%;
+      text-align: center;
+    }
+    .status-100 { // Collated
+      background-color: #009ca6;
+    }
+    .status-200 { // In Progress
+      background-color: #009ca6;
+    }
+    .status-300 { // Work Complete
+      background-color: darkgray;
+    }
+    .status-350 { // Work Defective
+      background-color: crimson;
+    }
+    .status-400 { // Hold
+      background-color: crimson;
+    }
+    .status-425 { // Variation Outstanding
+      background-color: crimson;
+    }
+    .status-450 { // In Dispute
+      background-color: crimson;
+    }
+    .status-500 { // Approved for Statement
+      background-color: darkgray;
+    }
+    .status-600 { // Statemented
+      background-color: darkgray;
+    }
+    .status-700 { // Cancel Order
+      background-color: crimson;
+    }
+    .status-900 { // Complete
+      background-color: darkgray;
+    }
   }
 }
