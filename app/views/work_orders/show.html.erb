@@ -1,19 +1,13 @@
 <% content_for :page_header do %>
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-one-third">
+    <div class="govuk-grid-column-one-half">
       <h1 class="govuk-heading-l">
-        <span>Work order</span>
+        Works order: <%= @work_order.reference %>
       </h1>
     </div>
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-one-half">
       <h1 class="govuk-caption-m hackney-work-order-references">
-        <span>
-          <strong>UH ref:</strong> <%= @work_order.reference %>
-        </span>
-        <span> | </span>
-        <span>
-          <strong>Servitor ref:</strong> <%= @work_order.servitor_reference %>
-        </span>
+        Servitor ref: <%= @work_order.servitor_reference %>
       </h1>
     </div>
   </div>
@@ -54,10 +48,9 @@
       <div class="hackney-work-order-header">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
-            Contact:
             <%= @work_order.repair_request.contact.name %>
           </span><br>
-          reported on <%= @work_order.created.to_s(:govuk_date) %>
+          <%= @work_order.created.to_s(:govuk_date) %>
         </p>
 
         <ul class="govuk-list govuk-body-s">
@@ -72,7 +65,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <div class="hackney-work-order-header">
+      <div class="hackney-work-order-header hackney-appointment">
         <p class="govuk-body-s">
           <% if @work_order.latest_appointment.present? %>
           <span class="govuk-!-font-weight-bold">
@@ -84,17 +77,22 @@
           <% end %>
         </p>
 
-        <ul class="govuk-list govuk-body-xs">
-          <li>
-            Priority: <%= @work_order.repair_request.priority %>
-          </li>
-          <li title="DLO Status: <%= dlo_status_description(@work_order.dlo_status) %>">
-            Status: <%= work_order_status_description(@work_order.work_order_status) %>
-          </li>
-          <li>
-            Data source: UH
-          </li>
-        </ul>
+        <table class="govuk-table hackney-appointment-info">
+          <tbody class="govuk-body-xs">
+            <tr>
+              <th scope="row">Priority:</th>
+              <td><%= @work_order.repair_request.priority %></td>
+            </tr>
+            <tr title="DLO Status: <%= dlo_status_description(@work_order.dlo_status) %>">
+              <th scope="row">Status:</th>
+              <td><%= work_order_status_description(@work_order.work_order_status) %></td>
+            </tr>
+            <tr>
+              <th scope="row">Data source:</th>
+              <td>UH</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -108,7 +106,7 @@
   <ul class="govuk-tabs__list hackney-tabs-list">
     <li class="govuk-tabs__list-item hackney-tab">
       <a class="govuk-tabs__tab hackney-work-order-tab" href="#repair-history-tab">
-        Repair history
+        Repairs history
       </a>
     </li>
     <li class="govuk-tabs__list-item">
@@ -116,15 +114,9 @@
         Notes
       </a>
     </li>
-    <li class="govuk-tabs__list-item">
-      <a class="govuk-tabs__tab hackney-work-order-tab" href="#related-repairs-tab">
-        Related repairs
-      </a>
-    </li>
   </ul>
   <%= render 'work_order_repairs_history' %>
   <%= render 'work_order_notes' %>
-  <%= render 'work_order_related_repairs' %>
 </div>
 
 

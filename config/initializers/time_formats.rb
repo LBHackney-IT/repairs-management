@@ -16,6 +16,3 @@ Time::DATE_FORMATS[:govuk_date_short] = '%-I:%M%P, %-e %b %Y'
 
 # 1:15pm
 Time::DATE_FORMATS[:govuk_time] = '%-I:%M%P'
-
-# 13:15 2013-01-01
-Time::DATE_FORMATS[:technical] = '%H:%M %d-%m-%Y'
