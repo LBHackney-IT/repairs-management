@@ -5,6 +5,11 @@ $govuk-font-family: 'Arial', sans-serif;
 @import "hackney_work_order";
 @import "hackney_note";
 @import "hackney_tabs";
+@import "hackney_filtering";
+
+.hidden {
+  display: none !important;
+}
 
 .turbolinks-progress-bar {
   height: 3px;
