@@ -16,7 +16,6 @@ services:
       - pg_db
       - neo4j_db
       - redis
-      - sidekiq
 
   pg_db:
     image: postgres:10.4
