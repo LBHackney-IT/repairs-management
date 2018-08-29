@@ -9,11 +9,14 @@ services:
       - DATABASE_HOST=pg_db
       - DATABASE_USERNAME=postgres
       - NEO4J_HOST=neo4j_db
+      - REDIS_URL=redis://:somepassword@redis
     ports:
       - '3000:3000'
     depends_on:
       - pg_db
       - neo4j_db
+      - redis
+      - sidekiq
 
   pg_db:
     image: postgres:10.4
@@ -37,3 +40,21 @@ services:
       - ./tmp/db/neo4j/test/logs:/logs
     ports:
       - '7475:7474'
+
+  redis:
+    image: 'redis:4.0-alpine'
+    command: redis-server --requirepass somepassword
+
+  sidekiq:
+    depends_on:
+      - 'pg_db'
+      - 'redis'
+    build: .
+    command: bundle exec sidekiq -q default -q mailers
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_HOST=pg_db
+      - DATABASE_USERNAME=postgres
+      - NEO4J_HOST=neo4j_db
+      - REDIS_URL=redis://:somepassword@redis
