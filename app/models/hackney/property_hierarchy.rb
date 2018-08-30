@@ -13,12 +13,12 @@ class Hackney::PropertyHierarchy
   def self.build(attributes)
     # TODO: remove strip from attributes['attr'].strip - API should be fixed soon
     new(
-      reference: attributes['propertyReference'].strip,
+      reference: attributes['propertyReference']&.strip,
       level_code: attributes['levelCode'],
-      description: attributes['description'].strip,
-      major_reference: attributes['majorReference'].strip,
-      address: attributes['address'].strip,
-      postcode: attributes['postCode'].strip
+      description: attributes['description']&.strip,
+      major_reference: attributes['majorReference']&.strip,
+      address: attributes['address']&.strip,
+      postcode: attributes['postCode']&.strip
     )
   end
 end

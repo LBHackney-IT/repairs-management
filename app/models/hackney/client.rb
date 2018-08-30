@@ -3,7 +3,7 @@ module Hackney::Client
 
   class_methods do
     def client
-      @_client ||= ::HackneyAPI::RepairsClient.new
+      HackneyAPI::RepairsClient.new
     end
   end
 end

@@ -28,3 +28,4 @@
 
 # Ignore local environments
 .env
+.DS_Store
