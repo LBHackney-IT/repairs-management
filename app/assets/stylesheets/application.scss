@@ -7,6 +7,10 @@ $govuk-font-family: 'Arial', sans-serif;
 @import "hackney_tabs";
 @import "hackney_trade_filtering.scss";
 
+.hidden {
+  display: none;
+}
+
 .turbolinks-progress-bar {
   height: 3px;
   background-color: hackney-colour("housing-2");

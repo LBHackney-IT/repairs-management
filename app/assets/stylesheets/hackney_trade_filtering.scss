@@ -1,16 +1,31 @@
-.hidden {
-  display: none;
-}
-.filter_by_trade {
-  border: 1px solid govuk-colour("grey-1");
-  padding: 10px;
-}
-.hackney-trade-filter {
+.trade-filter {
   background: govuk-colour("grey-4");
-  margin: 20px;
+  padding: 5px;
+}
+.trade-filter-options {
+  border-bottom: 1px solid govuk-colour("grey-3");
+  &:last-child {
+    border-bottom: none !important;
+  }
 }
 .clear-all-filters {
   color: hackney-colour('housing-2');
   text-decoration: underline;
   cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.hackney-checkboxes__label {
+  padding: 8px 15px 8px;
+  &:before {
+    color: govuk-colour("grey-2");
+    // govuk-frontend does not expose the background colour as a variable,
+    // hence we have to increase the specificity of this to overwrite it
+    background: govuk-colour("white") !important;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
 }

@@ -1,51 +1,66 @@
 <div class="filter_by_trade govuk-grid-column-one-third">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-      <p>Apply filters</p>
+      <p class=" govuk-body-m govuk-!-font-weight-bold">Apply filters</p>
     </div>
     <div class="govuk-grid-column-one-half">
-      <p class='clear-all-filters'>Clear filters</p>
+      <button id="clearFilters" class='clear-all-filters govuk-body-s'>Clear filters</button>
     </div>
   </div>
 
-  <div class="form-group">
-    <fieldset class='hackney-trade-filter'>
-      <h4 class="heading-medium">Trade</h4>
+  <div class="govuk-form-group">
+    <fieldset class='govuk-fieldset trade-filter' aria-describedby="trade-filter">
 
-      <% @work_order.property.trades.each_with_index do |trade, index| %>
-      <div class="multiple-choice">
-        <label for "trade-<%=index%>">
-          <input onChange="toggleShowHide()" id="trade-<%=index%>" class='filter-checkbox' type="checkbox" value="trade-<%=index%>">
-          <%= trade %>
-        </label>
+      <h4 class="govuk-heading-s">Trade</h4>
+
+      <div class="govuk-checkboxes">
+        <% @work_order.property.trades.each_with_index do |trade, index| %>
+          <div class="govuk-checkboxes__item trade-filter-options">
+            <input id="trade-<%=index%>" class='govuk-checkboxes__input filter-checkbox' type="checkbox" value="trade-<%=index%>">
+            <label class="govuk-label govuk-checkboxes__label hackney-checkboxes__label" for="trade-<%=index%>">
+              <%= trade %>
+            </label>
+          </div>
+        <% end %>
       </div>
-      <% end %>
 
     </fieldset>
   </div>
 </div>
 
 <script>
-  function toggleShowHide() {
-    const workOrders = document.querySelectorAll('.filter-by-trade');
-    const filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
-    const showThese = []
+  (function() {
+    let filterCheckBoxes = [];
+    let workOrders = [];
 
-    filterCheckBoxes.forEach(checkbox => showThese.push(checkbox.id))
+    function handleToggleTrade() {
+      filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
+      workOrders = document.querySelectorAll('.filter-by-trade');
 
-    if (showThese.length == 0) {
-      workOrders.forEach((workOrder) => {
-        workOrder.classList.remove('hidden');
-      })
-    } else {
-      workOrders.forEach((workOrder) => {
-        workOrder.classList.add('hidden')
-        if (showThese.includes(workOrder.getAttribute("data-trade"))) {
-          workOrder.classList.remove('hidden')
-        }
-      })
+      const showTheseTrades = [];
+
+      filterCheckBoxes.forEach(checkBox => showTheseTrades.push(checkBox.id));
+
+      if (showTheseTrades.length == 0) {
+        workOrders.forEach(workOrder => workOrder.classList.remove('hidden'));
+      } else {
+        workOrders.forEach(workOrder => {
+          workOrder.classList.add('hidden');
+          if (showTheseTrades.includes(workOrder.getAttribute("data-trade"))) {
+            workOrder.classList.remove('hidden');
+          }
+        })
+      }
     }
-  }
+
+    function handleClearAllFilters() {
+      filterCheckBoxes.forEach(checkBox => checkBox.checked = false);
+      workOrders.forEach(workOrder => workOrder.classList.remove('hidden'));
+    }
+
+    const checkboxes = document.querySelectorAll('.filter-checkbox')
+    checkboxes.forEach(el => el.addEventListener('click', handleToggleTrade))
+
+    document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters)
+  })();
 </script>
-
-
