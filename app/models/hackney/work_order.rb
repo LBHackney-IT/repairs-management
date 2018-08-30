@@ -4,7 +4,7 @@ class Hackney::WorkOrder
 
   attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
                 :work_order_status, :dlo_status, :servitor_reference,
-                :problem_description
+                :problem_description, :trade
 
   def self.find(reference)
     response = client.get_work_order(reference)
@@ -27,7 +27,8 @@ class Hackney::WorkOrder
       work_order_status: attributes['workOrderStatus'].strip,
       dlo_status: attributes['dloStatus'].strip,
       servitor_reference: attributes['servitorReference'].strip,
-      problem_description: attributes['problemDescription']
+      problem_description: attributes['problemDescription'],
+      trade: attributes['trade']
     )
   end
 

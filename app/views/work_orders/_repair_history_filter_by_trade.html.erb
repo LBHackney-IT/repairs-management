@@ -1,0 +1,51 @@
+<div class="filter_by_trade govuk-grid-column-one-third">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <p>Apply filters</p>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <p class='clear-all-filters'>Clear filters</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <fieldset class='hackney-trade-filter'>
+      <h4 class="heading-medium">Trade</h4>
+
+      <% @work_order.property.trades.each_with_index do |trade, index| %>
+      <div class="multiple-choice">
+        <label for "trade-<%=index%>">
+          <input onChange="toggleShowHide()" id="trade-<%=index%>" class='filter-checkbox' type="checkbox" value="trade-<%=index%>">
+          <%= trade %>
+        </label>
+      </div>
+      <% end %>
+
+    </fieldset>
+  </div>
+</div>
+
+<script>
+  function toggleShowHide() {
+    const workOrders = document.querySelectorAll('.filter-by-trade');
+    const filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
+    const showThese = []
+
+    filterCheckBoxes.forEach(checkbox => showThese.push(checkbox.id))
+
+    if (showThese.length == 0) {
+      workOrders.forEach((workOrder) => {
+        workOrder.classList.remove('hidden');
+      })
+    } else {
+      workOrders.forEach((workOrder) => {
+        workOrder.classList.add('hidden')
+        if (showThese.includes(workOrder.getAttribute("data-trade"))) {
+          workOrder.classList.remove('hidden')
+        }
+      })
+    }
+  }
+</script>
+
+

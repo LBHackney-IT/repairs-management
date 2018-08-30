@@ -31,4 +31,8 @@ module WorkOrderHelper
      'F' => 'Off Hold'
    }[dlo_status]
   end
+
+  def trade_index(property, trade)
+    property.trades.index(trade)
+  end
 end

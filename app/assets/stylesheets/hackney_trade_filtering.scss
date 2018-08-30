@@ -1,0 +1,16 @@
+.hidden {
+  display: none;
+}
+.filter_by_trade {
+  border: 1px solid govuk-colour("grey-1");
+  padding: 10px;
+}
+.hackney-trade-filter {
+  background: govuk-colour("grey-4");
+  margin: 20px;
+}
+.clear-all-filters {
+  color: hackney-colour('housing-2');
+  text-decoration: underline;
+  cursor: pointer;
+}
