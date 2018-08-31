@@ -22,6 +22,6 @@ class Hackney::Property
   end
 
   def dwelling_work_orders_hierarchy
-    @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithDwelling.new(reference).call
+    @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithProperty.new(reference).call
   end
 end

@@ -1,12 +1,12 @@
 module Hackney
   module WorkOrders
-    class AssociatedWithDwelling
+    class AssociatedWithProperty
       HIERARCHY_DESCRIPTIONS = %w(Estate Block Sub-Block Free Facilitices Dwelling Non-Dwell).freeze
 
-      attr_reader :dwelling_reference
+      attr_reader :reference
 
-      def initialize(dwelling_reference)
-        @dwelling_reference = dwelling_reference
+      def initialize(reference)
+        @reference = reference
       end
 
       def call
@@ -20,7 +20,7 @@ module Hackney
       private
 
       def dwelling_hierarchy
-        Hackney::PropertyHierarchy.for_property(dwelling_reference)
+        Hackney::PropertyHierarchy.for_property(reference)
       end
 
       def filtered_hierarchy

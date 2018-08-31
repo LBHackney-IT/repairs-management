@@ -50,4 +50,22 @@ describe Hackney::Property, '#find' do
       }.to raise_error HackneyAPI::RepairsClient::ApiError
     end
   end
+
+  describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
+    let(:reference) { 'ref' }
+    let(:result) { {} }
+    let(:class_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
+    let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
+
+    before do
+      allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(property).and_return(associated_with_property_double)
+    end
+
+    subject { class_instance.call }
+
+    it 'calls valid class with a property parameter' do
+      expect(associated_with_property_double).to receive(:call)
+      expect(subject).to eq(result)
+    end
+  end
 end

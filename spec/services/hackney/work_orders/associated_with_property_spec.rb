@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Hackney::WorkOrders::AssociatedWithDwelling do
+describe Hackney::WorkOrders::AssociatedWithProperty do
   include Helpers::HackneyRepairsRequestStubs
 
   describe '#call' do
