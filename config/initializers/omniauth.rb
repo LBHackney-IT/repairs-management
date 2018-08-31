@@ -8,7 +8,7 @@ OmniAuth.config.logger = Rails.logger
 
 Rails.application.config.middleware.use OmniAuth::Builder do
 
-  if Rails.env.development?
+  if ENV['GOOGLE_AUTH'] == "true"
     creds = Rails.application.credentials.google_auth_unboxed
                  .slice(:client_id, :client_secret)
     provider :google_oauth2, *creds.values

@@ -33,7 +33,8 @@
     },
     "HEROKU_APP_NAME": {
       "required": true
-    }
+    },
+    "GOOGLE_AUTH": "true"
   },
   "formation": {
     "web": {
