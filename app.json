@@ -34,6 +34,9 @@
     "HEROKU_APP_NAME": {
       "required": true
     },
+    "RAILS_MASTER_KEY": {
+      "required": true
+    },
     "GOOGLE_AUTH": "true"
   },
   "formation": {
