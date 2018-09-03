@@ -1,7 +1,7 @@
-<div class="filter_by_trade govuk-grid-column-one-third">
+<div class="filter_by_trade govuk-grid-column-one-quarter">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-      <p class=" govuk-body-m govuk-!-font-weight-bold">Apply filters</p>
+      <p class="govuk-body-m govuk-!-font-weight-bold">Apply filters</p>
     </div>
     <div class="govuk-grid-column-one-half">
       <button id="clearFilters" class='clear-all-filters govuk-body-s'>Clear filters</button>
@@ -37,7 +37,7 @@
       filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
       workOrders = document.querySelectorAll('.filter-by-trade');
 
-      const showTheseTrades = [];
+      let showTheseTrades = [];
 
       filterCheckBoxes.forEach(checkBox => showTheseTrades.push(checkBox.id));
 

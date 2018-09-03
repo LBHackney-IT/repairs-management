@@ -143,4 +143,53 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'There are no booked appointments.'
   end
+
+  scenario 'Filtering the repairs history by trade related to the property', js: true do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_work_orders_for_property
+
+    visit work_order_path('01551932')
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Plumbing').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 0
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 0
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Electrical').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 0
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Electrical').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 0
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 0
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Plumbing').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+  end
 end
