@@ -1,9 +1,4 @@
 module WorkOrderHelper
-  def out_of_target?(work_order, appointment)
-    return if appointment.blank?
-    work_order.date_due < appointment.visit_prop_appointment
-  end
-
   def work_order_status_description(work_order_status)
    {
      '100' => 'Collated',
