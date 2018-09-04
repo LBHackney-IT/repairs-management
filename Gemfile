@@ -45,6 +45,7 @@ gem 'neo4j'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
+gem 'webpacker', '~> 3.5'
 
 group :development, :test do
   gem 'pry'
