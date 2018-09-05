@@ -1,10 +1,11 @@
 $govuk-font-family: 'Arial', sans-serif;
-@import "govuk-frontend/all";
-@import "hackney_colour";
-@import "hackney_header";
-@import "hackney_work_order";
-@import "hackney_note";
-@import "hackney_tabs";
+@import '~govuk-frontend/all';
+// TODO - these partials are not being found by Webpacker
+@import './styles/hackney_colour';
+@import './styles/hackney_header';
+@import './styles/hackney_work_order';
+@import './styles/hackney_note';
+@import './styles/hackney_tabs';
 
 .turbolinks-progress-bar {
   height: 3px;

@@ -9,6 +9,7 @@
     "actioncable": "^5.2.1",
     "activestorage": "^5.2.1",
     "govuk-frontend": "^1.0.0",
+    "node-sass": "^4.9.3",
     "rails-ujs": "^5.2.1",
     "turbolinks": "^5.2.0"
   },
