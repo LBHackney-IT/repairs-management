@@ -17,6 +17,7 @@
   <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/govuk-apple-touch-icon-152x152.png">
   <link rel="apple-touch-icon" href="/assets/images/govuk-apple-touch-icon.png">
 
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 
   <meta property="og:image" content="/assets/images/govuk-opengraph-image.png">
@@ -74,9 +75,4 @@
     <div class="govuk-width-container ">
     </div>
   </footer>
-
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <script>
-    window.GOVUKFrontend.initAll()
-  </script>
 </body>
