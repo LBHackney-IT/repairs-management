@@ -58,10 +58,10 @@ describe Hackney::Property, '#find' do
     let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
 
     before do
-      allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(property).and_return(associated_with_property_double)
+      allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(reference).and_return(associated_with_property_double)
     end
 
-    subject { class_instance.call }
+    subject { class_instance.dwelling_work_orders_hierarchy }
 
     it 'calls valid class with a property parameter' do
       expect(associated_with_property_double).to receive(:call)

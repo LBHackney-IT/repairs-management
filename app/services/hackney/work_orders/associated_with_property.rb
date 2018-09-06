@@ -11,26 +11,16 @@ module Hackney
 
       def call
         filtered_hierarchy.each_with_object({}) do |(description, property_reference), hash|
-          hash[description] = api_work_orders_by_property(property_reference).map do |work_order_attributes|
-            Hackney::WorkOrder.build(work_order_attributes)
-          end
+          hash[description] = Hackney::WorkOrder.for_property(property_reference)
         end
       end
 
       private
 
-      def dwelling_hierarchy
-        Hackney::PropertyHierarchy.for_property(reference)
-      end
-
       def filtered_hierarchy
-        dwelling_hierarchy.each_with_object({}) do |element, hash|
+        Hackney::PropertyHierarchy.for_property(reference).each_with_object({}) do |element, hash|
           hash[element.description] = element.reference if element.description.in?(HIERARCHY_DESCRIPTIONS)
         end
-      end
-
-      def api_work_orders_by_property(property_reference)
-        HackneyAPI::RepairsClient.new.get_work_orders_by_property(property_reference)
       end
     end
   end
