@@ -42,10 +42,10 @@ RSpec.describe 'Work order' do
     expect(page).to have_content '02012341234'
     expect(page).to have_content 's.erbas@example.com'
 
-    expect(page).to have_content "Appointment booked for 8:00am, 30 May 2018 until 12:00pm, 30 May 2018"
+    expect(page).to have_content "Appointment booked for 29 May 2018 (2:51pm) until 5 June 2018 (2:51pm)"
     expect(page).to have_content 'Priority: N'
     expect(page).to have_content 'Status: In Progress'
-    expect(page).to have_content 'Data source: UH'
+    expect(page).to have_content 'Data source: DRS'
 
     expect(page).to have_content 'Target date: 2:09pm, 27 June 2018'
 

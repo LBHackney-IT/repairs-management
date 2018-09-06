@@ -1,5 +1,5 @@
 <div class="filter_by_trade govuk-grid-column-one-quarter">
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row govuk-table__header filter_by_trade_heading">
     <div class="govuk-grid-column-one-half">
       <p class="govuk-body-m govuk-!-font-weight-bold">Apply filters</p>
     </div>
@@ -9,15 +9,15 @@
   </div>
 
   <div class="govuk-form-group">
-    <fieldset class='govuk-fieldset trade-filter' aria-describedby="trade-filter">
+    <fieldset class='govuk-fieldset trade-filter'>
 
       <h4 class="govuk-heading-s">Trade</h4>
 
-      <div class="govuk-checkboxes">
+      <div class="hackney-checkboxes">
         <% @work_order.property.trades.each_with_index do |trade, index| %>
-          <div class="govuk-checkboxes__item trade-filter-options">
-            <input id="trade-<%=index%>" class='govuk-checkboxes__input filter-checkbox' type="checkbox" value="trade-<%=index%>">
-            <label class="govuk-label govuk-checkboxes__label hackney-checkboxes__label" for="trade-<%=index%>">
+          <div class="trade-filter-options govuk-body-s">
+            <input id="trade-<%=index%>" class='filter-checkbox' type="checkbox" value="trade-<%=index%>">
+            <label class="hackney-checkboxes__label" for="trade-<%=index%>">
               <%= trade %>
             </label>
           </div>
@@ -35,7 +35,7 @@
 
     function handleToggleTrade() {
       filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
-      workOrders = document.querySelectorAll('.filter-by-trade');
+      workOrders = document.querySelectorAll('.hackney-work-order-rows');
 
       let showTheseTrades = [];
 

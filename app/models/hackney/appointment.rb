@@ -2,12 +2,13 @@ class Hackney::Appointment
   include ActiveModel::Model
   include Hackney::Client
 
-  attr_accessor :visit_prop_appointment, :visit_prop_end
+  attr_accessor :begin_date, :end_date, :source_system
 
   def self.build(attributes)
     new(
-      visit_prop_appointment: attributes['visit_prop_appointment'].to_datetime,
-      visit_prop_end: attributes['visit_prop_end'].to_datetime
+      begin_date: attributes['beginDate'].to_datetime,
+      end_date: attributes['endDate'].to_datetime,
+      source_system: attributes['sourceSystem']
     )
   end
 
@@ -21,6 +22,6 @@ class Hackney::Appointment
     appointments = response.map do |attributes|
       Hackney::Appointment.build(attributes)
     end
-    appointments.sort_by { |a| a.visit_prop_end }.last
+    appointments.sort_by { |a| a.end_date }.last
   end
 end

@@ -68,10 +68,11 @@
       <div class="hackney-work-order-header hackney-appointment">
         <p class="govuk-body-s">
           <% if @work_order.latest_appointment.present? %>
-          <span class="govuk-!-font-weight-bold">
-            Appointment booked
-          </span><br>
-            for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
+            <span class="govuk-!-font-weight-bold">
+              Appointment booked
+            </span><br>
+            for <%= @work_order.latest_appointment.begin_date.to_date.to_s(:govuk_date) %>    (<%= @work_order.latest_appointment.begin_date.to_s(:govuk_time) %>) until <%= @work_order.latest_appointment.end_date.to_date.to_s(:govuk_date) %>
+            (<%= @work_order.latest_appointment.end_date.to_s(:govuk_time) %>)
           <% else %>
             There are no booked appointments.
           <% end %>
@@ -87,10 +88,12 @@
               <th scope="row">Status:</th>
               <td><%= work_order_status_description(@work_order.work_order_status) %></td>
             </tr>
+            <% if @work_order.latest_appointment.present? %>
             <tr>
               <th scope="row">Data source:</th>
-              <td>UH</td>
+              <td><%= @work_order.latest_appointment.source_system %></td>
             </tr>
+            <% end %>
           </tbody>
         </table>
       </div>

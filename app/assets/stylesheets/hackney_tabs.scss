@@ -6,17 +6,20 @@
 .hackney-work-order-tabs-info {
   border: none !important;
 }
-.govuk-tabs__tab {
+.hackney-work-order-tab {
   @media (min-width: 641px) {
     background-color: govuk-colour("grey-2") !important;
     color: govuk-colour('white') !important;
   }
 
-  // Change color of selected tab, we can only use the aria-selected
-  // because of the way gov-uk tabs work
+  // To change the colour of selected tab, we can only use the aria-selected
+  // because of the way gov-uk tabs are working
   &[aria-selected="true"] {
     background-color: govuk-colour('white') !important;
     color: govuk-colour('black') !important;
   }
-}
 
+  &:focus {
+    outline: 3px solid hackney-colour('housing-3');
+  }
+}
