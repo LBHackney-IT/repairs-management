@@ -128,25 +128,6 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'There are no notes for this work order.'
   end
 
-  scenario 'A label is shown when the appointment date has passed the target date' do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments(
-      body: work_order_appointment_response_payload__out_of_target
-    )
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
-
-    visit work_order_path('01551932')
-
-    expect(page).to have_content 'The booked appointment has passed its target date.'
-  end
-
   scenario 'No appointments are booked' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
