@@ -61,7 +61,7 @@
           <span class="govuk-!-font-weight-bold">
             Appointment booked
           </span><br>
-            for <%= @work_order.latest_appointment.visit_prop_appointment.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.visit_prop_end.to_s(:govuk_date) %>
+            for <%= @work_order.latest_appointment.begin_date.to_s(:govuk_date) %> until <%= @work_order.latest_appointment.end_date.to_s(:govuk_date) %>
           <% else %>
             There are no booked appointments.
           <% end %>
@@ -79,7 +79,7 @@
             </tr>
             <tr>
               <th scope="row">Data source:</th>
-              <td>UH</td>
+              <td><%= @work_order.latest_appointment.source_system %></td>
             </tr>
           </tbody>
         </table>
