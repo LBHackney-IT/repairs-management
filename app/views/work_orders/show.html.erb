@@ -87,10 +87,12 @@
               <th scope="row">Status:</th>
               <td><%= work_order_status_description(@work_order.work_order_status) %></td>
             </tr>
+            <% if @work_order.latest_appointment.present? %>
             <tr>
               <th scope="row">Data source:</th>
               <td><%= @work_order.latest_appointment.source_system %></td>
             </tr>
+            <% end %>
           </tbody>
         </table>
       </div>
