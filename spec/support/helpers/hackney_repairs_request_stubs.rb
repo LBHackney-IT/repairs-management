@@ -185,8 +185,77 @@ module Helpers
         .to_return(status: status, body: body.to_json)
     end
 
+    # work_orders_by_property_reference
+
+    def work_orders_by_property_reference_payload
+      [{
+        "sorCode" => "20060060",
+        "trade" => "Plumbing",
+        "workOrderReference" => "00545095",
+        "repairRequestReference" => "02054981",
+        "problemDescription" => "rem - leak affecting 2 props below.",
+        "created" => "2010-12-20T09:53:27",
+        "estimatedCost" => 115.02,
+        "actualCost" => 0,
+        "completedOn" => "1900-01-01T00:00:00",
+        "dateDue" => "2011-01-18T09:53:00",
+        "workOrderStatus" => "300",
+        "dloStatus" => "3",
+        "servitorReference" => "00746221",
+        "propertyReference" => "00014665"
+      },
+      {
+        "sorCode" => "20060020",
+        "trade" => "Plumbing",
+        "workOrderReference" => "00547607",
+        "repairRequestReference" => "02057576",
+        "problemDescription" => "rem - leak in wc",
+        "created" => "2010-12-23T09:58:58",
+        "estimatedCost" => 57.51,
+        "actualCost" => 0,
+        "completedOn" => "1900-01-01T00:00:00",
+        "dateDue" => "2011-01-21T09:59:00",
+        "workOrderStatus" => "700",
+        "dloStatus" => "1",
+        "servitorReference" => "00767633",
+        "propertyReference" => "00014665"
+      },
+      {
+        "sorCode" => "4896802H",
+        "trade" => "Domestic gas: servicing",
+        "workOrderReference" => "00636321",
+        "repairRequestReference" => "02148747",
+        "problemDescription" => "Annual Gas Service",
+        "created" => "2011-06-22T05:07:48",
+        "estimatedCost" => 142.93,
+        "actualCost" => 0,
+        "completedOn" => "1900-01-01T00:00:00",
+        "dateDue" => "2011-09-14T05:08:00",
+        "workOrderStatus" => "300",
+        "dloStatus" => "3",
+        "servitorReference" => "01602146",
+        "propertyReference" => "00014665"
+      },
+      {
+        "sorCode" => "20110240",
+        "trade" => "Electrical",
+        "workOrderReference" => "01132479",
+        "repairRequestReference" => "02670880",
+        "problemDescription" => "ELEC pls rem deff light in living room tnt reports the light cord is very short but tnt reports that his lights blew out after 1 week of changing light bulb pls check connection and report back all f/o that may be required",
+        "created" => "2014-04-01T10:23:09",
+        "estimatedCost" => 107.51,
+        "actualCost" => 0,
+        "completedOn" => "1900-01-01T00:00:00",
+        "dateDue" => "2014-04-30T10:23:00",
+        "workOrderStatus" => "300",
+        "dloStatus" => "3",
+        "servitorReference" => "06218252",
+        "propertyReference" => "00014665"
+      }]
+    end
+
     def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
-                                              body: [work_order_response_payload])
+                                              body: work_orders_by_property_reference_payload)
        stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")
          .to_return(status: status, body: body.to_json)
     end

@@ -20,4 +20,8 @@ class Hackney::Property
   def work_orders
     @_work_orders ||= Hackney::WorkOrder.for_property(reference)
   end
+
+  def trades
+    @_trades ||= work_orders.map(&:trade).uniq
+  end
 end
