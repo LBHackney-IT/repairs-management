@@ -10,8 +10,10 @@
 
   <div class="govuk-form-group">
     <fieldset class='govuk-fieldset trade-filter'>
-
-      <h4 class="govuk-heading-s">Trade</h4>
+      <div class="trade-filter-collapsible-header">
+        <h4 class="govuk-heading-s">Trade</h4>
+        <i class="trade-filter-collapsible up-arrow"></i>
+      </div>
 
       <div class="hackney-checkboxes">
         <% @work_order.property.trades.each_with_index do |trade, index| %>
@@ -58,9 +60,26 @@
       workOrders.forEach(workOrder => workOrder.classList.remove('hidden'));
     }
 
-    const checkboxes = document.querySelectorAll('.filter-checkbox')
-    checkboxes.forEach(el => el.addEventListener('click', handleToggleTrade))
+    function collapsibleTradeFilter() {
+      const collapsible = document.querySelector(".trade-filter-collapsible");
+      let content = document.querySelector('.hackney-checkboxes');
 
-    document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters)
+      if (content.style.display === "none") {
+        content.style.display = "block";
+        collapsible.classList.remove('up-arrow');
+        collapsible.classList.add('up-arrow');
+      } else {
+        content.style.display = "none";
+        collapsible.classList.remove('up-arrow');
+        collapsible.classList.add('down-arrow');
+      }
+    }
+
+    const checkboxes = document.querySelectorAll('.filter-checkbox');
+    checkboxes.forEach(el => el.addEventListener('click', handleToggleTrade));
+
+    document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters);
+
+    document.querySelector('.trade-filter-collapsible-header').addEventListener('click', collapsibleTradeFilter);
   })();
 </script>
