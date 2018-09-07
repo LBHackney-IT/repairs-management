@@ -117,7 +117,7 @@ module Helpers
     def work_order_appointments_response_payload
       [
         {
-          "id" => "Plumbing",
+          "id" => "01551932",
           "status" => "planned",
           "assignedWorker" => "(PLM) Brian Liverpool",
           "phonenumber" => "+447535847993",
@@ -141,7 +141,7 @@ module Helpers
           "endDate" => "2018-05-30T12:00:00"
         },
         {
-          "id" => "Plumbing",
+          "id" => "01551932",
           "status" => "completed",
           "assignedWorker" => "(PLM) Fatima Bagam TEST",
           "phonenumber" => nil,
@@ -158,7 +158,7 @@ module Helpers
     def work_order_appointment_response_payload__out_of_target
       [
         {
-          "id" => "Plumbing",
+          "id" => "01551932",
           "status" => "completed",
           "assignedWorker" => "(PLM) Fatima Bagam TEST",
           "phonenumber" => nil,
