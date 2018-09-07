@@ -24,6 +24,10 @@
   }
 }
 
+.filter-checkbox:focus {
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+}
+
 .hackney-checkboxes__label {
   padding: 0px 5px;
   cursor: pointer;
