@@ -51,6 +51,7 @@ gem 'sidekiq'
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
+  gem 'factory_bot_rails'
   gem 'dotenv-rails'
   gem 'neo4j-rake_tasks'
 end

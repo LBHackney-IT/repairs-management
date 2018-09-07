@@ -21,6 +21,10 @@ class Hackney::Property
     @_work_orders ||= Hackney::WorkOrder.for_property(reference)
   end
 
+  def dwelling_work_orders_hierarchy
+    @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithProperty.new(reference).call
+  end
+
   def trades
     @_trades ||= work_orders.map(&:trade).uniq
   end

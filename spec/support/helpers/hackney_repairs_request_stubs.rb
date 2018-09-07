@@ -256,8 +256,38 @@ module Helpers
 
     def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
                                               body: work_orders_by_property_reference_payload)
-       stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")
-         .to_return(status: status, body: body.to_json)
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")
+        .to_return(status: status, body: body.to_json)
+    end
+
+    def property_hierarchy_response_body
+      [
+        {
+          propertyReference: '00014665',
+          levelCode: '3',
+          description: 'Block',
+          majorReference: '00078632',
+          address: '37-45 ODD Shrubland Road',
+          postCode: 'E8 4NL'
+        },
+        {
+          propertyReference: '00078632',
+          levelCode: '2',
+          description: 'Estate',
+          majorReference: '00087086',
+          address: 'Shrubland Estate  Shrubland Road',
+          postCode: 'E8 4NL'
+        }
+      ]
+    end
+
+    def stub_hackney_property_hierarchy(opts = {})
+      reference = opts.fetch(:reference, '00014665')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, property_hierarchy_response_body)
+
+      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/hierarchy")
+        .to_return(status: status, body: body.to_json)
     end
   end
 end

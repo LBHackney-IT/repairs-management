@@ -4,6 +4,29 @@ RSpec.describe 'Work order' do
   include Helpers::Authentication
   include Helpers::HackneyRepairsRequestStubs
 
+  let(:property_reference1) { '00014665' }
+  let(:property_reference2) { '00024665' }
+  let(:property_hierarchy_response) do
+    [
+      {
+        propertyReference: property_reference1,
+        levelCode: '3',
+        description: 'Block',
+        majorReference: '00078632',
+        address: '37-45 ODD Shrubland Road',
+        postCode: 'E8 4NL'
+      },
+      {
+        propertyReference: property_reference2,
+        levelCode: '2',
+        description: 'Estate',
+        majorReference: '00087086',
+        address: 'Shrubland Estate  Shrubland Road',
+        postCode: 'E8 4NL'
+      }
+    ]
+  end
+
   before { sign_in }
 
   scenario 'Search for a work order by reference' do
@@ -24,10 +47,12 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
-    stub_hackney_work_orders_for_property(body: [
+    stub_hackney_work_orders_for_property(reference: property_reference1, body: [
       work_order_response_payload("workOrderReference" => "1234", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "4321", "problemDescription" => "Problem 2"),
     ])
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     fill_in 'Work order reference', with: '01551932'
     click_on 'Search'
@@ -74,6 +99,10 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments
     stub_hackney_work_orders_for_property
 
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
     visit work_order_path('01551932')
     expect(page).to have_content 'There are no notes for this work order.'
   end
@@ -92,23 +121,12 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_appointments
     stub_hackney_work_orders_for_property
 
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
     visit work_order_path('01551932')
     expect(page).to have_content 'There are no notes for this work order.'
-  end
-
-  scenario 'A label is shown when the appointment date has passed the target date' do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments(
-      body: work_order_appointment_response_payload__out_of_target
-    )
-    stub_hackney_work_orders_for_property
-
-    visit work_order_path('01551932')
-
-    expect(page).to have_content 'The booked appointment has passed its target date.'
   end
 
   scenario 'No appointments are booked' do
@@ -120,6 +138,10 @@ RSpec.describe 'Work order' do
       body: work_order_appointment_response_payload__no_appointments
     )
     stub_hackney_work_orders_for_property
+
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -139,6 +161,10 @@ RSpec.describe 'Work order' do
       status: 404
     )
     stub_hackney_work_orders_for_property
+
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 

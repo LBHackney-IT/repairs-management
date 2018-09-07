@@ -1,0 +1,26 @@
+.hackney-filtering__tag {
+  background-color: hackney-colour('housing-1');
+  color: govuk-colour('white');
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 8px;
+  text-transform: uppercase;
+}
+
+.hackney-filtering__tag--active {
+  @extend .hackney-filtering__tag;
+
+  background-color: hackney-colour('housing-3');
+}
+
+.hackney-filtering__list {
+  padding-left: 0;
+  padding-left: 0px;
+  margin: 15px 0px;
+
+  li {
+    display: inline;
+    list-style-type: none;
+    cursor: pointer;
+  }
+}

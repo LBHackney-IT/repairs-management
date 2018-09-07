@@ -12,16 +12,6 @@
     </div>
   </div>
 
-  <% if out_of_target?(@work_order, @work_order.latest_appointment) %>
-    <div class="govuk-warning-text">
-      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-      <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        The booked appointment has passed its target date.
-      </strong>
-    </div>
-  <% end %>
-
   <div class="govuk-body-m">
     <p class='govuk-!-font-weight-bold'>
       Target date: <span class='hackney-work-order-target-date'><%= @work_order.date_due.to_s(:govuk_date) %></span>
@@ -117,9 +107,14 @@
         Notes
       </a>
     </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#builiding-work-orders-tab">
+        Building work orders
+      </a>
+    </li>
   </ul>
   <%= render 'work_order_repairs_history' %>
   <%= render 'work_order_notes' %>
+  <%= render 'work_order_building', dwelling_work_orders_hierarchy: @work_order.property.dwelling_work_orders_hierarchy %>
+  </ul>
 </div>
-
-
