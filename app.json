@@ -30,6 +30,9 @@
     },
     "HACKNEY_REPAIRS_API_BASE_URL": {
       "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
     }
   },
   "formation": {

@@ -46,6 +46,8 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
 
+gem 'sidekiq'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
