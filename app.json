@@ -43,7 +43,8 @@
   },
   "addons": [
     "graphenedb",
-    "heroku-postgresql"
+    "heroku-postgresql",
+    "heroku-redis"
   ],
   "buildpacks": [
     {
