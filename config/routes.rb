@@ -8,4 +8,9 @@ Rails.application.routes.draw do
   end
 
   root to: 'pages#home'
+
+  if Rails.env.development?
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end
