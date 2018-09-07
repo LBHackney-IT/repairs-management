@@ -22,6 +22,8 @@ require 'rspec/rails'
 #
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
+Capybara.javascript_driver = :selenium_chrome_headless
+
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 

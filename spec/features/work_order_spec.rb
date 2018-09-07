@@ -67,7 +67,8 @@ RSpec.describe 'Work order' do
     expect(page).to have_content '02012341234'
     expect(page).to have_content 's.erbas@example.com'
 
-    expect(page).to have_content "Appointment booked for 2:51pm, 29 May 2018 until 2:51pm, 5 June 2018"
+    expect(page).to have_content "Appointment booked for 29 May 2018 (2:51pm) until 5 June 2018 (2:51pm)"
+
     expect(page).to have_content 'Priority: N'
     expect(page).to have_content 'Status: In Progress'
     expect(page).to have_content 'Data source: DRS'
@@ -168,5 +169,54 @@ RSpec.describe 'Work order' do
     visit work_order_path('01551932')
 
     expect(page).to have_content 'There are no booked appointments.'
+  end
+
+  scenario 'Filtering the repairs history by trade related to the property', js: true do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_work_orders_for_property
+
+    visit work_order_path('01551932')
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Plumbing').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 0
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 0
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Electrical').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 0
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Electrical').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 0
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 0
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+    find('label', text: 'Plumbing').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
   end
 end

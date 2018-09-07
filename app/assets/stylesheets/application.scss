@@ -6,6 +6,7 @@ $govuk-font-family: 'Arial', sans-serif;
 @import "hackney_note";
 @import "hackney_tabs";
 @import "hackney_filtering";
+@import "hackney_trade_filtering.scss";
 
 .hidden {
   display: none;
