@@ -33,6 +33,7 @@ RUN unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR
 
 # Put Chromedriver into the PATH
 ENV PATH $CHROMEDRIVER_DIR:$PATH
+
 # Install yarn
 ENV PATH=/root/.yarn/bin:$PATH
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
