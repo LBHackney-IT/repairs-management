@@ -1,11 +1,10 @@
 class Hackney::Property
   include ActiveModel::Model
-  include Hackney::Client
 
   attr_accessor :reference, :address, :postcode
 
   def self.find(property_reference)
-    response = client.get_property(property_reference)
+    response = HackneyAPI::RepairsClient.new.get_property(property_reference)
     build(response)
   end
 

@@ -33,6 +33,13 @@ module HackneyAPI
       )
     end
 
+    def get_work_order_appointments_latest(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders/#{reference}/appointments/latest"
+      )
+    end
+
     def get_work_order_notes(reference)
       request(
         http_method: :get,

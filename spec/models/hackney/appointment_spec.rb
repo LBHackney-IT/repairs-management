@@ -13,10 +13,4 @@ describe Hackney::Appointment, '.build' do
     expect(model).to be_a(Hackney::Appointment)
     expect(model.end_date).to eq(DateTime.new(2018, 05, 30, 12, 00, 00))
   end
-
-  it 'raises an error if fields are not present' do
-    expect {
-      described_class.build({})
-    }.to raise_error(NoMethodError, "undefined method `to_datetime' for nil:NilClass")
-  end
 end

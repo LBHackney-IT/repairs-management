@@ -185,6 +185,26 @@ module Helpers
         .to_return(status: status, body: body.to_json)
     end
 
+    def stub_hackney_repairs_work_order_latest_appointments(opts = {})
+      reference = opts.fetch(:reference, '01551932')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, {
+        "id": "01551945",
+        "status": "completed",
+        "assignedWorker": "(PLM) Tom Sabin Unboxed",
+        "phonenumber": "+44 mobile",
+        "priority": "standard",
+        "sourceSystem": "DRS",
+        "comment": "FIRST",
+        "creationDate": "2018-05-31T15:05:51",
+        "beginDate": "2018-05-31T08:00:00",
+        "endDate": "2018-05-31T16:15:00"
+      })
+
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments/latest")
+        .to_return(status: status, body: body.to_json)
+    end
+
     # work_orders_by_property_reference
 
     def work_orders_by_property_reference_payload
