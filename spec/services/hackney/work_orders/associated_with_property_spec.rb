@@ -29,16 +29,37 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       ]
     end
 
+    let(:property_reference_response_body) do
+      [
+        {
+          "sorCode" => "20060060",
+          "trade" => "Plumbing",
+          "workOrderReference" => "00545095",
+          "repairRequestReference" => "02054981",
+          "problemDescription" => "rem - leak affecting 2 props below.",
+          "created" => "2010-12-20T09:53:27",
+          "estimatedCost" => 115.02,
+          "actualCost" => 0,
+          "completedOn" => "1900-01-01T00:00:00",
+          "dateDue" => "2011-01-18T09:53:00",
+          "workOrderStatus" => "300",
+          "dloStatus" => "3",
+          "servitorReference" => "00746221",
+          "propertyReference" => "00014665"
+        }
+      ]
+    end
+
     before do
       allow(Hackney::PropertyHierarchy).to receive(:for_property).with(dwelling_reference).and_return(property_hierarchy_response)
 
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_estate.reference)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_free.reference)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_block.reference)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_subblock.reference)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_facilities.reference)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_dwelling.reference)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_nondwell.reference)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_estate.reference, body: property_reference_response_body)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_free.reference, body: property_reference_response_body)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_block.reference, body: property_reference_response_body)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_subblock.reference, body: property_reference_response_body)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_facilities.reference, body: property_reference_response_body)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_dwelling.reference, body: property_reference_response_body)
+      stub_hackney_work_orders_for_property(reference: property_hierarchy_nondwell.reference, body: property_reference_response_body)
     end
 
     subject { service_instance.call }

@@ -182,6 +182,9 @@ RSpec.describe 'Work order' do
     stub_hackney_work_orders_for_property(reference: property_reference2)
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
     visit work_order_path('01551932')
 
     within('#repair-history-tab table') do
