@@ -25,7 +25,7 @@
 }
 
 .filter-checkbox:focus {
-  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline: 3px solid hackney-colour('housing-3');;
 }
 
 .hackney-checkboxes__label {
