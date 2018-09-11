@@ -31,10 +31,10 @@ describe WorkOrdersImporter, :db_connection do
     }
 
     it 'imports new work orders' do
-      expect(WorkOrder.count).to eq(0)
+      expect(Graph::WorkOrder.count).to eq(0)
       subject
-      expect(WorkOrder.count).to eq(2)
-      expect(WorkOrder.all.map(&:ref)).to contain_exactly('06183523', '01572924')
+      expect(Graph::WorkOrder.count).to eq(2)
+      expect(Graph::WorkOrder.all.map(&:reference)).to contain_exactly('06183523', '01572924')
     end
   end
 end

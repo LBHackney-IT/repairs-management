@@ -1,7 +1,7 @@
 class WorkOrdersImporter
   def import
     work_orders.each do |wo|
-      WorkOrder.find_or_create_by(ref: wo['id'])
+      Graph::WorkOrder.find_or_create_by(reference: wo['id'])
     end
   end
 

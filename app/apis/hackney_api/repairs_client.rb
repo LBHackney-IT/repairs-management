@@ -26,6 +26,13 @@ module HackneyAPI
       )
     end
 
+    def notes_feed(previous_note_id)
+      request(
+        http_method: :get,
+        endpoint: "v1/notes/feed?startId=#{previous_note_id}&noteTarget=uhorder"
+      )
+    end
+
     def get_work_order_appointments(reference)
       request(
         http_method: :get,
