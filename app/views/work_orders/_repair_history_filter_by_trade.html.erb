@@ -41,31 +41,32 @@
 
       var showTheseTrades = [];
 
-      filterCheckBoxes.forEach(function (checkBox) {
-        showTheseTrades.push(checkBox.id);
-      });
+      for(var i = 0; i < filterCheckBoxes.length; i++) {
+        showTheseTrades.push(filterCheckBoxes[i].id);
+      }
 
       if (showTheseTrades.length == 0) {
-        workOrders.forEach(function (workOrder) {
-          workOrder.classList.remove('hidden');
-        });
+        for(var i = 0; i < workOrders.length; i++) {
+          workOrders[i].classList.remove('hidden');
+        }
       } else {
-        workOrders.forEach(function (workOrder) {
-          workOrder.classList.add('hidden');
-          if (showTheseTrades.includes(workOrder.getAttribute("data-trade"))) {
-            workOrder.classList.remove('hidden');
+
+        for(var i = 0; i < workOrders.length; i++) {
+          workOrders[i].classList.add('hidden');
+          if (showTheseTrades.includes(workOrders[i].getAttribute("data-trade"))) {
+            workOrders[i].classList.remove('hidden');
           }
-        });
+        }
       }
     }
 
     function handleClearAllFilters() {
-      filterCheckBoxes.forEach(function (checkBox) {
-        checkBox.checked = false;
-      });
-      workOrders.forEach(function (workOrder) {
-        workOrder.classList.remove('hidden');
-      });
+      for(var i = 0; i < filterCheckBoxes.length; i++) {
+        filterCheckBoxes[i].checked = false;
+      }
+      for(var i = 0; i < workOrders.length; i++) {
+        workOrders[i].classList.remove('hidden');
+      }
     }
 
     function collapsibleTradeFilter() {
@@ -84,9 +85,9 @@
     }
 
     var checkboxes = document.querySelectorAll('.filter-checkbox');
-    checkboxes.forEach(function (el) {
-      el.addEventListener('click', handleToggleTrade);
-    });
+    for(var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].addEventListener('click', handleToggleTrade);
+    }
 
     document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters);
 
