@@ -19,6 +19,7 @@
   text-decoration: underline;
   cursor: pointer;
   border: none;
+  background-color: govuk-colour('white');
   &:hover {
     opacity: 0.7;
   }
