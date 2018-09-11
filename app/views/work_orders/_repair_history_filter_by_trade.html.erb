@@ -31,38 +31,46 @@
 </div>
 
 <script>
-  (function() {
-    let filterCheckBoxes = [];
-    let workOrders = [];
+  (function () {
+    var filterCheckBoxes = [];
+    var workOrders = [];
 
     function handleToggleTrade() {
       filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
       workOrders = document.querySelectorAll('.hackney-work-order-rows');
 
-      let showTheseTrades = [];
+      var showTheseTrades = [];
 
-      filterCheckBoxes.forEach(checkBox => showTheseTrades.push(checkBox.id));
+      filterCheckBoxes.forEach(function (checkBox) {
+        showTheseTrades.push(checkBox.id);
+      });
 
       if (showTheseTrades.length == 0) {
-        workOrders.forEach(workOrder => workOrder.classList.remove('hidden'));
+        workOrders.forEach(function (workOrder) {
+          workOrder.classList.remove('hidden');
+        });
       } else {
-        workOrders.forEach(workOrder => {
+        workOrders.forEach(function (workOrder) {
           workOrder.classList.add('hidden');
           if (showTheseTrades.includes(workOrder.getAttribute("data-trade"))) {
             workOrder.classList.remove('hidden');
           }
-        })
+        });
       }
     }
 
     function handleClearAllFilters() {
-      filterCheckBoxes.forEach(checkBox => checkBox.checked = false);
-      workOrders.forEach(workOrder => workOrder.classList.remove('hidden'));
+      filterCheckBoxes.forEach(function (checkBox) {
+        checkBox.checked = false;
+      });
+      workOrders.forEach(function (workOrder) {
+        workOrder.classList.remove('hidden');
+      });
     }
 
     function collapsibleTradeFilter() {
-      const collapsible = document.querySelector(".trade-filter-collapsible");
-      let content = document.querySelector('.hackney-checkboxes');
+      var collapsible = document.querySelector(".trade-filter-collapsible");
+      var content = document.querySelector('.hackney-checkboxes');
 
       if (content.style.display === "none") {
         content.style.display = "block";
@@ -75,8 +83,10 @@
       }
     }
 
-    const checkboxes = document.querySelectorAll('.filter-checkbox');
-    checkboxes.forEach(el => el.addEventListener('click', handleToggleTrade));
+    var checkboxes = document.querySelectorAll('.filter-checkbox');
+    checkboxes.forEach(function (el) {
+      el.addEventListener('click', handleToggleTrade);
+    });
 
     document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters);
 
