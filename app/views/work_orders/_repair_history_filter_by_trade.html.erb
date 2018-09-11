@@ -53,7 +53,7 @@
 
         for(var i = 0; i < workOrders.length; i++) {
           workOrders[i].classList.add('hidden');
-          if (showTheseTrades.includes(workOrders[i].getAttribute("data-trade"))) {
+          if (showTheseTrades.indexOf(workOrders[i].getAttribute("data-trade")) >= 0) {
             workOrders[i].classList.remove('hidden');
           }
         }
