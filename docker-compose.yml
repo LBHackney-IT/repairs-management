@@ -47,8 +47,9 @@ services:
 
   sidekiq:
     depends_on:
-      - 'pg_db'
-      - 'redis'
+      - pg_db
+      - neo4j_db
+      - redis
     build: .
     command: bundle exec sidekiq -q default -q mailers
     volumes:
