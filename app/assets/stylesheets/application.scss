@@ -65,3 +65,10 @@ $govuk-font-family: 'Arial', sans-serif;
     }
   }
 }
+
+a {
+  color: hackney-colour('housing-2');
+  &:visited {
+    color: hackney-colour('housing-1');
+  }
+}

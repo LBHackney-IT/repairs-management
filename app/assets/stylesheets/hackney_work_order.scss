@@ -38,6 +38,47 @@
   }
 }
 
+.hackney-work-order-related {
+  border-top: 1px solid $govuk-border-colour;
+  border-right: 1px solid $govuk-border-colour;
+  padding: 0;
+
+  &:last-child {
+    border-right: none;
+  }
+
+  p {
+    color: $govuk-text-colour;
+    margin: 5px 0;
+  }
+
+  .address {
+    margin: 0 0 10px 0;
+    padding: 5px 10px;
+    background-color: govuk-colour('grey-4');
+  }
+
+  ul {
+    margin: 0;
+    padding: 5px 10px;
+    li {
+      list-style: none;
+      border-bottom: 1px solid $govuk-border-colour;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+a {
+  color: hackney-colour('housing-2');
+  &:visited {
+    color: hackney-colour('housing-1');
+  }
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
 .hackney-work-order-table {
   tbody {
     vertical-align: top;
@@ -45,16 +86,6 @@
 
   td {
     white-space: nowrap;
-
-    a {
-      color: hackney-colour('housing-2');
-      &:visited {
-        color: hackney-colour('housing-1');
-      }
-      &:hover {
-        opacity: 0.7;
-      }
-    }
 
     &.description {
       white-space: normal;
