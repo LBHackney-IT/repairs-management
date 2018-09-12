@@ -13,8 +13,8 @@ jobs:
           POSTGRES_DB: circle-test_test
       - image: bitnami/neo4j
         volumes:
-          - ./tmp/db/neo4j/dev/data:/data
-          - ./tmp/db/neo4j/dev/logs:/logs
+          - ./tmp/db/neo4j/data:/data
+          - ./tmp/db/neo4j/logs:/logs
         environment:
           - NEO4J_AUTH=none
         ports:
@@ -45,9 +45,6 @@ jobs:
       # Database setup
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
-
-      # Neo4j setup
-      - run: docker run -d --publish=7474:7474 --volume=$HOME/neo4j/data:/data --env=NEO4J_AUTH=none neo4j:3.0
 
       # Yarn setup
       - restore_cache:
