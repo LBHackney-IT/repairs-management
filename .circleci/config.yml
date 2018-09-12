@@ -1,29 +1,30 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/ruby:2.5.1-node-browsers
-        environment:
-          PGHOST: 127.0.0.1
-          PGUSER: root
-          RAILS_ENV: test
-      - image: circleci/postgres:9.5-alpine
-        environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle-test_test
-      - image: neo4j:3.4
-        volumes:
-          - ./tmp/db/neo4j/data:/data
-          - ./tmp/db/neo4j/logs:/logs
-        environment:
-          NEO4J_AUTH: none
-        ports:
-          - '7474:7474'
-
+    # docker:
+    #   - image: circleci/ruby:2.5.1-node-browsers
+    #     environment:
+    #       PGHOST: 127.0.0.1
+    #       PGUSER: root
+    #       RAILS_ENV: test
+    #   - image: circleci/postgres:9.5-alpine
+    #     environment:
+    #       POSTGRES_USER: root
+    #       POSTGRES_DB: circle-test_test
+    #   - image: neo4j:3.4
+    #     environment:
+    #       NEO4J_AUTH: none
+    machine: true
     working_directory: ~/repo
 
     steps:
       - checkout
+
+      - run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASS
+        docker run --env=PGHOST=127.0.0.1 --env=PGUSER=root --env=RAILS_ENV=test circleci/ruby:2.5.1-node-browsers
+        docker run --env=POSTGRES_USER=root --env=POSTGRES_DB=circle-test_test circleci/postgres:9.5-alpine
+        docker run --publish=7474:7474 --publish=7687:7687 --volume=$HOME/neo4j/data:/data --volume=$HOME/neo4j/logs:/logs --env=NEO4J_AUTH=none neo4j:3.4
 
       # Download and cache dependencies
       - restore_cache:
