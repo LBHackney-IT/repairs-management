@@ -53,19 +53,5 @@
     {
       "url": "heroku/ruby"
     }
-  ],
-  "environments": {
-    "test": {
-      "env": {
-        "LANG": "en_US.UTF-8",
-        "RACK_ENV": "test",
-        "RAILS_ENV": "test",
-        "RAILS_LOG_TO_STDOUT": "enabled",
-        "RAILS_SERVE_STATIC_FILES": "enabled",
-        "SECRET_KEY_BASE": "7e13a4b69ea03743c92979b7fe323413eea1572b78e55b2f326256da0a1381e19c8f753ec68869785895d37d4441177fc3507ead6adc788763df356c334564d9",
-        "AAD_CLIENT_ID": "AZURE-ACTIVE-DIRECTORY-APPLICATION-ID",
-        "AAD_TENANT": "example.com"
-      }
-    }
-  }
+  ]
 }
