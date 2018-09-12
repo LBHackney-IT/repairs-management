@@ -15,12 +15,6 @@ jobs:
         environment:
           NEO4J_AUTH: none
 
-    machine:
-      pre:
-        - sudo sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
-      services:
-        - neo4j
-
     working_directory: ~/repo
 
     steps:
@@ -46,6 +40,9 @@ jobs:
       # Database setup
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
+
+      # Neo4js setup
+      - run: sudo sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
 
       # yarn setup
 
