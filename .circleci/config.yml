@@ -12,8 +12,13 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_DB: circle-test_test
       - image: bitnami/neo4j
+        volumes:
+          - ./tmp/db/neo4j/dev/data:/data
+          - ./tmp/db/neo4j/dev/logs:/logs
         environment:
-          NEO4J_AUTH: none
+          - NEO4J_AUTH=none
+        ports:
+          - '7474:7474'
 
     working_directory: ~/repo
 
@@ -41,11 +46,7 @@ jobs:
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
 
-      # Neo4js setup
-      - run: sudo sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
-
-      # yarn setup
-
+      # Yarn setup
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
