@@ -11,15 +11,17 @@ jobs:
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle-test_test
+      - image: bitnami/neo4j:latest
+        environment:
+          NEO4J_HTTP_PORT_NUMBER: 7474
+          NEO4J_AUTH: false
+          NEO4J_PASSWORD: bitnami
 
     working_directory: ~/repo
 
     steps:
       - checkout
 
-      - setup_remote_docker
-
-      - run: docker run --publish=7474:7474 --publish=7687:7687 --env=NEO4J_AUTH=none neo4j:3.4
 
       # Download and cache dependencies
       - restore_cache:
