@@ -1,12 +1,6 @@
 version: 2
 jobs:
   build:
-    machine:
-      pre:
-        - sudo sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
-      services:
-        - neo4j
-
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.5.1-node-browsers
@@ -18,6 +12,9 @@ jobs:
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle-test_test
+      - image: bitnami/neo4j
+        environment:
+          NEO4J_AUTH: none
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
