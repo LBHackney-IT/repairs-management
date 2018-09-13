@@ -40,7 +40,7 @@ private
   end
 
   def reference
-    params[:ref]
+    params[:ref].gsub(/\s+/, "")
   end
 
   def is_work_order(reference)

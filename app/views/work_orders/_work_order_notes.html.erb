@@ -2,9 +2,9 @@
   <h2 class='govuk-heading-l'>
     Notes
   </h2>
-  <% if @work_order.notes.present? %>
+  <% if notes.present? %>
     <ul class="govuk-list hackney-note-timeline">
-    <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
+    <% notes.sort_by(&:logged_at).reverse.each do |note| %>
       <li class='hackney-note '>
         <p class="govuk-body">
           <div class="hackney-note-info">

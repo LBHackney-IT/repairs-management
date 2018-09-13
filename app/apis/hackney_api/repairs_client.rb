@@ -85,7 +85,7 @@ module HackneyAPI
     def get_property_by_postcode(postcode)
       request(
         http_method: :get,
-        endpoint: "v1/properties?postcode=#{postcode.gsub(/\s+/, "")}"
+        endpoint: "v1/properties?postcode=#{postcode}"
       )
     end
 
