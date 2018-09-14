@@ -1,21 +1,37 @@
 <div class="govuk-tabs__panel hackney-work-order-tabs-info" id="notes-tab">
   <h2 class='govuk-heading-l'>
-    Notes
+    Notes and appointments
   </h2>
-  <% if notes.present? %>
+  <% if @work_order.notes.present? || @appointments.present? %>
     <ul class="govuk-list hackney-note-timeline">
-    <% notes.sort_by(&:logged_at).reverse.each do |note| %>
-      <li class='hackney-note '>
+    <% @notes_and_appointments.sort_by{ |a| a.respond_to?(:logged_at) ? a.logged_at : a.begin_date }.reverse.each do |note_or_appointment| %>
+      <li class="hackney-note" >
         <p class="govuk-body">
-          <div class="hackney-note-info">
-            <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
-          </div>
-          <%= simple_format(note.text) %>
+          <% if note_or_appointment.respond_to?(:logged_at) %>
+            <div class="hackney-note-info">
+              <%= note_or_appointment.logged_at.to_s(:govuk_date) %> by <%= note_or_appointment.logged_by %>
+            </div>
+            <%= simple_format(note_or_appointment.text) %>
+          <% else %>
+            <div class="hackney-note-info">
+              <% if note_or_appointment.begin_date.to_date ==  note_or_appointment.end_date.to_date %>
+                <%= note_or_appointment.begin_date.to_s(:govuk_time) %> to <%= note_or_appointment.end_date.to_s(:govuk_date) %>
+              <% else %>
+                <%= note_or_appointment.begin_date.to_s(:govuk_date) %> to <%= note_or_appointment.end_date.to_s(:govuk_date) %>
+              <% end %>
+            </div>
+             <span class="hackney-appointment__tag">Appointment</span> <%= note_or_appointment.status.capitalize %><br>
+            Operative name: <%= note_or_appointment.assigned_worker %><br>
+            Phone number: <%= note_or_appointment.phone_number %><br>
+            Priority: <%= note_or_appointment.priority %><br>
+            Created at: <%= note_or_appointment.created_at.to_s(:govuk_date) %><br>
+            Data source: <%= note_or_appointment.source_system %>
+          <% end %>
         </p>
       </li>
     <% end %>
     </ul>
   <% else %>
-    <p class="govuk-body-s">There are no notes for this work order.</p>
+    <p class="govuk-body-s">There are no notes or appointments for this work order.</p>
   <% end %>
 </div>

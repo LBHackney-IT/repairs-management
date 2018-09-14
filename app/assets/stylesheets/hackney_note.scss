@@ -31,3 +31,12 @@
 .hackney-note-timeline {
   border-left: 4px solid govuk-colour("grey-1");
 }
+
+.hackney-appointment__tag {
+  background: hackney-colour("housing-2");
+  color: govuk-colour("white");
+  padding: 4px 10px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}

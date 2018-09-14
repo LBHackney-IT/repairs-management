@@ -35,4 +35,17 @@ module WorkOrderHelper
   def trade_index(property, trade)
     property.trades.index(trade)
   end
+
+  def format_appointment_date(appointment)
+    if appointment.begin_date.to_date ==  appointment.end_date.to_date
+      "#{appointment.begin_date.to_s(:govuk_date_time)} to #{appointment.end_date.to_s(:govuk_time)}"
+    else
+      "#{appointment.begin_date.to_s(:govuk_date_time)} to #{appointment.end_date.to_s(:govuk_date_time)}"
+    end
+  end
+
+  def sort_notes_and_appointments(work_order)
+    notes_and_appointments = work_order.notes + work_order.appointments
+    @sorted_notes_and_appointments = notes_and_appointments.sort_by{ |a| a.respond_to?(:logged_at) ? a.logged_at : a.begin_date }.reverse
+  end
 end

@@ -1,0 +1,4 @@
+<div class="hackney-note-info">
+  <%= note_or_appointment.logged_at.to_s(:govuk_date_time) %> by <%= note_or_appointment.logged_by %>
+</div>
+<%= simple_format(note_or_appointment.text) %>

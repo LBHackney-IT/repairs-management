@@ -76,11 +76,14 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
-    expect(page).to have_content 'Notes'
-    within(find('h2', text: 'Notes').find('~ ul')) do
+    expect(page).to have_content 'Notes and appointments'
+    within(find('h2', text: 'Notes and appointments').find('~ ul')) do
       expect(all('li').map(&:text)).to eq([
-        "11:32am, 2 September 2018 by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath",
-        "10:12am, 23 August 2018 by MOSHEA\nTenant called to confirm appointment",
+        "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath",
+        "23 August 2018, 10:12am by MOSHEA\nTenant called to confirm appointment",
+        "30 May 2018, 8:00am to 12:00pm\nAppointment: Planned Operative name: (PLM) Fatima Bagam TEST Phone number: Priority: standard Created at: 29 May 2018, 2:10pm Data source: DRS",
+        "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned Operative name: (PLM) Brian Liverpool Phone number: +447535847993 Priority: standard Created at: 29 May 2018, 2:51pm Data source: DRS",
+        "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed Operative name: (PLM) Fatima Bagam TEST Phone number: Priority: standard Created at: 17 October 2017, 9:27am Data source: DRS"
       ])
     end
 
@@ -133,15 +136,16 @@ RSpec.describe 'Work order' do
     expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes'
   end
 
-  scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
+  scenario 'No notes or appointments are returned' do # TODO: remove when the api in sandbox is deployed
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes(
       body: work_order_note_response_payload__no_notes
     )
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_repairs_work_order_appointments(
+      body: work_order_appointment_response_payload__no_appointments
+    )
     stub_hackney_work_orders_for_property
 
     stub_hackney_work_orders_for_property(reference: property_reference1)
@@ -149,7 +153,7 @@ RSpec.describe 'Work order' do
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
-    expect(page).to have_content 'There are no notes for this work order.'
+    expect(page).to have_content 'There are no notes or appointments for this work order.'
   end
 
   scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
@@ -163,8 +167,9 @@ RSpec.describe 'Work order' do
       },
       status: 500
     )
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_repairs_work_order_appointments(
+      body: work_order_appointment_response_payload__no_appointments
+    )
     stub_hackney_work_orders_for_property
 
     stub_hackney_work_orders_for_property(reference: property_reference1)
@@ -172,7 +177,7 @@ RSpec.describe 'Work order' do
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
-    expect(page).to have_content 'There are no notes for this work order.'
+    expect(page).to have_content 'There are no notes or appointments for this work order.'
   end
 
   scenario 'No appointments are booked' do
