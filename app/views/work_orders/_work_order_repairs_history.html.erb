@@ -4,7 +4,12 @@
   </h2>
 
   <div class="govuk-grid-row">
-  <%= render 'repair_history_filter_by_trade' %>
+
+  <% if @work_order.nil? %>
+    <%= render 'work_orders/repair_history_filter_by_trade', work_orders_trades: @property_details.trades %>
+  <% else %>
+    <%= render 'repair_history_filter_by_trade', work_orders_trades: @work_order.property.trades %>
+  <% end %>
 
     <div class="govuk-grid-column-three-quarters">
       <table class="govuk-table hackney-work-order-table">

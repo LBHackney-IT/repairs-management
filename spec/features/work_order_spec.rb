@@ -30,14 +30,14 @@ RSpec.describe 'Work order' do
   before { sign_in }
 
   scenario 'Search for a work order by reference' do
-    fill_in 'Search by work order reference or property address', with: ''
+    fill_in 'Search by work order reference or postcode', with: ''
     click_on 'Search'
 
     expect(page).to have_content 'Please provide a reference or address'
 
     stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
 
-    fill_in 'Search by work order reference or property address', with: '00000000'
+    fill_in 'Search by work order reference or postcode', with: '00000000'
     click_on 'Search'
 
     expect(page).to have_content 'Could not find a work order with reference 00000000'
@@ -55,7 +55,7 @@ RSpec.describe 'Work order' do
     stub_hackney_work_orders_for_property(reference: property_reference2)
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
-    fill_in 'Search by work order reference or property address', with: '01551932'
+    fill_in 'Search by work order reference or postcode', with: '01551932'
     click_on 'Search'
 
     expect(page).to have_content 'Works order: 01551932'

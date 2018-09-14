@@ -1,0 +1,22 @@
+<p class="govuk-heading-s">
+  We found <%= address_list.count %> matching results for <%= params[:ref].upcase %> ...
+</p>
+
+<table class="govuk-table hackney-addresses">
+  <thead class="govuk-table__head">
+    <tr>
+      <th class="govuk-table__header" scope="col">Address</th>
+      <th class="govuk-table__header" scope="col">Postcode</th>
+      <th class="govuk-table__header" scope="col">Property reference</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <% address_list.each do |property| %>
+    <tr class="govuk-table__row">
+      <td class="govuk-table__cell"><%= link_to property.address, property_path(property.reference) %></td>
+      <td class="govuk-table__cell"><%= property.postcode %></td>
+      <td class="govuk-table__cell"><%= property.reference %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -8,7 +8,7 @@ class WorkOrdersController < ApplicationController
     if reference.present?
       redirect_to action: :show, ref: reference
     else
-      flash.notice = 'Please provide a reference or address'
+      flash.notice = 'Please provide a reference or postcode'
       redirect_to root_path
     end
   end
@@ -19,7 +19,7 @@ class WorkOrdersController < ApplicationController
     else
       @address_list_for_postcode = Hackney::Property.for_postcode(reference)
       if @address_list_for_postcode.present?
-        render 'address_list'
+        render 'pages/home'
       else
         redirect_to_homepage
       end

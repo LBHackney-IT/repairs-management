@@ -1,0 +1,135 @@
+<% content_for :page_header do %>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <h1 class="govuk-heading-l">
+        Works order: <%= @work_order.reference %>
+      </h1>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <h1 class="govuk-caption-m hackney-work-order-references">
+        Servitor ref: <%= @work_order.servitor_reference %>
+      </h1>
+    </div>
+  </div>
+
+  <p class="govuk-body-m">
+    <%= @work_order.repair_request.description %>
+  </p>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-third">
+      <div class="hackney-work-order-header">
+        <p class="govuk-body-s">
+          <span class="govuk-!-font-weight-bold">
+            <%= @work_order.property.address %>
+          </span><br>
+          <%= @work_order.property.postcode %>
+        </p>
+      </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="hackney-work-order-header hackney-appointment">
+        <p class="govuk-body-s">
+          <span class="govuk-!-font-weight-bold">
+            <%= @work_order.repair_request.contact.name %>
+          </span><br>
+          <%= @work_order.created.to_s(:govuk_date) %>
+        </p>
+
+        <table class="govuk-table hackney-appointment-info">
+          <tbody class="govuk-body-xs">
+            <% if @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact.telephone_number %>
+              <tr>
+                <th scope="row">Telephone:</th>
+                <td>
+                  <%= @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact.telephone_number %>
+                </td>
+              </tr>
+            <% end %>
+
+            <% if @work_order.repair_request.contact.email_address %>
+              <tr>
+                <th scope="row">Email:</th>
+                <td>
+                  <%= mail_to @work_order.repair_request.contact.email_address %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="hackney-work-order-header hackney-appointment">
+        <p class="govuk-body-s">
+          <span class="govuk-!-font-weight-bold">
+            Work order: <%= work_order_status_description(@work_order.work_order_status) %>
+          </span>
+        </p>
+
+        <table class="govuk-table hackney-appointment-info">
+          <tbody class="govuk-body-xs">
+            <tr>
+              <th scope="row">Target date:</th>
+              <td>
+                <%= @work_order.date_due.to_date.to_s(:govuk_date_short) %>,
+                <%= @work_order.date_due.to_s(:govuk_time) %>
+              </td>
+            </tr>
+
+            <tr>
+              <th scope="row">Priority:</th>
+              <td>
+                <%= @work_order.repair_request.priority %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <hr />
+
+        <% if @work_order.latest_appointment.present? %>
+          <p class="govuk-body-s">
+            <span class="govuk-!-font-weight-bold">
+              Appointment: <%= @work_order.latest_appointment.status.capitalize %>
+            </span>
+            <% if @work_order.latest_appointment.begin_date %>
+              <% if @work_order.latest_appointment.begin_date.to_date == @work_order.latest_appointment.end_date.to_date %>
+                <%= @work_order.latest_appointment.begin_date.to_s(:govuk_time) %> to <%= @work_order.latest_appointment.end_date.to_s(:govuk_time) %>,
+                <%= @work_order.latest_appointment.begin_date.to_date.to_s(:govuk_date_short) %>
+              <% else %>
+                <%= @work_order.latest_appointment.begin_date.to_s(:govuk_time) %> <%= @work_order.latest_appointment.begin_date.to_date.to_s(:govuk_date_short) %> to
+                <%= @work_order.latest_appointment.end_date.to_s(:govuk_time) %> <%= @work_order.latest_appointment.end_date.to_date.to_s(:govuk_date_short) %>
+              <% end %>
+            <% end %>
+          </p>
+
+          <table class="govuk-table hackney-appointment-info">
+            <tbody class="govuk-body-xs">
+              <tr>
+                <th scope="row">Priority:</th>
+                <td>
+                  <%= @work_order.latest_appointment.priority.capitalize %>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Data source:</th>
+                <td>
+                  <%= @work_order.latest_appointment.source_system %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="govuk-body-s">
+            <span class="govuk-!-font-weight-bold">
+              There are no booked appointments.
+            </span>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

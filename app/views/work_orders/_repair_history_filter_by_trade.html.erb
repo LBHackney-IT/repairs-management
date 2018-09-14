@@ -16,7 +16,7 @@
       </div>
 
       <div class="hackney-checkboxes">
-        <% @work_order.property.trades.each_with_index do |trade, index| %>
+        <% work_orders_trades.each_with_index do |trade, index| %>
           <div class="trade-filter-options govuk-body-s">
             <input id="trade-<%=index%>" class='filter-checkbox' type="checkbox" value="trade-<%=index%>">
             <label class="hackney-checkboxes__label" for="trade-<%=index%>">

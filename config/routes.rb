@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     post :search, on: :collection
   end
 
+  resources :properties, only: [:show], param: :ref
+
   root to: 'pages#home'
 
   if Rails.env.development?
