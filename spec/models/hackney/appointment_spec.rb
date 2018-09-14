@@ -65,3 +65,28 @@ describe Hackney::Appointment do
     end
   end
 end
+
+describe Hackney::Appointment, 'latest_for_work_order' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  it 'returns the latest appointment for a work order' do
+    stub_hackney_repairs_work_order_appointments
+
+    appointment = described_class.latest_for_work_order('01551932')
+
+    expect(appointment).to be_a(Hackney::Appointment)
+    expect(appointment.end_date).to eq('2018-06-05T14:51:22')
+  end
+end
+
+describe Hackney::Appointment, 'all_for_work_order' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  it 'returns all appointments for a work order' do
+    stub_hackney_repairs_work_order_appointments
+
+    appointments = described_class.all_for_work_order('01551932')
+
+    expect(appointments.count).to eq(3)
+  end
+end
