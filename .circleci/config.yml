@@ -15,7 +15,7 @@ jobs:
         environment:
           NEO4J_HTTP_PORT_NUMBER: 7474
           NEO4J_AUTH: false
-          NEO4J_PASSWORD: bitnami
+      # docker run -d --publish=7474:7474 --volume=$HOME/neo4j/data:/data --env=NEO4J_AUTH=none neo4j:3.0
 
     working_directory: ~/repo
 
