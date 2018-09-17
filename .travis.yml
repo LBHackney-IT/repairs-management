@@ -2,6 +2,12 @@ language: ruby
 rvm:
  - 2.5.1
 
+jdk:
+  - oraclejdk8
+
+env:
+  - NEO4J_VERSION="3.1.4"
+
 dist: trusty
 
 services:
@@ -17,11 +23,18 @@ cache:
     - node_modules
 
 before_install:
+  - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
+  - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
+  - neo4j-community-$NEO4J_VERSION/bin/neo4j start
+  # HACK need to change the password initially; changing it and then reverting:
+  - sleep 10  # give Neo4J some time to start
+  - curl -v POST http://neo4j:neo4j@localhost:7474/user/neo4j/password -d"password=neo4j2"
+  - curl -v POST http://neo4j:neo4j2@localhost:7474/user/neo4j/password -d"password=neo4j"
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
   - cp config/database.yml.travis config/database.yml
-  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create database repairs-travis_ci_test;' -U postgres
 
 script:
   - bundle exec rails db:migrate RAILS_ENV=test
