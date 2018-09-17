@@ -5,9 +5,6 @@ rvm:
 jdk:
   - oraclejdk8
 
-env:
-  - NEO4J_VERSION="3.1.4"
-
 dist: trusty
 
 services:
@@ -23,9 +20,9 @@ cache:
     - node_modules
 
 before_install:
-  - wget dist.neo4j.org/neo4j-community-$NEO4J_VERSION-unix.tar.gz
-  - tar -xzf neo4j-community-$NEO4J_VERSION-unix.tar.gz
-  - neo4j-community-$NEO4J_VERSION/bin/neo4j start
+  - wget dist.neo4j.org/neo4j-community-3.1.4-unix.tar.gz
+  - tar -xzf neo4j-community-3.1.4-unix.tar.gz
+  - neo4j-community-3.1.4/bin/neo4j start
   # HACK need to change the password initially; changing it and then reverting:
   - sleep 10  # give Neo4J some time to start
   - curl -v POST http://neo4j:neo4j@localhost:7474/user/neo4j/password -d"password=neo4j2"
@@ -33,6 +30,7 @@ before_install:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
+  - yarn install
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
 
