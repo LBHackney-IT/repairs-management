@@ -66,7 +66,7 @@ module Helpers
 
     def property_response_payload
       {
-        "address" => "12 Banister House Homerton High Street",
+        "address" => "Homerton High Street 12 Banister House",
         "postcode" => "E9 6BH",
         "propertyReference" => "00014665",
         "maintainable" => true
@@ -307,6 +307,42 @@ module Helpers
       body = opts.fetch(:body, property_hierarchy_response_body)
 
       stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/hierarchy")
+        .to_return(status: status, body: body.to_json)
+    end
+
+    # property_list_by_postcode_search
+
+    def property_by_postcode_response_body(overrides = {})
+      {
+        "results": [
+          {
+            "address" => "Homerton High Street 10 Banister House",
+            "postcode" => "E9 6BH",
+            "propertyReference" => "00014663"
+          },
+          {
+            "address" => "Homerton High Street 11 Banister House",
+            "postcode" => "E9 6BH",
+            "propertyReference" => "00014664"
+          },
+          {
+            "address" => "Homerton High Street 12 Banister House",
+            "postcode" => "E9 6BH",
+            "propertyReference" => "00014665"
+          },
+          {
+            "address" => "Homerton High Street 13 Banister House",
+            "postcode" => "E9 6BH",
+            "propertyReference" => "00014666"
+          }
+        ]
+      }.merge(overrides)
+    end
+
+    def stub_hackney_property_by_postcode(reference: 'E96BH', status: 200,
+                                          body: property_by_postcode_response_body)
+
+      stub_request(:get, "https://hackneyrepairs/v1/properties?postcode=#{reference}")
         .to_return(status: status, body: body.to_json)
     end
   end
