@@ -2,9 +2,6 @@ language: ruby
 rvm:
  - 2.5.1
 
-jdk:
-  - oraclejdk8
-
 dist: trusty
 
 services:
