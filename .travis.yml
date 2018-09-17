@@ -23,16 +23,13 @@ before_install:
   - wget dist.neo4j.org/neo4j-community-3.1.4-unix.tar.gz
   - tar -xzf neo4j-community-3.1.4-unix.tar.gz
   - neo4j-community-3.1.4/bin/neo4j start
-  # HACK need to change the password initially; changing it and then reverting:
   - sleep 10  # give Neo4J some time to start
-  - curl -v POST http://neo4j:neo4j@localhost:7474/user/neo4j/password -d"password=neo4j2"
-  - curl -v POST http://neo4j:neo4j2@localhost:7474/user/neo4j/password -d"password=neo4j"
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
 before_script:
   - yarn install
-  - cp config/database.yml.travis config/database.yml
   - cp config/neo4j.yml.travis config/neo4j.yml
+  - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
 
 script:
