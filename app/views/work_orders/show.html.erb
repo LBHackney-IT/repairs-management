@@ -29,7 +29,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <div class="hackney-work-order-header">
+      <div class="hackney-work-order-header hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             <%= @work_order.repair_request.contact.name %>
@@ -37,18 +37,27 @@
           <%= @work_order.created.to_s(:govuk_date) %>
         </p>
 
-        <ul class="govuk-list govuk-body-s">
-          <li>
-            <% if @work_order.latest_appointment %>
-              <%= @work_order.latest_appointment.phone_number %>
-            <% else %>
-              <%= @work_order.repair_request.contact.telephone_number %>
+        <table class="govuk-table hackney-appointment-info">
+          <tbody class="govuk-body-xs">
+            <% if @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact.telephone_number %>
+              <tr>
+                <th scope="row">Telephone:</th>
+                <td>
+                  <%= @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact.telephone_number %>
+                </td>
+              </tr>
             <% end %>
-          </li>
-          <li>
-            <%= mail_to @work_order.repair_request.contact.email_address %>
-          </li>
-        </ul>
+
+            <% if @work_order.repair_request.contact.email_address %>
+              <tr>
+                <th scope="row">Email:</th>
+                <td>
+                  <%= mail_to @work_order.repair_request.contact.email_address %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
 
