@@ -1,0 +1,30 @@
+language: ruby
+rvm:
+ - 2.5.1
+
+dist: trusty
+
+services:
+  - neo4j
+  - postgresql
+
+addons:
+  chrome: stable
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+before_install:
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+
+before_script:
+  - yarn install
+  - cp config/neo4j.yml.travis config/neo4j.yml
+  - cp config/database.yml.travis config/database.yml
+  - psql -c 'create database travis_ci_test;' -U postgres
+
+script:
+  - bundle exec rails db:migrate RAILS_ENV=test
+  - bundle exec rspec
