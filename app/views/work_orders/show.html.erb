@@ -72,20 +72,12 @@
                 <%= @work_order.repair_request.priority %>
               </td>
             </tr>
-
-            <tr>
-              <th scope="row">Data source:</th>
-              <td>
-                <%= @work_order.latest_appointment.source_system %>
-              </td>
-            </tr>
-
           </tbody>
         </table>
 
         <hr />
 
-        <% if @work_order.latest_appointment.present? && @work_order.latest_appointment.status %>
+        <% if @work_order.latest_appointment.present? %>
           <p class="govuk-body-s">
             <span class="govuk-!-font-weight-bold">
               Appointment <%= @work_order.latest_appointment.status.capitalize %>
@@ -100,20 +92,30 @@
               <% end %>
             <% end %>
           </p>
-        <% end %>
 
-        <table class="govuk-table hackney-appointment-info">
-          <tbody class="govuk-body-xs">
-            <% if @work_order.latest_appointment.present? && @work_order.latest_appointment.priority %>
+          <table class="govuk-table hackney-appointment-info">
+            <tbody class="govuk-body-xs">
               <tr>
                 <th scope="row">Priority:</th>
                 <td>
                   <%= @work_order.latest_appointment.priority.capitalize %>
                 </td>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+              <tr>
+                <th scope="row">Data source:</th>
+                <td>
+                  <%= @work_order.latest_appointment.source_system %>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="govuk-body-s">
+            <span class="govuk-!-font-weight-bold">
+              There are no booked appointments.
+            </span>
+          </p>
+        <% end %>
       </div>
     </div>
   </div>
