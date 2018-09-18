@@ -39,7 +39,11 @@
 
         <ul class="govuk-list govuk-body-s">
           <li>
-            <%= @work_order.repair_request.contact.telephone_number %>
+            <% if @work_order.latest_appointment %>
+              <%= @work_order.latest_appointment.phone_number %>
+            <% else %>
+              <%= @work_order.repair_request.contact.telephone_number %>
+            <% end %>
           </li>
           <li>
             <%= mail_to @work_order.repair_request.contact.email_address %>
@@ -80,7 +84,7 @@
         <% if @work_order.latest_appointment.present? %>
           <p class="govuk-body-s">
             <span class="govuk-!-font-weight-bold">
-              Appointment <%= @work_order.latest_appointment.status.capitalize %>
+              Appointment: <%= @work_order.latest_appointment.status.capitalize %>
             </span>
             <% if @work_order.latest_appointment.begin_date %>
               <% if @work_order.latest_appointment.begin_date.to_date == @work_order.latest_appointment.end_date.to_date %>

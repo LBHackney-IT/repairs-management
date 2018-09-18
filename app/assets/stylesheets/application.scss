@@ -48,7 +48,11 @@ $govuk-font-family: 'Arial', sans-serif;
 
 .hackney-appointment {
   hr {
+    color: govuk-colour("grey-2");
     width: 91%;
+    border: none;
+    height: 1px;
+    background-color: govuk-colour("grey-2");
   }
 
   table {
