@@ -14,7 +14,7 @@ class WorkOrdersController < ApplicationController
   end
 
   def show
-    if is_work_order(reference)
+    if is_work_order?(reference)
       @work_order = Hackney::WorkOrder.find(reference)
     else
       @address_list_for_postcode = Hackney::Property.for_postcode(reference)
@@ -29,9 +29,9 @@ class WorkOrdersController < ApplicationController
 private
 
   def redirect_to_homepage
-    if is_work_order(reference)
+    if is_work_order?(reference)
       flash.notice = "Could not find a work order with reference #{reference}"
-    elsif is_postcode(reference)
+    elsif is_postcode?(reference)
       flash.notice = "Could not find the property with postcode #{reference}"
     else
       flash.notice = "Could not find any results matching #{reference}"
@@ -43,11 +43,11 @@ private
     params[:ref].gsub(/\s+/, "")
   end
 
-  def is_work_order(reference)
-    reference[/\d{8}/]
+  def is_work_order?(reference)
+    reference[/\A\d{8}\z/]
   end
 
-  def is_postcode(postcode)
+  def is_postcode?(postcode)
     postcode.upcase[/^[A-Z]{1,2}([0-9]{1,2}|[0-9][A-Z])\s*[0-9][A-Z]{2}$/]
   end
 end

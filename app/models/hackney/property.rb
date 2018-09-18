@@ -9,7 +9,7 @@ class Hackney::Property
   end
 
   def self.for_postcode(postcode)
-    client.get_property_by_postcode(postcode)["results"].map do |attributes|
+    HackneyAPI::RepairsClient.new.get_property_by_postcode(postcode)["results"].map do |attributes|
       build(attributes)
     end
   end
