@@ -1,18 +1,17 @@
 class Hackney::WorkOrder
   include ActiveModel::Model
-  include Hackney::Client
 
   attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
                 :work_order_status, :dlo_status, :servitor_reference,
                 :problem_description, :trade
 
   def self.find(reference)
-    response = client.get_work_order(reference)
+    response = HackneyAPI::RepairsClient.new.get_work_order(reference)
     build(response)
   end
 
   def self.for_property(property_reference)
-    client.get_work_orders_by_property(property_reference).map do |attributes|
+    HackneyAPI::RepairsClient.new.get_work_orders_by_property(property_reference).map do |attributes|
       build(attributes)
     end
   end

@@ -47,6 +47,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_work_orders_for_property(reference: property_reference1, body: [
       work_order_response_payload("workOrderReference" => "1234", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "4321", "problemDescription" => "Problem 2"),
@@ -67,13 +68,13 @@ RSpec.describe 'Work order' do
     expect(page).to have_content '02012341234'
     expect(page).to have_content 's.erbas@example.com'
 
-    expect(page).to have_content "Appointment booked for 29 May 2018 (2:51pm) until 5 June 2018 (2:51pm)"
+    expect(page).to have_content "Appointment: Completed 8:00am to 4:15pm, 31 May 2018"
 
-    expect(page).to have_content 'Priority: N'
-    expect(page).to have_content 'Status: In Progress'
+    expect(page).to have_content 'Priority: Standard'
+    expect(page).to have_content 'Work order: In Progress'
     expect(page).to have_content 'Data source: DRS'
 
-    expect(page).to have_content 'Target date: 2:09pm, 27 June 2018'
+    expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
     expect(page).to have_content 'Notes'
     within(find('h2', text: 'Notes').find('~ ul')) do
@@ -97,6 +98,7 @@ RSpec.describe 'Work order' do
       body: work_order_note_response_payload__no_notes
     )
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_work_orders_for_property
 
     stub_hackney_work_orders_for_property(reference: property_reference1)
@@ -119,6 +121,7 @@ RSpec.describe 'Work order' do
       status: 500
     )
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_work_orders_for_property
 
     stub_hackney_work_orders_for_property(reference: property_reference1)
@@ -136,6 +139,13 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__no_appointments
+    )
+    stub_hackney_repairs_work_order_latest_appointments(
+      body: {
+        "developerMessage" => "Exception of type 'HackneyRepairs.Actions.MissingAppointmentsException' was thrown.",
+        "userMessage" => "Cannot find appointments for the work order reference"
+      },
+      status: 404
     )
     stub_hackney_work_orders_for_property
 
@@ -160,6 +170,13 @@ RSpec.describe 'Work order' do
       },
       status: 404
     )
+    stub_hackney_repairs_work_order_latest_appointments(
+      body: {
+        "developerMessage" => "Exception of type 'HackneyRepairs.Actions.MissingAppointmentsException' was thrown.",
+        "userMessage" => "Cannot find appointments for the work order reference"
+      },
+      status: 404
+    )
     stub_hackney_work_orders_for_property
 
     stub_hackney_work_orders_for_property(reference: property_reference1)
@@ -177,6 +194,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_properties
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_work_orders_for_property
     stub_hackney_work_orders_for_property(reference: property_reference1)
     stub_hackney_work_orders_for_property(reference: property_reference2)

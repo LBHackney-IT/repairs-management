@@ -46,11 +46,21 @@ $govuk-font-family: 'Arial', sans-serif;
   color: $govuk-secondary-text-colour;
 }
 
-.hackney-appointment table {
-  margin: 0 10px 15px 10px;
-  text-align: left;
+.hackney-appointment {
+  hr {
+    color: govuk-colour("grey-2");
+    width: 91%;
+    border: none;
+    height: 1px;
+    background-color: govuk-colour("grey-2");
+  }
 
-  th {
-    font-weight: normal;
+  table {
+    margin: 0 10px 15px 10px;
+    text-align: left;
+
+    th {
+      font-weight: normal;
+    }
   }
 }

@@ -1,11 +1,10 @@
 class Hackney::PropertyHierarchy
   include ActiveModel::Model
-  include Hackney::Client
 
   attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode
 
   def self.for_property(reference)
-    client.get_property_hierarchy(reference).map do |attributes|
+    HackneyAPI::RepairsClient.new.get_property_hierarchy(reference).map do |attributes|
       build(attributes)
     end
   end
