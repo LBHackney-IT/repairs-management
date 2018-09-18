@@ -40,6 +40,7 @@ gem 'omniauth'
 gem 'omniauth-azure-activedirectory'
 gem 'omniauth-google-oauth2'
 gem 'sentry-raven'
+
 gem 'neo4j'
 
 gem 'faraday'
@@ -47,6 +48,8 @@ gem 'faraday_middleware'
 gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
 
 gem 'sidekiq'
+
+gem 'appsignal'
 
 group :development, :test do
   gem 'pry'
