@@ -48,6 +48,6 @@ private
   end
 
   def is_postcode(postcode)
-    postcode[/^[a-zA-Z]{1,2}([0-9]{1,2}|[0-9][a-zA-Z])\s*[0-9][a-zA-Z]{2}$/]
+    postcode.upcase[/^[A-Z]{1,2}([0-9]{1,2}|[0-9][A-Z])\s*[0-9][A-Z]{2}$/]
   end
 end

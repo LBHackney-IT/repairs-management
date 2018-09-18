@@ -9,6 +9,8 @@ class PropertiesController < ApplicationController
 
   def property_details
     Hackney::Property.find(params[:ref])
+  rescue HackneyAPI::RepairsClient::RecordNotFoundError
+    raise ActionController::RoutingError.new('Not Found')
   end
 
   def postcode

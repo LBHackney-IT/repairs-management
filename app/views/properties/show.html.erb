@@ -17,7 +17,7 @@
       </a>
     </li>
   </ul>
-  <%= render 'work_orders/work_order_repairs_history', work_order_repairs_history: @property_details.work_orders %>
+  <%= render 'work_orders/work_order_repairs_history', work_order_repairs_history: @property_details.work_orders, trades: @property_details.trades %>
   <%= render 'work_orders/work_order_building', dwelling_work_orders_hierarchy: @property_details.dwelling_work_orders_hierarchy %>
   </ul>
 </div>
