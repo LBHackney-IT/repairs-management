@@ -19,3 +19,16 @@ describe WorkOrderHelper, 'out_of_target?' do
     ).to eq(false)
   end
 end
+
+describe WorkOrderHelper, 'sort_notes_and_appointments' do
+  it "sorts the notes and appointments by start date" do
+    appointment = Hackney::Appointment.new(begin_date: 7.days.ago)
+    appointment_two = Hackney::Appointment.new(begin_date: 5.days.ago)
+    note = Hackney::Note.new(logged_at: 3.days.ago)
+
+    work_order = double(notes: [note], appointments: [appointment, appointment_two])
+
+    sorted = [note, appointment_two, appointment]
+    expect(helper.sort_notes_and_appointments(work_order)).to eq(sorted)
+  end
+end
