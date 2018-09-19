@@ -91,12 +91,12 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Search for a work order by postcode' do
-    stub_hackney_property_by_postcode(reference: 'E98BH', status: 404)
+    stub_hackney_property_by_postcode(reference: 'E98BH', body: property_by_postcode_response_body__no_properties)
 
     fill_in 'Search by work order reference or postcode', with: 'E98BH'
     click_on 'Search'
 
-    expect(page).to have_content 'Could not find the property with postcode E98BH'
+    expect(page).to have_content 'We found 0 matching results for E98BH ...'
 
     stub_hackney_property_by_postcode
 

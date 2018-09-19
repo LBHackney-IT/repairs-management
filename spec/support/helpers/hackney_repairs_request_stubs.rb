@@ -339,6 +339,12 @@ module Helpers
       }.merge(overrides)
     end
 
+    def property_by_postcode_response_body__no_properties
+      {
+        "results": []
+      }
+    end
+
     def stub_hackney_property_by_postcode(reference: 'E96BH', status: 200,
                                           body: property_by_postcode_response_body)
 

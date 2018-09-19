@@ -18,7 +18,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
-      <div class="hackney-work-order-header">
+      <div class="hackney-main-section-info">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             <%= @work_order.property.address %>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <div class="hackney-work-order-header hackney-appointment">
+      <div class="hackney-main-section-info hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             <%= @work_order.repair_request.contact.name %>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="govuk-grid-column-one-third">
-      <div class="hackney-work-order-header hackney-appointment">
+      <div class="hackney-main-section-info hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             Work order: <%= work_order_status_description(@work_order.work_order_status) %>

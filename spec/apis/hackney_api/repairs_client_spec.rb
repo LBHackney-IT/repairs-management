@@ -320,4 +320,20 @@ describe HackneyAPI::RepairsClient do
       end
     end
   end
+
+  describe '#get_work_orders_by_property' do
+    it 'returns empty list when a property has no work orders' do
+      response = []
+      stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=ben_was_here").to_return(status: 200, body: response)
+
+      expect(api_client.get_work_orders_by_property("ben_was_here")).to eq([])
+    end
+
+    it 'returns the work orders for a property' do
+      response = '[{"sorCode": "HIST0001", "trade": "Cash Items"}]'
+      stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=ben_was_here").to_return(status: 200, body: response)
+
+      expect(api_client.get_work_orders_by_property("ben_was_here")).to eq(JSON.parse(response))
+    end
+  end
 end

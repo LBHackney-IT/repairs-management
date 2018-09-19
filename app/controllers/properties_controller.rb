@@ -1,29 +1,17 @@
 class PropertiesController < ApplicationController
-  rescue_from HackneyAPI::RepairsClient::RecordNotFoundError, with: :redirect_to_homepage
+  rescue_from HackneyAPI::RepairsClient::RecordNotFoundError, with: :routing_error
 
   def show
-    @property_details = property_details
+    @property_details = Hackney::Property.find(params[:ref])
+  end
+
+  def search
+    @address_list_for_postcode = Hackney::Property.for_postcode(params[:ref])
   end
 
   private
 
-  def property_details
-    Hackney::Property.find(params[:ref])
-  rescue HackneyAPI::RepairsClient::RecordNotFoundError
+  def routing_error
     raise ActionController::RoutingError.new('Not Found')
   end
-
-  def postcode
-    property_details.postcode
-  end
-
-  def address
-    property_details.address
-  end
-
-  def redirect_to_homepage
-    flash.notice = "There are no work orders for the property at #{address}"
-    redirect_to root_path + "work_orders/#{postcode}"
-  end
 end
-

@@ -1,18 +1,2 @@
-<div class="hackney-search">
-  <h1 class=govuk-heading-m>Find repair job or property</h1>
-  <%= form_tag search_work_orders_path do %>
-    <div class="govuk-form-group">
-      <%= label_tag 'ref', 'Search by work order reference or postcode
-    ', class: 'govuk-label' %>
-      <%= search_field_tag 'ref', '', class: 'govuk-input govuk-input--width-10' %>
-    </div>
-    <%= submit_tag 'Search', class: 'govuk-button' %>
-  <% end %>
-</div>
-
-<% if @address_list_for_postcode.present? %>
-<div class="hackney-address-list-for-postcode">
-  <%= render 'properties/address_list', address_list: @address_list_for_postcode %>
-</div>
-<% end %>
+<%= render 'pages/home_search' %>
 
