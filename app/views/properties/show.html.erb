@@ -1,0 +1,23 @@
+<%= render 'property_details_top_section', property: @property_details %>
+
+<div class="govuk-tabs" data-module="tabs">
+  <h2 class="govuk-tabs__title">
+    Contents
+  </h2>
+
+  <ul class="govuk-tabs__list hackney-tabs-list">
+    <li class="govuk-tabs__list-item hackney-tab">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#repair-history-tab">
+        Repairs history
+      </a>
+    </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#builiding-work-orders-tab">
+        Building work orders
+      </a>
+    </li>
+  </ul>
+  <%= render 'work_orders/work_order_repairs_history', work_order_repairs_history: @property_details.work_orders, trades: @property_details.trades %>
+  <%= render 'work_orders/work_order_building', dwelling_work_orders_hierarchy: @property_details.dwelling_work_orders_hierarchy %>
+  </ul>
+</div>

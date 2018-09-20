@@ -8,6 +8,12 @@ class Hackney::Property
     build(response)
   end
 
+  def self.for_postcode(postcode)
+    HackneyAPI::RepairsClient.new.get_property_by_postcode(postcode)["results"].map do |attributes|
+      build(attributes)
+    end
+  end
+
   def self.build(attributes)
     new(
       reference: attributes['propertyReference'].strip,

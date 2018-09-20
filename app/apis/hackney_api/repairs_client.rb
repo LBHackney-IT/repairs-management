@@ -52,6 +52,8 @@ module HackneyAPI
         http_method: :get,
         endpoint: "v1/work_orders?propertyReference=#{reference}"
       )
+    rescue HackneyAPI::RepairsClient::RecordNotFoundError
+      [] # Handle the case when there are no work orders for a given property. Delete this once API is updated to handle the case
     end
 
     def get_repair_requests_by_property(reference)
@@ -79,6 +81,13 @@ module HackneyAPI
       request(
         http_method: :get,
         endpoint: "v1/properties/#{reference}/hierarchy"
+      )
+    end
+
+    def get_property_by_postcode(postcode)
+      request(
+        http_method: :get,
+        endpoint: "v1/properties?postcode=#{postcode}"
       )
     end
 

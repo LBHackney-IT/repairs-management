@@ -1,8 +1,12 @@
-.hackney-work-order-header {
+.hackney-main-section-info {
   background-color: govuk-colour('white');
   padding: 2px;
 }
-.hackney-work-order-header p, ul {
+.hackney-main-section-info h5 {
+  color: $govuk-secondary-text-colour;
+  margin: 5px 10px;
+}
+.hackney-main-section-info p, ul {
   color: hackney-colour('housing-2');
   margin: 15px 10px;
 }

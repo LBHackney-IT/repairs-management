@@ -1,0 +1,19 @@
+<% content_for :page_header do %>
+  <h1 class="govuk-heading-m">
+    <%= property.address %>
+  </h1>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <div class="hackney-main-section-info">
+        <h5 class="govuk-body-s property-details">Property details:</h5>
+        <p class="govuk-body-s">
+          <span class="govuk-!-font-weight-bold">
+            <%= property.address %>
+          </span><br>
+          <%= property.postcode %>
+        </p>
+      </div>
+    </div>
+  </div>
+<% end %>

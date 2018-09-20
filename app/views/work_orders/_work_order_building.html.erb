@@ -3,6 +3,7 @@
     Building work orders
   </h1>
 
+  <% if dwelling_work_orders_hierarchy.any? %>
   <ul class="hackney-filtering__list">
     <% dwelling_work_orders_hierarchy.keys.each_with_index do |description, index| %>
       <li>
@@ -46,6 +47,11 @@
       </table>
     </div>
   <% end %>
+
+  <% else %>
+    <p class="govuk-body-s">There are no work orders for this building.</p>
+  <% end %>
+
 </div>
 
 <script>
