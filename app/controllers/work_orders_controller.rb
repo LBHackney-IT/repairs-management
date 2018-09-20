@@ -18,18 +18,15 @@ class WorkOrdersController < ApplicationController
     elsif is_postcode?(reference)
       redirect_to search_properties_path(ref: reference)
     else
-      redirect_to_homepage
+      flash.notice = "#{reference} is not a valid work order or postcode"
+      redirect_to root_path
     end
   end
 
 private
 
   def redirect_to_homepage
-    if is_work_order?(reference)
-      flash.notice = "Could not find a work order with reference #{reference}"
-    else
-      flash.notice = "Could not find any results matching #{reference}"
-    end
+    flash.notice = "Could not find a work order with reference #{reference}"
     redirect_to root_path
   end
 
