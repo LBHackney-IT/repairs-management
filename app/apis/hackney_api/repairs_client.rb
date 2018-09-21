@@ -34,10 +34,16 @@ module HackneyAPI
     end
 
     def get_work_order_appointments_latest(reference)
-      request(
+      response = request(
         http_method: :get,
         endpoint: "v1/work_orders/#{reference}/appointments/latest"
       )
+      if response == []
+        raise HackneyAPI::RepairsClient::RecordNotFoundError,
+              "Can't find appointment for #{reference}"
+      else
+        response
+      end
     end
 
     def get_work_order_notes(reference)

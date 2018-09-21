@@ -59,14 +59,14 @@ describe Hackney::Appointment do
         allow(api_client_double).to receive(:get_work_order_appointments_latest).with(reference).and_raise(HackneyAPI::RepairsClient::RecordNotFoundError)
       end
 
-      it 'calls API client with a reference nunmber and returns nil' do
+      it 'calls API client with a reference number and returns nil' do
         expect(subject).to eq(nil)
       end
     end
   end
 
   describe '.all_for_work_order' do
-    context 'successful API response' do
+    it 'successfully returns all the appointments for a work order' do
       stub_hackney_repairs_work_order_appointments
 
       appointments = described_class.all_for_work_order('01551932')
