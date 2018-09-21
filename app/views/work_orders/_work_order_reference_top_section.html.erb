@@ -79,12 +79,14 @@
               </td>
             </tr>
 
-            <tr>
-              <th scope="row">Priority:</th>
-              <td>
-                <%= @work_order.repair_request.priority %>
-              </td>
-            </tr>
+            <% unless @work_order.latest_appointment.present? %>
+              <tr>
+                <th scope="row">Priority:</th>
+                <td>
+                  <%= @work_order.repair_request.priority %>
+                </td>
+              </tr>
+            <% end %>
           </tbody>
         </table>
 
