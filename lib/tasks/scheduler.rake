@@ -5,4 +5,9 @@ namespace :hackney do
   task :import_work_orders => :environment do
     WorkOrdersImporter.new.import
   end
+
+  desc "Update graph DB"
+  task :update_graph_db => :environment do
+    NotesFeedJob.perform_later(1, Rails.configuration.notes_feed_max_enqueues)
+  end
 end
