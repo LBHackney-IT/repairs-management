@@ -23,9 +23,9 @@ class NotesFeedJob < ApplicationJob
   # Scan the note for possible work order numbers in this job because we don't
   # want to store the text in redis - it may have private information
   def extract_references(hackney_note)
-    hackney_note.text.scan(/\d+/).select do |number|
-      number.size == 8 && number != hackney_note.work_order_reference
-    end
+    Hackney::WorkOrderReferenceFinder
+      .new(hackney_note.work_order_reference)
+      .find(hackney_note.text)
   end
 
   def last_note_id
