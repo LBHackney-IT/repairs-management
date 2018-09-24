@@ -18,7 +18,7 @@
       <div class="hackney-checkboxes">
         <% work_orders_trades.each_with_index do |trade, index| %>
           <div class="trade-filter-options govuk-body-s">
-            <input id="trade-<%=index%>" class='filter-checkbox' type="checkbox" value="trade-<%=index%>">
+            <input id="trade-<%=index%>" class='trade-filter-checkbox' type="checkbox" value="trade-<%=index%>">
             <label class="hackney-checkboxes__label" for="trade-<%=index%>">
               <%= trade %>
             </label>
@@ -39,9 +39,9 @@
       <div class="hackney-checkboxes">
         <% work_orders_status.each_with_index do |status, index| %>
           <div class="trade-filter-options govuk-body-s">
-            <input id="status-<%=index%>" class='filter-checkbox' type="checkbox" value="status-<%=index%>">
+            <input id="status-<%=index%>" class='status-filter-checkbox' type="checkbox" value="status-<%=index%>">
             <label class="hackney-checkboxes__label" for="status-<%=index%>">
-              <%= status %>
+              <%= work_order_status_description(status) %>
             </label>
           </div>
         <% end %>
@@ -56,18 +56,23 @@
     var filterCheckBoxes = [];
     var workOrders = [];
 
-    function handleToggleTrade() {
-      filterCheckBoxes = document.querySelectorAll('.filter-checkbox:checked');
+    function handleToggleFilter() {
+      tradeFilterCheckBoxes = document.querySelectorAll('.trade-filter-checkbox:checked');
+      statusFilterCheckBoxes = document.querySelectorAll('.status-filter-checkbox:checked');
       workOrders = document.querySelectorAll('.hackney-work-order-rows');
 
       var showTheseTrades = [];
+      var showTheseStatuses = [];
 
-      for(var i = 0; i < filterCheckBoxes.length; i++) {
-        showTheseTrades.push(filterCheckBoxes[i].id);
-        console.log((filterCheckBoxes[i].id))
+      for(var i = 0; i < tradeFilterCheckBoxes.length; i++) {
+        showTheseTrades.push(tradeFilterCheckBoxes[i].id);
       }
 
-      if (showTheseTrades.length == 0) {
+      for(var i = 0; i < statusFilterCheckBoxes.length; i++) {
+        showTheseStatuses.push(statusFilterCheckBoxes[i].id);
+      }
+
+      if ((showTheseTrades.length == 0) && (showTheseStatuses.length == 0)) {
         for(var i = 0; i < workOrders.length; i++) {
           workOrders[i].classList.remove('hidden');
         }
@@ -75,25 +80,30 @@
 
         for(var i = 0; i < workOrders.length; i++) {
           workOrders[i].classList.add('hidden');
-          // if ((showTheseTrades.includes(workOrders[i].getAttribute("data-trade"))) && (showTheseTrades.includes(workOrders[i].getAttribute("data-status")))) {
-          //   workOrders[i].classList.remove('hidden');
-          // }
-          // if (showTheseTrades.indexOf(workOrders[i].getAttribute("data-trade")) >= 0) {
-          //   workOrders[i].classList.remove('hidden');
-          // }
-          if (showTheseTrades.join('-').includes(workOrders[i].getAttribute("data-filter"))) {
+
+          if ((showTheseTrades.length == 0) || (showTheseStatuses.length == 0)) {
+            if (showTheseTrades.includes(workOrders[i].getAttribute("data-trade"))) {
+              workOrders[i].classList.remove('hidden');
+            }
+            if (showTheseStatuses.includes(workOrders[i].getAttribute("data-status"))) {
+              workOrders[i].classList.remove('hidden');
+            }
+          }
+
+          if ((showTheseStatuses.includes(workOrders[i].getAttribute("data-status")))
+          && (showTheseTrades.includes(workOrders[i].getAttribute("data-trade")))) {
             workOrders[i].classList.remove('hidden');
           }
         }
       }
-      console.log(showTheseTrades)
     }
 
-
-
     function handleClearAllFilters() {
-      for(var i = 0; i < filterCheckBoxes.length; i++) {
-        filterCheckBoxes[i].checked = false;
+      for(var i = 0; i < tradeFilterCheckBoxes.length; i++) {
+        tradeFilterCheckBoxes[i].checked = false;
+      }
+      for(var i = 0; i < statusFilterCheckBoxes.length; i++) {
+        statusFilterCheckBoxes[i].checked = false;
       }
       for(var i = 0; i < workOrders.length; i++) {
         workOrders[i].classList.remove('hidden');
@@ -115,9 +125,14 @@
       }
     }
 
-    var checkboxes = document.querySelectorAll('.filter-checkbox');
-    for(var i = 0; i < checkboxes.length; i++) {
-      checkboxes[i].addEventListener('click', handleToggleTrade);
+    var tradeCheckboxes = document.querySelectorAll('.trade-filter-checkbox');
+    var statusCheckboxes = document.querySelectorAll('.status-filter-checkbox');
+
+    for(var i = 0; i < tradeCheckboxes.length; i++) {
+      tradeCheckboxes[i].addEventListener('click', handleToggleFilter);
+    }
+    for(var i = 0; i < statusCheckboxes.length; i++) {
+      statusCheckboxes[i].addEventListener('click', handleToggleFilter);
     }
 
     document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters);
