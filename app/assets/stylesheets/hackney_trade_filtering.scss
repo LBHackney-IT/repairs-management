@@ -1,8 +1,8 @@
-.trade-filter {
+.options-filter {
   background: govuk-colour("grey-4");
   padding: 15px 10px 5px 10px;
 }
-.trade-filter-options {
+.filter-options {
   border-bottom: 1px solid govuk-colour("grey-3");
   padding: 10px 0px;
   margin: 5px 0px;
@@ -34,10 +34,10 @@
   cursor: pointer;
 }
 
-.trade-filter-collapsible-header {
+.filter-collapsible-header {
   position: relative;
 }
-i.trade-filter-collapsible {
+i.filter-collapsible {
   border: solid black;
   border-width: 0 3px 3px 0;
   display: inline-block;

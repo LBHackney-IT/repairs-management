@@ -9,15 +9,15 @@
   </div>
 
   <div class="govuk-form-group">
-    <fieldset class='govuk-fieldset trade-filter'>
-      <div class="trade-filter-collapsible-header">
+    <fieldset class='govuk-fieldset options-filter'>
+      <div class="filter-collapsible-header">
         <h4 class="govuk-heading-s">Trade</h4>
-        <i class="trade-filter-collapsible up-arrow"></i>
+        <i class="filter-collapsible up-arrow"></i>
       </div>
 
       <div class="hackney-checkboxes">
         <% work_orders_trades.each_with_index do |trade, index| %>
-          <div class="trade-filter-options govuk-body-s">
+          <div class="filter-options govuk-body-s">
             <input id="trade-<%=index%>" class='trade-filter-checkbox' type="checkbox" value="trade-<%=index%>">
             <label class="hackney-checkboxes__label" for="trade-<%=index%>">
               <%= trade %>
@@ -30,15 +30,15 @@
   </div>
 
   <div class="govuk-form-group">
-    <fieldset class='govuk-fieldset trade-filter'>
-      <div class="trade-filter-collapsible-header">
+    <fieldset class='govuk-fieldset options-filter'>
+      <div class="filter-collapsible-header">
         <h4 class="govuk-heading-s">Status</h4>
-        <i class="trade-filter-collapsible up-arrow"></i>
+        <i class="filter-collapsible up-arrow"></i>
       </div>
 
       <div class="hackney-checkboxes">
         <% work_orders_status.each_with_index do |status, index| %>
-          <div class="trade-filter-options govuk-body-s">
+          <div class="filter-options govuk-body-s">
             <input id="status-<%=index%>" class='status-filter-checkbox' type="checkbox" value="status-<%=index%>">
             <label class="hackney-checkboxes__label" for="status-<%=index%>">
               <%= work_order_status_description(status) %>
@@ -82,16 +82,15 @@
           workOrders[i].classList.add('hidden');
 
           if ((showTheseTrades.length == 0) || (showTheseStatuses.length == 0)) {
-            if (showTheseTrades.includes(workOrders[i].getAttribute("data-trade"))) {
-              workOrders[i].classList.remove('hidden');
+            if (showTheseTrades.indexOf(workOrders[i].getAttribute("data-trade")) >= 0) {
+            workOrders[i].classList.remove('hidden');
             }
-            if (showTheseStatuses.includes(workOrders[i].getAttribute("data-status"))) {
-              workOrders[i].classList.remove('hidden');
+            if (showTheseStatuses.indexOf(workOrders[i].getAttribute("data-status")) >= 0) {
+            workOrders[i].classList.remove('hidden');
             }
           }
 
-          if ((showTheseStatuses.includes(workOrders[i].getAttribute("data-status")))
-          && (showTheseTrades.includes(workOrders[i].getAttribute("data-trade")))) {
+          if ((showTheseStatuses.indexOf(workOrders[i].getAttribute("data-status")) >= 0) && (showTheseTrades.indexOf(workOrders[i].getAttribute("data-trade")) >= 0)) {
             workOrders[i].classList.remove('hidden');
           }
         }
@@ -110,8 +109,8 @@
       }
     }
 
-    function collapsibleTradeFilter() {
-      var collapsible = document.querySelector(".trade-filter-collapsible");
+    function collapsibleFilter() {
+      var collapsible = document.querySelector(".filter-collapsible");
       var content = document.querySelector('.hackney-checkboxes');
 
       if (content.style.display === "none") {
@@ -137,6 +136,6 @@
 
     document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters);
 
-    document.querySelector('.trade-filter-collapsible-header').addEventListener('click', collapsibleTradeFilter);
+    document.querySelector('.filter-collapsible-header').addEventListener('click', collapsibleFilter);
   })();
 </script>
