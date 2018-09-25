@@ -35,6 +35,6 @@ class Hackney::Property
   end
 
   def status
-    @_status ||= work_orders.map(&:work_order_status).uniq
+    @_status ||= dwelling_work_orders_hierarchy.values.flatten.map(&:work_order_status).uniq.sort
   end
 end

@@ -44,8 +44,4 @@ module WorkOrderHelper
     notes_and_appointments = work_order.notes + (work_order.appointments.nil? ? [] : work_order.appointments)
     notes_and_appointments.sort_by{ |a| a.respond_to?(:logged_at) ? a.logged_at : a.begin_date }.reverse
   end
-
-  def status_index(property, work_order_status)
-    property.status.index(work_order_status)
-  end
 end

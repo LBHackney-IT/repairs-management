@@ -17,12 +17,12 @@
 
       <div class="hackney-checkboxes">
         <% work_orders_trades.each_with_index do |trade, index| %>
-          <div class="filter-options govuk-body-s">
-            <input id="trade-<%=index%>" class='trade-filter-checkbox' type="checkbox" value="trade-<%=index%>">
-            <label class="hackney-checkboxes__label" for="trade-<%=index%>">
-              <%= trade %>
-            </label>
-          </div>
+        <div class="filter-options govuk-body-s">
+          <input id="trade-<%=index%>" class='trade-filter-checkbox' type="checkbox" value="trade-<%=index%>">
+          <label class="hackney-checkboxes__label" for="trade-<%=index%>">
+            <%= trade %>
+          </label>
+        </div>
         <% end %>
       </div>
 
@@ -38,12 +38,12 @@
 
       <div class="hackney-checkboxes">
         <% work_orders_status.each_with_index do |status, index| %>
-          <div class="filter-options govuk-body-s">
-            <input id="status-<%=index%>" class='status-filter-checkbox' type="checkbox" value="status-<%=index%>">
-            <label class="hackney-checkboxes__label" for="status-<%=index%>">
-              <%= work_order_status_description(status) %>
-            </label>
-          </div>
+        <div class="filter-options govuk-body-s">
+          <input id="status-<%=index%>" class='status-filter-checkbox' type="checkbox" value="status-<%=index%>">
+          <label class="hackney-checkboxes__label" for="status-<%=index%>">
+            <%= work_order_status_description(status) %>
+          </label>
+        </div>
         <% end %>
       </div>
 
@@ -53,8 +53,20 @@
 
 <script>
   (function () {
-    var filterCheckBoxes = [];
-    var workOrders = [];
+
+    function showWorkOrders(i) {
+      workOrders[i].classList.remove('hidden');
+    }
+
+    function hideWorkOrders(i) {
+      workOrders[i].classList.add('hidden');
+    }
+
+    function noSelectedCheckbox(array) {
+      return array.length == 0
+    }
+
+    var filterCheckBoxes, workOrders = [];
 
     function handleToggleFilter() {
       tradeFilterCheckBoxes = document.querySelectorAll('.trade-filter-checkbox:checked');
@@ -72,26 +84,26 @@
         showTheseStatuses.push(statusFilterCheckBoxes[i].id);
       }
 
-      if ((showTheseTrades.length == 0) && (showTheseStatuses.length == 0)) {
+      if ((noSelectedCheckbox(showTheseTrades)) && (noSelectedCheckbox(showTheseStatuses))) {
         for(var i = 0; i < workOrders.length; i++) {
-          workOrders[i].classList.remove('hidden');
+          showWorkOrders(i);
         }
       } else {
 
         for(var i = 0; i < workOrders.length; i++) {
-          workOrders[i].classList.add('hidden');
+          hideWorkOrders(i);
 
-          if ((showTheseTrades.length == 0) || (showTheseStatuses.length == 0)) {
+          if ((noSelectedCheckbox(showTheseTrades)) || (noSelectedCheckbox(showTheseStatuses))) {
             if (showTheseTrades.indexOf(workOrders[i].getAttribute("data-trade")) >= 0) {
-            workOrders[i].classList.remove('hidden');
+              showWorkOrders(i);
             }
             if (showTheseStatuses.indexOf(workOrders[i].getAttribute("data-status")) >= 0) {
-            workOrders[i].classList.remove('hidden');
+              showWorkOrders(i);
             }
           }
 
           if ((showTheseStatuses.indexOf(workOrders[i].getAttribute("data-status")) >= 0) && (showTheseTrades.indexOf(workOrders[i].getAttribute("data-trade")) >= 0)) {
-            workOrders[i].classList.remove('hidden');
+              showWorkOrders(i);
           }
         }
       }
@@ -105,7 +117,7 @@
         statusFilterCheckBoxes[i].checked = false;
       }
       for(var i = 0; i < workOrders.length; i++) {
-        workOrders[i].classList.remove('hidden');
+        showWorkOrders(i);
       }
     }
 
@@ -124,18 +136,23 @@
       }
     }
 
+    function handleSelectCheckbox(checkbox) {
+      checkbox[i].addEventListener('click', handleToggleFilter);
+    }
+
     var tradeCheckboxes = document.querySelectorAll('.trade-filter-checkbox');
     var statusCheckboxes = document.querySelectorAll('.status-filter-checkbox');
 
     for(var i = 0; i < tradeCheckboxes.length; i++) {
-      tradeCheckboxes[i].addEventListener('click', handleToggleFilter);
+      handleSelectCheckbox(tradeCheckboxes)
     }
     for(var i = 0; i < statusCheckboxes.length; i++) {
-      statusCheckboxes[i].addEventListener('click', handleToggleFilter);
+      handleSelectCheckbox(statusCheckboxes)
     }
 
     document.getElementById('clearFilters').addEventListener('click', handleClearAllFilters);
 
     document.querySelector('.filter-collapsible-header').addEventListener('click', collapsibleFilter);
+
   })();
 </script>
