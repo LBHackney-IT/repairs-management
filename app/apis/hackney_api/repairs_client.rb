@@ -6,7 +6,7 @@ module HackneyAPI
     class RecordNotFoundError < HackneyApiError; end
     class ApiError < HackneyApiError; end
 
-    API_CACHE_TIME_IN_SECONDS = 1.minutes.to_i
+    API_CACHE_TIME_IN_SECONDS = ENV.fetch('API_CACHE_REQUEST_TIME_IN_SECONDS').to_i
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
