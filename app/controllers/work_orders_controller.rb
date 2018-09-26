@@ -7,13 +7,20 @@ class WorkOrdersController < ApplicationController
     if reference.present?
       redirect_to action: :show, ref: reference
     else
-      flash.notice = 'Please provide a reference'
+      flash.notice = 'Please provide a reference or postcode'
       redirect_to root_path
     end
   end
 
   def show
-    @work_order = Hackney::WorkOrder.find(reference)
+    if is_work_order?(reference)
+      @work_order = Hackney::WorkOrder.find(reference)
+    elsif is_postcode?(reference)
+      redirect_to search_properties_path(ref: reference)
+    else
+      flash.notice = "#{reference} is not a valid work order or postcode"
+      redirect_to root_path
+    end
   end
 
 private
@@ -24,6 +31,14 @@ private
   end
 
   def reference
-    params[:ref]
+    params[:ref].gsub(/\s+/, "")
+  end
+
+  def is_work_order?(reference)
+    reference[/\A\d{8}\z/]
+  end
+
+  def is_postcode?(postcode)
+    postcode.upcase[/^[A-Z]{1,2}([0-9]{1,2}|[0-9][A-Z])[0-9][A-Z]{2}$/]
   end
 end

@@ -52,19 +52,15 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
 
     before do
       allow(Hackney::PropertyHierarchy).to receive(:for_property).with(dwelling_reference).and_return(property_hierarchy_response)
-
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_estate.reference, body: property_reference_response_body)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_free.reference, body: property_reference_response_body)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_block.reference, body: property_reference_response_body)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_subblock.reference, body: property_reference_response_body)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_facilities.reference, body: property_reference_response_body)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_dwelling.reference, body: property_reference_response_body)
-      stub_hackney_work_orders_for_property(reference: property_hierarchy_nondwell.reference, body: property_reference_response_body)
     end
 
     subject { service_instance.call }
 
     it 'gets a grouped list (a hash) of work orders associated with a dwelling groupped by a description' do
+      property_hierarchy_response.each do |property_hierarchy|
+        stub_hackney_work_orders_for_property(reference: property_hierarchy.reference, body: property_reference_response_body)
+      end
+
       expect(subject["Estate"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Free"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Block"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
@@ -72,6 +68,14 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       expect(subject["Facilitices"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Dwelling"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Non-Dwell"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
+    end
+
+    it 'returns and empty hash when there are no work orders for any property in the heirarchy' do
+      property_hierarchy_response.each do |property_hierarchy|
+        stub_hackney_work_orders_for_property(reference: property_hierarchy.reference, body: [])
+      end
+
+      expect(subject).to be_empty
     end
   end
 end

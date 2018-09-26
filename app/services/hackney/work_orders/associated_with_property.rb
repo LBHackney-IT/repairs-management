@@ -11,7 +11,8 @@ module Hackney
 
       def call
         filtered_hierarchy.each_with_object({}) do |(description, property_reference), hash|
-          hash[description] = Hackney::WorkOrder.for_property(property_reference)
+          work_orders = Hackney::WorkOrder.for_property(property_reference)
+          hash[description] = work_orders if work_orders.any?
         end
       end
 

@@ -6,7 +6,7 @@ module HackneyAPI
     class RecordNotFoundError < HackneyApiError; end
     class ApiError < HackneyApiError; end
 
-    API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
+    API_CACHE_TIME_IN_SECONDS = 1.minutes.to_i
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
@@ -34,10 +34,16 @@ module HackneyAPI
     end
 
     def get_work_order_appointments_latest(reference)
-      request(
+      response = request(
         http_method: :get,
         endpoint: "v1/work_orders/#{reference}/appointments/latest"
       )
+      if response == []
+        raise HackneyAPI::RepairsClient::RecordNotFoundError,
+              "Can't find appointment for #{reference}"
+      else
+        response
+      end
     end
 
     def get_work_order_notes(reference)
@@ -52,6 +58,8 @@ module HackneyAPI
         http_method: :get,
         endpoint: "v1/work_orders?propertyReference=#{reference}"
       )
+    rescue HackneyAPI::RepairsClient::RecordNotFoundError
+      [] # Handle the case when there are no work orders for a given property. Delete this once API is updated to handle the case
     end
 
     def get_repair_requests_by_property(reference)
@@ -79,6 +87,13 @@ module HackneyAPI
       request(
         http_method: :get,
         endpoint: "v1/properties/#{reference}/hierarchy"
+      )
+    end
+
+    def get_property_by_postcode(postcode)
+      request(
+        http_method: :get,
+        endpoint: "v1/properties?postcode=#{postcode}"
       )
     end
 

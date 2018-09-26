@@ -1,21 +1,18 @@
 <div class="govuk-tabs__panel hackney-work-order-tabs-info" id="notes-tab">
   <h2 class='govuk-heading-l'>
-    Notes
+    Notes and appointments
   </h2>
-  <% if @work_order.notes.present? %>
+  <% if sort_notes_and_appointments(work_order).any? %>
     <ul class="govuk-list hackney-note-timeline">
-    <% @work_order.notes.sort_by(&:logged_at).reverse.each do |note| %>
-      <li class='hackney-note '>
+    <% sort_notes_and_appointments(work_order).each do |note_or_appointment| %>
+      <li class="hackney-note" >
         <p class="govuk-body">
-          <div class="hackney-note-info">
-            <%= note.logged_at.to_s(:govuk_date) %> by <%= note.logged_by %>
-          </div>
-          <%= simple_format(note.text) %>
+          <%= render note_or_appointment.model_name.element, note_or_appointment: note_or_appointment %>
         </p>
       </li>
     <% end %>
     </ul>
   <% else %>
-    <p class="govuk-body-s">There are no notes for this work order.</p>
+    <p class="govuk-body-s">There are no notes or appointments for this work order.</p>
   <% end %>
 </div>

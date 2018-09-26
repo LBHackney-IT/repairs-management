@@ -3,40 +3,45 @@
     Repairs history
   </h2>
 
-  <div class="govuk-grid-row">
-  <%= render 'repair_history_filter_by_trade' %>
+  <% if work_order_repairs_history.present? %>
+    <div class="govuk-grid-row">
 
-    <div class="govuk-grid-column-three-quarters">
-      <table class="govuk-table hackney-work-order-table">
-        <thead class="govuk-table__head">
-        <tr>
-          <th class="govuk-table__header" scope="col">Reference</th>
-          <th class="govuk-table__header" scope="col">Date raised</th>
-          <th class="govuk-table__header" scope="col">Status</th>
-          <th class="govuk-table__header" scope="col">Trade</th>
-          <th class="govuk-table__header" scope="col">Description</th>
-        </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-        <% @work_order.property.work_orders.sort_by(&:created).reverse.each do |work_order| %>
-          <tr class="govuk-table__row hackney-work-order-rows"
-              data-trade="trade-<%= trade_index(@work_order.property, work_order.trade) %>">
-            <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference) %></td>
-            <td class="govuk-table__cell hackney-work-order-date-raised">
-              <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
-              <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
-            </td>
-            <td class="govuk-table__cell">
-              <span class="govuk-body-s status status-<%= work_order.work_order_status %>">
-                <%= work_order_status_description(work_order.work_order_status).capitalize %>
-              </span>
-            </td>
-            <td class="govuk-table__cell description work-order-trade"><%= work_order.trade %></td>
-            <td class="govuk-table__cell description"><%= work_order.problem_description %></td>
+      <%= render 'work_orders/repair_history_filter_by_trade', work_orders_trades: trades %>
+
+      <div class="govuk-grid-column-three-quarters">
+        <table class="govuk-table hackney-work-order-table">
+          <thead class="govuk-table__head">
+          <tr>
+            <th class="govuk-table__header" scope="col">Reference</th>
+            <th class="govuk-table__header" scope="col">Date raised</th>
+            <th class="govuk-table__header" scope="col">Status</th>
+            <th class="govuk-table__header" scope="col">Trade</th>
+            <th class="govuk-table__header" scope="col">Description</th>
           </tr>
-        <% end %>
-        </tbody>
-      </table>
+          </thead>
+          <tbody class="govuk-table__body">
+          <% work_order_repairs_history.sort_by(&:created).reverse.each do |work_order| %>
+            <tr class="govuk-table__row hackney-work-order-rows"
+                data-trade="trade-<%= trade_index(work_order.property, work_order.trade) %>">
+              <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference) %></td>
+              <td class="govuk-table__cell hackney-work-order-date-raised">
+                <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
+                <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
+              </td>
+              <td class="govuk-table__cell">
+                <span class="govuk-body-s status status-<%= work_order.work_order_status %>">
+                  <%= work_order_status_description(work_order.work_order_status).capitalize %>
+                </span>
+              </td>
+              <td class="govuk-table__cell description work-order-trade"><%= work_order.trade %></td>
+              <td class="govuk-table__cell description"><%= work_order.problem_description %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  <% else %>
+    <p class="govuk-body-s">There are no historical work orders for this property.</p>
+  <% end %>
 </div>
