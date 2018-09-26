@@ -8,17 +8,20 @@ class WorkOrder
   end
 
   def related_properties
-    refs = related.map(&:property_reference).uniq
+    refs = related.map(&:prop_ref).uniq
     refs.map {|prop_ref| Hackney::Property.find(prop_ref)}
   end
 
   def related_for_property(property)
-    related.select{|wo| wo.property_reference == property.reference}
-           .map{|graph_work_order| Hackney::WorkOrder.find(graph_work_order.reference) }
+    related.select{|wo| wo.prop_ref == property.reference}
   end
 
   def related
-    graph.present? ? graph.related : []
+    @_related ||= if graph.present?
+                    convert_graph_work_orders(graph.related)
+                  else
+                    []
+                  end
   end
 
   private
@@ -29,5 +32,14 @@ class WorkOrder
 
   def graph
     @_graph ||= Graph::WorkOrder.find_by(id: @reference)
+  end
+
+  def convert_graph_work_orders(graph_work_orders)
+    graph_work_orders.map do |graph_work_order|
+      Hackney::WorkOrder.find(graph_work_order.reference)
+    rescue Exception => e
+      Rails.logger.error("Unable to find work order #{graph_work_order.reference} in API: #{e.message}")
+      nil
+    end.compact
   end
 end
