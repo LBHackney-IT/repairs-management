@@ -23,7 +23,7 @@ class NotesFeedJob < ApplicationJob
   # Scan the note for possible work order numbers in this job because we don't
   # want to store the text in redis - it may have private information
   def extract_references(hackney_note)
-    Hackney::WorkOrderReferenceFinder
+    Hackney::WorkOrders::ReferenceFinder
       .new(hackney_note.work_order_reference)
       .find(hackney_note.text)
   end

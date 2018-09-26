@@ -5,4 +5,5 @@ class Graph::Citation
   to_class 'Graph::WorkOrder'
 
   property :note_id, type: Integer
+  property :work_order_reference, type: String
 end
