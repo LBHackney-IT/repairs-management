@@ -32,10 +32,6 @@ module WorkOrderHelper
    }[dlo_status]
   end
 
-  def trade_index(property, trade)
-    property.trades.index(trade)
-  end
-
   def format_appointment_date(appointment)
     if appointment.begin_date.to_date ==  appointment.end_date.to_date
       "#{appointment.begin_date.to_s(:govuk_date_time)} to #{appointment.end_date.to_s(:govuk_time)}"
