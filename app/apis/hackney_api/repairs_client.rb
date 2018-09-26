@@ -118,7 +118,7 @@ module HackneyAPI
 
     def connection(cache_request:)
       Faraday.new(@base_url) do |faraday|
-        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
+        # faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
         faraday.response :logger unless Rails.env.test?
