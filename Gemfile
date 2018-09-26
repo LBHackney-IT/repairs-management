@@ -46,7 +46,7 @@ gem 'neo4j'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
-
+gem 'redis-rails'
 gem 'sidekiq'
 
 gem 'appsignal'
