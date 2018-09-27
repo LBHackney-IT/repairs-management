@@ -31,14 +31,18 @@ RSpec.describe 'Work order' do
 
   scenario 'Search for a work order by reference' do
     fill_in 'Search by work order reference or postcode', with: ''
-    click_on 'Search'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
 
     expect(page).to have_content 'Please provide a reference or postcode'
 
     stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
 
     fill_in 'Search by work order reference or postcode', with: '00000000'
-    click_on 'Search'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
 
     expect(page).to have_content 'Could not find a work order with reference 00000000'
 
@@ -56,7 +60,9 @@ RSpec.describe 'Work order' do
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     fill_in 'Search by work order reference or postcode', with: '01551932'
-    click_on 'Search'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
 
     expect(page).to have_content 'Works order: 01551932'
     expect(page).to have_content 'Servitor ref: 10162765'
@@ -97,14 +103,18 @@ RSpec.describe 'Work order' do
     stub_hackney_property_by_postcode(reference: 'E98BH', body: property_by_postcode_response_body__no_properties)
 
     fill_in 'Search by work order reference or postcode', with: 'E98BH'
-    click_on 'Search'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
 
     expect(page).to have_content 'We found 0 matching results for E98BH ...'
 
     stub_hackney_property_by_postcode
 
     fill_in 'Search by work order reference or postcode', with: 'E96BH'
-    click_on 'Search'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
 
     expect(page).to have_content 'E9 6BH'
     expect(page).to have_content '00014665'
@@ -305,5 +315,25 @@ RSpec.describe 'Work order' do
       expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
       expect(page).to have_selector 'td', text: 'Plumbing', count: 2
     end
+  end
+
+  scenario 'Clicking on search in the navbar to link back to the homepage' do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_work_orders_for_property
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    visit work_order_path('01551932')
+
+    within(".hackney-header__right_links") do
+      click_on "Search"
+    end
+    expect(page).to have_content "Search by work order reference or postcode"
   end
 end
