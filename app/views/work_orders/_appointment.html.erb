@@ -5,5 +5,5 @@
 Operative name: <%= note_or_appointment.assigned_worker %><br>
 Phone number: <%= note_or_appointment.phone_number %><br>
 Priority: <%= note_or_appointment.priority %><br>
-Created at: <%= note_or_appointment.reported_on.to_s(:govuk_date_time) %><br>
+Created at: <%= note_or_appointment.reported_on&.to_s(:govuk_date_time) %><br>
 Data source: <%= note_or_appointment.source_system %>

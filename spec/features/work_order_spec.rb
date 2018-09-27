@@ -254,6 +254,27 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'There are no booked appointments.'
   end
 
+  scenario 'An appointment does not have a creation date' do # TODO: remove when the api returns [] in this case
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments(
+      body: work_order_appointments_response_payload__no_creation_date
+    )
+    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_work_orders_for_property
+
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    visit work_order_path('01551932')
+
+    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned Operative name: (PLM) Brian Liverpool Phone number: +447535847993 Priority: standard Created at: Data source: DRS"
+
+  end
+
   scenario 'Filtering the repairs history by trade related to the property', js: true do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
