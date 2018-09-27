@@ -5,6 +5,7 @@ class Graph::WorkOrder
 
   property :property_reference, type: String
   property :created, type: DateTime
+  property :source, type: String
 
   has_many :both, :cited_work_orders, rel_class: 'Graph::Citation'
   has_many :in, :notes, type: :note_work_order, model_class: 'Graph::Note'

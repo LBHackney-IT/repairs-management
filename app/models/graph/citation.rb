@@ -6,4 +6,5 @@ class Graph::Citation
 
   property :note_id, type: Integer
   property :work_order_reference, type: String
+  property :source, type: String
 end
