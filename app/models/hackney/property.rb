@@ -47,4 +47,8 @@ class Hackney::Property
   def not_older_than_two_weeks?(created)
     created >= DateTime.current - 2.weeks
   end
+
+  def trades_no_work_order
+    @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq
+  end
 end

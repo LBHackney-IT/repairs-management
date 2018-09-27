@@ -161,7 +161,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Property details'
     expect(page).to have_content 'Homerton High Street 12 Banister House'
 
-    expect(page).to have_css(".hackney-work-order-tab", count: 2)
+    expect(page).to have_css(".hackney-work-order-tab", count: 1)
 
     expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
   end
