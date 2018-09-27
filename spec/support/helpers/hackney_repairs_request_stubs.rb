@@ -172,6 +172,22 @@ module Helpers
       ]
     end
 
+    def work_order_appointments_response_payload__no_creation_date
+      [
+        {
+          "id" => "01551932",
+          "status" => "planned",
+          "assignedWorker" => "(PLM) Brian Liverpool",
+          "phonenumber" => "+447535847993",
+          "priority" => "standard",
+          "sourceSystem" => "DRS",
+          "comment" => nil,
+          "beginDate" => "2018-05-29T14:51:22",
+          "endDate" => "2018-06-05T14:51:22"
+        }
+      ]
+    end
+
     def work_order_appointment_response_payload__no_appointments
       []
     end
