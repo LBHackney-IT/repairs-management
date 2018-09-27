@@ -100,8 +100,12 @@ module HackneyAPI
     private
 
     def request(http_method:, endpoint:, cache_request: true, params: {})
+      caller = caller_locations.first.label
+    
       response = begin
-        connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
+        Appsignal.instrument("api.#{caller}") do
+          connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
+        end
       rescue => e
         raise ApiError, "#{e} #{e.message}, caused by #{e.cause}"
       end
