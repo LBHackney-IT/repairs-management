@@ -143,7 +143,7 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_css(".hackney-work-order-tab", count: 2)
 
-    expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes'
+    expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
   end
 
   scenario 'No notes or appointments are returned' do # TODO: remove when the api in sandbox is deployed

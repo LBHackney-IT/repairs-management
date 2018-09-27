@@ -38,8 +38,8 @@
           <strong class="hackney_header__tag">beta</strong>
         </div>
         <div class="govuk-grid-column-one-third hackney-header__links hackney-header__right_links">
-          <% unless action_name == "home" %>
-            <%= link_to image_tag('govuk-icon-search-2x.png'), root_path %>
+          <% if action_name != "home" %>
+            <%= link_to image_tag('govuk-icon-search-2x.png'), root_path, class: "hackney-header__right_links-image" %>
             <%= link_to 'Search', root_path, class: "hackney-header__search" %>
           <% end %>
           <%= link_to 'Sign out', omniauth_logout_url %>
