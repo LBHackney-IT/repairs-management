@@ -6,7 +6,7 @@ module HackneyAPI
     class RecordNotFoundError < HackneyApiError; end
     class ApiError < HackneyApiError; end
 
-    API_CACHE_TIME_IN_SECONDS = ENV.fetch('API_CACHE_REQUEST_TIME_IN_SECONDS').to_i
+    API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
@@ -118,7 +118,7 @@ module HackneyAPI
 
     def connection(cache_request:)
       Faraday.new(@base_url) do |faraday|
-        # faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
+        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
         faraday.response :logger unless Rails.env.test?
