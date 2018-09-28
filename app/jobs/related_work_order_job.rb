@@ -3,7 +3,7 @@ class RelatedWorkOrderJob < ApplicationJob
 
   def perform(note_id, logged_at, work_order_reference, target_numbers)
     GraphModelImporter
-      .new('notes-feed')
+      .new(self.class.name)
       .import_note(note_id, logged_at, work_order_reference, target_numbers)
   end
 end
