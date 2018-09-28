@@ -1,4 +1,4 @@
-class WorkOrder
+class WorkOrderFacade
   delegate :property, :reference, :servitor_reference, :latest_appointment,
            :date_due, :repair_request, :property, :created, :dlo_status,
            :work_order_status, :notes, :appointments, to: :hackney
