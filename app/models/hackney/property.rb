@@ -48,7 +48,7 @@ class Hackney::Property
     created >= DateTime.current - 2.weeks
   end
 
-  def trades_no_work_order
+  def trades_heirarchy_work_orders
     @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq
   end
 end
