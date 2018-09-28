@@ -34,7 +34,7 @@ class Hackney::Property
     @_trades ||= work_orders.map(&:trade).uniq
   end
 
-  def trades_no_work_order
+  def trades_heirarchy_work_orders
     @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq
   end
 end

@@ -19,6 +19,6 @@
   </ul>
 
   <%= render 'work_order_notes', work_order: @work_order %>
-  <%= render 'work_order_building', dwelling_work_orders_hierarchy: @work_order.property.dwelling_work_orders_hierarchy, trades: @work_order.property.trades %>
+  <%= render 'work_order_repairs_history', dwelling_work_orders_hierarchy: @work_order.property.dwelling_work_orders_hierarchy, trades: @work_order.property.trades %>
   </ul>
 </div>
