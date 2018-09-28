@@ -1,5 +1,8 @@
 class GraphModelImporter
 
+  WORK_ORDERS_IMPORT = 'work-orders-import'.freeze
+  NOTES_IMPORT = 'notes-import'.freeze
+
   def initialize(source)
     @source = source
   end
@@ -51,13 +54,23 @@ class GraphModelImporter
   end
 
   def create_citations(graph_work_order, note_id, target_number)
-    target = find_or_create_graph_work_order(target_number)
+    # We assume that the work order import will have handled all work orders
+    # up to a point and do not need to ask the API if a work order exists or not
+    target = if target_number <= last_imported_work_order
+               Graph::WorkOrder.find(target_number)
+             else
+               find_or_create_graph_work_order(target_number)
+             end
 
     Graph::Citation.create!(from_node: graph_work_order, to_node: target,
                             note_id: note_id, source: @source)
 
-  rescue HackneyAPI::RepairsClient::RecordNotFoundError
+  rescue HackneyAPI::RepairsClient::RecordNotFoundError, Neo4j::ActiveNode::Labels::RecordNotFound
     nil # this is fine, target_numbers are not guaranteed to be work orders
+  end
+
+  def last_imported_work_order
+    Graph::WorkOrder.where(source: WORK_ORDERS_IMPORT).last&.reference || '00000000'
   end
 
   def find_or_create_graph_work_order(work_order_reference)
