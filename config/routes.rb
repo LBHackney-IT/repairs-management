@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
+  post '/review_app_login', to: 'sessions#review_app_login'
   get '/logout', to: 'sessions#destroy'
 
   resources :work_orders, only: [:show], param: :ref do
