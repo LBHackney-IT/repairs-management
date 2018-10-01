@@ -5,10 +5,10 @@ class CsvReader
     @kind
   end
 
-  def read_csv
+  def read_csv(input = STDIN)
     count = 0
     time = Time.current
-    CSV.parse(STDIN, headers: true) do |row|
+    CSV.parse(input, headers: true) do |row|
       yield row
       count += 1
       if count % 100 == 0

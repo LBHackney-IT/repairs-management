@@ -52,6 +52,8 @@ gem 'sidekiq'
 
 gem 'appsignal'
 
+gem "aws-sdk-s3"
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
