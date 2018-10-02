@@ -35,7 +35,7 @@ private
   end
 
   def is_work_order?(reference)
-    reference[/\A\d{8}\z/]
+    reference[/^([A-Z]{2})?\d{8}\z/]
   end
 
   def is_postcode?(postcode)
