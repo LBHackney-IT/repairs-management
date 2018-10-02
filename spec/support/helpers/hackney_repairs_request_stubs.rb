@@ -53,6 +53,13 @@ module Helpers
       }.deep_merge(overrides)
     end
 
+    def repair_request_response_payload__info_missing
+      {
+        "repairRequestReference" => "03209397",
+        "problemDescription" => "Repair info missing"
+      }
+    end
+
     def stub_hackney_repairs_repair_requests(opts = {})
       reference = opts.fetch(:reference, '03209397')
       status = opts.fetch(:status, 200)

@@ -35,6 +35,7 @@ class Hackney::WorkOrder
     @_repair_request ||= Hackney::RepairRequest.find(rq_ref)
   rescue HackneyAPI::RepairsClient::HackneyApiError => e
     Rails.logger.error(e)
+    Appsignal.set_error(e, message: "Repair request not found for this work order")
     @_repair_request = Hackney::RepairRequest::NULL_OBJECT
   end
 

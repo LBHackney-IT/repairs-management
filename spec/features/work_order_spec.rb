@@ -285,6 +285,26 @@ RSpec.describe 'Work order' do
 
   end
 
+  scenario 'A repair request has info missing' do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests(
+      body: repair_request_response_payload__info_missing
+    )
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_work_orders_for_property
+
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    visit work_order_path('01551932')
+
+    expect(page).to have_content "2:10pm, 29 May 2018"
+  end
+
   scenario 'Filtering the repairs history by trade related to the property', js: true do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
