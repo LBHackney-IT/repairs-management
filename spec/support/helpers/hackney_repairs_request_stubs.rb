@@ -82,6 +82,40 @@ module Helpers
         .to_return(status: status, body: body.to_json)
     end
 
+    # GET v1/repairs/:reference/block/work_orders?trade=:trade
+
+    def repairs_work_order_block_by_trade_response(trade, reference)
+      [
+        {
+          'sorCode' => '21000006',
+          'trade' => trade,
+          'workOrderReference' => '01106923',
+          'repairRequestReference' => '02643677',
+          'problemDescription' => 'PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be.',
+          'created' => '2014-02-10T11:01:53',
+          'authDate' => '0001-01-01T00:00:00',
+          'estimatedCost' => 55.65,
+          'actualCost' => 0,
+          'completedOn' => '1900-01-01T00:00:00',
+          'dateDue' => '2014-03-11T11:02:00',
+          'workOrderStatus' => '300',
+          'dloStatus' => '3',
+          'servitorReference' => '06006905',
+          'propertyReference' => reference
+        }
+      ]
+    end
+
+    def stub_hackney_repairs_work_order_block_by_trade(opts = {})
+      reference = opts.fetch(:reference, '00014665')
+      status = opts.fetch(:status, 200)
+      trade = opts.fetch(:trade, 'Plumbing')
+      body = opts.fetch(:body, repairs_work_order_block_by_trade_response(trade, reference))
+
+      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/block/work_orders?trade=#{trade}")
+        .to_return(status: status, body: body.to_json)
+    end
+
     # GET v1/workorders/:reference/notes
 
     def work_order_notes_payload

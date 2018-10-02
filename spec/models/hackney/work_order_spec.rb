@@ -1,9 +1,9 @@
 require 'pry'
 require 'rails_helper'
 
-describe Hackney::WorkOrder, '#build' do
-  include Helpers::HackneyRepairsRequestStubs
+include Helpers::HackneyRepairsRequestStubs
 
+describe Hackney::WorkOrder, '.build' do
   it 'builds a work order from the API response' do
     model = described_class.build(work_order_response_payload)
 
@@ -22,9 +22,34 @@ describe Hackney::WorkOrder, '#build' do
   end
 end
 
-describe Hackney::WorkOrder, '#find' do
-  include Helpers::HackneyRepairsRequestStubs
+describe Hackney::WorkOrder, '.for_property_block_and_trade' do
+  let(:reference) { '121212' }
+  let(:trade) { 'trade' }
 
+  subject { described_class.for_property_block_and_trade(property_reference: reference, trade: trade) }
+
+  it 'finds work orders by a property and a trade' do
+    stub_hackney_repairs_work_order_block_by_trade(trade: trade, reference: reference)
+
+    expect(subject.first).to be_an(Hackney::WorkOrder)
+    expect(subject.first.prop_ref).to eq(reference)
+    expect(subject.first.trade).to eq(trade)
+  end
+
+  it 'returns an empty response' do
+    stub_hackney_repairs_work_order_block_by_trade(trade: trade, reference: reference, status: 404)
+
+    expect(subject).to eq([])
+  end
+
+  it 'raises an error when the API fails to retrieve a property' do
+    stub_hackney_repairs_work_order_block_by_trade(trade: trade, reference: reference, status: 500)
+
+    expect { subject }.to raise_error(HackneyAPI::RepairsClient::ApiError)
+  end
+end
+
+describe Hackney::WorkOrder, '.for_property_block_and_trade' do
   it 'finds a work order' do
     stub_hackney_repairs_work_orders
 
@@ -52,8 +77,6 @@ describe Hackney::WorkOrder, '#find' do
 end
 
 describe Hackney::WorkOrder, '#repair' do
-  include Helpers::HackneyRepairsRequestStubs
-
   before do
     stub_hackney_repairs_work_orders
   end

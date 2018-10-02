@@ -38,6 +38,17 @@
   }
 }
 
+.hackney-work-order-date-raised--left {
+  .work_order_date_created {
+    margin: 0;
+  }
+  .work_order_time_created {
+    color: $govuk-secondary-text-colour;
+    margin: 5px;
+    padding-left: 20px;
+  }
+}
+
 .hackney-work-order-table {
   tbody {
     vertical-align: top;

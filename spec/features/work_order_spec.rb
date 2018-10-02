@@ -52,6 +52,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_work_orders_for_property(reference: property_reference1, body: [
       work_order_response_payload("workOrderReference" => "1234", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "4321", "problemDescription" => "Problem 2"),
@@ -131,6 +132,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_work_orders_for_property
     stub_hackney_work_orders_for_property(reference: property_reference1)
     stub_hackney_work_orders_for_property(reference: property_reference2)
@@ -150,6 +152,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes(
       body: work_order_note_response_payload__no_notes
     )
@@ -174,6 +177,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes(
       body: work_order_note_response_payload__no_notes
     )
@@ -193,6 +197,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes(
       body: {
         "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
@@ -216,6 +221,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__no_appointments
@@ -238,6 +244,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: {
@@ -268,6 +275,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointments_response_payload__no_creation_date
@@ -289,6 +297,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_work_order_latest_appointments
@@ -342,6 +351,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_work_order_latest_appointments

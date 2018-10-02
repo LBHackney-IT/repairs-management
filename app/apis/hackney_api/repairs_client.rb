@@ -97,11 +97,20 @@ module HackneyAPI
       )
     end
 
+    def get_property_block_work_orders_by_trade(reference:, trade:)
+      request(
+        http_method: :get,
+        endpoint: "v1/properties/#{reference}/block/work_orders?trade=#{trade}"
+      )
+    rescue HackneyAPI::RepairsClient::RecordNotFoundError
+      []
+    end
+
     private
 
     def request(http_method:, endpoint:, cache_request: true, params: {})
       caller = caller_locations.first.label
-    
+
       response = begin
         Appsignal.instrument("api.#{caller}") do
           connection(cache_request: cache_request).public_send(http_method, endpoint, **params)

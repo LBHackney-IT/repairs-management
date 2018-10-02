@@ -336,4 +336,49 @@ describe HackneyAPI::RepairsClient do
       expect(api_client.get_work_orders_by_property("ben_was_here")).to eq(JSON.parse(response))
     end
   end
+
+  describe '#get_property_block_work_orders_by_trade' do
+    let(:trade) { 'tade' }
+
+    subject { api_client.get_property_block_work_orders_by_trade(reference: reference, trade: trade) }
+
+    context 'successfull response' do
+      before do
+        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}")
+          .to_return(body: empty_response_body.to_json)
+        end
+
+      it 'returns successful response body' do
+        expect(subject).to eq(empty_response_body)
+      end
+    end
+
+    context 'not found error' do
+      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}").to_return(status: 404) }
+
+      it 'returns an empty response' do
+        expect(subject).to eq([])
+      end
+    end
+
+    context 'API general error' do
+      let(:response_body) do
+        {
+          "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+          "userMessage" => "We had some problems processing your request"
+        }
+      end
+
+      before do
+        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}")
+          .to_return(status: 500, body: response_body.to_json)
+      end
+
+      it 'raises ApiError error' do
+        expect { subject }.to raise_error(described_class::ApiError).with_message(
+          "v1/properties/#{reference}/block/work_orders?trade=#{trade}, 500, #{response_body}"
+        )
+      end
+    end
+  end
 end
