@@ -2,7 +2,7 @@ require 'csv'
 
 class CsvReader
   def initialize(kind)
-    @kind
+    @kind = kind
   end
 
   def read_csv(input = STDIN)
