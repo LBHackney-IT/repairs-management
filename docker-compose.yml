@@ -31,6 +31,7 @@ services:
       - NEO4J_AUTH=none
     ports:
       - '7474:7474'
+      - '7687:7687'
 
   neo4j_db_test:
     <<: *neo4j_db
@@ -44,12 +45,13 @@ services:
     image: 'redis:4.0-alpine'
     command: redis-server --requirepass somepassword
 
-  sidekiq:
+  delayed_job:
     depends_on:
-      - 'pg_db'
-      - 'redis'
+      - pg_db
+      - neo4j_db
+      - redis
     build: .
-    command: bundle exec sidekiq -q default -q mailers
+    command: bundle exec rake jobs:work
     volumes:
       - .:/app
     environment:

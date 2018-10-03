@@ -26,6 +26,8 @@ module Helpers
       status = opts.fetch(:status, 200)
       body = opts.fetch(:body, work_order_response_payload)
 
+      Graph::WorkOrder.find_or_create(reference: reference)
+
       stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}")
         .to_return(status: status, body: body.to_json)
     end

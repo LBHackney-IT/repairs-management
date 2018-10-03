@@ -12,9 +12,14 @@
 
 ---
 :constraints:
+- CONSTRAINT ON ( `graph::note`:`Graph::Note` ) ASSERT `graph::note`.note_id IS UNIQUE
+- CONSTRAINT ON ( `graph::workorder`:`Graph::WorkOrder` ) ASSERT `graph::workorder`.reference
+  IS UNIQUE
 - CONSTRAINT ON ( `neo4j::migrations::schemamigration`:`Neo4j::Migrations::SchemaMigration`
   ) ASSERT `neo4j::migrations::schemamigration`.migration_id IS UNIQUE
-- CONSTRAINT ON ( workorder:WorkOrder ) ASSERT workorder.ref IS UNIQUE
 :indexes: []
 :versions:
 - '20180712093306'
+- '20180906160000'
+- '20180906163438'
+- '20180906164526'

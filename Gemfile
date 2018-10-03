@@ -52,6 +52,9 @@ gem 'sidekiq'
 
 gem 'appsignal'
 
+gem "aws-sdk-s3"
+gem 'delayed_job_active_record'
+
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails'
