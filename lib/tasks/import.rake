@@ -14,7 +14,8 @@ namespace :hackney do
       created = row['created']
       text = row['rq_problem']
 
-      raise "missing data in: #{row}" unless [work_order_ref, property_ref, created, text].select(&:blank?).empty?
+      raise "missing data in: #{row}" unless [work_order_ref, property_ref, created].select(&:blank?).empty?
+      raise "missing text in: #{row}" if text.nil?
 
       numbers = WorkOrderReferenceFinder.new(work_order_ref).find(text)
 
@@ -34,7 +35,8 @@ namespace :hackney do
       note_id = row['NoteID']
       logged_at = row['LoggedAt']
 
-      raise "missing data in: #{row}" unless [note_id, logged_at, work_order_ref, text].select(&:blank?).empty?
+      raise "missing data in: #{row}" unless [note_id, logged_at, work_order_ref].select(&:blank?).empty?
+      raise "missing text in: #{row}" if text.nil?
 
       numbers = WorkOrderReferenceFinder.new(work_order_ref).find(text)
       numbers = numbers.select {|n| n < '02000000' } # we know for the import that all work orders are less than this
