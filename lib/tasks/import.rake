@@ -32,7 +32,7 @@ namespace :hackney do
     CsvReader.new('note').read_csv(data_stream) do |row|
       work_order_ref = row['WorkOrderReference']
       text = row['Text']
-      note_id = row['NoteID']
+      note_id = row['NoteId']
       logged_at = row['LoggedAt']
 
       raise "missing data in: #{row}" unless [note_id, logged_at, work_order_ref].select(&:blank?).empty?
