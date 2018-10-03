@@ -8,7 +8,7 @@ namespace :hackney do
     data_stream = S3Client.new.s3_object_stream(args[:s3_object_name])
     importer = GraphModelImporter.new(GraphModelImporter::WORK_ORDERS_IMPORT)
 
-    CsvReader.new('console').read_csv(data_stream) do |row|
+    CsvReader.new('work order').read_csv(data_stream) do |row|
       work_order_ref = row['wo_ref']
       property_ref = row['prop_ref']
       created = row['created']
