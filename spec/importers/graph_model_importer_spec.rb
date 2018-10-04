@@ -45,7 +45,7 @@ RSpec.describe GraphModelImporter, :db_connection do
 
     context 'when a work_order is not in the graph database' do
       it 'creates a new work order model if a note belongs to an unknown work order' do
-        new_work_order = build :hackney_work_order,
+        new_work_order = build :work_order,
                                reference: '00000003',
                                created: today,
                                problem_description: 'something is broken'
@@ -65,7 +65,7 @@ RSpec.describe GraphModelImporter, :db_connection do
       end
 
       it "create a new work order model if the reference exists in the api" do
-        new_work_order = build :hackney_work_order,
+        new_work_order = build :work_order,
                                reference: '00000003',
                                created: today,
                                problem_description: 'something is leaking'

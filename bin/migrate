@@ -11,4 +11,5 @@ end
 chdir APP_ROOT do
   puts '== Running migrations =='
   system! 'docker-compose run rails_app rails db:migrate'
+  system! 'docker-compose run rails_app rails neo4j:migrate'
 end

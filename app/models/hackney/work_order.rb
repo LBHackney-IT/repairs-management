@@ -16,6 +16,12 @@ class Hackney::WorkOrder
     end
   end
 
+  def self.for_property_block_and_trade(property_reference:, trade:)
+    HackneyAPI::RepairsClient.new.get_property_block_work_orders_by_trade(reference: property_reference, trade: trade).map do |attributes|
+      build(attributes)
+    end
+  end
+
   def self.build(attributes)
     new(
       reference: attributes['workOrderReference'].strip,
