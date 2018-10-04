@@ -46,10 +46,14 @@ gem 'neo4j'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
+gem 'redis-activesupport'
 
 gem 'sidekiq'
 
 gem 'appsignal'
+
+gem "aws-sdk-s3"
+gem 'delayed_job_active_record'
 
 group :development, :test do
   gem 'pry'

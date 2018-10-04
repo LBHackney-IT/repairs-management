@@ -1,7 +1,7 @@
 module Hackney
   module WorkOrders
     class AssociatedWithProperty
-      HIERARCHY_DESCRIPTIONS = %w(Estate Block Sub-Block Free Facilitices Dwelling Non-Dwell).freeze
+      HIERARCHY_DESCRIPTIONS = %w(Estate Block Sub-Block Free Facilities Dwelling Non-Dwell).freeze
 
       attr_reader :reference
 

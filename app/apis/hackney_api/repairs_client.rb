@@ -6,7 +6,7 @@ module HackneyAPI
     class RecordNotFoundError < HackneyApiError; end
     class ApiError < HackneyApiError; end
 
-    API_CACHE_TIME_IN_SECONDS = 1.minutes.to_i
+    API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
@@ -23,6 +23,13 @@ module HackneyAPI
       request(
         http_method: :get,
         endpoint: "v1/work_orders/#{reference}"
+      )
+    end
+
+    def notes_feed(previous_note_id)
+      request(
+        http_method: :get,
+        endpoint: "v1/notes/feed?startId=#{previous_note_id}&noteTarget=uhorder"
       )
     end
 

@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :work_order, class: 'Hackney::WorkOrder' do
-    sequence(:reference) { |i| "R#{i}" }
+    sequence(:reference) { |i| "%08d" % i }
     sequence(:rq_ref) { |i| "RQ#{i}" }
-    sequence(:prop_ref) { |i| "P#{i}" }
+    prop_ref { '1234' }
     sequence(:servitor_reference) { |i| "SR#{i}" }
 
     created { DateTime.current - 1.week }

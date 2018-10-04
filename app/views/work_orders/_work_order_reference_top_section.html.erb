@@ -32,23 +32,23 @@
       <div class="hackney-main-section-info hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
-            <%= @work_order.repair_request.contact.name %>
+            <%= @work_order.repair_request.contact&.name %>
           </span><br>
           <%= @work_order.created.to_s(:govuk_date) %>
         </p>
 
         <table class="govuk-table hackney-appointment-info">
           <tbody class="govuk-body-xs">
-            <% if @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact.telephone_number %>
+            <% if @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact&.telephone_number %>
               <tr>
                 <th scope="row">Telephone:</th>
                 <td>
-                  <%= @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact.telephone_number %>
+                  <%= @work_order.latest_appointment&.phone_number || @work_order.repair_request.contact&.telephone_number %>
                 </td>
               </tr>
             <% end %>
 
-            <% if @work_order.repair_request.contact.email_address %>
+            <% if @work_order.repair_request.contact&.email_address %>
               <tr>
                 <th scope="row">Email:</th>
                 <td>

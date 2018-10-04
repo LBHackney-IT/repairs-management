@@ -12,7 +12,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
     let(:property_hierarchy_block) { build(:property_hierarchy, description: 'Block') }
     let(:property_hierarchy_random) { build(:property_hierarchy, description: 'Random') }
     let(:property_hierarchy_subblock) { build(:property_hierarchy, description: 'Sub-Block') }
-    let(:property_hierarchy_facilities) { build(:property_hierarchy, description: 'Facilitices') }
+    let(:property_hierarchy_facilities) { build(:property_hierarchy, description: 'Facilities') }
     let(:property_hierarchy_dwelling) { build(:property_hierarchy, description: 'Dwelling') }
     let(:property_hierarchy_nondwell) { build(:property_hierarchy, description: 'Non-Dwell') }
 
@@ -65,7 +65,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       expect(subject["Free"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Block"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Sub-Block"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
-      expect(subject["Facilitices"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
+      expect(subject["Facilities"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Dwelling"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Non-Dwell"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
     end

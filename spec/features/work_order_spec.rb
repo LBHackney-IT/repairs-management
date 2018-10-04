@@ -54,11 +54,19 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_work_orders_for_property(reference: property_reference1, body: [
-      work_order_response_payload("workOrderReference" => "1234", "problemDescription" => "Problem 1"),
-      work_order_response_payload("workOrderReference" => "4321", "problemDescription" => "Problem 2"),
+      work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
+      work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
     stub_hackney_work_orders_for_property(reference: property_reference2)
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    stub_hackney_repairs_work_orders(
+      reference: "11235813",
+      body: work_order_response_payload("workOrderReference" => "11235813",
+                                        "problemDescription" => "A related work order")
+    )
+    GraphModelImporter.new('test').import_work_order("11235813", property_reference1, Time.current, [])
+    GraphModelImporter.new('test').import_note(1, Time.current, "11235813", ['01551932'])
 
     fill_in 'Search by work order reference or postcode', with: '01551932'
     within('.hackney-search') do
@@ -94,10 +102,16 @@ RSpec.describe 'Work order' do
       ])
     end
 
-    expect(page).to have_content 'Problem 1'
-    expect(page).to have_content 'Problem 2'
-    expect(page).to have_link("1234", href: work_order_path("1234"))
-    expect(page).to have_link("4321", href: work_order_path("4321"))
+    within(find('h2', text: 'Repairs history').find(:xpath, '..')) do
+      expect(page).to have_content 'Problem 1'
+      expect(page).to have_content 'Problem 2'
+      expect(page).to have_link("12345678", href: work_order_path("12345678"))
+      expect(page).to have_link("87654321", href: work_order_path("87654321"))
+    end
+
+    within(find('h2', text: 'Related repairs').find(:xpath, '..')) do
+      expect(page).to have_content 'A related work order'
+    end
   end
 
   scenario 'Search for a work order by postcode' do
@@ -291,6 +305,27 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned Operative name: (PLM) Brian Liverpool Phone number: +447535847993 Priority: standard Created at: Data source: DRS"
 
+  end
+
+  scenario 'A repair request has info missing' do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests(
+      body: repair_request_response_payload__info_missing
+    )
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_work_orders_for_property
+
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    visit work_order_path('01551932')
+
+    expect(page).to have_content "2:10pm, 29 May 2018"
   end
 
   scenario 'Filtering the repairs history by trade related to the property', js: true do

@@ -14,7 +14,7 @@ class WorkOrdersController < ApplicationController
 
   def show
     if is_work_order?(reference)
-      @work_order = Hackney::WorkOrder.find(reference)
+      @work_order = WorkOrderFacade.new(reference)
     elsif is_postcode?(reference)
       redirect_to search_properties_path(ref: reference)
     else

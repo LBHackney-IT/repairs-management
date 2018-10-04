@@ -35,3 +35,6 @@ App is hosted on Unboxed's Heroku: [hackney-repairs pipeline](https://dashboard.
 ## GOV.UK Frontend
 
 [https://github.com/alphagov/govuk-frontend](https://github.com/alphagov/govuk-frontend)
+
+## Neo4j
+The neo4j web interface is on http://localhost:7474 . Password should be `neo4j`
