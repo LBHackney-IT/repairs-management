@@ -112,6 +112,10 @@ RSpec.describe 'Work order' do
     within(find('h2', text: 'Related repairs').find(:xpath, '..')) do
       expect(page).to have_content 'A related work order'
     end
+
+    within(find('h2', text: 'Possibly related').find(:xpath, '..')) do
+      expect(page).to have_content 'There are no possibly related plumbing work orders from last two weeks.'
+    end
   end
 
   scenario 'Search for a work order by postcode' do
