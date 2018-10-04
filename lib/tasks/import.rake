@@ -5,6 +5,8 @@ namespace :hackney do
   desc "preload graph work orders"
   task :preload_graph_orders, [:s3_object_name] => [:environment] do |_t, args|
 
+    Rails.logger.level = Logger::INFO
+
     data_stream = S3Client.new.s3_object_stream(args[:s3_object_name])
     importer = GraphModelImporter.new(GraphModelImporter::WORK_ORDERS_IMPORT)
 
@@ -25,6 +27,8 @@ namespace :hackney do
 
   desc "preload graph notes"
   task :preload_graph_notes, [:s3_object_name] => [:environment] do |_t, args|
+
+    Rails.logger.level = Logger::INFO
 
     data_stream = S3Client.new.s3_object_stream(args[:s3_object_name])
     importer = GraphModelImporter.new(GraphModelImporter::NOTES_IMPORT)
