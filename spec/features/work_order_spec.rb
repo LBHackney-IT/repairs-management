@@ -384,6 +384,54 @@ RSpec.describe 'Work order' do
       expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
       expect(page).to have_selector 'td', text: 'Plumbing', count: 2
     end
+
+    find('button', text: 'Clear filters').click
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+    end
+
+  end
+
+  scenario 'Filtering the repairs history by the hierarchy of the property', js: true do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2, body: work_orders_by_property_reference_payload__different_property)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    visit work_order_path('01551932')
+
+    within('#repair-history-tab') do
+      expect(page).to have_selector 'label', text: 'Estate', count: 1
+      expect(page).to have_selector 'label', text: 'Block', count: 1
+    end
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+    end
+
+    choose('hierarchy', option: 'hierarchy-1')
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 1
+      expect(page).to have_selector 'td', text: 'Electrical', count: 0
+    end
+
+    choose('hierarchy', option: 'hierarchy-0')
+
+    within('#repair-history-tab table') do
+      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+    end
   end
 
   scenario 'Clicking on search in the navbar to link back to the homepage' do

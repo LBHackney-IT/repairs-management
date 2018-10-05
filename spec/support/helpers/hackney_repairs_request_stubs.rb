@@ -333,6 +333,25 @@ module Helpers
       }]
     end
 
+    def work_orders_by_property_reference_payload__different_property
+      [{
+        "sorCode" => "20060060",
+        "trade" => "Plumbing",
+        "workOrderReference" => "00545095",
+        "repairRequestReference" => "02054981",
+        "problemDescription" => "THIS IS THE DIFF ONE",
+        "created" => "2010-12-20T09:53:27",
+        "estimatedCost" => 115.02,
+        "actualCost" => 0,
+        "completedOn" => "1900-01-01T00:00:00",
+        "dateDue" => "2011-01-18T09:53:00",
+        "workOrderStatus" => "300",
+        "dloStatus" => "3",
+        "servitorReference" => "00746221",
+        "propertyReference" => "00024665"
+      }]
+    end
+
     def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
                                               body: work_orders_by_property_reference_payload)
       stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")

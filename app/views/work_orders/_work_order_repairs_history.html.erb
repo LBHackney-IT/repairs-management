@@ -4,22 +4,11 @@
   </h2>
 
   <% if dwelling_work_orders_hierarchy.any? %>
-  <ul class="hackney-filtering__list">
-    <% dwelling_work_orders_hierarchy.keys.each_with_index do |description, index| %>
-      <li>
-        <strong onClick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="tabelement hackney-filtering__tag <%= "hackney-filtering__tag--active" if index == 0 %>" id="<%= description.parameterize %>-tab"><%= description %></strong>
-      </li>
-    <% end %>
-  </ul>
-
   <div class="govuk-grid-row">
-    <%= render 'work_orders/repair_history_filter_by_trade', work_orders_trades: trades %>
+    <%= render 'work_orders/repair_history_filters', hierarchy: dwelling_work_orders_hierarchy, work_orders_trades: trades %>
 
     <% dwelling_work_orders_hierarchy.each_with_index do |(description, work_orders), index| %>
       <div class="tabcontent <%= 'hidden' unless index == 0 %>" id="<%= description.parameterize %>-content">
-        <h2 class="heading-large">
-          <%= description %>
-        </h2>
 
         <div class="govuk-grid-column-three-quarters">
           <table class="govuk-table hackney-history hackney-work-order-table">
@@ -63,20 +52,3 @@
 
 </div>
 
-<script>
-  function applyBuildingFilter(tab_id, content_id) {
-    var tabs = document.getElementsByClassName('tabelement');
-    for(i = 0; i < tabs.length; i++) {
-      tabs[i].className = 'tabelement hackney-filtering__tag';
-    }
-    document.getElementById(tab_id).className = 'tabelement hackney-filtering__tag hackney-filtering__tag--active';
-
-    var tab_contents = document.getElementsByClassName('tabcontent');
-    for(i = 0; i < tabs.length; i++) {
-      var el = tab_contents[i];
-      el.style.display = 'none';
-      el.className = 'tabcontent';
-    }
-    document.getElementById(content_id).style.display = 'block';
-  }
-</script>

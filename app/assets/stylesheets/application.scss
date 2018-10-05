@@ -5,8 +5,7 @@ $govuk-font-family: 'Arial', sans-serif;
 @import "hackney_work_order";
 @import "hackney_note";
 @import "hackney_tabs";
-@import "hackney_building_filtering";
-@import "hackney_trade_filtering";
+@import "hackney_trade_and_hierarchy_filtering";
 @import "hackney_address_list";
 
 .hidden {
