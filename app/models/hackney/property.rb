@@ -26,8 +26,8 @@ class Hackney::Property
     @_work_orders ||= Hackney::WorkOrder.for_property(reference)
   end
 
-  def work_orders_plumbing_from_block_and_last_two_weekes
-    @_work_orders_plumbing_from_block_and_last_two_weekes ||= begin
+  def work_orders_plumbing_from_block_and_last_two_weeks
+    @_work_orders_plumbing_from_block_and_last_two_weeks ||= begin
       Hackney::WorkOrder.for_property_block_and_trade(property_reference: reference, trade: Hackney::Trades::PLUMBING).select do |work_order|
         work_order if not_older_than_two_weeks?(work_order.created) && work_order.prop_ref != reference
       end
