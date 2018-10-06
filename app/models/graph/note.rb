@@ -5,7 +5,5 @@ class Graph::Note
 
   property :logged_at, type: DateTime
   property :source, type: String
-
-
-  has_one :out, :work_order, type: :note_work_order, model_class: 'Graph::WorkOrder'
+  property :work_order_reference, type: String
 end

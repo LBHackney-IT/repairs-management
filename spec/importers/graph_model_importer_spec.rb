@@ -30,7 +30,7 @@ RSpec.describe GraphModelImporter, :db_connection do
       Graph::Note.first.tap do |note|
         expect(note.note_id).to eq 23
         expect(note.logged_at).to eq today
-        expect(note.work_order).to eq work_order_2
+        expect(note.work_order_reference).to eq '00000002'
         expect(note.source).to eq 'test-thingy'
       end
     end
