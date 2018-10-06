@@ -43,14 +43,12 @@ class GraphModelImporter
   private
 
   def create_graph_models(note_id, logged_at, work_order_reference)
-    note = Graph::Note.create!(note_id: note_id,
-                               logged_at: logged_at,
-                               source: @source)
+    Graph::Note.create!(note_id: note_id,
+                        logged_at: logged_at,
+                        source: @source,
+                        work_order_reference: work_order_reference)
 
-    work_order = find_or_create_graph_work_order(work_order_reference)
-
-    work_order.notes << note
-    work_order
+    find_or_create_graph_work_order(work_order_reference)
   end
 
   def create_citations(graph_work_order, note_id, target_number)
@@ -70,7 +68,7 @@ class GraphModelImporter
   end
 
   def last_imported_work_order
-    Graph::WorkOrder.where(source: WORK_ORDERS_IMPORT).last&.reference || '00000000'
+    @_last ||= Graph::WorkOrder.where(source: WORK_ORDERS_IMPORT).last&.reference || '00000000'
   end
 
   def find_or_create_graph_work_order(work_order_reference)
