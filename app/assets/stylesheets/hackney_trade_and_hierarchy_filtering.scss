@@ -1,8 +1,8 @@
-.trade-filter {
+.work-order-filter {
   background: govuk-colour("grey-4");
   padding: 15px 10px 5px 10px;
 }
-.trade-filter-options {
+.work-order-filter-options {
   border-bottom: 1px solid govuk-colour("grey-3");
   padding: 10px 0px;
   margin: 5px 0px;
@@ -10,7 +10,7 @@
     border-bottom: none;
   }
 }
-.filter_by_trade_heading {
+.filter_heading {
   border-bottom: none;
 }
 
@@ -34,10 +34,10 @@
   cursor: pointer;
 }
 
-.trade-filter-collapsible-header {
+.work-order-filter-collapsible-header {
   position: relative;
 }
-i.trade-filter-collapsible {
+i.work-order-filter-collapsible {
   border: solid black;
   border-width: 0 3px 3px 0;
   display: inline-block;

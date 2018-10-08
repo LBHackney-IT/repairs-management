@@ -38,8 +38,8 @@ class Hackney::Property
     @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithProperty.new(reference).call
   end
 
-  def trades
-    @_trades ||= work_orders.map(&:trade).uniq
+  def trades_hierarchy_work_orders
+    @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq.sort
   end
 
   private
