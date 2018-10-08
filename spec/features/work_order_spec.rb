@@ -29,6 +29,38 @@ RSpec.describe 'Work order' do
 
   before { sign_in }
 
+  scenario 'Search for a work order by reference (only AJAX content)', js: true do
+    stub_hackney_repairs_work_orders
+    stub_hackney_repairs_repair_requests
+    stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_notes
+    stub_hackney_repairs_work_order_appointments
+    stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_repairs_work_order_block_by_trade
+    stub_hackney_work_orders_for_property(reference: property_reference1, body: [
+      work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
+      work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
+    ])
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+
+    fill_in 'Search by work order reference or postcode', with: '01551932'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
+
+    expect(page).to have_content '02012341234'
+    expect(page).to have_content 's.erbas@example.com'
+
+    expect(page).to have_content "Appointment: Completed 8:00am to 4:15pm, 31 May 2018"
+
+    expect(page).to have_content 'Priority: Standard'
+    expect(page).to have_content 'Work order: In Progress'
+    expect(page).to have_content 'Data source: DRS'
+
+    expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
+  end
+
   scenario 'Search for a work order by reference' do
     fill_in 'Search by work order reference or postcode', with: ''
     within('.hackney-search') do
@@ -80,14 +112,9 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "Homerton High Street 12 Banister House E9 6BH"
 
     expect(page).to have_content "MR SULEYMAN ERBAS 2:10pm, 29 May 2018"
-    expect(page).to have_content '02012341234'
     expect(page).to have_content 's.erbas@example.com'
 
-    expect(page).to have_content "Appointment: Completed 8:00am to 4:15pm, 31 May 2018"
-
-    expect(page).to have_content 'Priority: Standard'
     expect(page).to have_content 'Work order: In Progress'
-    expect(page).to have_content 'Data source: DRS'
 
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
@@ -235,7 +262,7 @@ RSpec.describe 'Work order' do
     expect(page).not_to have_content 'Tenant called to confirm appointment.'
   end
 
-  scenario 'No appointments are booked' do
+  scenario 'No appointments are booked', js: true do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
@@ -258,7 +285,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'There are no booked appointments.'
   end
 
-  scenario 'No appointments are booked' do # TODO: remove when the api returns [] in this case
+  scenario 'No appointments are booked', js: true do # TODO: remove when the api returns [] in this case
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
