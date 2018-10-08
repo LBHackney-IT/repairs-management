@@ -70,7 +70,7 @@ describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   end
 end
 
-describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weekes' do
+describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeks' do
   let(:trade) { Hackney::Trades::PLUMBING }
   let(:reference) { 'reference' }
   let(:class_instance) { described_class.new(reference: reference) }
@@ -89,7 +89,7 @@ describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeke
       .with(property_reference: reference, trade: trade).and_return(result)
   end
 
-  subject { class_instance.work_orders_plumbing_from_block_and_last_two_weekes }
+  subject { class_instance.work_orders_plumbing_from_block_and_last_two_weeks }
 
   it 'returns work orders which are not older than 2 week and have different reference than work_order.prop_ref' do
     expect(subject).to contain_exactly(not_older_than_2_weeks)
