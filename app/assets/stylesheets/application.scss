@@ -13,6 +13,36 @@ $govuk-font-family: 'Arial', sans-serif;
   display: none;
 }
 
+.ajax-loading:after {
+  content: ' .';
+  animation: dots 1s steps(5, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% {
+    color: #009ca6;
+    text-shadow:
+      .25em 0 0 #009ca6,
+      .5em 0 0 #009ca6;
+    }
+  40% {
+    color: white;
+    text-shadow:
+      .25em 0 0 #009ca6,
+      .5em 0 0 #009ca6;
+    }
+  60% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 #009ca6;
+    }
+  80%, 100% {
+    text-shadow:
+      .25em 0 0 white,
+      .5em 0 0 white;
+    }
+  }
+
 .turbolinks-progress-bar {
   height: 3px;
   background-color: hackney-colour("housing-2");

@@ -52,8 +52,8 @@
       </div>
     </div>
 
-    <div class="govuk-grid-column-one-third">
-      <div class="hackney-main-section-info hackney-appointment" id="latest_appointment_section">
+    <div class="govuk-grid-column-one-third" id="latest_appointment_section">
+      <div class="hackney-main-section-info hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
             Work order: <%= work_order_status_description(@work_order.work_order_status) %>
@@ -76,8 +76,8 @@
         <hr />
 
         <p class="govuk-body-s">
-          <span class="govuk-!-font-weight-bold">
-            Loading latest appointment data...
+          <span class="govuk-!-font-weight-bold" id="work-order-loading-data">
+            <span class="ajax-loading">Loading latest appointment data</span>
           </span>
         </p>
       </div>
@@ -93,8 +93,13 @@
     work_order_heading_section.innerHTML += this.response;
   };
 
+  function handleApiError() {
+    document.getElementById('work-order-loading-data').innerHTML = 'There was a problem with an API while fetching data.'
+  };
+
   var xhttp = new XMLHttpRequest();
   xhttp.open('GET', "/api/work_orders/<%= @work_order.reference %>/description", true);
   xhttp.onload = loadWorkOrderHeadingSection;
+  xhttp.onerror = handleApiError;
   xhttp.send();
 </script>
