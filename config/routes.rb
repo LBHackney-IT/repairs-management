@@ -18,4 +18,12 @@ Rails.application.routes.draw do
     require 'sidekiq/web'
     mount Sidekiq::Web => '/sidekiq'
   end
+
+  namespace :api do
+    resources :work_orders, only: [], param: :ref do
+      member do
+        get :description
+      end
+    end
+  end
 end
