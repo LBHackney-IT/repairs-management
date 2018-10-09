@@ -78,4 +78,8 @@ class Hackney::WorkOrder
   def notes
     @_notes ||= Hackney::Note.for_work_order(reference)
   end
+
+  def reports
+    @_reports ||= Hackney::Report.for_work_order_reports(reference)
+  end
 end

@@ -26,10 +26,16 @@
         Related repairs
       </a>
     </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#work-order-reports">
+        Work order reports
+      </a>
+    </li>
   </ul>
 
   <%= render 'work_order_repairs_history', dwelling_work_orders_hierarchy: @work_order.property.dwelling_work_orders_hierarchy, trades: @work_order.property.trades_hierarchy_work_orders %>
   <%= render 'work_order_notes', work_order: @work_order %>
   <%= render 'work_order_possibly_related', property: @work_order.property %>
   <%= render 'work_order_related' %>
+  <%= render 'work_order_reports', reports: @work_order.reports.mobile_reports %>
 </div>
