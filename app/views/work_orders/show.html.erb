@@ -16,11 +16,13 @@
         Notes and appointments
       </a>
     </li>
-    <li class="govuk-tabs__list-item">
-      <a class="govuk-tabs__tab hackney-work-order-tab" href="#possibly-related-work-orders">
-        Possibly related
-      </a>
-    </li>
+    <% if ENV['SHOW_POSSIBLY_RELATED_WORK_ORDERS_TAB'] == "true" %>
+      <li class="govuk-tabs__list-item">
+        <a class="govuk-tabs__tab hackney-work-order-tab" href="#possibly-related-work-orders">
+          Possibly related
+        </a>
+      </li>
+    <% end %>
     <li class="govuk-tabs__list-item">
       <a class="govuk-tabs__tab hackney-work-order-tab" href="#related-tab">
         Related repairs
@@ -30,6 +32,6 @@
 
   <%= render 'work_order_repairs_history', dwelling_work_orders_hierarchy: @work_order.property.dwelling_work_orders_hierarchy, trades: @work_order.property.trades_hierarchy_work_orders %>
   <%= render 'work_order_notes', work_order: @work_order %>
-  <%= render 'work_order_possibly_related', property: @work_order.property %>
+  <%= render 'work_order_possibly_related', property: @work_order.property if ENV['SHOW_POSSIBLY_RELATED_WORK_ORDERS_TAB'] == "true" %>
   <%= render 'work_order_related' %>
 </div>
