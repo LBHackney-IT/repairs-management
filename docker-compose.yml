@@ -59,3 +59,5 @@ services:
       - DATABASE_USERNAME=postgres
       - NEO4J_HOST=neo4j_db
       - REDIS_URL=redis://:somepassword@redis
+      - QUEUES=feed,default
+      - LOG_LEVEL=info

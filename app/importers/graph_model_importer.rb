@@ -7,7 +7,7 @@ class GraphModelImporter
     @source = source
   end
 
-  def import_work_order(work_order_ref, property_ref, created, numbers)
+  def import_work_order(work_order_ref:, property_ref:, created:, target_numbers:)
     within_transaction do
       return if Graph::WorkOrder.find_by(reference: work_order_ref).present?
 
@@ -16,7 +16,7 @@ class GraphModelImporter
                                             created: created,
                                             source: @source)
 
-      numbers.each do |number|
+      target_numbers.each do |number|
         linked = Graph::WorkOrder.find_by(reference: number)
         if linked
           Graph::Citation.create!(from_node: work_order, to_node: linked,
@@ -29,7 +29,7 @@ class GraphModelImporter
     end
   end
 
-  def import_note(note_id, logged_at, work_order_reference, target_numbers)
+  def import_note(note_id:, logged_at:, work_order_reference:, target_numbers:)
     within_transaction do
       return if Graph::Note.exists?(note_id: note_id)
 
@@ -81,10 +81,10 @@ class GraphModelImporter
     numbers = WorkOrderReferenceFinder
                 .new(work_order_reference)
                 .find(candidate.problem_description)
-    import_work_order(work_order_reference,
-                      candidate.prop_ref,
-                      candidate.created,
-                      numbers)
+    import_work_order(work_order_ref: work_order_reference,
+                      property_ref: candidate.prop_ref,
+                      created: candidate.created,
+                      target_numbers: numbers)
   end
 
   def within_transaction

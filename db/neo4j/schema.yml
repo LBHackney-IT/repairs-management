@@ -17,9 +17,11 @@
   IS UNIQUE
 - CONSTRAINT ON ( `neo4j::migrations::schemamigration`:`Neo4j::Migrations::SchemaMigration`
   ) ASSERT `neo4j::migrations::schemamigration`.migration_id IS UNIQUE
-:indexes: []
+:indexes:
+- INDEX ON :Graph::WorkOrder(source)
 :versions:
 - '20180712093306'
 - '20180906160000'
 - '20180906163438'
 - '20180906164526'
+- '20181012101211'

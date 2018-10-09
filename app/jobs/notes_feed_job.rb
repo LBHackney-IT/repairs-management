@@ -1,5 +1,5 @@
 class NotesFeedJob < ApplicationJob
-  queue_as :default
+  queue_as :feed
 
   ENQUEUE_LIMIT = 50
 
@@ -30,6 +30,6 @@ class NotesFeedJob < ApplicationJob
 
   def last_note_id
     last_note = Graph::Note.last
-    last_note.nil? ? 0 : last_note.note_id
+    last_note.nil? ? 1 : last_note.note_id
   end
 end

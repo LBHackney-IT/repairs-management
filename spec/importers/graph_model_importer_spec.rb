@@ -10,7 +10,10 @@ RSpec.describe GraphModelImporter, :db_connection do
 
   describe '#import_note' do
     it 'links work orders' do
-      subject.import_note(1, today, '00000001', ['00000002'])
+      subject.import_note(note_id: 1,
+                          logged_at: today,
+                          work_order_reference: '00000001',
+                          target_numbers: ['00000002'])
 
       expect(work_order_1.related).to eq [work_order_2]
       expect(work_order_2.related).to eq [work_order_1]
@@ -23,7 +26,10 @@ RSpec.describe GraphModelImporter, :db_connection do
     end
 
     it "creates new note records" do
-      subject.import_note(23, today, '00000002', [])
+      subject.import_note(note_id: 23,
+                          logged_at: today,
+                          work_order_reference: '00000002',
+                          target_numbers: [])
 
       expect(Graph::Note.count).to eq 1
 
@@ -38,7 +44,10 @@ RSpec.describe GraphModelImporter, :db_connection do
     it 'ignores already processed notes' do
       Graph::Note.create note_id: 23, logged_at: today
 
-      subject.import_note(23, 1.day.from_now, '00000003', ['00000004'])
+        subject.import_note(note_id: 23,
+                            logged_at: 1.day.from_now,
+                            work_order_reference: '00000002',
+                            target_numbers: ['00000003'])
 
       expect(Graph::Note.find(23).logged_at).to eq today
     end
@@ -52,7 +61,10 @@ RSpec.describe GraphModelImporter, :db_connection do
 
         expect(Hackney::WorkOrder).to receive(:find).with('00000003') { new_work_order }
 
-        subject.import_note('1', today, '00000001', ['00000003'])
+        subject.import_note(note_id: 1,
+                            logged_at: today,
+                            work_order_reference: '00000001',
+                            target_numbers: ['00000003'])
 
         work_order_3 = Graph::WorkOrder.find('00000003')
         expect(work_order_3.created).to eq today
@@ -72,7 +84,10 @@ RSpec.describe GraphModelImporter, :db_connection do
 
         expect(Hackney::WorkOrder).to receive(:find).with('00000003') { new_work_order }
 
-        subject.import_note('1', today, '00000002', ['00000003'])
+        subject.import_note(note_id: 1,
+                            logged_at: today,
+                            work_order_reference: '00000002',
+                            target_numbers: ['00000003'])
 
         work_order_3 = Graph::WorkOrder.find('00000003')
         expect(work_order_3.created).to eq today
@@ -85,7 +100,10 @@ RSpec.describe GraphModelImporter, :db_connection do
       it "ignores the note if the reference noes not exist in the api" do
         expect(Hackney::WorkOrder).to receive(:find).with('00000003').and_raise(HackneyAPI::RepairsClient::RecordNotFoundError)
 
-        subject.import_note(1, today, '00000002', ['00000003'])
+        subject.import_note(note_id: 1,
+                            logged_at: today,
+                            work_order_reference: '00000002',
+                            target_numbers: ['00000003'])
 
         expect(Graph::WorkOrder.find_by(reference: '00000003')).to be_nil
         expect(work_order_1.related).to eq []
@@ -96,7 +114,10 @@ RSpec.describe GraphModelImporter, :db_connection do
         expect(Hackney::WorkOrder).to receive(:find).with('00000003').and_raise(HackneyAPI::RepairsClient::RecordNotFoundError)
 
         expect {
-          subject.import_note(1, today, '00000003', ['00000002'])
+          subject.import_note(note_id: 1,
+                              logged_at: today,
+                              work_order_reference: '00000003',
+                              target_numbers: ['00000002'])
         }.to raise_error(HackneyAPI::RepairsClient::RecordNotFoundError)
       end
     end
@@ -104,13 +125,19 @@ RSpec.describe GraphModelImporter, :db_connection do
 
   describe '#import_work_order' do
     it 'skips existing work orders' do
-      subject.import_work_order('00000001', '00000123', :tra_la, :la)
+      subject.import_work_order(work_order_ref: '00000001',
+                                property_ref: '00000123',
+                                created: :tra_la,
+                                target_numbers: :la)
 
       expect(Graph::WorkOrder.find('00000001').property_reference).to be_nil
     end
 
     it 'creates new work orders' do
-      subject.import_work_order('00000003', '00000123', today, [])
+      subject.import_work_order(work_order_ref: '00000003',
+                                property_ref: '00000123',
+                                created: today,
+                                target_numbers: [])
 
       work_order = Graph::WorkOrder.find('00000003')
       expect(work_order.created).to eq today
@@ -119,7 +146,10 @@ RSpec.describe GraphModelImporter, :db_connection do
     end
 
     it 'links work orders referenced in the problem description' do
-      subject.import_work_order('00000003', '00000123', today, ['00000002'])
+      subject.import_work_order(work_order_ref: '00000003',
+                                property_ref: '00000123',
+                                created: today,
+                                target_numbers: ['00000002'])
 
       expect(work_order_2.related.pluck(:reference)).to eq ['00000003']
     end

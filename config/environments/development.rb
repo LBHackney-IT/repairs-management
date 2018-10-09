@@ -65,5 +65,5 @@ Rails.application.configure do
   # Silence sidekiq/web complaints about "Cannot render console from 172.26.0.1"
   config.web_console.whitelisted_ips = '172.26.0.1'
 
-  config.notes_feed_max_enqueues = 100
+  config.log_level = ENV['LOG_LEVEL']&.to_sym || :debug
 end

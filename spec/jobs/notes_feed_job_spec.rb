@@ -47,8 +47,8 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     expect(RelatedWorkOrderJob).to have_been_enqueued.exactly(:thrice)
   end
 
-  it "asks for notes greater than 0 by default" do
-    expect(Hackney::Note).to receive(:feed).with(0) { [] }
+  it "asks for notes greater than 1 by default" do
+    expect(Hackney::Note).to receive(:feed).with(1) { [] }
 
     NotesFeedJob.new.perform(1, 1)
   end

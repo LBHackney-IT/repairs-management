@@ -18,8 +18,5 @@ module RepairsManagement
     # the framework and any gems in your application.
 
     config.active_job.queue_adapter = :delayed_job
-
-    # Max number of times we requeue the notes feed job if there is more data
-    config.notes_feed_max_enqueues = 5
   end
 end
