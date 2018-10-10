@@ -381,6 +381,19 @@ module Helpers
       ]
     end
 
+    def property_hierarchy_response_body__estate
+      [
+        {
+          propertyReference: '00024665',
+          levelCode: '2',
+          description: 'Estate',
+          majorReference: '00087086',
+          address: 'Shrubland Estate  Shrubland Road',
+          postCode: 'E8 4NL'
+        }
+      ]
+    end
+
     def stub_hackney_property_hierarchy(opts = {})
       reference = opts.fetch(:reference, '00014665')
       status = opts.fetch(:status, 200)

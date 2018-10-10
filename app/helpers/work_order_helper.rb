@@ -44,4 +44,9 @@ module WorkOrderHelper
     notes_and_appointments = work_order.notes + (work_order.appointments.nil? ? [] : work_order.appointments)
     notes_and_appointments.sort_by{ |a| a.respond_to?(:logged_at) ? a.logged_at : a.begin_date }.reverse
   end
+
+  def is_estate?(property)
+    property_type = property.dwelling_work_orders_hierarchy.keys
+    property_type.length == 1 && property_type.include?("Estate")
+  end
 end
