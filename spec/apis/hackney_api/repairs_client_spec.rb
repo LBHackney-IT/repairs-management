@@ -339,12 +339,14 @@ describe HackneyAPI::RepairsClient do
 
   describe '#get_property_block_work_orders_by_trade' do
     let(:trade) { 'tade' }
+    let(:date_from) { '01-01-2018' }
+    let(:date_to) { '01-02-2018' }
 
-    subject { api_client.get_property_block_work_orders_by_trade(reference: reference, trade: trade) }
+    subject { api_client.get_property_block_work_orders_by_trade(reference: reference, trade: trade, date_from: date_from, date_to: date_to) }
 
     context 'successfull response' do
       before do
-        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}")
+        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
           .to_return(body: empty_response_body.to_json)
         end
 
@@ -354,7 +356,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}").to_return(status: 404) }
 
       it 'returns an empty response' do
         expect(subject).to eq([])
@@ -370,13 +372,13 @@ describe HackneyAPI::RepairsClient do
       end
 
       before do
-        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}")
+        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
           .to_return(status: 500, body: response_body.to_json)
       end
 
       it 'raises ApiError error' do
         expect { subject }.to raise_error(described_class::ApiError).with_message(
-          "v1/properties/#{reference}/block/work_orders?trade=#{trade}, 500, #{response_body}"
+          "v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}, 500, #{response_body}"
         )
       end
     end

@@ -104,10 +104,10 @@ module HackneyAPI
       )
     end
 
-    def get_property_block_work_orders_by_trade(reference:, trade:)
+    def get_property_block_work_orders_by_trade(reference:, trade:, date_from:, date_to:)
       request(
         http_method: :get,
-        endpoint: "v1/properties/#{reference}/block/work_orders?trade=#{trade}"
+        endpoint: "v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}"
       )
     rescue HackneyAPI::RepairsClient::RecordNotFoundError
       []

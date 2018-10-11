@@ -51,14 +51,21 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content '02012341234'
     expect(page).to have_content 's.erbas@example.com'
-
     expect(page).to have_content "Appointment: Completed 8:00am to 4:15pm, 31 May 2018"
-
     expect(page).to have_content 'Priority: Standard'
     expect(page).to have_content 'Work order: In Progress'
     expect(page).to have_content 'Data source: DRS'
-
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
+
+    click_on('Notes and appointments')
+    expect(page).to have_content "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath"
+    expect(page).to have_content "23 August 2018, 10:12am by MOSHEA\nTenant called to confirm appointment"
+    expect(page).to have_content "30 May 2018, 8:00am to 12:00pm\nAppointment: Planned\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nPriority: standard\nCreated at: 29 May 2018, 2:10pm\nData source: DRS"
+    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nPriority: standard\nCreated at: 29 May 2018, 2:51pm\nData source: DRS"
+    expect(page).to have_content "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nPriority: standard\nCreated at: 17 October 2017, 9:27am\nData source: DRS"
+
+    click_on('Possibly related')
+    expect(page).to have_content "01106923\n10 Feb 2014\n11:01am\nWork complete Plumbing PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be."
   end
 
   scenario 'Search for a work order by reference' do
@@ -119,15 +126,6 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
     expect(page).to have_content 'Notes and appointments'
-    within(find('h2', text: 'Notes and appointments').find('~ ul')) do
-      expect(all('li').map(&:text)).to eq([
-        "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath",
-        "23 August 2018, 10:12am by MOSHEA\nTenant called to confirm appointment",
-        "30 May 2018, 8:00am to 12:00pm\nAppointment: Planned Operative name: (PLM) Fatima Bagam TEST Phone number: Priority: standard Created at: 29 May 2018, 2:10pm Data source: DRS",
-        "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned Operative name: (PLM) Brian Liverpool Phone number: +447535847993 Priority: standard Created at: 29 May 2018, 2:51pm Data source: DRS",
-        "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed Operative name: (PLM) Fatima Bagam TEST Phone number: Priority: standard Created at: 17 October 2017, 9:27am Data source: DRS"
-      ])
-    end
 
     within(find('h2', text: 'Repairs history').find(:xpath, '..')) do
       expect(page).to have_content 'Problem 1'
@@ -138,10 +136,6 @@ RSpec.describe 'Work order' do
 
     within(find('h2', text: 'Related repairs').find(:xpath, '..')) do
       expect(page).to have_content 'A related work order'
-    end
-
-    within(find('h2', text: 'Possibly related').find(:xpath, '..')) do
-      expect(page).to have_content 'There are no possibly related plumbing work orders from last two weeks.'
     end
   end
 
@@ -193,7 +187,7 @@ RSpec.describe 'Work order' do
     expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
   end
 
-  scenario 'No notes or appointments are returned' do # TODO: remove when the api in sandbox is deployed
+  scenario 'No notes or appointments are returned', js: true do # TODO: remove when the api in sandbox is deployed
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
@@ -215,6 +209,7 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
+    click_on('Notes and appointments')
     expect(page).to have_content 'There are no notes or appointments for this work order.'
   end
 
@@ -316,7 +311,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'There are no booked appointments.'
   end
 
-  scenario 'An appointment does not have a creation date' do # TODO: remove when the api returns [] in this case
+  scenario 'An appointment does not have a creation date', js: true do # TODO: remove when the api returns [] in this case
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
@@ -334,8 +329,8 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
-    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned Operative name: (PLM) Brian Liverpool Phone number: +447535847993 Priority: standard Created at: Data source: DRS"
-
+    click_on('Notes and appointments')
+    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nPriority: standard\nCreated at:\nData source: DRS"
   end
 
   scenario 'A repair request has info missing' do

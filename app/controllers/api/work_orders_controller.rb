@@ -1,8 +1,10 @@
 module Api
   class WorkOrdersController < Api::ApiController
-    layout :false
-
     def description
+      @work_order = Hackney::WorkOrder.find(reference)
+    end
+
+    def notes_and_appointments
       @work_order = Hackney::WorkOrder.find(reference)
     end
 

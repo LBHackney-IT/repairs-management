@@ -86,20 +86,28 @@
 <% end %>
 
 <script>
-  function loadWorkOrderHeadingSection() {
-    var work_order_heading_section = document.getElementById('work-order-heading-section');
+  function loadWorkOrderHeadingSection(response) {
+    var workOrdersHeadingSection = document.getElementById('work-order-heading-section');
     document.getElementById('latest_appointment_section').remove();
     document.getElementById('contact_section').remove();
-    work_order_heading_section.innerHTML += this.response;
+    workOrdersHeadingSection.innerHTML += response;
   };
 
-  function handleApiError() {
+  function handleWorkOrdersHeadingSectionApiError() {
     document.getElementById('work-order-loading-data').innerHTML = 'There was a problem with an API while fetching data.'
   };
 
-  var xhttp = new XMLHttpRequest();
-  xhttp.open('GET', "/api/work_orders/<%= @work_order.reference %>/description", true);
-  xhttp.onload = loadWorkOrderHeadingSection;
-  xhttp.onerror = handleApiError;
-  xhttp.send();
+  var xhttpWorkOrderHeadingSection = new XMLHttpRequest();
+  xhttpWorkOrderHeadingSection.open('GET', "/api/work_orders/<%= @work_order.reference %>/description", true);
+  xhttpWorkOrderHeadingSection.onreadystatechange = function() {
+    if (xhttpWorkOrderHeadingSection.readyState == 4) {
+      if (xhttpWorkOrderHeadingSection.status == 200) {
+        loadWorkOrderHeadingSection(xhttpWorkOrderHeadingSection.response);
+      } else {
+        handlePossiblyRelatedWorkOrdersApiError();
+      }
+    }
+  }
+  xhttpWorkOrderHeadingSection.onerror = handleWorkOrdersHeadingSectionApiError;
+  xhttpWorkOrderHeadingSection.send();
 </script>
