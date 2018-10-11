@@ -1,0 +1,16 @@
+<h2 class='govuk-heading-l'>
+  Notes and appointments
+</h2>
+<% if sort_notes_and_appointments(@work_order).any? %>
+  <ul class="govuk-list hackney-note-timeline">
+  <% sort_notes_and_appointments(@work_order).each do |note_or_appointment| %>
+    <li class="hackney-note" >
+      <p class="govuk-body">
+        <%= render "work_orders/#{note_or_appointment.model_name.element}", note_or_appointment: note_or_appointment %>
+      </p>
+    </li>
+  <% end %>
+  </ul>
+<% else %>
+  <p class="govuk-body-s">There are no notes or appointments for this work order.</p>
+<% end %>

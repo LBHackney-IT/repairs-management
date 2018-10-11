@@ -1,18 +1,28 @@
 <div class="govuk-tabs__panel hackney-work-order-tabs-info" id="notes-tab">
-  <h2 class='govuk-heading-l'>
-    Notes and appointments
-  </h2>
-  <% if sort_notes_and_appointments(work_order).any? %>
-    <ul class="govuk-list hackney-note-timeline">
-    <% sort_notes_and_appointments(work_order).each do |note_or_appointment| %>
-      <li class="hackney-note" >
-        <p class="govuk-body">
-          <%= render note_or_appointment.model_name.element, note_or_appointment: note_or_appointment %>
-        </p>
-      </li>
-    <% end %>
-    </ul>
-  <% else %>
-    <p class="govuk-body-s">There are no notes or appointments for this work order.</p>
-  <% end %>
+  <p class="govuk-caption-m ajax-loading">Loading notes and appointments data</p>
 </div>
+
+<script>
+  function loadNotesAndAppointments(response) {
+    var notesTab = document.getElementById('notes-tab');
+    notesTab.innerHTML = response;
+  };
+
+  function handleNotesAndAppointmentsApiError() {
+    document.getElementById('notes-tab').innerHTML = 'There was a problem with an API while fetching data.'
+  };
+
+  var xhttpNotesAndAppointments = new XMLHttpRequest();
+  xhttpNotesAndAppointments.open('GET', "/api/work_orders/<%= work_order.reference %>/notes_and_appointments", true);
+  xhttpNotesAndAppointments.onreadystatechange = function() {
+    if (xhttpNotesAndAppointments.readyState == 4) {
+      if (xhttpNotesAndAppointments.status == 200) {
+        loadNotesAndAppointments(xhttpNotesAndAppointments.response);
+      } else {
+        handleNotesAndAppointmentsApiError();
+      }
+    }
+  }
+  xhttpNotesAndAppointments.onerror = handleNotesAndAppointmentsApiError;
+  xhttpNotesAndAppointments.send();
+</script>

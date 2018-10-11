@@ -20,9 +20,16 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    resources :properties, only: [], param: :ref do
+      member do
+        get :possibly_related_work_orders
+      end
+    end
+
     resources :work_orders, only: [], param: :ref do
       member do
         get :description
+        get :notes_and_appointments
       end
     end
   end

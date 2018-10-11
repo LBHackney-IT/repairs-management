@@ -27,11 +27,12 @@ class Hackney::Property
   end
 
   def work_orders_plumbing_from_block_and_last_two_weeks
-    @_work_orders_plumbing_from_block_and_last_two_weeks ||= begin
-      Hackney::WorkOrder.for_property_block_and_trade(property_reference: reference, trade: Hackney::Trades::PLUMBING).select do |work_order|
-        work_order if not_older_than_two_weeks?(work_order.created) && work_order.prop_ref != reference
-      end
-    end
+    @_work_orders_plumbing_from_block_and_last_two_weeks ||= Hackney::WorkOrder.for_property_block_and_trade(
+      property_reference: reference,
+      trade: Hackney::Trades::PLUMBING,
+      date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
+      date_to: Date.today.strftime("%d-%m-%Y")
+    )
   end
 
   def dwelling_work_orders_hierarchy
@@ -40,11 +41,5 @@ class Hackney::Property
 
   def trades_hierarchy_work_orders
     @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq.sort
-  end
-
-  private
-
-  def not_older_than_two_weeks?(created)
-    created >= DateTime.current - 2.weeks
   end
 end

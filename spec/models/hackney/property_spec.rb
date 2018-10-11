@@ -55,14 +55,14 @@ end
 describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   let(:reference) { 'ref' }
   let(:result) { {} }
-  let(:class_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
+  let(:klass_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
   let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
 
   before do
     allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(reference).and_return(associated_with_property_double)
   end
 
-  subject { class_instance.dwelling_work_orders_hierarchy }
+  subject { klass_instance.dwelling_work_orders_hierarchy }
 
   it 'calls valid class with a property parameter' do
     expect(associated_with_property_double).to receive(:call)
@@ -73,25 +73,17 @@ end
 describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeks' do
   let(:trade) { Hackney::Trades::PLUMBING }
   let(:reference) { 'reference' }
-  let(:class_instance) { described_class.new(reference: reference) }
-  let(:older_than_2_weeks) { build(:work_order, created: DateTime.current - 3.weeks) }
-  let(:not_older_than_2_weeks) { build(:work_order, created: DateTime.current - 1.week) }
-  let(:not_older_than_2_weeks_same_ref) { build(:work_order, created: DateTime.current - 1.week, prop_ref: reference) }
-  let(:result) do
-    [
-      older_than_2_weeks,
-      not_older_than_2_weeks
-    ]
-  end
+  let(:klass_instance) { described_class.new(reference: reference) }
 
-  before do
-    allow(Hackney::WorkOrder).to receive(:for_property_block_and_trade)
-      .with(property_reference: reference, trade: trade).and_return(result)
-  end
-
-  subject { class_instance.work_orders_plumbing_from_block_and_last_two_weeks }
+  subject { klass_instance.work_orders_plumbing_from_block_and_last_two_weeks }
 
   it 'returns work orders which are not older than 2 week and have different reference than work_order.prop_ref' do
-    expect(subject).to contain_exactly(not_older_than_2_weeks)
+    expect(Hackney::WorkOrder).to receive(:for_property_block_and_trade).with(
+      property_reference: reference,
+      trade: trade,
+      date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
+      date_to: Date.today.strftime("%d-%m-%Y")
+    )
+    subject
   end
 end
