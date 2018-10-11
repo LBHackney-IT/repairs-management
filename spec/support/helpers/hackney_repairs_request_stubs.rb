@@ -119,9 +119,11 @@ module Helpers
       reference = opts.fetch(:reference, '00014665')
       status = opts.fetch(:status, 200)
       trade = opts.fetch(:trade, 'Plumbing')
+      date_from = opts.fetch(:date_from, (Date.today - 2.weeks).strftime("%d-%m-%Y"))
+      date_to = opts.fetch(:date_to, Date.today.strftime("%d-%m-%Y"))
       body = opts.fetch(:body, repairs_work_order_block_by_trade_response(trade, reference))
 
-      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/block/work_orders?trade=#{trade}")
+      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
         .to_return(status: status, body: body.to_json)
     end
 
