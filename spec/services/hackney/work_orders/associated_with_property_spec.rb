@@ -70,7 +70,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       expect(subject["Non-Dwell"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
     end
 
-    it 'returns and empty hash when there are no work orders for any property in the heirarchy' do
+    it 'returns an empty hash when there are no work orders for any property in the hierarchy' do
       property_hierarchy_response.each do |property_hierarchy|
         stub_hackney_work_orders_for_property(reference: property_hierarchy.reference, body: [])
       end

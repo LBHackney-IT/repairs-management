@@ -23,7 +23,11 @@ class Hackney::Property
   end
 
   def work_orders
-    @_work_orders ||= Hackney::WorkOrder.for_property(reference)
+    @_work_orders ||= Hackney::WorkOrder.for_property(
+      property_reference: reference,
+      date_from: (Date.today - 2.years),
+      date_to: Date.tomorrow
+    )
   end
 
   def work_orders_plumbing_from_block_and_last_two_weeks
