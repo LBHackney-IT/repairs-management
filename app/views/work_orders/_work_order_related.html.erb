@@ -2,26 +2,29 @@
   <h2 class="govuk-heading-l">
     Related repairs
   </h2>
-
-  <% @work_order.related_properties.each_slice(3) do |properties| %>
-    <div class="govuk-grid-row">
-      <% properties.each do |property| %>
-        <div class="govuk-grid-column-one-third hackney-work-order-related">
-          <p class="address">
-            <%= property.address %><%= '*' if property == @work_order.property %>
-          </p>
-          <ul>
-            <% @work_order.related_for_property(property).sort_by(&:created).reverse.each do |work_order| %>
-              <li>
-                <%= link_to work_order.reference,
-                            work_order_path(work_order.reference) %>
-                <p class="date"><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
-                <p class="description"><%= work_order.problem_description %></p>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-    </div>
+  <% if @work_order.related_properties.any? %>
+    <% @work_order.related_properties.each_slice(3) do |properties| %>
+      <div class="govuk-grid-row">
+        <% properties.each do |property| %>
+          <div class="govuk-grid-column-one-third hackney-work-order-related">
+            <p class="address">
+              <%= property.address %><%= '*' if property == @work_order.property %>
+            </p>
+            <ul>
+              <% @work_order.related_for_property(property).sort_by(&:created).reverse.each do |work_order| %>
+                <li>
+                  <%= link_to work_order.reference,
+                              work_order_path(work_order.reference) %>
+                  <p class="date"><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
+                  <p class="description"><%= work_order.problem_description %></p>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="govuk-body-s">There are no work orders related to this work order.</p>
   <% end %>
 </div>
