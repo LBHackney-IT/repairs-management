@@ -97,3 +97,29 @@ describe Hackney::WorkOrder, '#repair' do
     expect(subject.repair_request.description).to eq 'Repair info missing'
   end
 end
+
+  describe Hackney::WorkOrder, '#find_all' do
+    it 'fetches multiple work orders' do
+      stub_hackney_repairs_work_orders_by_reference(references: ["00000001", "00000002"], body: [
+        work_order_response_payload("workOrderReference" => "00000001", "propertyReference" => "123"),
+        work_order_response_payload("workOrderReference" => "00000002", "propertyReference" => "321"),
+      ])
+
+      work_orders = described_class.find_all(["00000001", "00000002"])
+
+      expect(work_orders.size).to eq 2
+      expect(work_orders.first.reference).to eq '00000001'
+      expect(work_orders.first.prop_ref).to eq '123'
+      expect(work_orders.last.reference).to eq '00000002'
+      expect(work_orders.last.prop_ref).to eq '321'
+    end
+
+    it 'returns [] if the references are not found' do
+      stub_hackney_repairs_work_orders_by_reference(status: 404, references: ["00000001"], body: {
+        "developerMessage": "Exception of type 'HackneyRepairs.Actions.MissingWorkOrderException' was thrown.",
+        "userMessage": "Could not find one or more of the given work orders"
+      })
+
+      expect(described_class.find_all(["00000001"])).to eq []
+    end
+  end

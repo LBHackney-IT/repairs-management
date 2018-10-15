@@ -26,6 +26,14 @@ module HackneyAPI
       )
     end
 
+    def get_work_orders_by_references(references)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders/by_references",
+        params: { reference: references }
+      )
+    end
+
     def notes_feed(previous_note_id)
       request(
         http_method: :get,
@@ -137,7 +145,7 @@ module HackneyAPI
     end
 
     def connection(cache_request:)
-      Faraday.new(@base_url) do |faraday|
+      Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }) do |faraday|
         faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json

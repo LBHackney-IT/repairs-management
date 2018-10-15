@@ -3,7 +3,8 @@ module Helpers
     # GET /v1/work_orders/:reference
 
     def work_order_response_payload(overrides = {})
-      {
+      base = {
+        "mobileReports" => nil,
         "sorCode" => "08500110",
         "trade" => "Painting & Decorating",
         "workOrderReference" => "01551932",
@@ -18,7 +19,12 @@ module Helpers
         "dloStatus" => "1",
         "servitorReference" => "10162765",
         "propertyReference" => "00014665"
-      }.merge(overrides)
+      }
+
+      unknown_keys = overrides.keys - base.keys
+      raise "unknown key(s) : #{ unknown_keys }" if unknown_keys.any?
+
+      base.merge(overrides)
     end
 
     def stub_hackney_repairs_work_orders(opts = {})
@@ -113,6 +119,12 @@ module Helpers
           'propertyReference' => reference
         }
       ]
+    end
+
+    def stub_hackney_repairs_work_orders_by_reference(status: 200, references: [], body: [])
+      params = references.map{ |ref| "reference=" + ref}.join('&')
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/by_references?#{params}")
+        .to_return(status: status, body: body.to_json)
     end
 
     def stub_hackney_repairs_work_order_block_by_trade(opts = {})
