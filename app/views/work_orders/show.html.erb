@@ -27,8 +27,8 @@
       </a>
     </li>
     <li class="govuk-tabs__list-item">
-      <a class="govuk-tabs__tab hackney-work-order-tab" href="#work-order-reports">
-        Work order reports
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#documents">
+        Documents
       </a>
     </li>
   </ul>
@@ -37,5 +37,5 @@
   <%= render 'work_order_notes', work_order: @work_order %>
   <%= render 'work_order_possibly_related', property: @work_order.property %>
   <%= render 'work_order_related' %>
-  <%= render 'work_order_reports', reports: @work_order.reports.mobile_reports %>
+  <%= render 'work_order_reports', reports: @work_order.reports %>
 </div>

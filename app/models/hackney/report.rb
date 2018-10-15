@@ -1,16 +1,18 @@
 class Hackney::Report
   include ActiveModel::Model
 
-  attr_accessor :mobile_reports
+  attr_accessor :report_uri, :date
 
   def self.build(attributes)
     new(
-      mobile_reports: attributes['mobileReports']
+      report_uri: attributes["reportUri"],
+      date: attributes["date"]
     )
   end
 
   def self.for_work_order_reports(reference)
-    response = HackneyAPI::RepairsClient.new.get_work_order_reports(reference)
-    build(response)
+    HackneyAPI::RepairsClient.new.get_work_order_reports(reference)["mobileReports"].map do |attributes|
+      build(attributes)
+    end
   end
 end

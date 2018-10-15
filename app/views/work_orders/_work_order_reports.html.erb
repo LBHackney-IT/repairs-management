@@ -1,27 +1,30 @@
-<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="work-order-reports">
+<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="documents">
   <h2 class='govuk-heading-l'>
-    Work order reports
+    Documents
   </h2>
 
   <% if reports.any? %>
     <p class="govuk-body-m">
-      You must be signed into the internal network to view the reports
+      You must be signed into the internal network to view the documents.
     </p>
 
     <ul class="govuk-list work-order-reports-list">
-      <% reports.each do |report| %>
-        <li>
-          <div class="govuk-body work-order-reports">
-            <%= link_to image_tag('pdf-icon.png'), report, target: "_blank", class: 'work-order-report-pdf-icon' %>
-            <div class="work-order-report-link">
-              <%= link_to report, report, target: "_blank" %>
-            </div>
+      <% reports.sort_by(&:date).reverse.each do |report| %>
+      <li>
+        <div class="govuk-body work-order-reports">
+          <%= link_to image_tag('pdf-icon.png'), report.report_uri, target: "_blank", class: 'work-order-report-pdf-icon' %>
+          <div class="work-order-report-link govuk-body-l">
+            <%= link_to "Works order report", report.report_uri, target: "_blank" %>
+            <p class='govuk-body-s work-order-report-date'>
+              <%= report.date.to_datetime.to_s(:govuk_date_time) %>
+            </p>
           </div>
-        </li>
+        </div>
+      </li>
       <% end %>
     </ul>
 
   <% else %>
-    <p class='govuk-body-s'>There are no reports for this work order</p>
+    <p class='govuk-body-s'>There are no documents for this work order.</p>
   <% end %>
 </div>

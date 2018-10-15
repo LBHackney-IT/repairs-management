@@ -281,11 +281,18 @@ module Helpers
     def work_order_reports_response_payload
       {
         "mobileReports" => [
-          "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (1).pdf",
-          "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (2).pdf",
-          "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (3).pdf",
-          "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283.pdf",
-          "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Processed\\Works Order_11380283.pdf"
+          {
+            "reportUri" => "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Processed\\Works Order_11380283.pdf",
+            "date" => "2017-07-17T21:10:59.9488026+00:00"
+          },
+          {
+            "reportUri" => "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (1).pdf",
+            "date" => "2017-07-19T15:23:44.3750997+00:00"
+          },
+          {
+            "reportUri" => "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (2).pdf",
+            "date" => "2017-07-20T15:27:34.2094981+00:00"
+          }
         ]
       }
     end
