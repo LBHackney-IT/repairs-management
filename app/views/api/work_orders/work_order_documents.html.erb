@@ -1,0 +1,31 @@
+<h2 class='govuk-heading-l'>
+  Documents
+</h2>
+<% if @reports.any? %>
+  <div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      You must be signed into the internal network to view the documents.
+    </strong>
+  </div>
+
+  <ul class="govuk-list work-order-reports__list">
+    <% @reports.sort_by(&:date).reverse.each do |report| %>
+      <li>
+        <div class="govuk-body work-order-reports">
+          <%= link_to image_tag('pdf-icon.png'), report.report_uri, target: "_blank", class: 'work-order-report__pdf-icon' %>
+          <div class="work-order-report__link govuk-body-l">
+            <%= link_to "Works order report", report.report_uri, target: "_blank" %>
+            <p class='govuk-body-s work-order-report__date'>
+              <%= report.date.to_datetime.to_s(:govuk_date_time) %>
+            </p>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+<% else %>
+  <p class='govuk-body-s'>There are no documents for this work order.</p>
+<% end %>

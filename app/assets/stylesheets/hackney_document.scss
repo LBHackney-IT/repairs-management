@@ -1,21 +1,21 @@
-.work-order-reports-list {
+.work-order-reports__list {
   padding: 20px 0px;
 }
 .work-order-reports {
   display: inline-flex;
   margin-bottom: 40px;
 }
-.work-order-report-pdf-icon {
+.work-order-report__pdf-icon {
   outline: 5px solid rgba(11,12,12,0.1);
   box-shadow: 0 2px 2px rgba(11,12,12,0.4);
   img {
     height: 120px;
   }
 }
-.work-order-report-link {
+.work-order-report__link {
   margin: 0px 20px;
 }
-.work-order-report-date {
+.work-order-report__date {
   margin-top: 10px;
   color: $govuk-secondary-text-colour;
 }
