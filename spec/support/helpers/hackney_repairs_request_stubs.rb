@@ -390,6 +390,14 @@ module Helpers
           majorReference: '00087086',
           address: 'Shrubland Estate  Shrubland Road',
           postCode: 'E8 4NL'
+        },
+        {
+          propertyReference: '00024665',
+          levelCode: '0',
+          description: 'Owner',
+          majorReference: '00087086',
+          address: 'The Owner Lives Here',
+          postCode: 'E8 4NL'
         }
       ]
     end
