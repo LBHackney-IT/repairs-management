@@ -11,8 +11,12 @@ class Hackney::WorkOrder
   end
 
   def self.find_all(references)
-    response = HackneyAPI::RepairsClient.new.get_work_orders_by_references(references)
-    response.map { |r| build(r) }
+    if references.any?
+      response = HackneyAPI::RepairsClient.new.get_work_orders_by_references(references)
+      response.map { |r| build(r) }
+    else
+      []
+    end
   rescue HackneyAPI::RepairsClient::RecordNotFoundError => e
     Rails.logger.error(e)
     Appsignal.set_error(e, message: "Work order(s) not found")
