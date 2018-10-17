@@ -315,7 +315,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_property_by_postcode(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}&max_level=0").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -323,7 +323,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}&max_level=0").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -338,10 +338,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}&max_level=0").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{reference}, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{reference}&max_level=0, {}, 500, #{response_body}")
       end
     end
   end
