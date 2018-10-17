@@ -10,6 +10,15 @@ class Hackney::WorkOrder
     build(response)
   end
 
+  def self.find_all(references)
+    response = HackneyAPI::RepairsClient.new.get_work_orders_by_references(references)
+    response.map { |r| build(r) }
+  rescue HackneyAPI::RepairsClient::RecordNotFoundError => e
+    Rails.logger.error(e)
+    Appsignal.set_error(e, message: "Work order(s) not found")
+    []
+  end
+
   def self.for_property(property_reference)
     HackneyAPI::RepairsClient.new.get_work_orders_by_property(property_reference).map do |attributes|
       build(attributes)

@@ -27,22 +27,28 @@ RSpec.describe 'Work order' do
     ]
   end
 
-  before { sign_in }
-
-  scenario 'Search for a work order by reference (only AJAX content)', js: true do
+  before do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_repairs_work_order_block_by_trade
+    stub_hackney_work_orders_for_property
+    stub_hackney_work_orders_for_property(reference: property_reference1)
+    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_property_hierarchy(body: property_hierarchy_response)
+    stub_hackney_repairs_work_orders_by_reference
+
+    sign_in
+  end
+
+  scenario 'Search for a work order by reference (only AJAX content)', js: true do
     stub_hackney_work_orders_for_property(reference: property_reference1, body: [
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     fill_in 'Search by work order reference or postcode', with: '01551932'
     within('.hackney-search') do
@@ -68,7 +74,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "01106923\n10 Feb 2014\n11:01am\nWork complete Plumbing PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be."
   end
 
-  scenario 'Search for a work order by reference' do
+  scenario "Entering an unknown work order reference" do
     fill_in 'Search by work order reference or postcode', with: ''
     within('.hackney-search') do
       click_on 'Search'
@@ -84,25 +90,18 @@ RSpec.describe 'Work order' do
     end
 
     expect(page).to have_content 'Could not find a work order with reference 00000000'
+  end
 
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_repairs_work_order_block_by_trade
+  scenario 'Search for a work order by reference', :db_connection do
     stub_hackney_work_orders_for_property(reference: property_reference1, body: [
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
-    stub_hackney_repairs_work_orders(
-      reference: "11235813",
-      body: work_order_response_payload("workOrderReference" => "11235813",
-                                        "problemDescription" => "A related work order")
+    stub_hackney_repairs_work_orders_by_reference(
+      references: ["11235813"],
+      body: [work_order_response_payload("workOrderReference" => "11235813",
+                                         "problemDescription" => "A related work order")]
     )
     GraphModelImporter.new('test').import_work_order("11235813", property_reference1, Time.current, [])
     GraphModelImporter.new('test').import_note(1, Time.current, "11235813", ['01551932'])
@@ -167,16 +166,6 @@ RSpec.describe 'Work order' do
       expect(page).to have_selector 'td', text: 'Homerton High Street 13 Banister House'
     end
 
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_work_orders_for_property
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
-
     click_on 'Homerton High Street 12 Banister House'
 
     expect(page).to have_content 'Property details'
@@ -188,10 +177,6 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'No notes or appointments are returned', js: true do # TODO: remove when the api in sandbox is deployed
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes(
       body: work_order_note_response_payload__no_notes
     )
@@ -201,11 +186,6 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_latest_appointments(
       body: work_order_appointment_response_payload__no_appointments
     )
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -214,30 +194,15 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes(
       body: work_order_note_response_payload__no_notes
     )
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
     expect(page).not_to have_content 'Tenant called to confirm appointment.'
   end
 
   scenario 'No notes are returned' do # TODO: remove when the api in sandbox is deployed
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
     stub_hackney_repairs_work_order_notes(
       body: {
         "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
@@ -245,35 +210,18 @@ RSpec.describe 'Work order' do
       },
       status: 500
     )
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
     expect(page).not_to have_content 'Tenant called to confirm appointment.'
   end
 
   scenario 'No appointments are booked', js: true do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointment_response_payload__no_appointments
     )
     stub_hackney_repairs_work_order_latest_appointments(
       body: work_order_appointment_response_payload__no_appointments
     )
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -281,11 +229,6 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'No appointments are booked', js: true do # TODO: remove when the api returns [] in this case
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: {
         "developerMessage" => "Exception of type 'HackneyRepairs.Actions.MissingAppointmentsException' was thrown.",
@@ -300,11 +243,6 @@ RSpec.describe 'Work order' do
       },
       status: 404
     )
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -312,20 +250,9 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'An appointment does not have a creation date', js: true do # TODO: remove when the api returns [] in this case
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments(
       body: work_order_appointments_response_payload__no_creation_date
     )
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -334,20 +261,9 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'A repair request has info missing' do
-    stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests(
       body: repair_request_response_payload__info_missing
     )
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -355,18 +271,6 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Filtering the repairs history by trade related to the property', js: true do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
-
     visit work_order_path('01551932')
 
     within('#repair-history-tab table') do
@@ -418,16 +322,7 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Filtering the repairs history by the hierarchy of the property', js: true do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property(reference: property_reference1)
     stub_hackney_work_orders_for_property(reference: property_reference2, body: work_orders_by_property_reference_payload__different_property)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
 
     visit work_order_path('01551932')
 
@@ -457,18 +352,6 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Clicking on search in the navbar to link back to the homepage' do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response)
-
     visit work_order_path('01551932')
 
     within(".hackney-header__right_links") do

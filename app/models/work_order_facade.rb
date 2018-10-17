@@ -35,13 +35,6 @@ class WorkOrderFacade
   end
 
   def convert_graph_work_orders(graph_work_orders)
-    # TODO: use the multi id fetch when ready instead of one by one
-    graph_work_orders.map do |graph_work_order|
-      Hackney::WorkOrder.find(graph_work_order.reference)
-    rescue Exception => e
-      Rails.logger.error("Unable to find work order #{graph_work_order.reference} in API: #{e.message}")
-      Appsignal.set_error(e)
-      nil
-    end.compact
+    Hackney::WorkOrder.find_all(graph_work_orders.map(&:reference))
   end
 end
