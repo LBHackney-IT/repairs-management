@@ -2,18 +2,18 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
       <h1 class="govuk-heading-l">
-        Works order: <%= @work_order.reference %>
+        Works order: <%= work_order.reference %>
       </h1>
     </div>
     <div class="govuk-grid-column-one-half">
       <h1 class="govuk-caption-m hackney-work-order-references">
-        Servitor ref: <%= @work_order.servitor_reference %>
+        Servitor ref: <%= work_order.servitor_reference %>
       </h1>
     </div>
   </div>
 
   <p class="govuk-body-m">
-    <%= @work_order.repair_request.description %>
+    <%= work_order.problem_description %>
   </p>
 
   <div class="govuk-grid-row" id="work-order-heading-section">
@@ -21,9 +21,9 @@
       <div class="hackney-main-section-info">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
-            <%= @work_order.property.address %>
+            <%= work_order.property.address %>
           </span><br>
-          <%= @work_order.property.postcode %>
+          <%= work_order.property.postcode %>
         </p>
       </div>
     </div>
@@ -32,18 +32,18 @@
       <div class="hackney-main-section-info hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
-            <%= @work_order.repair_request.contact&.name %>
+            <%= work_order.repair_request.contact&.name %>
           </span><br>
-          <%= @work_order.created.to_s(:govuk_date) %>
+          <%= work_order.created.to_s(:govuk_date) %>
         </p>
 
         <table class="govuk-table hackney-appointment-info">
           <tbody class="govuk-body-xs">
-            <% if @work_order.repair_request.contact&.email_address %>
+            <% if work_order.repair_request.contact&.email_address %>
               <tr>
                 <th scope="row">Email:</th>
                 <td>
-                  <%= mail_to @work_order.repair_request.contact.email_address %>
+                  <%= mail_to work_order.repair_request.contact.email_address %>
                 </td>
               </tr>
             <% end %>
@@ -56,7 +56,7 @@
       <div class="hackney-main-section-info hackney-appointment">
         <p class="govuk-body-s">
           <span class="govuk-!-font-weight-bold">
-            Work order: <%= work_order_status_description(@work_order.work_order_status) %>
+            Work order: <%= work_order_status_description(work_order.work_order_status) %>
           </span>
         </p>
 
@@ -65,8 +65,8 @@
             <tr>
               <th scope="row">Target date:</th>
               <td>
-                <%= @work_order.date_due.to_date.to_s(:govuk_date_short) %>,
-                <%= @work_order.date_due.to_s(:govuk_time) %>
+                <%= work_order.date_due.to_date.to_s(:govuk_date_short) %>,
+                <%= work_order.date_due.to_s(:govuk_time) %>
               </td>
             </tr>
 
@@ -98,7 +98,7 @@
   };
 
   var xhttpWorkOrderHeadingSection = new XMLHttpRequest();
-  xhttpWorkOrderHeadingSection.open('GET', "/api/work_orders/<%= @work_order.reference %>/description", true);
+  xhttpWorkOrderHeadingSection.open('GET', "/api/work_orders/<%= work_order.reference %>/description", true);
   xhttpWorkOrderHeadingSection.onreadystatechange = function() {
     if (xhttpWorkOrderHeadingSection.readyState == 4) {
       if (xhttpWorkOrderHeadingSection.status == 200) {
