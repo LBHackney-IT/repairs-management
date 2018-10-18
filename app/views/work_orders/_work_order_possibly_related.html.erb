@@ -1,28 +1,38 @@
 <div class="govuk-tabs__panel hackney-work-order-tabs-info" id="possibly-related-work-orders">
-  <p class="govuk-caption-m ajax-loading">Loading possibly related work orders data</p>
+  <% if property.is_estate? %>
+    <h2 class='govuk-heading-l'>
+    Possibly related
+    </h2>
+
+    <p class="govuk-body-s" id="possibly-related-estate">Possibly related records relating to an estate are unavailable.</p>
+  <% else %>
+    <p class="govuk-caption-m ajax-loading">Loading possibly related work orders data</p>
+  <% end %>
 </div>
 
 <script>
-  function loadPossiblyRelatedWorkOrders(response) {
-    var possiblyRelatedSection = document.getElementById('possibly-related-work-orders');
-    possiblyRelatedSection.innerHTML = response;
-  };
+  if (!document.getElementById('possibly-related-estate')) {
+    function loadPossiblyRelatedWorkOrders(response) {
+      var possiblyRelatedSection = document.getElementById('possibly-related-work-orders');
+      possiblyRelatedSection.innerHTML = response;
+    };
 
-  function handlePossiblyRelatedWorkOrdersApiError() {
-    document.getElementById('possibly-related-work-orders').innerHTML = 'There was a problem with an API while fetching data.'
-  };
+    function handlePossiblyRelatedWorkOrdersApiError() {
+      document.getElementById('possibly-related-work-orders').innerHTML = 'There was a problem with an API while fetching data.'
+    };
 
-  var xhttpRelatedWorkOrders = new XMLHttpRequest();
-  xhttpRelatedWorkOrders.open('GET', "/api/properties/<%= property.reference %>/possibly_related_work_orders", true);
-  xhttpRelatedWorkOrders.onreadystatechange = function() {
-    if (xhttpRelatedWorkOrders.readyState == 4) {
-      if (xhttpRelatedWorkOrders.status == 200) {
-        loadPossiblyRelatedWorkOrders(xhttpRelatedWorkOrders.response);
-      } else {
-        handlePossiblyRelatedWorkOrdersApiError();
+    var xhttpRelatedWorkOrders = new XMLHttpRequest();
+    xhttpRelatedWorkOrders.open('GET', "/api/properties/<%= property.reference %>/possibly_related_work_orders", true);
+    xhttpRelatedWorkOrders.onreadystatechange = function() {
+      if (xhttpRelatedWorkOrders.readyState == 4) {
+        if (xhttpRelatedWorkOrders.status == 200) {
+          loadPossiblyRelatedWorkOrders(xhttpRelatedWorkOrders.response);
+        } else {
+          handlePossiblyRelatedWorkOrdersApiError();
+        }
       }
     }
+    xhttpRelatedWorkOrders.onerror = handlePossiblyRelatedWorkOrdersApiError;
+    xhttpRelatedWorkOrders.send();
   }
-  xhttpRelatedWorkOrders.onerror = handlePossiblyRelatedWorkOrdersApiError;
-  xhttpRelatedWorkOrders.send();
 </script>

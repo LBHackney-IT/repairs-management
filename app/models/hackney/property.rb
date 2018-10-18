@@ -42,4 +42,9 @@ class Hackney::Property
   def trades_hierarchy_work_orders
     @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq.sort
   end
+
+  def is_estate?
+    property_type = dwelling_work_orders_hierarchy.keys
+    property_type == ['Estate']
+  end
 end
