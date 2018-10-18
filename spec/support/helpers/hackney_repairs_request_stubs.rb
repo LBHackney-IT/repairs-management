@@ -278,6 +278,40 @@ module Helpers
         .to_return(status: status, body: body.to_json)
     end
 
+    def work_order_reports_response_payload
+      {
+        "mobileReports" => [
+          {
+            "reportUri" => "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Processed\\Works Order_11380283.pdf",
+            "date" => "2017-07-17T21:10:59.9488026+00:00"
+          },
+          {
+            "reportUri" => "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (1).pdf",
+            "date" => "2017-07-19T15:23:44.3750997+00:00"
+          },
+          {
+            "reportUri" => "\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (2).pdf",
+            "date" => "2017-07-20T15:27:34.2094981+00:00"
+          }
+        ]
+      }
+    end
+
+    def work_order_reports_response_payload__no_reports
+      {
+        "mobileReports" => []
+      }
+    end
+
+    def stub_hackney_repairs_work_order_reports(opts = {})
+      reference = opts.fetch(:reference, '01551932')
+      status = opts.fetch(:status, 200)
+      body = opts.fetch(:body, work_order_reports_response_payload)
+
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}?include=mobilereports")
+        .to_return(status: status, body: body.to_json)
+    end
+
     # work_orders_by_property_reference
 
     def work_orders_by_property_reference_payload

@@ -35,6 +35,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_work_order_latest_appointments
+    stub_hackney_repairs_work_order_reports
     stub_hackney_work_orders_for_property
     stub_hackney_work_orders_for_property(reference: property_reference1)
     stub_hackney_work_orders_for_property(reference: property_reference2)
@@ -72,6 +73,18 @@ RSpec.describe 'Work order' do
 
     click_on('Possibly related')
     expect(page).to have_content "01106923\n10 Feb 2014\n11:01am\nWork complete Plumbing PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be."
+
+    click_on('Documents')
+    expect(page).to have_link("Works order report", count: 3)
+    expect(page).to have_content 'You must be signed into the internal network to view the documents.'
+
+    expect(page).to have_content "Works order report\n20 July 2017, 3:27pm"
+    expect(page).to have_content "Works order report\n19 July 2017, 3:23pm"
+    expect(page).to have_content "Works order report\n17 July 2017, 9:10pm"
+
+    expect(page).to have_link(href: '\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Processed\\Works Order_11380283.pdf')
+    expect(page).to have_link(href: '\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (1).pdf')
+    expect(page).to have_link(href: '\\\\LBHCAPCONINTP01\\portaldata\\HOUSING\\MobileRepairs\\Unprocessed\\Works Order_11380283 Copy (2).pdf')
   end
 
   scenario "Entering an unknown work order reference" do
@@ -288,6 +301,15 @@ RSpec.describe 'Work order' do
     within(find('h2', text: 'Possibly related').find(:xpath, '..')) do
       expect(page).to have_content 'Possibly related records relating to an estate are unavailable.'
     end
+  end
+
+  scenario 'There are no reports for a work order', js: true do
+    stub_hackney_repairs_work_order_reports(body: work_order_reports_response_payload__no_reports)
+
+    visit work_order_path('01551932')
+
+    click_on('Documents')
+    expect(page).to have_content "There are no documents for this work order."
   end
 
   scenario 'Filtering the repairs history by trade related to the property', js: true do

@@ -68,6 +68,13 @@ module HackneyAPI
       )
     end
 
+    def get_work_order_reports(reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders/#{reference}?include=mobilereports"
+      )
+    end
+
     def get_work_orders_by_property(reference)
       request(
         http_method: :get,

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       member do
         get :description
         get :notes_and_appointments
+        get :work_order_documents
       end
     end
   end
