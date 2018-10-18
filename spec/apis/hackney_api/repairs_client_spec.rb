@@ -36,7 +36,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/work_orders").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders, {}, 500, #{response_body}")
       end
     end
   end
@@ -71,7 +71,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -88,13 +88,16 @@ describe HackneyAPI::RepairsClient do
       json = <<-JSON
         {
           "developerMessage": "Exception of type 'HackneyRepairs.Actions.MissingWorkOrderException' was thrown.",
-           "userMessage": "Could not find one or more of the given work orders"
+          "userMessage": "Could not find one or more of the given work orders"
         }
       JSON
 
       stub_request(:get, "#{base_url}/v1/work_orders/by_references?reference=a").to_return(status: 404, body: json)
 
-      expect { api_client.get_work_orders_by_references(['a']) }.to raise_error(described_class::RecordNotFoundError)
+      expect { api_client.get_work_orders_by_references(['a']) }.to(
+        raise_error(described_class::RecordNotFoundError).
+          with_message('v1/work_orders/by_references, {:reference=>["a"]}')
+      )
     end
   end
 
@@ -128,7 +131,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/repairs/#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/repairs/#{reference}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/repairs/#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -163,7 +166,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/properties/#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties/#{reference}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties/#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -198,7 +201,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/appointments, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/appointments, {}, 500, #{response_body}")
       end
     end
   end
@@ -233,7 +236,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments/latest").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/appointments/latest, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/appointments/latest, {}, 500, #{response_body}")
       end
     end
   end
@@ -268,7 +271,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/notes").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/notes, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/notes, {}, 500, #{response_body}")
       end
     end
   end
@@ -303,7 +306,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/hierarchy").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties/#{reference}/hierarchy, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties/#{reference}/hierarchy, {}, 500, #{response_body}")
       end
     end
   end
@@ -338,7 +341,7 @@ describe HackneyAPI::RepairsClient do
       before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{reference}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -400,7 +403,7 @@ describe HackneyAPI::RepairsClient do
 
       it 'raises ApiError error' do
         expect { subject }.to raise_error(described_class::ApiError).with_message(
-          "v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}, 500, #{response_body}"
+          "v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}, {}, 500, #{response_body}"
         )
       end
     end

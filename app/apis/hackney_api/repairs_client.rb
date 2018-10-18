@@ -145,9 +145,9 @@ module HackneyAPI
       when HTTP_STATUS_OK
         response.body
       when HTTP_STATUS_NOT_FOUND
-        raise RecordNotFoundError, endpoint
+        raise RecordNotFoundError, [endpoint, params].join(', ')
       else
-        raise ApiError, [endpoint, response.status, response.body].join(', ')
+        raise ApiError, [endpoint, params, response.status, response.body].join(', ')
       end
     end
 
