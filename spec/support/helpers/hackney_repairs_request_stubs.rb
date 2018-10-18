@@ -27,10 +27,8 @@ module Helpers
       base.merge(overrides)
     end
 
-    def stub_hackney_repairs_work_orders(opts = {})
-      reference = opts.fetch(:reference, '01551932')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, work_order_response_payload)
+    def stub_hackney_repairs_work_orders(reference: '01551932', status: 200,
+                                          body: work_order_response_payload)
 
       Graph::WorkOrder.find_or_create(reference: reference)
 
@@ -68,10 +66,8 @@ module Helpers
       }
     end
 
-    def stub_hackney_repairs_repair_requests(opts = {})
-      reference = opts.fetch(:reference, '03209397')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, repair_request_response_payload)
+    def stub_hackney_repairs_repair_requests(reference: '03209397', status: 200,
+                                              body: repair_request_response_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/repairs/#{reference}")
         .to_return(status: status, body: body.to_json)
@@ -88,10 +84,8 @@ module Helpers
       }
     end
 
-    def stub_hackney_repairs_properties(opts = {})
-      reference = opts.fetch(:reference, '00014665')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, property_response_payload)
+    def stub_hackney_repairs_properties(reference: '00014665', status: 200,
+                                        body: property_response_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}")
         .to_return(status: status, body: body.to_json)
@@ -127,13 +121,14 @@ module Helpers
         .to_return(status: status, body: body.to_json)
     end
 
-    def stub_hackney_repairs_work_order_block_by_trade(opts = {})
-      reference = opts.fetch(:reference, '00014665')
-      status = opts.fetch(:status, 200)
-      trade = opts.fetch(:trade, 'Plumbing')
-      date_from = opts.fetch(:date_from, (Date.today - 2.weeks).strftime("%d-%m-%Y"))
-      date_to = opts.fetch(:date_to, Date.today.strftime("%d-%m-%Y"))
-      body = opts.fetch(:body, repairs_work_order_block_by_trade_response(trade, reference))
+    def stub_hackney_repairs_work_order_block_by_trade(
+          reference: '00014665',
+          status: 200,
+          trade: 'Plumbing',
+          date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
+          date_to: Date.today.strftime("%d-%m-%Y"),
+          body: repairs_work_order_block_by_trade_response(trade, reference)
+          )
 
       stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
         .to_return(status: status, body: body.to_json)
@@ -160,10 +155,8 @@ module Helpers
       []
     end
 
-    def stub_hackney_repairs_work_order_notes(opts = {})
-      reference = opts.fetch(:reference, '01551932')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, work_order_notes_payload)
+    def stub_hackney_repairs_work_order_notes(reference: '01551932', status: 200,
+                                              body: work_order_notes_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/notes")
         .to_return(status: status, body: body.to_json)
@@ -249,10 +242,8 @@ module Helpers
       []
     end
 
-    def stub_hackney_repairs_work_order_appointments(opts = {})
-      reference = opts.fetch(:reference, '01551932')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, work_order_appointments_response_payload)
+    def stub_hackney_repairs_work_order_appointments(reference: '01551932', status: 200,
+                                                      body: work_order_appointments_response_payload)
 
       stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments")
         .to_return(status: status, body: body.to_json)
@@ -368,6 +359,7 @@ module Helpers
 
     def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
                                               body: work_orders_by_property_reference_payload)
+
       stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")
         .to_return(status: status, body: body.to_json)
     end
@@ -414,10 +406,8 @@ module Helpers
       ]
     end
 
-    def stub_hackney_property_hierarchy(opts = {})
-      reference = opts.fetch(:reference, '00014665')
-      status = opts.fetch(:status, 200)
-      body = opts.fetch(:body, property_hierarchy_response_body)
+    def stub_hackney_property_hierarchy(reference: '00014665', status: 200,
+                                        body: property_hierarchy_response_body)
 
       stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/hierarchy")
         .to_return(status: status, body: body.to_json)
