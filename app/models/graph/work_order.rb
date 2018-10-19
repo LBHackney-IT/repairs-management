@@ -1,6 +1,6 @@
 class Graph::WorkOrder
   include Neo4j::ActiveNode
-  MAX_RELATIONS = 1..6
+  MAX_RELATIONS = 1..4
 
   id_property :reference
 
