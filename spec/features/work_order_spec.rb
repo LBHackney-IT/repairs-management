@@ -116,8 +116,14 @@ RSpec.describe 'Work order' do
       body: [work_order_response_payload("workOrderReference" => "11235813",
                                          "problemDescription" => "A related work order")]
     )
-    GraphModelImporter.new('test').import_work_order("11235813", property_reference1, Time.current, [])
-    GraphModelImporter.new('test').import_note(1, Time.current, "11235813", ['01551932'])
+    GraphModelImporter.new('test').import_work_order(work_order_ref: "11235813",
+                                                     property_ref: property_reference1,
+                                                     created: Time.current,
+                                                     target_numbers: [])
+    GraphModelImporter.new('test').import_note(note_id: 1,
+                                               logged_at: Time.current,
+                                               work_order_reference: "11235813",
+                                               target_numbers: ['01551932'])
 
     fill_in 'Search by work order reference or postcode', with: '01551932'
     within('.hackney-search') do

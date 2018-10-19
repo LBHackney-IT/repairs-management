@@ -23,6 +23,11 @@ class Hackney::WorkOrder
     []
   end
 
+  def self.feed(previous_reference)
+    response = HackneyAPI::RepairsClient.new.work_order_feed(previous_reference)
+    response.map { |hash| build(hash) }
+  end
+
   def self.for_property(property_reference:, date_from:, date_to:)
     HackneyAPI::RepairsClient.new.get_work_orders_by_property(
       reference: property_reference,
@@ -47,13 +52,13 @@ class Hackney::WorkOrder
   def self.build(attributes)
     new(
       reference: attributes['workOrderReference'].strip,
-      rq_ref: attributes['repairRequestReference'].strip,
+      rq_ref: attributes['repairRequestReference']&.strip,
       prop_ref: attributes['propertyReference'].strip,
       created: attributes['created'].to_datetime,
-      date_due: attributes['dateDue'].to_datetime,
-      work_order_status: attributes['workOrderStatus'].strip,
-      dlo_status: attributes['dloStatus'].strip,
-      servitor_reference: attributes['servitorReference'].strip,
+      date_due: attributes['dateDue']&.to_datetime,
+      work_order_status: attributes['workOrderStatus']&.strip,
+      dlo_status: attributes['dloStatus']&.strip,
+      servitor_reference: attributes['servitorReference']&.strip,
       problem_description: attributes['problemDescription'],
       trade: attributes['trade']
     )

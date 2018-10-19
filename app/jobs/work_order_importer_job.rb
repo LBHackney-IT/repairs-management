@@ -16,8 +16,11 @@ class WorkOrderImporterJob < ApplicationJob
 
       numbers = WorkOrderReferenceFinder.new(work_order_ref).find(text)
 
-      importer.import_work_order(work_order_ref, property_ref, created, numbers)
+      Rails.logger.info("Importing work order: #{work_order_ref} from #{s3_object_name}")
+      importer.import_work_order(work_order_ref: work_order_ref,
+                                 property_ref: property_ref,
+                                 created: created,
+                                 target_numbers: numbers)
     end
   end
-
 end

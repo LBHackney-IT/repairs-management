@@ -34,6 +34,13 @@ module HackneyAPI
       )
     end
 
+    def work_order_feed(previous_reference)
+      request(
+        http_method: :get,
+        endpoint: "v1/work_orders/feed?startId=#{previous_reference}"
+      )
+    end
+
     def notes_feed(previous_note_id)
       request(
         http_method: :get,
