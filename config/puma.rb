@@ -4,6 +4,13 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
+# require 'barnes'
+
+# before_fork do
+#   # worker specific setup
+#   Barnes.start
+# end
+
 threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 threads threads_count, threads_count
 
