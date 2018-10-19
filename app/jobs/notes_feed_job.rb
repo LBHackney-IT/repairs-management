@@ -4,7 +4,7 @@ class NotesFeedJob < ApplicationJob
   ENQUEUE_LIMIT = 50
 
   def perform(enqueues, max_enqueues)
-    notes = Hackney::Note.feed(last_note_id)
+    notes = Hackney::Note.feed(Graph::Note.last_note_id)
 
     notes.each do |hackney_note|
       RelatedWorkOrderJob.perform_later(hackney_note.note_id,
@@ -26,10 +26,5 @@ class NotesFeedJob < ApplicationJob
     WorkOrderReferenceFinder
       .new(hackney_note.work_order_reference)
       .find(hackney_note.text)
-  end
-
-  def last_note_id
-    last_note = Graph::Note.last
-    last_note.nil? ? 1 : last_note.note_id
   end
 end
