@@ -1,5 +1,6 @@
 class Graph::WorkOrder
   include Neo4j::ActiveNode
+  MAX_RELATIONS = 1..6
 
   id_property :reference
 
@@ -12,7 +13,7 @@ class Graph::WorkOrder
   FIRST_REFERENCE = "00000000".freeze
 
   def related
-    cited_work_orders(rel_length: :any).to_a.uniq - [self]
+    cited_work_orders(rel_length: MAX_RELATIONS).to_a.uniq - [self]
   end
 
   def self.last_imported
