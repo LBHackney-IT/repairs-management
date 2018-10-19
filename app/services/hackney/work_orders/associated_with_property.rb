@@ -11,7 +11,7 @@ module Hackney
 
       def call
         filtered_hierarchy.each_with_object({}) do |(description, property_reference), hash|
-          work_orders = Hackney::WorkOrder.for_property(property_reference)
+          work_orders = Hackney::WorkOrder.for_property(property_reference: property_reference, date_from: (Date.today - 2.years), date_to: Date.tomorrow)
           hash[description] = work_orders if work_orders.any?
         end
       end

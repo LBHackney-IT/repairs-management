@@ -23,8 +23,12 @@ class Hackney::WorkOrder
     []
   end
 
-  def self.for_property(property_reference)
-    HackneyAPI::RepairsClient.new.get_work_orders_by_property(property_reference).map do |attributes|
+  def self.for_property(property_reference:, date_from:, date_to:)
+    HackneyAPI::RepairsClient.new.get_work_orders_by_property(
+      reference: property_reference,
+      date_from: date_from,
+      date_to: date_to
+    ).map do |attributes|
       build(attributes)
     end
   end

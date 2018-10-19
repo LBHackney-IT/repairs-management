@@ -344,29 +344,46 @@ describe HackneyAPI::RepairsClient do
   end
 
   describe '#get_work_orders_by_property' do
-    it 'returns empty list when a property has no work orders' do
-      response = []
-      stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=ben_was_here").to_return(status: 200, body: response)
+    let(:reference) { 'ben_was_here' }
+    let(:date_from) { Date.today - 2.years }
+    let(:date_to) { Date.tomorrow }
 
-      expect(api_client.get_work_orders_by_property("ben_was_here")).to eq([])
+    subject { api_client.get_work_orders_by_property(reference: reference, date_from: date_from, date_to: date_to) }
+
+    context 'successful empty response' do
+      before do
+        response = []
+        stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
+        .to_return(status: 200, body: response)
+      end
+
+      it 'returns empty list when a property has no work orders' do
+        expect(subject).to eq([])
+      end
     end
 
-    it 'returns the work orders for a property' do
-      response = '[{"sorCode": "HIST0001", "trade": "Cash Items"}]'
-      stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=ben_was_here").to_return(status: 200, body: response)
+    context 'succesful response with information' do
+      before do
+        response = '[{"sorCode": "HIST0001", "trade": "Cash Items"}]'
+        stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
+        .to_return(status: 200, body: response)
+      end
 
-      expect(api_client.get_work_orders_by_property("ben_was_here")).to eq(JSON.parse(response))
+      it 'returns the work orders for a property' do
+        response = '[{"sorCode": "HIST0001", "trade": "Cash Items"}]'
+        expect(subject).to eq(JSON.parse(response))
+      end
     end
   end
 
   describe '#get_property_block_work_orders_by_trade' do
-    let(:trade) { 'tade' }
+    let(:trade) { 'trade' }
     let(:date_from) { '01-01-2018' }
     let(:date_to) { '01-02-2018' }
 
     subject { api_client.get_property_block_work_orders_by_trade(reference: reference, trade: trade, date_from: date_from, date_to: date_to) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before do
         stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
           .to_return(body: empty_response_body.to_json)

@@ -22,10 +22,6 @@ class Hackney::Property
     )
   end
 
-  def work_orders
-    @_work_orders ||= Hackney::WorkOrder.for_property(reference)
-  end
-
   def work_orders_plumbing_from_block_and_last_two_weeks
     @_work_orders_plumbing_from_block_and_last_two_weeks ||= Hackney::WorkOrder.for_property_block_and_trade(
       property_reference: reference,

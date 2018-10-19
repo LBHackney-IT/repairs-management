@@ -391,10 +391,15 @@ module Helpers
       }]
     end
 
-    def stub_hackney_work_orders_for_property(reference: '00014665', status: 200,
-                                              body: work_orders_by_property_reference_payload)
+    def stub_hackney_work_orders_for_property(
+          reference: '00014665',
+          status: 200,
+          date_from: (Date.today - 2.years).strftime("%d-%m-%Y"),
+          date_to: Date.tomorrow.strftime("%d-%m-%Y"),
+          body: work_orders_by_property_reference_payload
+          )
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}")
+      stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}&since=#{date_from}&until=#{date_to}")
         .to_return(status: status, body: body.to_json)
     end
 
