@@ -13,7 +13,7 @@
   };
 
   var xhttpNotesAndAppointments = new XMLHttpRequest();
-  xhttpNotesAndAppointments.open('GET', "/api/work_orders/<%= work_order.reference %>/notes_and_appointments", true);
+  xhttpNotesAndAppointments.open('GET', "/api/work_orders/<%= work_order_reference %>/notes_and_appointments", true);
   xhttpNotesAndAppointments.onreadystatechange = function() {
     if (xhttpNotesAndAppointments.readyState == 4) {
       if (xhttpNotesAndAppointments.status == 200) {
