@@ -1,5 +1,6 @@
 class Graph::WorkOrder
   include Neo4j::ActiveNode
+  MAX_RELATIONS = 1..6
 
   id_property :reference
 
@@ -10,6 +11,6 @@ class Graph::WorkOrder
   has_many :both, :cited_work_orders, rel_class: 'Graph::Citation'
 
   def related
-    cited_work_orders(rel_length: :any).to_a.uniq - [self]
+    cited_work_orders(rel_length: MAX_RELATIONS).to_a.uniq - [self]
   end
 end
