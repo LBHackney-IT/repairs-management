@@ -1,30 +1,30 @@
-<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="repair-history-tab">
+<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="property-repair-history-tab">
   <p class="govuk-caption-m ajax-loading">Loading repairs history data</p>
 </div>
 
 <script>
-  function loadWorkOrderRepairsHistory(response) {
-    var repairsHistoryTab = document.getElementById('repair-history-tab');
+  function loadPropertyRepairsHistory(response) {
+    var repairsHistoryTab = document.getElementById('property-repair-history-tab');
     repairsHistoryTab.innerHTML = response;
   };
 
-  function handleWorkOrderRepairsHistoryApiError() {
-    document.getElementById('repair-history-tab').innerHTML = 'There was a problem with an API while fetching data.'
+  function handlePropertyRepairsHistoryApiError() {
+    document.getElementById('property-repair-history-tab').innerHTML = 'There was a problem with an API while fetching data.'
   };
 
-  var xhttpWorkOrderRepairsHistory = new XMLHttpRequest();
-  xhttpWorkOrderRepairsHistory.open('GET', "/api/work_orders/<%= work_order_reference %>/repairs_history", true);
-  xhttpWorkOrderRepairsHistory.onreadystatechange = function() {
-    if (xhttpWorkOrderRepairsHistory.readyState == 4) {
-      if (xhttpWorkOrderRepairsHistory.status == 200) {
-        loadWorkOrderRepairsHistory(xhttpWorkOrderRepairsHistory.response);
+  var xhttpPropertyRepairsHistory = new XMLHttpRequest();
+  xhttpPropertyRepairsHistory.open('GET', "/api/properties/<%= property_reference %>/repairs_history", true);
+  xhttpPropertyRepairsHistory.onreadystatechange = function() {
+    if (xhttpPropertyRepairsHistory.readyState == 4) {
+      if (xhttpPropertyRepairsHistory.status == 200) {
+        loadPropertyRepairsHistory(xhttpPropertyRepairsHistory.response);
       } else {
-        handleWorkOrderRepairsHistoryApiError();
+        handlePropertyRepairsHistoryApiError();
       }
     }
   }
-  xhttpWorkOrderRepairsHistory.onerror = handleWorkOrderRepairsHistoryApiError;
-  xhttpWorkOrderRepairsHistory.send();
+  xhttpPropertyRepairsHistory.onerror = handlePropertyRepairsHistoryApiError;
+  xhttpPropertyRepairsHistory.send();
 
   // Filtering functionality
   var filterCheckBoxes = [];
@@ -97,4 +97,3 @@
     }
   }
 </script>
-

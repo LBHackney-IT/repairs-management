@@ -7,11 +7,11 @@
 
   <ul class="govuk-tabs__list hackney-tabs-list">
     <li class="govuk-tabs__list-item">
-      <a class="govuk-tabs__tab hackney-work-order-tab" href="#repair-history-tab">
+      <a class="govuk-tabs__tab hackney-work-order-tab" href="#property-repair-history-tab">
         Repairs history
       </a>
     </li>
   </ul>
 
-  <%= render 'work_orders/work_order_repairs_history', dwelling_work_orders_hierarchy: @property_details.dwelling_work_orders_hierarchy, trades: @property_details.trades_hierarchy_work_orders %>
+  <%= render 'property_repairs_history', property_reference: @property_details.reference %>
 </div>

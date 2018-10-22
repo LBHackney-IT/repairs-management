@@ -64,6 +64,12 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Data source: DRS'
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
+    click_on('Repairs history')
+    expect(page).to have_content 'Problem 1'
+    expect(page).to have_content 'Problem 2'
+    expect(page).to have_link("12345678", href: work_order_path("12345678"))
+    expect(page).to have_link("87654321", href: work_order_path("87654321"))
+
     click_on('Notes and appointments')
     expect(page).to have_content "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath"
     expect(page).to have_content "23 August 2018, 10:12am by MOSHEA\nTenant called to confirm appointment"
@@ -144,13 +150,6 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
     expect(page).to have_content 'Notes and appointments'
-
-    within(find('h2', text: 'Repairs history').find(:xpath, '..')) do
-      expect(page).to have_content 'Problem 1'
-      expect(page).to have_content 'Problem 2'
-      expect(page).to have_link("12345678", href: work_order_path("12345678"))
-      expect(page).to have_link("87654321", href: work_order_path("87654321"))
-    end
 
     within(find('h2', text: 'Related repairs').find(:xpath, '..')) do
       expect(page).to have_content 'A related work order'
