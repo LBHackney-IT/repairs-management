@@ -17,12 +17,7 @@ RSpec.describe GraphModelImporter, :db_connection do
 
       expect(work_order_1.related).to eq [work_order_2]
       expect(work_order_2.related).to eq [work_order_1]
-      work_order_1.cited_work_orders.each_rel do |rel|
-        expect(rel.source).to eq 'test-thingy'
-      end
-      work_order_2.cited_work_orders.each_rel do |rel|
-        expect(rel.source).to eq 'test-thingy'
-      end
+      expect(work_order_1.citations_for(work_order_2).first.note_id).to eq 1
     end
 
     it "creates new note records" do

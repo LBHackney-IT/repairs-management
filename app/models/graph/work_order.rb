@@ -1,6 +1,6 @@
 class Graph::WorkOrder
   include Neo4j::ActiveNode
-  MAX_RELATIONS = 1..4
+  MAX_RELATIONS = 20
 
   id_property :reference
 
@@ -13,7 +13,15 @@ class Graph::WorkOrder
   FIRST_REFERENCE = "00000000".freeze
 
   def related
-    cited_work_orders(rel_length: MAX_RELATIONS).to_a.uniq - [self]
+    query_as(:s).match("(s)-[*..#{MAX_RELATIONS} {extra: false}]-(p)").pluck(:p).to_a
+  end
+
+  def citations_for(work_order)
+    citations = []
+    cited_work_orders.where(reference: work_order.reference).each_rel do |r|
+      citations << r
+    end
+    citations
   end
 
   def self.last_imported
