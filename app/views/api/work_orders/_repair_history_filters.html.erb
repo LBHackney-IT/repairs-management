@@ -1,0 +1,52 @@
+<div class="filter_by_trade govuk-grid-column-one-quarter">
+  <div class="govuk-grid-row govuk-table__header filter_heading">
+    <div class="govuk-grid-column-one-half">
+      <p class="govuk-body-m govuk-!-font-weight-bold">Apply filters</p>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <button id="clearFilters" class='clear-all-filters govuk-body-s' onclick="handleClearAllFilters()">Clear filters</button>
+    </div>
+  </div>
+
+  <div class="govuk-form-group">
+    <fieldset class='govuk-fieldset work-order-filter'>
+      <div class="hierarchy-filter-collapsible-header work-order-filter-collapsible-header">
+        <h4 class="govuk-heading-s">Property Type</h4>
+        <i class="work-order-filter-collapsible hierarchy-filter-collapsible up-arrow" onclick="collapsibleFilter('.hierarchy')"></i>
+      </div>
+
+      <div class="hierarchy-hackney-checkbox">
+        <% hierarchy.keys.each_with_index do |description, index| %>
+          <div class="work-order-filter-options govuk-body-s">
+            <input onclick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="hierarchy-filter-checkbox tabelement" id="hierarchy-<%=index%>" type="radio" value="hierarchy-<%=index%>" name="hierarchy" <%= 'checked' if index == 0%>>
+            <label class="hackney-checkboxes__label" for="hierarchy-<%=index%>">
+              <%= description %>
+            </label>
+          </div>
+        <% end %>
+      </div>
+
+    </fieldset>
+  </div>
+
+  <div class="govuk-form-group">
+    <fieldset class='govuk-fieldset work-order-filter'>
+      <div class="trade-filter-collapsible-header work-order-filter-collapsible-header" onclick="collapsibleFilter('.trade')">
+        <h4 class="govuk-heading-s">Trade</h4>
+        <i class="work-order-filter-collapsible trade-filter-collapsible up-arrow"></i>
+      </div>
+
+      <div class="trade-hackney-checkbox">
+        <% work_orders_trades.each_with_index do |trade, index| %>
+          <div class="work-order-filter-options govuk-body-s">
+            <input id="trade-<%=index%>" class='trade-filter-checkbox' type="checkbox" value="trade-<%=index%>" onclick="handleToggleTrade()">
+            <label class="hackney-checkboxes__label" for="trade-<%=index%>">
+              <%= trade %>
+            </label>
+          </div>
+        <% end %>
+      </div>
+
+    </fieldset>
+  </div>
+</div>
