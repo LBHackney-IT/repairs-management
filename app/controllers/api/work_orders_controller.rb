@@ -8,8 +8,12 @@ module Api
       @work_order = Hackney::WorkOrder.find(reference)
     end
 
-    def work_order_documents
+    def documents
       @reports = Hackney::WorkOrder.find(reference).reports
+    end
+
+    def repairs_history
+      @work_order = Hackney::WorkOrder.find(reference)
     end
 
     private

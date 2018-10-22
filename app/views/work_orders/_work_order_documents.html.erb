@@ -13,7 +13,7 @@
   };
 
   var xhttpWorkOrderReports = new XMLHttpRequest();
-  xhttpWorkOrderReports.open('GET', "/api/work_orders/<%= work_order_reference %>/work_order_documents", true);
+  xhttpWorkOrderReports.open('GET', "/api/work_orders/<%= work_order_reference %>/documents", true);
   xhttpWorkOrderReports.onreadystatechange = function() {
     if (xhttpWorkOrderReports.readyState == 4) {
       if (xhttpWorkOrderReports.status == 200) {
