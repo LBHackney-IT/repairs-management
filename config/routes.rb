@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :properties, only: [], param: :ref do
       member do
         get :possibly_related_work_orders
+        get :repairs_history
       end
     end
 

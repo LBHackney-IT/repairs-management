@@ -1,13 +1,13 @@
-<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="repair-history-tab">
+<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="property-repair-history-tab">
   <h2 class="govuk-heading-l">
     Repairs history
   </h2>
 
-  <% if @work_order.property.dwelling_work_orders_hierarchy.any? %>
+  <% if @property.dwelling_work_orders_hierarchy.any? %>
   <div class="govuk-grid-row">
-    <%= render 'filters/repair_history_filters', hierarchy: @work_order.property.dwelling_work_orders_hierarchy, work_orders_trades: @work_order.property.trades_hierarchy_work_orders %>
+    <%= render 'filters/repair_history_filters', hierarchy: @property.dwelling_work_orders_hierarchy, work_orders_trades: @property.trades_hierarchy_work_orders %>
 
-    <% @work_order.property.dwelling_work_orders_hierarchy.each_with_index do |(description, work_orders), index| %>
+    <% @property.dwelling_work_orders_hierarchy.each_with_index do |(description, work_orders), index| %>
       <div class="tabcontent <%= 'hidden' unless index == 0 %>" id="<%= description.parameterize %>-content">
 
         <div class="govuk-grid-column-three-quarters">
@@ -24,7 +24,7 @@
             <tbody class="govuk-table__body">
             <% work_orders.sort_by(&:created).reverse.each do |work_order| %>
               <tr class="govuk-table__row hackney-work-order-rows repairs-history"
-                  data-trade="trade-<%= @work_order.property.trades_hierarchy_work_orders.index(work_order.trade) %>">
+                  data-trade="trade-<%= @property.trades_hierarchy_work_orders.index(work_order.trade) %>">
                 <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference) %></td>
                 <td class="govuk-table__cell hackney-work-order-date-raised">
                   <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
