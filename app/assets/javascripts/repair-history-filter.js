@@ -1,9 +1,6 @@
-var filterCheckBoxes = [];
-var workOrders = [];
-
 function handleToggleTrade() {
-  filterCheckBoxes = document.querySelectorAll('.trade-filter-checkbox:checked');
-  workOrders = document.querySelectorAll('.hackney-work-order-rows.repairs-history');
+  var filterCheckBoxes = document.querySelectorAll('.trade-filter-checkbox:checked');
+  var workOrders = document.querySelectorAll('.hackney-work-order-rows.repairs-history');
 
   var showTheseTrades = [];
 
@@ -27,6 +24,9 @@ function handleToggleTrade() {
 }
 
 function handleClearAllFilters() {
+  var filterCheckBoxes = document.querySelectorAll('.trade-filter-checkbox:checked');
+  var workOrders = document.querySelectorAll('.hackney-work-order-rows.repairs-history');
+
   for(var i = 0; i < filterCheckBoxes.length; i++) {
     filterCheckBoxes[i].checked = false;
   }
@@ -47,23 +47,5 @@ function collapsibleFilter(hierarchyOrTrade) {
     content.style.display = "none";
     collapsible.classList.remove('up-arrow');
     collapsible.classList.add('down-arrow');
-  }
-}
-
-function applyBuildingFilter(tab_id, content_id) {
-  var tabs = document.getElementsByClassName('tabelement');
-
-  var tab_contents = document.getElementsByClassName('tabcontent');
-  for(i = 0; i < tabs.length; i++) {
-    var el = tab_contents[i];
-    el.style.display = 'none';
-    el.className = 'tabcontent';
-  }
-  document.getElementById(content_id).style.display = 'block';
-};
-
-function clickAndDisableLink(workOrderLink) {
-  workOrderLink.onclick = function(event) {
-    event.preventDefault();
   }
 }
