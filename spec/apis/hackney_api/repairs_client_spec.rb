@@ -5,7 +5,7 @@ describe HackneyAPI::RepairsClient do
   let(:api_client) { described_class.new(base_url: base_url) }
   let(:reference) { 1 }
   let(:empty_response_body) { {} }
-  MAX_LEVEL_ESTATE = "max_level=2"
+  let(:postcode) { 1 }
 
   describe '#get_work_orders' do
     subject { api_client.get_work_orders }
@@ -313,10 +313,10 @@ describe HackneyAPI::RepairsClient do
   end
 
   describe '#get_property_by_postcode' do
-    subject { api_client.get_property_by_postcode(reference) }
+    subject { api_client.get_property_by_postcode(postcode) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}&#{MAX_LEVEL_ESTATE}").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{postcode}&max_level=2").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -324,7 +324,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}&#{MAX_LEVEL_ESTATE}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{postcode}&max_level=2").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -339,10 +339,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{reference}&#{MAX_LEVEL_ESTATE}").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{postcode}&max_level=2").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{reference}&#{MAX_LEVEL_ESTATE}, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{postcode}&max_level=2, {}, 500, #{response_body}")
       end
     end
   end

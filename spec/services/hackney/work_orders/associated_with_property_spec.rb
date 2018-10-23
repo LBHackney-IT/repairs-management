@@ -7,14 +7,14 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
     let(:dwelling_reference) { 1 }
 
     let(:service_instance) { described_class.new(dwelling_reference) }
-    let(:property_hierarchy_estate) { build(:property_hierarchy, description: 'Estate') }
-    let(:property_hierarchy_free) { build(:property_hierarchy, description: 'Free') }
-    let(:property_hierarchy_block) { build(:property_hierarchy, description: 'Block') }
-    let(:property_hierarchy_random) { build(:property_hierarchy, description: 'Random') }
-    let(:property_hierarchy_subblock) { build(:property_hierarchy, description: 'Sub-Block') }
-    let(:property_hierarchy_facilities) { build(:property_hierarchy, description: 'Facilities') }
-    let(:property_hierarchy_dwelling) { build(:property_hierarchy, description: 'Dwelling') }
-    let(:property_hierarchy_nondwell) { build(:property_hierarchy, description: 'Non-Dwell') }
+    let(:property_hierarchy_estate) { build(:property, description: 'Estate') }
+    let(:property_hierarchy_free) { build(:property, description: 'Free') }
+    let(:property_hierarchy_block) { build(:property, description: 'Block') }
+    let(:property_hierarchy_random) { build(:property, description: 'Random') }
+    let(:property_hierarchy_subblock) { build(:property, description: 'Sub-Block') }
+    let(:property_hierarchy_facilities) { build(:property, description: 'Facilities') }
+    let(:property_hierarchy_dwelling) { build(:property, description: 'Dwelling') }
+    let(:property_hierarchy_nondwell) { build(:property, description: 'Non-Dwell') }
 
     let(:property_hierarchy_response) do
       [
@@ -51,7 +51,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
     end
 
     before do
-      allow(Hackney::PropertyHierarchy).to receive(:for_property).with(dwelling_reference).and_return(property_hierarchy_response)
+      allow(Hackney::Property).to receive(:for_property).with(dwelling_reference).and_return(property_hierarchy_response)
     end
 
     subject { service_instance.call }

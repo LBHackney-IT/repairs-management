@@ -19,7 +19,7 @@ module Hackney
       private
 
       def filtered_hierarchy
-        Hackney::PropertyHierarchy.for_property(reference).each_with_object({}) do |element, hash|
+        Hackney::Property.for_property(reference).each_with_object({}) do |element, hash|
           hash[element.description] = element.reference if element.description.in?(HIERARCHY_DESCRIPTIONS)
         end
       end

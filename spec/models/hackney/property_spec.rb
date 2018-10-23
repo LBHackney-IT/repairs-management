@@ -87,3 +87,106 @@ describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeks
     subject
   end
 end
+
+describe Hackney::Property do
+  describe '.for_property' do
+    let(:property) { 11111 }
+    let(:hierarchy_object) do
+      {
+        'propertyReference' => '1',
+        'levelCode' => '2',
+        'description' => '3',
+        'majorReference' => '4',
+        'address' => '5',
+        'postCode' => '6'
+      }
+    end
+    let(:api_response) { [hierarchy_object] }
+    let(:repairs_client_double) { instance_double(HackneyAPI::RepairsClient, get_property_hierarchy: api_response) }
+
+    before do
+      allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
+    end
+
+    subject { described_class.for_property(property) }
+
+    it 'returns an array with instances of Hackney::Property built based on an API response' do
+      expect(repairs_client_double).to receive(:get_property_hierarchy).with(property)
+      expect(described_class).to receive(:build).once
+      subject
+    end
+  end
+
+  describe '.build' do
+    let(:postcode) { 'postcode' }
+    let(:reference) { 'reference' }
+    let(:level_code) { 'level_code' }
+    let(:description) { 'description' }
+    let(:major_reference) { 'major_reference' }
+    let(:address) { 'address' }
+    let(:attributes) do
+      {
+        'propertyReference' => reference,
+        'levelCode' => level_code,
+        'description' => description,
+        'majorReference' => major_reference,
+        'address' => address,
+        'postcode' => postcode
+      }
+    end
+
+    subject { described_class.build(attributes) }
+
+    it 'builds an instance of Hackney::Property with passed attributes' do
+      expect(subject).to be_an_instance_of(described_class)
+      expect(subject.postcode).to eq(postcode)
+      expect(subject.reference).to eq(reference)
+      expect(subject.description).to eq(description)
+      expect(subject.level_code).to eq(level_code)
+      expect(subject.major_reference).to eq(major_reference)
+      expect(subject.address).to eq(address)
+    end
+  end
+end
+
+describe Hackney::Property, '.build' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  it 'builds a property from the API response' do
+    model = described_class.build(property_by_postcode_response_body[:results].first)
+    expect(model).to be_a(Hackney::Property)
+
+    expect(model.address).to eq("Homerton High Street 10 Banister House")
+    expect(model.postcode).to eq("E9 6BH")
+    expect(model.reference).to eq("00014663")
+    expect(model.description).to eq("Dwelling")
+  end
+end
+
+describe Hackney::Property, '#for_postcode' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  context 'when the API responds with RecordNotFound' do
+    before do
+      stub_hackney_property_by_postcode(status: 404)
+    end
+
+    it 'raises a RecordNotFoundError error' do
+      expect {
+        described_class.for_postcode('E96BH')
+      }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+    end
+  end
+
+  context 'when the API fails' do
+    before do
+      stub_hackney_property_by_postcode(status: 500)
+    end
+
+    it 'raises an api error' do
+      expect {
+        described_class.for_postcode('E96BH')
+      }.to raise_error HackneyAPI::RepairsClient::ApiError
+    end
+  end
+end
