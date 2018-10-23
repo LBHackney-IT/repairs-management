@@ -33,7 +33,7 @@ namespace :hackney do
       end
 
       work_order_ref = row[args[:work_order_ref_col]]
-      text = row[args[:text_column]]
+      text = row[args[:text_column]] || ""
       numbers = WorkOrderReferenceFinder.new(work_order_ref).find(text)
       row[args[:text_column]] = numbers.join(' ')
       output << row
