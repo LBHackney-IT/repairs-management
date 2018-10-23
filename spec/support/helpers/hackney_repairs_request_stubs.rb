@@ -469,6 +469,7 @@ module Helpers
             "address" => "Homerton High Street 11 Banister House",
             "postcode" => "E9 6BH",
             "propertyReference" => "00014664",
+            "levelCode" => "7",
             "description" => "Dwelling",
             "majorReference" => "00074486"
           },
@@ -476,6 +477,7 @@ module Helpers
             "address" => "Homerton High Street 12 Banister House",
             "postcode" => "E9 6BH",
             "propertyReference" => "00014665",
+            "levelCode" => "7",
             "description" => "Dwelling",
             "majorReference" => "00074486"
           },
@@ -483,6 +485,7 @@ module Helpers
             "address" => "Homerton High Street 13 Banister House",
             "postcode" => "E9 6BH",
             "propertyReference" => "00014666",
+            "levelCode" => "7",
             "description": "Dwelling",
             "majorReference": "00074486"
           }
@@ -499,7 +502,7 @@ module Helpers
     def stub_hackney_property_by_postcode(reference: 'E96BH', status: 200,
                                           body: property_by_postcode_response_body)
 
-      stub_request(:get, "https://hackneyrepairs/v1/properties?postcode=#{reference}&max_level=0")
+      stub_request(:get, "https://hackneyrepairs/v1/properties?postcode=#{reference}&#{MAX_LEVEL_ESTATE}")
         .to_return(status: status, body: body.to_json)
     end
   end
