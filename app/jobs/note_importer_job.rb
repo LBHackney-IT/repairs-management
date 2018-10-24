@@ -22,7 +22,9 @@ class NoteImporterJob < ApplicationJob
       numbers = numbers.select { |n| n <= last_work_order }
 
       Rails.logger.info("Importing Note: #{note_id} from #{s3_object_name}")
-      importer.import_note(note_id, logged_at, work_order_ref, numbers)
+      importer.import_note(note_id: note_id, logged_at: logged_at,
+                           work_order_reference: work_order_ref,
+                           target_numbers: numbers)
     end
   end
 end
