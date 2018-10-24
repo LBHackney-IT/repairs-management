@@ -4,6 +4,16 @@ describe Graph::WorkOrder, 'related', :db_connection do
   let!(:work_order_a) { Graph::WorkOrder.create(reference: 'a') }
   let!(:work_order_b) { Graph::WorkOrder.create(reference: 'b') }
   let!(:work_order_c) { Graph::WorkOrder.create(reference: 'c') }
+  let!(:work_order_d) { Graph::WorkOrder.create(reference: 'd') }
+  let!(:work_order_e) { Graph::WorkOrder.create(reference: 'e') }
+  let!(:work_order_f) { Graph::WorkOrder.create(reference: 'f') }
+  let!(:work_order_g) { Graph::WorkOrder.create(reference: 'g') }
+  let!(:work_order_h) { Graph::WorkOrder.create(reference: 'h') }
+  let!(:work_order_i) { Graph::WorkOrder.create(reference: 'i') }
+  let!(:work_order_j) { Graph::WorkOrder.create(reference: 'j') }
+  let!(:work_order_k) { Graph::WorkOrder.create(reference: 'k') }
+  let!(:work_order_l) { Graph::WorkOrder.create(reference: 'l') }
+  let!(:work_order_m) { Graph::WorkOrder.create(reference: 'm') }
 
   it 'finds no related orders when there are no citations' do
     expect(work_order_a.related).to eq []
@@ -12,26 +22,84 @@ describe Graph::WorkOrder, 'related', :db_connection do
   end
 
   it 'finds related work orders in both directions' do
-    Graph::Citation.create(from_node: work_order_b, to_node: work_order_a, note_id: 1)
+    Graph::Citation.cite_by_work_order!(from: work_order_b, to: work_order_a, source: 'test')
 
     expect(work_order_a.related).to contain_exactly(work_order_b)
     expect(work_order_b.related).to contain_exactly(work_order_a)
-    expect(work_order_c.related).to eq []
   end
 
   it 'finds transitively related work orders' do
-    Graph::Citation.create(from_node: work_order_b, to_node: work_order_a, note_id: 1)
-    Graph::Citation.create(from_node: work_order_c, to_node: work_order_b, note_id: 2)
+    Graph::Citation.cite_by_note!(from: work_order_b, to: work_order_a, note_id: 1, source: 'test')
+    Graph::Citation.cite_by_note!(from: work_order_c, to: work_order_b, note_id: 2, source: 'test')
 
     expect(work_order_a.related).to contain_exactly(work_order_b, work_order_c)
     expect(work_order_b.related).to contain_exactly(work_order_a, work_order_c)
     expect(work_order_c.related).to contain_exactly(work_order_a, work_order_b)
   end
 
-  it 'removes duplicates' do
-    Graph::Citation.create(from_node: work_order_b, to_node: work_order_a, note_id: 1)
-    Graph::Citation.create(from_node: work_order_b, to_node: work_order_a, note_id: 2)
+  context 'complex data sets' do
+    it 'works on long complex chains' do
+      data = [
+        [work_order_a, work_order_b],
+        [work_order_b, work_order_c],
+        [work_order_c, work_order_d],
+        [work_order_c, work_order_a],
+        [work_order_c, work_order_d],
+        [work_order_c, work_order_e],
+        [work_order_e, work_order_f],
+        [work_order_e, work_order_a],
+        [work_order_e, work_order_b],
+        [work_order_e, work_order_c],
+        [work_order_f, work_order_g],
+        [work_order_g, work_order_h],
+        [work_order_h, work_order_i],
+        [work_order_i, work_order_j],
+        [work_order_i, work_order_g]
+      ]
 
-    expect(work_order_a.related).to eq [work_order_b]
+      data.each_with_index do |(from, to)|
+        Graph::Citation.cite_by_work_order!(from: from, to: to, source: 'test')
+      end
+
+      work_orders = data.flatten.uniq
+      all_refs = work_orders.map(&:reference)
+
+      work_orders.each do |wo|
+        expected = all_refs - [wo.reference]
+        related = wo.related.map(&:reference)
+        expect(related).to contain_exactly(*expected)
+      end
+    end
+
+    it 'work on a fully connected graph' do
+      data = [
+        work_order_a,
+        work_order_b,
+        work_order_c,
+        work_order_d,
+        work_order_e,
+        work_order_f,
+        work_order_g,
+        work_order_h,
+        work_order_i,
+        work_order_j,
+        work_order_k,
+        work_order_l,
+        work_order_m
+      ]
+
+      data.each do |wo_1|
+        data.select{|x| x.reference > wo_1.reference}.each do |wo_2|
+          Graph::Citation.cite_by_work_order!(from: wo_1, to: wo_2, source: 'test')
+        end
+      end
+
+      all_refs = data.map(&:reference)
+      data.each do |work_order|
+        expected = all_refs - [work_order.reference]
+        related = work_order.related.map(&:reference)
+        expect(related).to contain_exactly(*expected)
+      end
+    end
   end
 end

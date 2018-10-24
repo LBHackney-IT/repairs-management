@@ -19,9 +19,8 @@ class GraphModelImporter
       target_numbers.each do |number|
         linked = Graph::WorkOrder.find_by(reference: number)
         if linked
-          Graph::Citation.create!(from_node: work_order, to_node: linked,
-                                  work_order_reference: work_order_ref,
-                                  source: @source)
+          Graph::Citation.cite_by_work_order!(from: work_order, to: linked,
+                                              source: @source)
         end
       end
 
@@ -60,8 +59,8 @@ class GraphModelImporter
                find_or_create_graph_work_order(target_number)
              end
 
-    Graph::Citation.create!(from_node: graph_work_order, to_node: target,
-                            note_id: note_id, source: @source)
+    Graph::Citation.cite_by_note!(from: graph_work_order, to: target,
+                                  note_id: note_id, source: @source)
 
   rescue HackneyAPI::RepairsClient::RecordNotFoundError, Neo4j::ActiveNode::Labels::RecordNotFound
     nil # this is fine, target_numbers are not guaranteed to be work orders
