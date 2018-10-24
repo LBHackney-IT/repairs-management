@@ -3,26 +3,8 @@
 </div>
 
 <script>
-  function loadPropertyRepairsHistory(response) {
-    var repairsHistoryTab = document.getElementById('property-repair-history-tab');
-    repairsHistoryTab.innerHTML = response;
-  };
-
-  function handlePropertyRepairsHistoryApiError() {
-    document.getElementById('property-repair-history-tab').innerHTML = 'There was a problem with an API while fetching data.'
-  };
-
-  var xhttpPropertyRepairsHistory = new XMLHttpRequest();
-  xhttpPropertyRepairsHistory.open('GET', "/api/properties/<%= property_reference %>/repairs_history", true);
-  xhttpPropertyRepairsHistory.onreadystatechange = function() {
-    if (xhttpPropertyRepairsHistory.readyState == 4) {
-      if (xhttpPropertyRepairsHistory.status == 200) {
-        loadPropertyRepairsHistory(xhttpPropertyRepairsHistory.response);
-      } else {
-        handlePropertyRepairsHistoryApiError();
-      }
-    }
-  }
-  xhttpPropertyRepairsHistory.onerror = handlePropertyRepairsHistoryApiError;
-  xhttpPropertyRepairsHistory.send();
+  document.addEventListener("turbolinks:load", function() {
+    var endpoint = "/api/properties/<%= property_reference %>/repairs_history"
+    handleAjaxResponse(endpoint, 'property-repair-history-tab');
+  })
 </script>
