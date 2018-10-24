@@ -12,27 +12,9 @@
 
 <script>
   if (!document.getElementById('possibly-related-estate')) {
-    function loadPossiblyRelatedWorkOrders(response) {
-      var possiblyRelatedSection = document.getElementById('possibly-related-work-orders');
-      possiblyRelatedSection.innerHTML = response;
-    };
-
-    function handlePossiblyRelatedWorkOrdersApiError() {
-      document.getElementById('possibly-related-work-orders').innerHTML = 'There was a problem with an API while fetching data.'
-    };
-
-    var xhttpRelatedWorkOrders = new XMLHttpRequest();
-    xhttpRelatedWorkOrders.open('GET', "/api/properties/<%= property.reference %>/possibly_related_work_orders", true);
-    xhttpRelatedWorkOrders.onreadystatechange = function() {
-      if (xhttpRelatedWorkOrders.readyState == 4) {
-        if (xhttpRelatedWorkOrders.status == 200) {
-          loadPossiblyRelatedWorkOrders(xhttpRelatedWorkOrders.response);
-        } else {
-          handlePossiblyRelatedWorkOrdersApiError();
-        }
-      }
-    }
-    xhttpRelatedWorkOrders.onerror = handlePossiblyRelatedWorkOrdersApiError;
-    xhttpRelatedWorkOrders.send();
+    document.addEventListener("turbolinks:load", function() {
+      var endpoint = "/api/properties/<%= property.reference %>/possibly_related_work_orders"
+      handleAjaxResponse(endpoint, 'possibly-related-work-orders');
+    })
   }
 </script>

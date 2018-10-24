@@ -3,27 +3,9 @@
 </div>
 
 <script>
-  function loadWorkOrderRepairsHistory(response) {
-    var repairsHistoryTab = document.getElementById('work-order-repair-history-tab');
-    repairsHistoryTab.innerHTML = response;
-  };
-
-  function handleWorkOrderRepairsHistoryApiError() {
-    document.getElementById('work-order-repair-history-tab').innerHTML = 'There was a problem with an API while fetching data.'
-  };
-
-  var xhttpWorkOrderRepairsHistory = new XMLHttpRequest();
-  xhttpWorkOrderRepairsHistory.open('GET', "/api/work_orders/<%= work_order_reference %>/repairs_history", true);
-  xhttpWorkOrderRepairsHistory.onreadystatechange = function() {
-    if (xhttpWorkOrderRepairsHistory.readyState == 4) {
-      if (xhttpWorkOrderRepairsHistory.status == 200) {
-        loadWorkOrderRepairsHistory(xhttpWorkOrderRepairsHistory.response);
-      } else {
-        handleWorkOrderRepairsHistoryApiError();
-      }
-    }
-  }
-  xhttpWorkOrderRepairsHistory.onerror = handleWorkOrderRepairsHistoryApiError;
-  xhttpWorkOrderRepairsHistory.send();
+  document.addEventListener("turbolinks:load", function() {
+    var endpoint = "/api/work_orders/<%= work_order_reference %>/repairs_history"
+    handleAjaxResponse(endpoint, 'work-order-repair-history-tab');
+  })
 </script>
 
