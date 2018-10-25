@@ -4,9 +4,9 @@
 class WorkOrderFeedJob < ApplicationJob
   queue_as :feed
 
-  ENQUEUE_LIMIT = 50
+  EXECUTION_LIMIT = 50
 
-  def perform(enqueues, max_enqueues)
+  def perform(execution, max_executions)
     work_orders = Hackney::WorkOrder.feed(Graph::WorkOrder.last_imported)
 
     importer = GraphModelImporter.new(self.class.source_name)
@@ -19,8 +19,8 @@ class WorkOrderFeedJob < ApplicationJob
                                  target_numbers: numbers)
     end
 
-    if enqueues < max_enqueues && work_orders.size >= ENQUEUE_LIMIT
-      perform(enqueues + 1, max_enqueues)
+    if execution < max_executions && work_orders.size >= EXECUTION_LIMIT
+      perform(execution + 1, max_executions)
     end
   end
 
