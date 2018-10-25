@@ -147,7 +147,8 @@ module HackneyAPI
           connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
         end
       rescue => e
-        raise ApiError, "#{e} #{e.message}, caused by #{e.cause}"
+        Rails.logger.error(e)
+        raise ApiError, [endpoint, params, e.message].join(', ')
       end
 
       case response.status
