@@ -1,6 +1,8 @@
 module Helpers
   module HackneyRepairsRequestStubs
-    # GET /v1/work_orders/:reference
+
+    API_VERSION = "v1"
+    # GET /#{API_VERSION}/work_orders/:reference
 
     def work_order_response_payload(overrides = {})
       base = {
@@ -32,11 +34,11 @@ module Helpers
 
       Graph::WorkOrder.find_or_create(reference: reference)
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 
-    # GET /v1/repairs/:reference
+    # GET /#{API_VERSION}/repairs/:reference
 
     def repair_request_response_payload(overrides = {})
       {
@@ -69,11 +71,11 @@ module Helpers
     def stub_hackney_repairs_repair_requests(reference: '03209397', status: 200,
                                               body: repair_request_response_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/repairs/#{reference}")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/repairs/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 
-    # GET /v1/properties/:reference
+    # GET /#{API_VERSION}/properties/:reference
 
     def property_response_payload
       {
@@ -87,11 +89,11 @@ module Helpers
     def stub_hackney_repairs_properties(reference: '00014665', status: 200,
                                         body: property_response_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/#{reference}")
         .to_return(status: status, body: body.to_json)
     end
 
-    # GET v1/repairs/:reference/block/work_orders?trade=:trade
+    # GET #{API_VERSION}/repairs/:reference/block/work_orders?trade=:trade
 
     def repairs_work_order_block_by_trade_response(trade, reference)
       [
@@ -117,7 +119,7 @@ module Helpers
 
     def stub_hackney_repairs_work_orders_by_reference(status: 200, references: [], body: [])
       params = references.map{ |ref| "reference=" + ref}.join('&')
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/by_references?#{params}")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders/by_references?#{params}")
         .to_return(status: status, body: body.to_json)
     end
 
@@ -130,11 +132,11 @@ module Helpers
           body: repairs_work_order_block_by_trade_response(trade, reference)
           )
 
-      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
         .to_return(status: status, body: body.to_json)
     end
 
-    # GET v1/workorders/:reference/notes
+    # GET #{API_VERSION}/workorders/:reference/notes
 
     def work_order_notes_payload
       [
@@ -158,11 +160,11 @@ module Helpers
     def stub_hackney_repairs_work_order_notes(reference: '01551932', status: 200,
                                               body: work_order_notes_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/notes")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders/#{reference}/notes")
         .to_return(status: status, body: body.to_json)
     end
 
-    # GET /v1/work_orders/:workOrderReference/appointments
+    # GET /#{API_VERSION}/work_orders/:reference/appointments
 
     def work_order_appointments_response_payload
       [
@@ -245,9 +247,11 @@ module Helpers
     def stub_hackney_repairs_work_order_appointments(reference: '01551932', status: 200,
                                                       body: work_order_appointments_response_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders/#{reference}/appointments")
         .to_return(status: status, body: body.to_json)
     end
+
+    # GET /#{API_VERSION}/work_orders/:reference/appointments/latest
 
     def stub_hackney_repairs_work_order_latest_appointments(opts = {})
       reference = opts.fetch(:reference, '01551932')
@@ -265,9 +269,11 @@ module Helpers
         "endDate": "2018-05-31T16:15:00"
       })
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}/appointments/latest")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders/#{reference}/appointments/latest")
         .to_return(status: status, body: body.to_json)
     end
+
+    # GET /#{API_VERSION}/work_orders/:reference?include=mobilereports
 
     def work_order_reports_response_payload
       {
@@ -299,11 +305,11 @@ module Helpers
       status = opts.fetch(:status, 200)
       body = opts.fetch(:body, work_order_reports_response_payload)
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders/#{reference}?include=mobilereports")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders/#{reference}?include=mobilereports")
         .to_return(status: status, body: body.to_json)
     end
 
-    # work_orders_by_property_reference
+    # GET /#{API_VERSION}/work_orders?propertyReference=:reference&since=#{date_from}&until=#{date_to}
 
     def work_orders_by_property_reference_payload
       [{
@@ -399,9 +405,11 @@ module Helpers
           body: work_orders_by_property_reference_payload
           )
 
-      stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=#{reference}&since=#{date_from}&until=#{date_to}")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders?propertyReference=#{reference}&since=#{date_from}&until=#{date_to}")
         .to_return(status: status, body: body.to_json)
     end
+
+    # GET /#{API_VERSION}/properties/:reference/hierarchy
 
     def property_hierarchy_response_body
       [
@@ -448,11 +456,11 @@ module Helpers
     def stub_hackney_property_hierarchy(reference: '00014665', status: 200,
                                         body: property_hierarchy_response_body)
 
-      stub_request(:get, "https://hackneyrepairs/v1/properties/#{reference}/hierarchy")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/#{reference}/hierarchy")
         .to_return(status: status, body: body.to_json)
     end
 
-    # property_list_by_postcode_search
+    # GET /#{API_VERSION}/properties?postcode=:reference
 
     def property_by_postcode_response_body(overrides = {})
       {
@@ -502,7 +510,7 @@ module Helpers
     def stub_hackney_property_by_postcode(reference: 'E96BH', status: 200,
                                           body: property_by_postcode_response_body)
 
-      stub_request(:get, "https://hackneyrepairs/v1/properties?postcode=#{reference}&max_level=2")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties?postcode=#{reference}&max_level=2")
         .to_return(status: status, body: body.to_json)
     end
   end
