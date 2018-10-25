@@ -14,9 +14,8 @@ Rails.application.routes.draw do
 
   root to: 'pages#home'
 
-  if Rails.env.development?
-    require 'sidekiq/web'
-    mount Sidekiq::Web => '/sidekiq'
+  if ENV['DELAYED_JOB_WEB_USER'] && ENV['DELAYED_JOB_WEB_PASSWORD']
+    match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post]
   end
 
   namespace :api do

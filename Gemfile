@@ -48,12 +48,12 @@ gem 'faraday_middleware'
 gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
 gem 'redis-activesupport'
 
-gem 'sidekiq'
-
 gem 'appsignal'
 
 gem "aws-sdk-s3"
 gem 'delayed_job_active_record'
+
+gem "delayed_job_web"
 
 group :development, :test do
   gem 'pry'
