@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :property_hierarchy, class: 'Hackney::PropertyHierarchy' do
+  factory :property, class: 'Hackney::Property' do
     sequence(:reference) { |i| "R#{i}" }
     level_code { '1' }
     description { 'description' }

@@ -1,11 +1,17 @@
 class Hackney::Property
   include ActiveModel::Model
 
-  attr_accessor :reference, :address, :postcode
+  attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode
 
   def self.find(property_reference)
     response = HackneyAPI::RepairsClient.new.get_property(property_reference)
     build(response)
+  end
+
+  def self.for_property(reference)
+    HackneyAPI::RepairsClient.new.get_property_hierarchy(reference).map do |attributes|
+      build(attributes)
+    end
   end
 
   def self.for_postcode(postcode)
@@ -15,9 +21,13 @@ class Hackney::Property
   end
 
   def self.build(attributes)
+    # TODO: remove strip from attributes['attr'].strip - API should be fixed soon
     new(
-      reference: attributes['propertyReference'].strip,
-      address: attributes['address'],
+      reference: attributes['propertyReference']&.strip,
+      level_code: attributes['levelCode'],
+      description: attributes['description']&.strip,
+      major_reference: attributes['majorReference']&.strip,
+      address: attributes['address']&.strip,
       postcode: attributes['postcode']
     )
   end
