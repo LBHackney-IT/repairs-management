@@ -1,19 +1,19 @@
 require 'rails_helper'
 
 describe Graph::WorkOrder, 'related', :db_connection do
-  let!(:work_order_a) { Graph::WorkOrder.create(reference: 'a') }
-  let!(:work_order_b) { Graph::WorkOrder.create(reference: 'b') }
-  let!(:work_order_c) { Graph::WorkOrder.create(reference: 'c') }
-  let!(:work_order_d) { Graph::WorkOrder.create(reference: 'd') }
-  let!(:work_order_e) { Graph::WorkOrder.create(reference: 'e') }
-  let!(:work_order_f) { Graph::WorkOrder.create(reference: 'f') }
-  let!(:work_order_g) { Graph::WorkOrder.create(reference: 'g') }
-  let!(:work_order_h) { Graph::WorkOrder.create(reference: 'h') }
-  let!(:work_order_i) { Graph::WorkOrder.create(reference: 'i') }
-  let!(:work_order_j) { Graph::WorkOrder.create(reference: 'j') }
-  let!(:work_order_k) { Graph::WorkOrder.create(reference: 'k') }
-  let!(:work_order_l) { Graph::WorkOrder.create(reference: 'l') }
-  let!(:work_order_m) { Graph::WorkOrder.create(reference: 'm') }
+  let!(:work_order_a) { create(:graph_work_order, reference: 'a') }
+  let!(:work_order_b) { create(:graph_work_order, reference: 'b') }
+  let!(:work_order_c) { create(:graph_work_order, reference: 'c') }
+  let!(:work_order_d) { create(:graph_work_order, reference: 'd') }
+  let!(:work_order_e) { create(:graph_work_order, reference: 'e') }
+  let!(:work_order_f) { create(:graph_work_order, reference: 'f') }
+  let!(:work_order_g) { create(:graph_work_order, reference: 'g') }
+  let!(:work_order_h) { create(:graph_work_order, reference: 'h') }
+  let!(:work_order_i) { create(:graph_work_order, reference: 'i') }
+  let!(:work_order_j) { create(:graph_work_order, reference: 'j') }
+  let!(:work_order_k) { create(:graph_work_order, reference: 'k') }
+  let!(:work_order_l) { create(:graph_work_order, reference: 'l') }
+  let!(:work_order_m) { create(:graph_work_order, reference: 'm') }
 
   it 'finds no related orders when there are no citations' do
     expect(work_order_a.related).to eq []

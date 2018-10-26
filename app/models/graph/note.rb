@@ -7,6 +7,8 @@ class Graph::Note
   property :source, type: String
   property :work_order_reference, type: String
 
+  validates :logged_at, :source, :work_order_reference, presence: true
+
   FIRST_NOTE_ID = 1
 
   def self.last_note_id

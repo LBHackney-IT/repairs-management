@@ -54,7 +54,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
   end
 
   it "asks for notes that we don't know about" do
-    Graph::Note.create(note_id: 2)
+    Graph::Note.create!(note_id: 2, logged_at: Time.current, source: 'test', work_order_reference: '01234567')
 
     expect(Hackney::Note).to receive(:feed).with(2) { [] }
 

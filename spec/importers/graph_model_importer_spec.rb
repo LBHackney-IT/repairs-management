@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe GraphModelImporter, :db_connection do
-  let!(:work_order_1) { Graph::WorkOrder.create(reference: '00000001') }
-  let!(:work_order_2) { Graph::WorkOrder.create(reference: '00000002') }
+  let!(:work_order_1) { create(:graph_work_order, reference: '00000001') }
+  let!(:work_order_2) { create(:graph_work_order, reference: '00000002') }
 
   let(:today) { DateTime.current.beginning_of_day }
 
@@ -37,12 +37,12 @@ RSpec.describe GraphModelImporter, :db_connection do
     end
 
     it 'ignores already processed notes' do
-      Graph::Note.create note_id: 23, logged_at: today
+      Graph::Note.create!(note_id: 23, logged_at: today, source: 'test', work_order_reference: '01234567')
 
-        subject.import_note(note_id: 23,
-                            logged_at: 1.day.from_now,
-                            work_order_reference: '00000002',
-                            target_numbers: ['00000003'])
+      subject.import_note(note_id: 23,
+                          logged_at: 1.day.from_now,
+                          work_order_reference: '00000002',
+                          target_numbers: ['00000003'])
 
       expect(Graph::Note.find(23).logged_at).to eq today
     end
@@ -120,12 +120,14 @@ RSpec.describe GraphModelImporter, :db_connection do
 
   describe '#import_work_order' do
     it 'skips existing work orders' do
+      original = work_order_1.property_reference
+
       subject.import_work_order(work_order_ref: '00000001',
-                                property_ref: '00000123',
+                                property_ref: original.succ,
                                 created: :tra_la,
                                 target_numbers: :la)
 
-      expect(Graph::WorkOrder.find('00000001').property_reference).to be_nil
+      expect(Graph::WorkOrder.find('00000001').property_reference).to eq original
     end
 
     it 'creates new work orders' do

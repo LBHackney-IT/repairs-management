@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Graph::Citation, 'cite_by_note!', :db_connection do
-  let!(:work_order_a) { Graph::WorkOrder.create(reference: 'a') }
-  let!(:work_order_b) { Graph::WorkOrder.create(reference: 'b') }
-  let!(:work_order_c) { Graph::WorkOrder.create(reference: 'c') }
+  let!(:work_order_a) { create(:graph_work_order, reference: 'a') }
+  let!(:work_order_b) { create(:graph_work_order, reference: 'b') }
+  let!(:work_order_c) { create(:graph_work_order, reference: 'c') }
 
   it 'creates a citation between two work orders' do
     Graph::Citation.cite_by_note!(from: work_order_a, to: work_order_b,
@@ -33,9 +33,9 @@ describe Graph::Citation, 'cite_by_note!', :db_connection do
 end
 
 describe Graph::Citation, 'cite_by_work_order!', :db_connection do
-  let!(:work_order_a) { Graph::WorkOrder.create(reference: 'a') }
-  let!(:work_order_b) { Graph::WorkOrder.create(reference: 'b') }
-  let!(:work_order_c) { Graph::WorkOrder.create(reference: 'c') }
+  let!(:work_order_a) { create(:graph_work_order, reference: 'a') }
+  let!(:work_order_b) { create(:graph_work_order, reference: 'b') }
+  let!(:work_order_c) { create(:graph_work_order, reference: 'c') }
 
   it 'creates a citation between two work orders' do
     Graph::Citation.cite_by_work_order!(from: work_order_a, to: work_order_b,

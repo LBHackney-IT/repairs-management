@@ -7,7 +7,7 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
   let(:ten_work_orders) { (1..10).map { build :work_order } }
 
   it 'imports a work order' do
-    existing = Graph::WorkOrder.create! reference: '00000001'
+    existing = create(:graph_work_order,  reference: '00000001')
     expect(Hackney::WorkOrder).to receive(:feed) do
       [
         build(:work_order, reference: '00000002',
