@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe HackneyAPI::RepairsClient do
   let(:base_url) { 'https://example.com' }
+  let(:api_version) { 'v1' }
   let(:api_client) { described_class.new(base_url: base_url) }
   let(:reference) { 1 }
   let(:empty_response_body) { {} }
@@ -11,7 +12,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_work_orders }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -19,7 +20,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -34,10 +35,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/work_orders").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/work_orders, {}, 500, #{response_body}")
       end
     end
   end
@@ -46,7 +47,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_work_order(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -54,7 +55,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -69,10 +70,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/work_orders/#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -80,7 +81,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_work_orders_by_references' do
     it 'fetches multiple work orders' do
       json = '[{ "some": "stuff" }]'
-      stub_request(:get, "#{base_url}/v1/work_orders/by_references?reference=a&reference=b").to_return(status: 200, body: json)
+      stub_request(:get, "#{base_url}/#{api_version}/work_orders/by_references?reference=a&reference=b").to_return(status: 200, body: json)
 
       expect(api_client.get_work_orders_by_references(['a', 'b'])).to eq([{"some" => "stuff"}])
     end
@@ -93,11 +94,11 @@ describe HackneyAPI::RepairsClient do
         }
       JSON
 
-      stub_request(:get, "#{base_url}/v1/work_orders/by_references?reference=a").to_return(status: 404, body: json)
+      stub_request(:get, "#{base_url}/#{api_version}/work_orders/by_references?reference=a").to_return(status: 404, body: json)
 
       expect { api_client.get_work_orders_by_references(['a']) }.to(
         raise_error(described_class::RecordNotFoundError).
-          with_message('v1/work_orders/by_references, {:reference=>["a"]}')
+          with_message("#{api_version}/work_orders/by_references, {:reference=>[\"a\"]}")
       )
     end
   end
@@ -106,7 +107,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_repair_request(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/repairs/#{reference}").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/repairs/#{reference}").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -114,7 +115,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/repairs/#{reference}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/repairs/#{reference}").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -129,10 +130,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/repairs/#{reference}").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/repairs/#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/repairs/#{reference}, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/repairs/#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -141,7 +142,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_property(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -149,7 +150,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -164,10 +165,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties/#{reference}, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties/#{reference}, {}, 500, #{response_body}")
       end
     end
   end
@@ -176,7 +177,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_work_order_appointments(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -184,7 +185,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -199,10 +200,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/appointments, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/work_orders/#{reference}/appointments, {}, 500, #{response_body}")
       end
     end
   end
@@ -211,7 +212,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_work_order_appointments_latest(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments/latest").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments/latest").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -219,7 +220,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments/latest").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments/latest").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -234,10 +235,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/appointments/latest").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments/latest").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/appointments/latest, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/work_orders/#{reference}/appointments/latest, {}, 500, #{response_body}")
       end
     end
   end
@@ -246,7 +247,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_work_order_notes(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/notes").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/notes").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -254,7 +255,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/notes").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/notes").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -269,10 +270,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/work_orders/#{reference}/notes").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/notes").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/work_orders/#{reference}/notes, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/work_orders/#{reference}/notes, {}, 500, #{response_body}")
       end
     end
   end
@@ -281,7 +282,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_property_hierarchy(reference) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/hierarchy").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/hierarchy").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -289,7 +290,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/hierarchy").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/hierarchy").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -304,10 +305,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/hierarchy").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/hierarchy").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties/#{reference}/hierarchy, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties/#{reference}/hierarchy, {}, 500, #{response_body}")
       end
     end
   end
@@ -316,7 +317,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_property_by_postcode(postcode) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{postcode}&max_level=2").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&max_level=2").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -324,7 +325,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{postcode}&max_level=2").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&max_level=2").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -339,10 +340,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/v1/properties?postcode=#{postcode}&max_level=2").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&max_level=2").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("v1/properties?postcode=#{postcode}&max_level=2, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties?postcode=#{postcode}&max_level=2, {}, 500, #{response_body}")
       end
     end
   end
@@ -357,7 +358,7 @@ describe HackneyAPI::RepairsClient do
     context 'successful empty response' do
       before do
         response = []
-        stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
+        stub_request(:get, "#{base_url}/#{api_version}/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
         .to_return(status: 200, body: response)
       end
 
@@ -369,7 +370,7 @@ describe HackneyAPI::RepairsClient do
     context 'succesful response with information' do
       before do
         response = '[{"sorCode": "HIST0001", "trade": "Cash Items"}]'
-        stub_request(:get, "#{base_url}/v1/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
+        stub_request(:get, "#{base_url}/#{api_version}/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
         .to_return(status: 200, body: response)
       end
 
@@ -389,7 +390,7 @@ describe HackneyAPI::RepairsClient do
 
     context 'successful response' do
       before do
-        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
+        stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
           .to_return(body: empty_response_body.to_json)
         end
 
@@ -399,7 +400,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}").to_return(status: 404) }
 
       it 'returns an empty response' do
         expect(subject).to eq([])
@@ -415,13 +416,13 @@ describe HackneyAPI::RepairsClient do
       end
 
       before do
-        stub_request(:get, "#{base_url}/v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
+        stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")
           .to_return(status: 500, body: response_body.to_json)
       end
 
       it 'raises ApiError error' do
         expect { subject }.to raise_error(described_class::ApiError).with_message(
-          "v1/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}, {}, 500, #{response_body}"
+          "#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}, {}, 500, #{response_body}"
         )
       end
     end
