@@ -8,6 +8,8 @@ class Graph::WorkOrder
   property :created, type: DateTime
   property :source, type: String
 
+  validates :property_reference, :created, :source, presence: true
+
   has_many :both, :cited_work_orders, rel_class: 'Graph::Citation'
 
   FIRST_REFERENCE = "00000000".freeze
