@@ -9,6 +9,10 @@ class Graph::Note
 
   validates :logged_at, :source, :work_order_reference, presence: true
 
+  before_create do
+    self.note_id = self.note_id.to_i
+  end
+
   FIRST_NOTE_ID = 1
 
   def self.last_note_id
