@@ -3,26 +3,8 @@
 </div>
 
 <script>
-  function loadNotesAndAppointments(response) {
-    var notesTab = document.getElementById('notes-tab');
-    notesTab.innerHTML = response;
-  };
-
-  function handleNotesAndAppointmentsApiError() {
-    document.getElementById('notes-tab').innerHTML = 'There was a problem with an API while fetching data.'
-  };
-
-  var xhttpNotesAndAppointments = new XMLHttpRequest();
-  xhttpNotesAndAppointments.open('GET', "/api/work_orders/<%= work_order_reference %>/notes_and_appointments", true);
-  xhttpNotesAndAppointments.onreadystatechange = function() {
-    if (xhttpNotesAndAppointments.readyState == 4) {
-      if (xhttpNotesAndAppointments.status == 200) {
-        loadNotesAndAppointments(xhttpNotesAndAppointments.response);
-      } else {
-        handleNotesAndAppointmentsApiError();
-      }
-    }
-  }
-  xhttpNotesAndAppointments.onerror = handleNotesAndAppointmentsApiError;
-  xhttpNotesAndAppointments.send();
+  document.addEventListener("turbolinks:load", function() {
+    var endpoint = "/api/work_orders/<%= work_order_reference %>/notes_and_appointments"
+    handleAjaxResponse(endpoint, 'notes-tab');
+  })
 </script>

@@ -14,4 +14,8 @@
 //= require activestorage
 //= require turbolinks
 //= require govuk-frontend/all
+//= require ajax
+//= require repair-history-filter
+//= require building-type-filter
+//= require disable-link-after-click
 //= require_tree .
