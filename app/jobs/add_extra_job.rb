@@ -3,26 +3,19 @@ class AddExtraJob < ApplicationJob
 
   def perform(times)
     Graph::Citation # Need this here because rails doesn't seem to autoload it for some reason
-    cypher = "MATCH ()-[r:`GRAPH::CITATION`]-() WHERE NOT EXISTS(r.extra) RETURN r LIMIT 1"
+    cypher = "MATCH ()-[r:`GRAPH::CITATION`]->() WHERE NOT EXISTS(r.extra) RETURN r LIMIT #{times}"
 
-    times.times do |i|
-      res = Neo4j::ActiveBase.current_session.query(cypher)
+    res = Neo4j::ActiveBase.current_session.query(cypher)
 
-      citation = res.structs.first&.r
+    res.structs.map(&:r).each_with_index do |citation, i|
+      from = citation.from_node
+      to = citation.to_node
 
-      if citation
-        from = citation.from_node
-        to = citation.to_node
+      extra = from.related.include?(to)
+      citation.extra = extra
+      citation.save!
 
-        extra = from.related.include?(to)
-        citation.extra = extra
-        citation.save!
-
-        Rails.logger.info "#{i}: #{from.reference}-[#{extra}]-#{to.reference}"
-      else
-        Rails.logger.info "#{i}: No citations without extra"
-        break
-      end
+      Rails.logger.info "#{i}: #{from.reference}-[#{extra}]-#{to.reference}"
     end
   end
 end
