@@ -12,10 +12,4 @@ namespace :hackney do
     wait = args[:wait_seconds]&.to_i || 0
     NotesFeedJob.set(wait: wait.seconds).perform_later(1, args[:enqueues].to_i)
   end
-
-  desc "add 'extra' to old citations"
-  task :add_extra, [:times] => [:environment] do |_t, args|
-    times = args[:times].to_i
-    AddExtraJob.perform_later(times)
-  end
 end
