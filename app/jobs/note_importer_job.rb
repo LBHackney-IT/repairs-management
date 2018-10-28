@@ -7,7 +7,7 @@ class NoteImporterJob < ApplicationJob
 
     # We know for the import that all work orders are <= than this because we
     # import work orders first
-    last_work_order = Graph::WorkOrder.where(reference: /^\d+$/).last&.reference || "00000000"
+    last_work_order = Graph::WorkOrder.last_imported.last_id
 
     CsvReader.new('note').read_csv(data_stream) do |row|
       work_order_ref = row['WorkOrderReference']
@@ -22,9 +22,11 @@ class NoteImporterJob < ApplicationJob
       numbers = numbers.select { |n| n <= last_work_order }
 
       Rails.logger.info("Importing Note: #{note_id} from #{s3_object_name}")
-      importer.import_note(note_id: note_id, logged_at: logged_at,
-                           work_order_reference: work_order_ref,
-                           target_numbers: numbers)
+      Neo4j::ActiveBase.run_transaction do
+        importer.import_note(note_id: note_id, logged_at: logged_at,
+                             work_order_reference: work_order_ref,
+                             target_numbers: numbers)
+      end
     end
   end
 end

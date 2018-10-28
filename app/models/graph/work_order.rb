@@ -12,8 +12,6 @@ class Graph::WorkOrder
 
   has_many :both, :cited_work_orders, rel_class: 'Graph::Citation'
 
-  FIRST_REFERENCE = "00000000".freeze
-
   def related
     query_as(:s).match("(s)-[*..#{MAX_RELATIONS} {extra: false}]-(p)").pluck(:p).to_a
   end
@@ -24,10 +22,5 @@ class Graph::WorkOrder
       citations << r
     end
     citations
-  end
-
-  def self.last_imported
-    ordered_sources = [GraphModelImporter::WORK_ORDERS_IMPORT, WorkOrderFeedJob.source_name]
-    where(source: ordered_sources, reference: /^\d{8}$/).last&.reference || FIRST_REFERENCE
   end
 end

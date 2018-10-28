@@ -8,34 +8,30 @@ class GraphModelImporter
   end
 
   def import_work_order(work_order_ref:, property_ref:, created:, target_numbers:)
-    within_transaction do
-      return if Graph::WorkOrder.find_by(reference: work_order_ref).present?
+    return if Graph::WorkOrder.find_by(reference: work_order_ref).present?
 
-      work_order = Graph::WorkOrder.create!(reference: work_order_ref,
-                                            property_reference: property_ref,
-                                            created: created,
+    work_order = Graph::WorkOrder.create!(reference: work_order_ref,
+                                          property_reference: property_ref,
+                                          created: created,
+                                          source: @source)
+
+    target_numbers.each do |number|
+      linked = Graph::WorkOrder.find_by(reference: number)
+      if linked
+        Graph::Citation.cite_by_work_order!(from: work_order, to: linked,
                                             source: @source)
-
-      target_numbers.each do |number|
-        linked = Graph::WorkOrder.find_by(reference: number)
-        if linked
-          Graph::Citation.cite_by_work_order!(from: work_order, to: linked,
-                                              source: @source)
-        end
       end
-
-      work_order
     end
+
+    work_order
   end
 
   def import_note(note_id:, logged_at:, work_order_reference:, target_numbers:)
-    within_transaction do
-      return if Graph::Note.exists?(note_id: note_id)
+    return if Graph::Note.exists?(note_id: note_id)
 
-      work_order = create_graph_models(note_id, logged_at, work_order_reference)
-      target_numbers.each do |target_number|
-        create_citations(work_order, note_id, target_number)
-      end
+    work_order = create_graph_models(note_id, logged_at, work_order_reference)
+    target_numbers.each do |target_number|
+      create_citations(work_order, note_id, target_number)
     end
   end
 
@@ -85,11 +81,4 @@ class GraphModelImporter
                       created: candidate.created,
                       target_numbers: numbers)
   end
-
-  def within_transaction
-    Neo4j::ActiveBase.run_transaction do
-      yield
-    end
-  end
-
 end

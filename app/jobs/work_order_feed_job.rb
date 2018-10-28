@@ -5,18 +5,25 @@ class WorkOrderFeedJob < ApplicationJob
   queue_as :feed
 
   EXECUTION_LIMIT = 50
+  FIRST_REFERENCE = "00000000".freeze
 
   def perform(execution, max_executions)
-    work_orders = Hackney::WorkOrder.feed(Graph::WorkOrder.last_imported)
+    last = Graph::LastFromFeed.last_work_order.last_id || FIRST_REFERENCE
+    work_orders = Hackney::WorkOrder.feed(last)
 
     importer = GraphModelImporter.new(self.class.source_name)
 
     work_orders.each do |work_order|
       numbers = extract_references(work_order)
-      importer.import_work_order(work_order_ref: work_order.reference,
-                                 property_ref: work_order.prop_ref,
-                                 created: work_order.created,
-                                 target_numbers: numbers)
+
+      Neo4j::ActiveBase.run_transaction do
+        importer.import_work_order(work_order_ref: work_order.reference,
+                                   property_ref: work_order.prop_ref,
+                                   created: work_order.created,
+                                   target_numbers: numbers)
+
+        Graph::LastFromFeed.update_last_work_order!(work_order.reference)
+      end
     end
 
     if execution < max_executions && work_orders.size >= EXECUTION_LIMIT

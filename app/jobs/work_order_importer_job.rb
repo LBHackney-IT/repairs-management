@@ -17,10 +17,13 @@ class WorkOrderImporterJob < ApplicationJob
       numbers = WorkOrderReferenceFinder.new(work_order_ref).find(text)
 
       Rails.logger.info("Importing work order: #{work_order_ref} from #{s3_object_name}")
-      importer.import_work_order(work_order_ref: work_order_ref,
-                                 property_ref: property_ref,
-                                 created: created,
-                                 target_numbers: numbers)
+      Neo4j::ActiveBase.run_transaction do
+        importer.import_work_order(work_order_ref: work_order_ref,
+                                   property_ref: property_ref,
+                                   created: created,
+                                   target_numbers: numbers)
+        Graph::LastFromFeed.update_last_work_order!(work_order_ref)
+      end
     end
   end
 end

@@ -12,6 +12,8 @@
 
 ---
 :constraints:
+- CONSTRAINT ON ( `graph::lastfromfeed`:`Graph::LastFromFeed` ) ASSERT `graph::lastfromfeed`.feed_type
+  IS UNIQUE
 - CONSTRAINT ON ( `graph::note`:`Graph::Note` ) ASSERT `graph::note`.note_id IS UNIQUE
 - CONSTRAINT ON ( `graph::workorder`:`Graph::WorkOrder` ) ASSERT `graph::workorder`.reference
   IS UNIQUE
@@ -25,3 +27,4 @@
 - '20180906163438'
 - '20180906164526'
 - '20181012101211'
+- '20181028144848'
