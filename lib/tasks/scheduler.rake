@@ -12,4 +12,11 @@ namespace :hackney do
     wait = args[:wait_seconds]&.to_i || 0
     NotesFeedJob.set(wait: wait.seconds).perform_later(1, args[:enqueues].to_i)
   end
+
+  desc "Delete notes older than X years"
+  task :delete_old_notes, [:years] => :environment do |_t, args|
+    years = args[:years].to_i
+
+    DeleteOldNotesJob.perform_later(years.years.ago)
+  end
 end
