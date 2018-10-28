@@ -2,8 +2,8 @@
   <h2 class="govuk-heading-l">
     Related repairs
   </h2>
-  <% if @work_order.related_properties.any? %>
-    <% @work_order.related_properties.each_slice(3) do |properties| %>
+  <% if work_order.related_properties.any? %>
+    <% work_order.related_properties.each_slice(3) do |properties| %>
       <div class="govuk-grid-row">
         <% properties.each do |property| %>
           <div class="govuk-grid-column-one-third hackney-work-order-related">
@@ -11,7 +11,7 @@
               <%= property.address %><%= '*' if property == @work_order.property %>
             </p>
             <ul>
-              <% @work_order.related_for_property(property).sort_by(&:created).reverse.each do |work_order| %>
+              <% work_order.related_for_property(property).sort_by(&:created).reverse.each do |work_order| %>
                 <li>
                   <%= link_to work_order.reference,
                               work_order_path(work_order.reference) %>
