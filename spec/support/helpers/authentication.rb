@@ -18,7 +18,7 @@ module Helpers
 
     def sign_in
       visit '/'
-      click_link 'Sign in with Microsoft'
+      click_link 'Sign in with Microsoft', wait: 10
     end
   end
 end
