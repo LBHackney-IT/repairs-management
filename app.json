@@ -36,6 +36,9 @@
     },
     "HEROKU_APP_NAME": {
       "required": true
+    },
+    "QUOTAGUARDSTATIC_URL": {
+      "required": true
     }
   },
   "formation": {
