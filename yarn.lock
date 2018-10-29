@@ -5,3 +5,4 @@
 govuk-frontend@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-1.0.0.tgz#c11ab721c4a7480169ca0b1ea040fc6b3366d057"
+  integrity sha512-4qCRrwGEcDC0ybjb5lls3P8tDgM8/hpTy2Mesgp1wa1/HdtlXtShj0E0H41lkXNrX7ZQOoDCc4gUEoOgZD+QfA==
