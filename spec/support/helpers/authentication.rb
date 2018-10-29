@@ -17,8 +17,7 @@ module Helpers
     end
 
     def sign_in
-      visit '/'
-      click_link 'Sign in with Microsoft'
+      visit '/auth/azureactivedirectory'
     end
   end
 end
