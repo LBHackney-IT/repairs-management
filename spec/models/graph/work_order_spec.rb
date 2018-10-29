@@ -102,4 +102,17 @@ describe Graph::WorkOrder, 'related', :db_connection do
       end
     end
   end
+
+  it 'removes duplicates' do
+    Graph::Citation.create!(from_node: work_order_a, to_node: work_order_b,
+                            extra: false, source: 'test')
+
+    Graph::Citation.create!(from_node: work_order_a, to_node: work_order_a,
+                            extra: false, source: 'test')
+
+    Graph::Citation.create!(from_node: work_order_b, to_node: work_order_b,
+                            extra: false, source: 'test')
+
+    expect(work_order_a.related).to eq [work_order_b]
+  end
 end

@@ -30,6 +30,14 @@ describe Graph::Citation, 'cite_by_note!', :db_connection do
     expect(citations.size).to eq 1
     expect(citations.first.extra).to eq true
   end
+
+  it 'ignores self citations' do
+    Graph::Citation.cite_by_note!(from: work_order_a, to: work_order_a,
+                                  note_id: 1, source: 'test')
+
+    citations = work_order_a.citations_for(work_order_a)
+    expect(citations.size).to eq 0
+  end
 end
 
 describe Graph::Citation, 'cite_by_work_order!', :db_connection do
@@ -60,4 +68,13 @@ describe Graph::Citation, 'cite_by_work_order!', :db_connection do
     expect(citations.size).to eq 1
     expect(citations.first.extra).to eq true
   end
+
+  it 'ignores self citations' do
+    Graph::Citation.cite_by_work_order!(from: work_order_a, to: work_order_a,
+                                        source: 'test')
+
+    citations = work_order_a.citations_for(work_order_a)
+    expect(citations.size).to eq 0
+  end
+
 end

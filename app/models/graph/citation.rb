@@ -10,6 +10,7 @@ class Graph::Citation
   property :extra, type: Boolean
 
   def self.cite_by_note!(from:, to:, note_id:, source:)
+    return if from == to
     Graph::Citation.create!(from_node: from, to_node: to,
                             note_id: note_id,
                             extra: from.related.include?(to),
@@ -17,6 +18,7 @@ class Graph::Citation
   end
 
   def self.cite_by_work_order!(from:, to:, source:)
+    return if from == to
     Graph::Citation.create!(from_node: from, to_node: to,
                             work_order_reference: from.reference,
                             extra: from.related.include?(to),
