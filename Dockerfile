@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.5.3
 
 # Update node.js package distribution from 4.8.2 to 10.x
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
