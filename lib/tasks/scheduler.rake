@@ -13,9 +13,10 @@ namespace :hackney do
     NotesFeedJob.set(wait: wait.seconds).perform_later(1, args[:enqueues].to_i)
   end
 
-  desc "add 'extra' to old citations"
-  task :add_extra, [:times] => [:environment] do |_t, args|
-    times = args[:times].to_i
-    AddExtraJob.perform_later(times)
+  desc "Delete notes older than X years"
+  task :delete_old_notes, [:years] => :environment do |_t, args|
+    years = args[:years].to_i
+
+    DeleteOldNotesJob.perform_later(years.years.ago)
   end
 end

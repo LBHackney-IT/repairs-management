@@ -7,8 +7,8 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
   let(:ten_work_orders) { (1..10).map { build :work_order } }
 
   it 'imports a work order' do
-    existing = create(:graph_work_order,  reference: '00000001')
-    expect(Hackney::WorkOrder).to receive(:feed) do
+    existing = create(:graph_work_order, reference: '00000001', source: WorkOrderFeedJob.source_name)
+    expect(Hackney::WorkOrder).to receive(:feed).with('00000001') do
       [
         build(:work_order, reference: '00000002',
                            problem_description: '-> 00000001')
@@ -19,6 +19,7 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
 
     imported =  Graph::WorkOrder.find('00000002')
     expect(imported.related).to eq [existing]
+    expect(Graph::LastFromFeed.last_work_order.last_id).to eq '00000002'
   end
 
   it 'retries if there are 50 work orders and we have not enqueues too many times' do
@@ -28,6 +29,7 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
     WorkOrderFeedJob.new.perform(1, 2)
 
     expect(Graph::WorkOrder.count).to eq 60
+    expect(Graph::LastFromFeed.last_work_order.last_id).to eq ten_work_orders.last.reference
   end
 
   it 'does not retry if there are 50 work orders and we have enqueues the max number of times' do
@@ -37,5 +39,6 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
     WorkOrderFeedJob.new.perform(1, 1)
 
     expect(Graph::WorkOrder.count).to eq 50
+    expect(Graph::LastFromFeed.last_work_order.last_id).to eq fifty_work_orders.last.reference
   end
 end
