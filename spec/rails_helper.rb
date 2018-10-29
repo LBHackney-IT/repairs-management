@@ -33,6 +33,7 @@ Capybara.register_driver :chrome_headless_driver do |app|
 end
 
 Capybara.javascript_driver = :chrome_headless_driver
+Capybara.default_max_wait_time = 5
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
