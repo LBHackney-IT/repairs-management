@@ -13,7 +13,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     expect(Hackney::Note).to receive(:feed) { [hackney_note] }
 
     expect {
-      NotesFeedJob.new.perform(1, 1)
+      NotesFeedJob.perform_now(1, 1)
     }.to have_enqueued_job(RelatedWorkOrderJob).with(hackney_note.note_id, today, '00000002', ['00000001'])
   end
 
@@ -21,7 +21,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     hackney_note.text = 'some sensitive text'
     expect(Hackney::Note).to receive(:feed) { [hackney_note] }
 
-    NotesFeedJob.new.perform(1, 1)
+    NotesFeedJob.perform_now(1, 1)
 
     expect(RelatedWorkOrderJob).to have_been_enqueued.exactly(:once)
     expect(RelatedWorkOrderJob).to have_been_enqueued.with(hackney_note.note_id, today, '00000002', [])
@@ -32,7 +32,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     hackney_note.text = '00000001, 00000002, 00000003, 000000004, 0005'
     expect(Hackney::Note).to receive(:feed) { [hackney_note] }
 
-    NotesFeedJob.new.perform(1, 1)
+    NotesFeedJob.perform_now(1, 1)
 
     expect(RelatedWorkOrderJob).to have_been_enqueued.exactly(:once)
     expect(RelatedWorkOrderJob).to have_been_enqueued.with(hackney_note.note_id, today, '00000002', ['00000001', '00000003'])
@@ -42,7 +42,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     notes = (1..3).map { |x| build :hackney_note, text: ('related to %08d' % x) }
     expect(Hackney::Note).to receive(:feed) { notes }
 
-    NotesFeedJob.new.perform(1, 1)
+    NotesFeedJob.perform_now(1, 1)
 
     expect(RelatedWorkOrderJob).to have_been_enqueued.exactly(:thrice)
   end
@@ -50,7 +50,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
   it "asks for notes greater than 1 by default" do
     expect(Hackney::Note).to receive(:feed).with(1) { [] }
 
-    NotesFeedJob.new.perform(1, 1)
+    NotesFeedJob.perform_now(1, 1)
   end
 
   it "asks for notes that we don't know about" do
@@ -58,14 +58,14 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
 
     expect(Hackney::Note).to receive(:feed).with(2) { [] }
 
-    NotesFeedJob.new.perform(1, 1)
+    NotesFeedJob.perform_now(1, 1)
   end
 
   it 'enqueues another job if there are 50 results' do
     expect(Hackney::Note).to receive(:feed) { (0..49).map { build :hackney_note } }
 
     expect {
-      NotesFeedJob.new.perform(1, 2)
+      NotesFeedJob.perform_now(1, 2)
     }.to have_enqueued_job(NotesFeedJob).with(2, 2)
   end
 
@@ -73,7 +73,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     expect(Hackney::Note).to receive(:feed) { [hackney_note] }
 
     expect {
-      NotesFeedJob.new.perform(1, 2)
+      NotesFeedJob.perform_now(1, 2)
     }.to_not have_enqueued_job(NotesFeedJob)
   end
 
@@ -81,7 +81,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     expect(Hackney::Note).to receive(:feed) { (0..49).map { build :hackney_note } }
 
     expect {
-      NotesFeedJob.new.perform(5, 5)
+      NotesFeedJob.perform_now(5, 5)
     }.to_not have_enqueued_job(NotesFeedJob)
   end
 

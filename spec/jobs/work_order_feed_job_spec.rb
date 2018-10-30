@@ -15,7 +15,7 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
       ]
     end
 
-    WorkOrderFeedJob.new.perform(1, 1)
+    WorkOrderFeedJob.perform_now(1, 1)
 
     imported =  Graph::WorkOrder.find('00000002')
     expect(imported.related).to eq [existing]
@@ -26,7 +26,7 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
     allow(Hackney::WorkOrder).to receive(:feed).with('00000000') { fifty_work_orders }
     allow(Hackney::WorkOrder).to receive(:feed).with(fifty_work_orders.last.reference) { ten_work_orders }
 
-    WorkOrderFeedJob.new.perform(1, 2)
+    WorkOrderFeedJob.perform_now(1, 2)
 
     expect(Graph::WorkOrder.count).to eq 60
     expect(Graph::LastFromFeed.last_work_order.last_id).to eq ten_work_orders.last.reference
@@ -36,7 +36,7 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
     allow(Hackney::WorkOrder).to receive(:feed).with('00000000') { fifty_work_orders }
     allow(Hackney::WorkOrder).to receive(:feed).with(fifty_work_orders.last.reference) { ten_work_orders }
 
-    WorkOrderFeedJob.new.perform(1, 1)
+    WorkOrderFeedJob.perform_now(1, 1)
 
     expect(Graph::WorkOrder.count).to eq 50
     expect(Graph::LastFromFeed.last_work_order.last_id).to eq fifty_work_orders.last.reference
