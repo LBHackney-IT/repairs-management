@@ -21,6 +21,6 @@ namespace :hackney do
   task :delete_old_notes, [:years] => :environment do |_t, args|
     years = args[:years].to_i
 
-    DeleteOldNotesJob.perform_later(years.years.ago)
+    DeleteOldNotesJob.perform_later(years.years.ago.iso8601)
   end
 end
