@@ -49,14 +49,16 @@
   }
 }
 
-.hackney-work-order-related {
-  border-top: 1px solid $govuk-border-colour;
-  border-right: 1px solid $govuk-border-colour;
-  padding: 0;
+.hackney-work-order-related__flex {
+  display: flex;
+  flex-wrap: wrap;
+}
 
-  &:last-child {
-    border-right: none;
-  }
+.hackney-work-order-related__property {
+  border: 1px solid $govuk-border-colour;
+  width: 390px;
+  padding: 0;
+  margin: -1px 0 0 -1px;
 
   p {
     color: $govuk-text-colour;
@@ -76,6 +78,9 @@
       list-style: none;
       border-bottom: 1px solid $govuk-border-colour;
       margin-bottom: 15px;
+      &:last-child {
+        border: none;
+      }
     }
   }
 }
