@@ -3,10 +3,10 @@
     Related repairs
   </h2>
   <% if work_order.related_properties.any? %>
-    <% work_order.related_properties.each_slice(3) do |properties| %>
-      <div class="govuk-grid-row">
-        <% properties.each do |property| %>
-          <div class="govuk-grid-column-one-third hackney-work-order-related">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-full hackney-work-order-related__flex">
+        <% work_order.related_properties.sort_by(&:address).each do |property| %>
+          <div class="hackney-work-order-related__property">
             <p class="address">
               <%= property.address %><%= '*' if property == @work_order.property %>
             </p>
@@ -22,8 +22,8 @@
             </ul>
           </div>
         <% end %>
-      </div>
-    <% end %>
+     </div>
+    </div>
   <% else %>
     <p class="govuk-body-s">There are no work orders related to this work order.</p>
   <% end %>
