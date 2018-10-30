@@ -5,7 +5,11 @@
 <script>
   document.addEventListener("turbolinks:load", function() {
     var endpoint = "/api/work_orders/<%= work_order_reference %>/repairs_history"
-    handleAjaxResponse(endpoint, 'work-order-repair-history-tab');
+    var ajaxTab = document.getElementById('work-order-repair-history-tab');
+
+    if (ajaxTab) {
+      handleAjaxResponse(endpoint, ajaxTab);
+    }
   })
 </script>
 

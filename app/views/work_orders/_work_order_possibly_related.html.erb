@@ -14,7 +14,11 @@
   if (!document.getElementById('possibly-related-estate')) {
     document.addEventListener("turbolinks:load", function() {
       var endpoint = "/api/properties/<%= property.reference %>/possibly_related_work_orders"
-      handleAjaxResponse(endpoint, 'possibly-related-work-orders');
+      var ajaxTab = document.getElementById('possibly-related-work-orders');
+
+      if (ajaxTab) {
+        handleAjaxResponse(endpoint, ajaxTab);
+      }
     })
   }
 </script>
