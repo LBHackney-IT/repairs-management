@@ -16,6 +16,10 @@ module Api
       @work_order = Hackney::WorkOrder.find(reference)
     end
 
+    def related_work_orders
+      @work_order = WorkOrderFacade.new(reference)
+    end
+
     private
 
     def reference
