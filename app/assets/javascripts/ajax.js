@@ -1,24 +1,20 @@
-function loadAjaxResponse(response, ajaxTab) {
-
-  ajaxTab.innerHTML = response;
-};
-
-function handleAjaxResponseApiError(ajaxTab) {
-  document.getElementById(ajaxTab).innerHTML = 'There was a problem with an API while fetching data.'
-};
-
 function handleAjaxResponse(endpoint, ajaxTab) {
-  var xhttpAjaxResponse = new XMLHttpRequest();
-  xhttpAjaxResponse.open('GET', endpoint, true);
-  xhttpAjaxResponse.onreadystatechange = function() {
-    if (xhttpAjaxResponse.readyState == 4) {
-      if (xhttpAjaxResponse.status == 200) {
-        loadAjaxResponse(xhttpAjaxResponse.response, ajaxTab);
+  var request = new XMLHttpRequest();
+  var errorHandler = function() {
+    ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
+  };
+
+  request.open('GET', endpoint, true);
+  request.onreadystatechange = function() {
+    if (request.readyState === 4) {
+      if (request.status === 200) {
+        ajaxTab.innerHTML = request.response;
       } else {
-        handleAjaxResponseApiError(ajaxTab);
+        errorHandler();
       }
     }
-  }
-  xhttpAjaxResponse.onerror = handleAjaxResponseApiError;
-  xhttpAjaxResponse.send();
+  };
+
+  request.onerror = errorHandler;
+  request.send();
 }

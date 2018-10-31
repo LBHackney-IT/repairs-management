@@ -12,7 +12,6 @@
 //
 //= require rails-ujs
 //= require activestorage
-//= require turbolinks
 //= require govuk-frontend/all
 //= require ajax
 //= require repair-history-filter
