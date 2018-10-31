@@ -405,7 +405,10 @@ module Helpers
           body: work_orders_by_property_reference_payload
           )
 
-      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders?propertyReference=#{reference}&since=#{date_from}&until=#{date_to}")
+      reference = [reference] if reference.is_a? String
+      references = reference.map{|r| "propertyReference=#{r}" }.join('&')
+
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/work_orders?#{references}&since=#{date_from}&until=#{date_to}")
         .to_return(status: status, body: body.to_json)
     end
 

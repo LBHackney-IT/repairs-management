@@ -89,7 +89,7 @@ describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeks
 end
 
 describe Hackney::Property do
-  describe '.for_property' do
+  describe '.hierarchy' do
     let(:property) { 11111 }
     let(:hierarchy_object) do
       {
@@ -108,7 +108,7 @@ describe Hackney::Property do
       allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
     end
 
-    subject { described_class.for_property(property) }
+    subject { described_class.hierarchy(property) }
 
     it 'returns an array with instances of Hackney::Property built based on an API response' do
       expect(repairs_client_double).to receive(:get_property_hierarchy).with(property)
