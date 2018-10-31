@@ -40,7 +40,11 @@ RSpec.describe 'Work order' do
     stub_hackney_work_orders_for_property(reference: property_reference1)
     stub_hackney_work_orders_for_property(reference: property_reference2)
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
-    stub_hackney_repairs_work_orders_by_reference
+    stub_hackney_repairs_work_orders_by_reference(
+      references: ["11235813"],
+      body: [work_order_response_payload("workOrderReference" => "11235813",
+                                         "problemDescription" => "A related work order")]
+    )
 
     sign_in
   end
@@ -50,6 +54,15 @@ RSpec.describe 'Work order' do
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
+
+    GraphModelImporter.new('test').import_work_order(work_order_ref: "11235813",
+                                                     property_ref: property_reference1,
+                                                     created: Time.current,
+                                                     target_numbers: [])
+    GraphModelImporter.new('test').import_note(note_id: 1,
+                                               logged_at: Time.current,
+                                               work_order_reference: "11235813",
+                                               target_numbers: ['01551932'])
 
     fill_in 'Search by work order reference or postcode', with: '01551932'
     within('.hackney-search') do
@@ -79,6 +92,9 @@ RSpec.describe 'Work order' do
 
     click_on('Possibly related')
     expect(page).to have_content "01106923\n10 Feb 2014\n11:01am\nWork complete Plumbing PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be."
+
+    click_on('Related repairs')
+    expect(page).to have_content 'A related work order'
 
     click_on('Documents')
     expect(page).to have_link("Works order report", count: 3)
@@ -117,20 +133,6 @@ RSpec.describe 'Work order' do
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
 
-    stub_hackney_repairs_work_orders_by_reference(
-      references: ["11235813"],
-      body: [work_order_response_payload("workOrderReference" => "11235813",
-                                         "problemDescription" => "A related work order")]
-    )
-    GraphModelImporter.new('test').import_work_order(work_order_ref: "11235813",
-                                                     property_ref: property_reference1,
-                                                     created: Time.current,
-                                                     target_numbers: [])
-    GraphModelImporter.new('test').import_note(note_id: 1,
-                                               logged_at: Time.current,
-                                               work_order_reference: "11235813",
-                                               target_numbers: ['01551932'])
-
     fill_in 'Search by work order reference or postcode', with: '01551932'
     within('.hackney-search') do
       click_on 'Search'
@@ -150,10 +152,6 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
 
     expect(page).to have_content 'Notes and appointments'
-
-    within(find('h2', text: 'Related repairs').find(:xpath, '..')) do
-      expect(page).to have_content 'A related work order'
-    end
   end
 
   scenario 'Search for a work order by postcode' do
@@ -289,15 +287,6 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'The property is an estate' do
-    stub_hackney_repairs_work_orders
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
-    stub_hackney_repairs_work_order_notes
-    stub_hackney_repairs_work_order_appointments
-    stub_hackney_repairs_work_order_latest_appointments
-    stub_hackney_work_orders_for_property
-    stub_hackney_work_orders_for_property(reference: property_reference1)
     stub_hackney_work_orders_for_property(reference: property_reference2, body: work_orders_by_property_reference_payload__different_property)
     stub_hackney_property_hierarchy(body: property_hierarchy_response_body__estate)
 

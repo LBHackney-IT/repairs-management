@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         get :notes_and_appointments
         get :documents
         get :repairs_history
+        get :related_work_orders
       end
     end
   end
