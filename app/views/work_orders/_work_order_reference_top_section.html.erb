@@ -88,8 +88,13 @@
 <script>
   function loadWorkOrderHeadingSection(response) {
     var workOrdersHeadingSection = document.getElementById('work-order-heading-section');
-    document.getElementById('latest_appointment_section').remove();
-    document.getElementById('contact_section').remove();
+
+    var latestAppointmentSection = document.getElementById('latest_appointment_section');
+    latestAppointmentSection.parentNode.removeChild(latestAppointmentSection);
+
+    var contactSection = document.getElementById('contact_section');
+    contactSection.parentNode.removeChild(contactSection);
+
     workOrdersHeadingSection.innerHTML += response;
   };
 
