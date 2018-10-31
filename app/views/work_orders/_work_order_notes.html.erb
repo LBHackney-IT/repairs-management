@@ -3,7 +3,7 @@
 </div>
 
 <script>
-  document.addEventListener("turbolinks:load", function() {
+  window.addEventListener("load", function() {
     var endpoint = "/api/work_orders/<%= work_order_reference %>/notes_and_appointments"
     var ajaxTab = document.getElementById('notes-tab');
 
