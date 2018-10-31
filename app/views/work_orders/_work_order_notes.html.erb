@@ -7,8 +7,6 @@
     var endpoint = "/api/work_orders/<%= work_order_reference %>/notes_and_appointments"
     var ajaxTab = document.getElementById('notes-tab');
 
-    if (ajaxTab) {
-      handleAjaxResponse(endpoint, ajaxTab);
-    }
+    handleAjaxResponse(endpoint, ajaxTab);
   })
 </script>

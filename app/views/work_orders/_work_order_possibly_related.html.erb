@@ -11,14 +11,10 @@
 </div>
 
 <script>
-  if (!document.getElementById('possibly-related-estate')) {
-    window.addEventListener("load", function() {
-      var endpoint = "/api/properties/<%= property.reference %>/possibly_related_work_orders"
-      var ajaxTab = document.getElementById('possibly-related-work-orders');
+  window.addEventListener("load", function() {
+    var endpoint = "/api/properties/<%= property.reference %>/possibly_related_work_orders";
+    var ajaxTab = document.getElementById('possibly-related-work-orders');
 
-      if (ajaxTab) {
-        handleAjaxResponse(endpoint, ajaxTab);
-      }
-    })
-  }
+    handleAjaxResponse(endpoint, ajaxTab);
+  });
 </script>
