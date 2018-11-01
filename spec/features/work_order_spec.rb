@@ -286,15 +286,14 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "2:10pm, 29 May 2018"
   end
 
-  scenario 'The property is an estate' do
+  scenario 'The property is an estate', js: true do
     stub_hackney_work_orders_for_property(reference: property_reference2, body: work_orders_by_property_reference_payload__different_property)
     stub_hackney_property_hierarchy(body: property_hierarchy_response_body__estate)
 
     visit work_order_path('01551932')
 
-    within(find('h2', text: 'Possibly related').find(:xpath, '..')) do
-      expect(page).to have_content 'Possibly related records relating to an estate are unavailable.'
-    end
+    click_on('Possibly related')
+    expect(page).to have_content 'Possibly related records relating to an estate are unavailable.'
   end
 
   scenario 'There are no reports for a work order', js: true do
