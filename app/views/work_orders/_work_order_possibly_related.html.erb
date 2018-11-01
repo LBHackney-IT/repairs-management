@@ -1,22 +1,12 @@
 <div class="govuk-tabs__panel hackney-work-order-tabs-info" id="possibly-related-work-orders">
-  <% if property.is_estate? %>
-    <h2 class='govuk-heading-l'>
-    Possibly related
-    </h2>
-
-    <p class="govuk-body-s" id="possibly-related-estate">Possibly related records relating to an estate are unavailable.</p>
-  <% else %>
-    <p class="govuk-caption-m ajax-loading">Loading possibly related work orders data</p>
-  <% end %>
+  <p class="govuk-caption-m ajax-loading">Loading possibly related work orders data</p>
 </div>
 
 <script>
-  if (!document.getElementById('possibly-related-estate')) {
-    window.addEventListener("load", function() {
-      var endpoint = "/api/properties/<%= property.reference %>/possibly_related_work_orders";
-      var ajaxTab = document.getElementById('possibly-related-work-orders');
+  window.addEventListener("load", function() {
+    var endpoint = "/api/properties/<%= property.reference %>/possibly_related_work_orders";
+    var ajaxTab = document.getElementById('possibly-related-work-orders');
 
-      handleAjaxResponse(endpoint, ajaxTab);
-    });
-  }
+    handleAjaxResponse(endpoint, ajaxTab);
+  });
 </script>
