@@ -109,7 +109,7 @@
       if (xhttpWorkOrderHeadingSection.status == 200) {
         loadWorkOrderHeadingSection(xhttpWorkOrderHeadingSection.response);
       } else {
-        handlePossiblyRelatedWorkOrdersApiError();
+        handleWorkOrdersHeadingSectionApiError();
       }
     }
   }
