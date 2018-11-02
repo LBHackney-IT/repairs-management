@@ -68,13 +68,10 @@ RSpec.describe 'Work order' do
       click_on 'Search'
     end
 
-    expect(page).to have_content '02012341234'
-    expect(page).to have_content 's.erbas@example.com'
-    expect(page).to have_content "Appointment: Completed 8:00am to 4:15pm, 31 May 2018"
-    expect(page).to have_content 'Priority: Standard'
-    expect(page).to have_content 'Work order: In Progress'
-    expect(page).to have_content 'Data source: DRS'
-    expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
+    expect(page).to have_content "Completed\n31 May 2018, 8:00am-4:15pm"
+    expect(page).to have_content 'Priority: N'
+    expect(page).to have_content 'Status: In Progress'
+    expect(page).to have_content 'Target: 27 Jun 2018, 2:09pm'
 
     click_on('Repairs history')
     expect(page).to have_content 'Problem 1'
@@ -85,9 +82,9 @@ RSpec.describe 'Work order' do
     click_on('Notes and appointments')
     expect(page).to have_content "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath"
     expect(page).to have_content "23 August 2018, 10:12am by MOSHEA\nTenant called to confirm appointment"
-    expect(page).to have_content "30 May 2018, 8:00am to 12:00pm\nAppointment: Planned\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nPriority: standard\nCreated at: 29 May 2018, 2:10pm\nData source: DRS"
-    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nPriority: standard\nCreated at: 29 May 2018, 2:51pm\nData source: DRS"
-    expect(page).to have_content "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nPriority: standard\nCreated at: 17 October 2017, 9:27am\nData source: DRS"
+    expect(page).to have_content "30 May 2018, 8:00am-12:00pm\nAppointment: Planned\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nCreated: 29 May 2018, 2:10pm\nData source: DRS"
+    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nCreated: 29 May 2018, 2:51pm\nData source: DRS"
+    expect(page).to have_content "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nCreated: 17 October 2017, 9:27am\nData source: DRS"
 
     click_on('Possibly related')
     expect(page).to have_content "There are no possibly related plumbing work orders from 17 Apr 2018 to 5 Jun 2018."
@@ -126,7 +123,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Could not find a work order with reference 00000000'
   end
 
-  scenario 'Search for a work order by reference', :db_connection do
+  scenario 'Search for a work order by reference', :db_connection, js: true do
     stub_hackney_work_orders_for_property(reference: property_reference1, body: [
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
@@ -141,16 +138,12 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Servitor ref: 10162765'
     expect(page).to have_content 'TEST problem'
 
-    expect(page).to have_content "Homerton High Street 12 Banister House E9 6BH"
+    expect(page).to have_content "Homerton High Street 12 Banister House\nE9 6BH"
 
-    expect(page).to have_content "MR SULEYMAN ERBAS 2:10pm, 29 May 2018"
-    expect(page).to have_content 's.erbas@example.com'
-
-    expect(page).to have_content 'Work order: In Progress'
-
-    expect(page).to have_content 'Target date: 27 Jun 2018, 2:09pm'
-
-    expect(page).to have_content 'Notes and appointments'
+    expect(page).to have_content 'Status: In Progress'
+    expect(page).to have_content "Mr Suleyman Erbas"
+    expect(page).to have_content "02012341234"
+    expect(page).to have_content 'Target: 27 Jun 2018, 2:09pm'
   end
 
   scenario 'Search for a work order by postcode', js: true do
@@ -276,7 +269,7 @@ RSpec.describe 'Work order' do
     visit work_order_path('01551932')
 
     click_on('Notes and appointments')
-    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nPriority: standard\nCreated at:\nData source: DRS"
+    expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nCreated:\nData source: DRS"
   end
 
   scenario 'A repair request has info missing' do
@@ -286,7 +279,7 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
-    expect(page).to have_content "2:10pm, 29 May 2018"
+    expect(page).to have_content "29 May 2018, 2:10pm"
   end
 
   scenario 'The property is an estate', js: true do

@@ -33,10 +33,18 @@
 }
 
 .hackney-appointment__tag {
-  background: hackney-colour("housing-2");
-  color: govuk-colour("white");
+  color: white;
   padding: 4px 10px;
   font-weight: bold;
   display: inline-block;
   text-align: center;
+}
+.hackney-appointment__tag-red {
+  background-color: crimson;
+}
+.hackney-appointment__tag-grey {
+  background-color: govuk-colour('grey-2');
+}
+.hackney-appointment__tag-green {
+  background-color: #009ca6;
 }

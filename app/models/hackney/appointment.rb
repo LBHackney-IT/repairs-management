@@ -1,8 +1,8 @@
 class Hackney::Appointment
   include ActiveModel::Model
 
-  attr_accessor :begin_date, :end_date, :source_system, :priority,
-                :comment, :status, :phone_number, :reported_on, :assigned_worker
+  attr_accessor :begin_date, :end_date, :source_system, :priority, :reported_on,
+                :comment, :status, :outcome, :assigned_worker, :phone_number
 
   def self.build(attributes)
     new(
@@ -12,9 +12,10 @@ class Hackney::Appointment
       priority: attributes['priority'],
       comment: attributes['comment'],
       status: attributes['status'],
+      outcome: attributes['outcome'],
+      assigned_worker: attributes['assignedWorker'],
       phone_number: attributes['phonenumber'],
-      reported_on: attributes['creationDate']&.to_datetime,
-      assigned_worker: attributes['assignedWorker']
+      reported_on: attributes['creationDate']&.to_datetime
     )
   end
 

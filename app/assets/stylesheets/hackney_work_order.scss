@@ -1,6 +1,39 @@
 .hackney-main-section-info {
   background-color: govuk-colour('white');
   padding: 2px;
+  .status-100 { // Collated
+    color: #009ca6;
+  }
+  .status-200 { // In Progress
+    color: #009ca6;
+  }
+  .status-300 { // Work Complete
+    color: darkgray;
+  }
+  .status-350 { // Work Defective
+    color: crimson;
+  }
+  .status-400 { // Hold
+    color: crimson;
+  }
+  .status-425 { // Variation Outstanding
+    color: crimson;
+  }
+  .status-450 { // In Dispute
+    color: crimson;
+  }
+  .status-500 { // Approved for Statement
+    color: darkgray;
+  }
+  .status-600 { // Statemented
+    color: darkgray;
+  }
+  .status-700 { // Cancel Order
+    color: crimson;
+  }
+  .status-900 { // Complete
+    color: darkgray;
+  }
 }
 .hackney-main-section-info h5 {
   color: $govuk-secondary-text-colour;
@@ -10,8 +43,45 @@
   color: hackney-colour('housing-2');
   margin: 15px 10px;
 }
+.hackney-section-info-header {
+  color: govuk-colour('grey-2');
+}
+.hackney-appointment-green {
+  color: hackney-colour("housing-2");
+}
+.hackney-appointment-grey {
+  color: govuk-colour('grey-2');
+}
+.hackney-appointment-red {
+  color: crimson;
+}
 .hackney-work-order-references {
   padding-bottom: 10px
+}
+.hackney-grid-column-one-half {
+  padding: 0 10px;
+}
+.hackney-grid-column-one-third {
+  padding: 0 10px;
+}
+.hackney-text-green {
+  color: hackney-colour("housing-2");
+}
+.hackney-body-m {
+  font-size: 22px;
+  line-height: 29px;
+}
+.hackney-body-s {
+  font-size: 19px;
+  line-height: 23px;
+}
+.hackney-body-xs {
+  font-size: 16px;
+  line-height: 20px;
+}
+.hackney-grid-row {
+  margin-right: -10px;
+  margin-left: -10px;
 }
 .hackney-work-order-references > span {
   margin-right: 10px;
@@ -20,11 +90,11 @@
   color: $govuk-secondary-text-colour;
 
   th {
-    width: 100px;
+    width: 50px;
   }
 }
-.hackney-work-order-target-date {
-  color: $govuk-secondary-text-colour;
+.hackney-work-order-priority {
+  color: crimson;
 }
 .hackney-work-order-date-raised {
   text-align: center;

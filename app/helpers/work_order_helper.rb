@@ -32,16 +32,71 @@ module WorkOrderHelper
    }[dlo_status]
   end
 
+  def appointment_status_description(appointment_outcome)
+   {
+     'WA' => 'Waiting for materials',
+     'CO' => 'Complete',
+     'COMPLETED' => 'Complete',
+     'LE' => 'Leave and return',
+     'LR' => 'Leave and return',
+     'LEAVE AND RETURN' => 'Leave and return',
+     'IN' => 'Inspection needed',
+     'EQ' => 'Complete',
+     'NA' => 'No access',
+     'NO' => 'No access',
+     'MT' => 'Waiting for materials',
+     'FO' => 'Complete',
+     'PL' => 'Plant required'
+   }[appointment_outcome]
+  end
+
   def format_appointment_date(appointment)
     if appointment.begin_date.to_date ==  appointment.end_date.to_date
-      "#{appointment.begin_date.to_s(:govuk_date_time)} to #{appointment.end_date.to_s(:govuk_time)}"
+      "#{appointment.begin_date.to_s(:govuk_date_time)}-#{appointment.end_date.to_s(:govuk_time)}"
     else
       "#{appointment.begin_date.to_s(:govuk_date_time)} to #{appointment.end_date.to_s(:govuk_date_time)}"
+    end
+  end
+
+  def format_appointment_date_short(appointment)
+    if appointment.begin_date.to_date ==  appointment.end_date.to_date
+      "#{appointment.begin_date.to_s(:govuk_date_time_short)}-#{appointment.end_date.to_s(:govuk_time)}"
+    else
+      "#{appointment.begin_date.to_s(:govuk_date_time_short)} to #{appointment.end_date.to_s(:govuk_date_time_short)}"
     end
   end
 
   def sort_notes_and_appointments(work_order)
     notes_and_appointments = work_order.notes + (work_order.appointments.nil? ? [] : work_order.appointments)
     notes_and_appointments.sort_by{ |a| a.respond_to?(:logged_at) ? a.logged_at : a.begin_date }.reverse
+  end
+
+  def format_address(address)
+    address.split("  ")
+  end
+
+  def format_caller_name(name)
+    return "N/A" if (name.nil? || name.empty?)
+    name.downcase.gsub(/\b('?[a-z])/) { $1.capitalize }
+  end
+
+  def appointment_status(status, outcome)
+    description = appointment_status_description(outcome)
+    if status == "completed" && description != "Complete"
+      "#{description.nil? ? outcome : description}"
+    else
+      status == "Unknown" ? "Outcome unknown" : status
+    end
+  end
+
+  def appointment_status_color(status, outcome)
+    description = appointment_status_description(outcome)
+    if status == "completed" && description != "Complete"
+      "red"
+    elsif description == "Complete" || status == "Unknown"
+      "grey"
+    else
+      "green"
+    end
   end
 end

@@ -1,3 +1,4 @@
+$govuk-page-width: 1200px;
 $govuk-font-family: 'Arial', sans-serif;
 @import "govuk-frontend/all";
 @import "hackney_colour";
@@ -42,11 +43,6 @@ $govuk-font-family: 'Arial', sans-serif;
       .5em 0 0 white;
     }
   }
-
-.turbolinks-progress-bar {
-  height: 3px;
-  background-color: hackney-colour("housing-2");
-}
 
 .hackney-page-header {
   background-color: govuk-colour("grey-4");

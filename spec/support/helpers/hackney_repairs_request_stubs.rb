@@ -55,7 +55,7 @@ module Helpers
           {
             "workOrderReference" => "01551932",
             "sorCode" => "08500110",
-            "supplierReference" => "H09"
+            "supplierRef" => "H09"
           }
         ]
       }.deep_merge(overrides)
@@ -180,6 +180,7 @@ module Helpers
         {
           "id" => "01551932",
           "status" => "planned",
+          "outcome" => nil,
           "assignedWorker" => "(PLM) Brian Liverpool",
           "phonenumber" => "+447535847993",
           "priority" => "standard",
@@ -192,6 +193,7 @@ module Helpers
         {
           "id" => "01551932",
           "status" => "planned",
+          "outcome" => "nil",
           "assignedWorker" => "(PLM) Fatima Bagam TEST",
           "phonenumber" => nil,
           "priority" => "standard",
@@ -204,6 +206,7 @@ module Helpers
         {
           "id" => "01551932",
           "status" => "completed",
+          "outcome" => "CO",
           "assignedWorker" => "(PLM) Fatima Bagam TEST",
           "phonenumber" => nil,
           "priority" => "standard",
@@ -221,6 +224,7 @@ module Helpers
         {
           "id" => "01551932",
           "status" => "completed",
+          "outcome" => "CO",
           "assignedWorker" => "(PLM) Fatima Bagam TEST",
           "phonenumber" => nil,
           "priority" => "standard",
@@ -238,6 +242,7 @@ module Helpers
         {
           "id" => "01551932",
           "status" => "planned",
+          "outcome" => nil,
           "assignedWorker" => "(PLM) Brian Liverpool",
           "phonenumber" => "+447535847993",
           "priority" => "standard",
@@ -268,6 +273,7 @@ module Helpers
       body = opts.fetch(:body, {
         "id": "01551945",
         "status": "completed",
+        "outcome": "CO",
         "assignedWorker": "(PLM) Tom Sabin Unboxed",
         "phonenumber": "02012341234",
         "priority": "standard",
