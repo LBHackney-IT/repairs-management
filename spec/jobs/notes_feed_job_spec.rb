@@ -9,6 +9,10 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     build :hackney_note, text: 'related to 00000001', logged_at: today, work_order_reference: '00000002'
   end
 
+  let (:empty_hackney_note) do
+    build :hackney_note, text: nil, logged_at: today, work_order_reference: '00000003'
+  end
+
   it 'enqueues related work order jobs' do
     expect(Hackney::Note).to receive(:feed) { [hackney_note] }
 
@@ -83,6 +87,14 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     expect {
       NotesFeedJob.perform_now(5, 5)
     }.to_not have_enqueued_job(NotesFeedJob)
+  end
+
+  it "doesn't blow up when a note's text is nil" do
+    expect(Hackney::Note).to receive(:feed) { [empty_hackney_note] }
+
+    expect {
+      NotesFeedJob.perform_now(1, 1)
+    }.to_not raise_error
   end
 
 end
