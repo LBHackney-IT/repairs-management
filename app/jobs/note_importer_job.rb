@@ -7,7 +7,7 @@ class NoteImporterJob < ApplicationJob
 
     # We know for the import that all work orders are <= than this because we
     # import work orders first
-    last_work_order = Graph::WorkOrder.last_imported.last_id
+    last_work_order = Graph::LastFromFeed.last_work_order.last_id
 
     CsvReader.new('note').read_csv(data_stream) do |row|
       work_order_ref = row['WorkOrderReference']
