@@ -3,8 +3,10 @@
 </div>
 
 <script>
-  document.addEventListener("turbolinks:load", function() {
+  window.addEventListener("load", function() {
     var endpoint = "/api/properties/<%= property_reference %>/repairs_history"
-    handleAjaxResponse(endpoint, 'property-repair-history-tab');
+    var ajaxTab = document.getElementById('property-repair-history-tab');
+
+    handleAjaxResponse(endpoint, ajaxTab);
   })
 </script>
