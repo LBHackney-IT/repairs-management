@@ -8,12 +8,6 @@ class Hackney::Property
     build(response)
   end
 
-  def self.hierarchy(reference)
-    HackneyAPI::RepairsClient.new.get_property_hierarchy(reference).map do |attributes|
-      build(attributes)
-    end
-  end
-
   def self.for_postcode(postcode)
     HackneyAPI::RepairsClient.new.get_property_by_postcode(postcode)["results"].map do |attributes|
       build(attributes)
@@ -32,6 +26,12 @@ class Hackney::Property
     )
   end
 
+  def hierarchy
+    @_hierarchy ||= HackneyAPI::RepairsClient.new.get_property_hierarchy(reference).map do |attributes|
+      Hackney::Property.build(attributes)
+    end
+  end
+
   def work_orders_plumbing_from_block_and_last_two_weeks
     @_work_orders_plumbing_from_block_and_last_two_weeks ||= Hackney::WorkOrder.for_property_block_and_trade(
       property_reference: reference,
@@ -42,7 +42,7 @@ class Hackney::Property
   end
 
   def dwelling_work_orders_hierarchy
-    @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithProperty.new(reference).call
+    @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithProperty.new(self).call
   end
 
   def trades_hierarchy_work_orders
@@ -50,7 +50,6 @@ class Hackney::Property
   end
 
   def is_estate?
-    property_type = dwelling_work_orders_hierarchy.keys
-    property_type == ['Estate']
+    hierarchy.map(&:description) - ['Owner'] == ['Estate']
   end
 end
