@@ -51,15 +51,22 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
     end
 
     before do
-      allow(Hackney::Property).to receive(:for_property).with(dwelling_reference).and_return(property_hierarchy_response)
+      allow(Hackney::Property).to receive(:hierarchy).with(dwelling_reference).and_return(property_hierarchy_response)
     end
 
     subject { service_instance.call }
 
-    it 'gets a grouped list (a hash) of work orders associated with a dwelling groupped by a description' do
-      property_hierarchy_response.each do |property_hierarchy|
-        stub_hackney_work_orders_for_property(reference: property_hierarchy.reference, body: property_reference_response_body)
-      end
+    it 'gets a grouped list (a hash) of work orders associated with a dwelling grouped by a description' do
+      references = (property_hierarchy_response - [property_hierarchy_random]).map(&:reference)
+      stub_hackney_work_orders_for_property(reference: references, body: [
+        work_order_response_payload('propertyReference' => property_hierarchy_estate.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_free.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_block.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_subblock.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_facilities.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_dwelling.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_nondwell.reference)
+      ])
 
       expect(subject["Estate"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
       expect(subject["Free"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
@@ -70,10 +77,19 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       expect(subject["Non-Dwell"]).to contain_exactly(an_instance_of(Hackney::WorkOrder))
     end
 
+    it 'returns the hash in the same order as the property hierarchy' do
+      references = (property_hierarchy_response - [property_hierarchy_random]).map(&:reference)
+      stub_hackney_work_orders_for_property(reference: references, body: [
+        work_order_response_payload('propertyReference' => property_hierarchy_free.reference),
+        work_order_response_payload('propertyReference' => property_hierarchy_estate.reference)
+      ])
+
+      expect(subject.keys).to eq %w(Estate Free)
+    end
+
     it 'returns an empty hash when there are no work orders for any property in the hierarchy' do
-      property_hierarchy_response.each do |property_hierarchy|
-        stub_hackney_work_orders_for_property(reference: property_hierarchy.reference, body: [])
-      end
+      references = (property_hierarchy_response - [property_hierarchy_random]).map(&:reference)
+      stub_hackney_work_orders_for_property(reference: references, body: [])
 
       expect(subject).to be_empty
     end

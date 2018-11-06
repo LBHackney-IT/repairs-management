@@ -37,8 +37,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_repairs_work_order_reports
     stub_hackney_work_orders_for_property
-    stub_hackney_work_orders_for_property(reference: property_reference1)
-    stub_hackney_work_orders_for_property(reference: property_reference2)
+    stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2])
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
     stub_hackney_repairs_work_orders_by_reference(
       references: ["11235813"],
@@ -50,7 +49,7 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Search for a work order by reference (only AJAX content)', js: true do
-    stub_hackney_work_orders_for_property(reference: property_reference1, body: [
+    stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2], body: [
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
@@ -361,7 +360,8 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Filtering the repairs history by the hierarchy of the property', js: true do
-    stub_hackney_work_orders_for_property(reference: property_reference2, body: work_orders_by_property_reference_payload__different_property)
+    stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2],
+                                          body: work_orders_by_property_reference_payload + work_orders_by_property_reference_payload__different_property)
 
     visit work_order_path('01551932')
 

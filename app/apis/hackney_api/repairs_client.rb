@@ -85,10 +85,15 @@ module HackneyAPI
       )
     end
 
-    def get_work_orders_by_property(reference:, date_from:, date_to:)
+    def get_work_orders_by_property(references:, date_from:, date_to:)
       request(
         http_method: :get,
-        endpoint: "#{API_VERSION}/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}"
+        endpoint: "#{API_VERSION}/work_orders",
+        params: {
+          propertyReference: references,
+          since: date_from.strftime("%d-%m-%Y"),
+          until: date_to.strftime("%d-%m-%Y")
+        }
       )
     rescue HackneyAPI::RepairsClient::RecordNotFoundError
       [] # Handle the case when there are no work orders for a given property. Delete this once API is updated to handle the case

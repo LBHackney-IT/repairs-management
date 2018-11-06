@@ -28,9 +28,9 @@ class Hackney::WorkOrder
     response.map { |hash| build(hash) }
   end
 
-  def self.for_property(property_reference:, date_from:, date_to:)
+  def self.for_property(property_references:, date_from:, date_to:)
     HackneyAPI::RepairsClient.new.get_work_orders_by_property(
-      reference: property_reference,
+      references: property_references,
       date_from: date_from,
       date_to: date_to
     ).map do |attributes|

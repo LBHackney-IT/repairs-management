@@ -8,7 +8,7 @@ class Hackney::Property
     build(response)
   end
 
-  def self.for_property(reference)
+  def self.hierarchy(reference)
     HackneyAPI::RepairsClient.new.get_property_hierarchy(reference).map do |attributes|
       build(attributes)
     end

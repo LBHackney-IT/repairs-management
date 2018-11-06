@@ -353,7 +353,7 @@ describe HackneyAPI::RepairsClient do
     let(:date_from) { Date.today - 2.years }
     let(:date_to) { Date.tomorrow }
 
-    subject { api_client.get_work_orders_by_property(reference: reference, date_from: date_from, date_to: date_to) }
+    subject { api_client.get_work_orders_by_property(references: [reference], date_from: date_from, date_to: date_to) }
 
     context 'successful empty response' do
       before do
