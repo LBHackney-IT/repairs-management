@@ -4,9 +4,9 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
   include Helpers::HackneyRepairsRequestStubs
 
   describe '#call' do
-    let(:dwelling_reference) { 1 }
+    let(:property) { build :property }
 
-    let(:service_instance) { described_class.new(dwelling_reference) }
+    let(:service_instance) { described_class.new(property) }
     let(:property_hierarchy_estate) { build(:property, description: 'Estate') }
     let(:property_hierarchy_free) { build(:property, description: 'Free') }
     let(:property_hierarchy_block) { build(:property, description: 'Block') }
@@ -51,7 +51,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
     end
 
     before do
-      allow(Hackney::Property).to receive(:hierarchy).with(dwelling_reference).and_return(property_hierarchy_response)
+      allow(property).to receive(:hierarchy).and_return(property_hierarchy_response)
     end
 
     subject { service_instance.call }

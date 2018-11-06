@@ -3,10 +3,8 @@ module Hackney
     class AssociatedWithProperty
       HIERARCHY_DESCRIPTIONS = %w(Estate Block Sub-Block Free Facilities Dwelling Non-Dwell).freeze
 
-      attr_reader :reference
-
-      def initialize(reference)
-        @reference = reference
+      def initialize(property)
+        @property = property
       end
 
       def call
@@ -21,9 +19,11 @@ module Hackney
         end
 
         data.delete_if { |_, value|  value.empty? }
-    end
+      end
 
       private
+
+      attr_accessor :property
 
       def fetch_work_orders(property_references)
         Hackney::WorkOrder.for_property(property_references: property_references,
@@ -32,7 +32,7 @@ module Hackney
       end
 
       def filtered_hierarchy
-        Hackney::Property.hierarchy(reference).each_with_object({}) do |element, hash|
+        property.hierarchy.each_with_object({}) do |element, hash|
           hash[element.reference] = element.description if element.description.in?(HIERARCHY_DESCRIPTIONS)
         end
       end

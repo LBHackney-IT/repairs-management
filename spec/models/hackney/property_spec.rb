@@ -59,7 +59,7 @@ describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
 
   before do
-    allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(reference).and_return(associated_with_property_double)
+    allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(klass_instance).and_return(associated_with_property_double)
   end
 
   subject { klass_instance.dwelling_work_orders_hierarchy }
@@ -89,8 +89,7 @@ describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeks
 end
 
 describe Hackney::Property do
-  describe '.hierarchy' do
-    let(:property) { 11111 }
+  describe '#hierarchy' do
     let(:hierarchy_object) do
       {
         'propertyReference' => '1',
@@ -108,12 +107,13 @@ describe Hackney::Property do
       allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
     end
 
-    subject { described_class.hierarchy(property) }
+    subject { build :property, reference: 11111 }
 
     it 'returns an array with instances of Hackney::Property built based on an API response' do
-      expect(repairs_client_double).to receive(:get_property_hierarchy).with(property)
+      expect(repairs_client_double).to receive(:get_property_hierarchy).with(subject.reference)
       expect(described_class).to receive(:build).once
-      subject
+
+      subject.hierarchy
     end
   end
 
