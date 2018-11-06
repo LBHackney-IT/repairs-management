@@ -154,7 +154,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Notes and appointments'
   end
 
-  scenario 'Search for a work order by postcode' do
+  scenario 'Search for a work order by postcode', js: true do
     stub_hackney_property_by_postcode(reference: 'E98BH', body: property_by_postcode_response_body__no_properties)
 
     fill_in 'Search by work order reference or postcode', with: 'E98BH'
@@ -190,6 +190,10 @@ RSpec.describe 'Work order' do
     expect(page).to have_css(".hackney-work-order-tab", count: 1)
 
     expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
+
+    within("#repair-history-tab") do
+      expect(page).to have_css("h2", text: "Repairs history")
+    end
   end
 
   scenario 'No notes or appointments are returned', js: true do # TODO: remove when the api in sandbox is deployed
