@@ -41,4 +41,12 @@ RSpec.describe WorkOrderFeedJob, :db_connection, type: :job do
     expect(Graph::WorkOrder.count).to eq 50
     expect(Graph::LastFromFeed.last_work_order.last_id).to eq fifty_work_orders.last.reference
   end
+
+  it "rescues errors and sends them to appsignal" do
+    error = StandardError.new('BOOOM!')
+    expect(Hackney::WorkOrder).to receive(:feed) { raise error }
+    expect(Appsignal).to receive(:set_error).with(error)
+
+    WorkOrderFeedJob.perform_now(1, 1)
+  end
 end

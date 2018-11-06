@@ -16,6 +16,9 @@ class NotesFeedJob < ApplicationJob
     if enqueues < max_enqueues && notes.size >= ENQUEUE_LIMIT
       NotesFeedJob.perform_later(enqueues + 1, max_enqueues)
     end
+
+  rescue StandardError => e
+    Appsignal.set_error(e)
   end
 
   private

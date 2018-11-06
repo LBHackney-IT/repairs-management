@@ -97,4 +97,11 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     }.to_not raise_error
   end
 
+  it "rescues errors and sends them to appsignal" do
+    error = StandardError.new('BOOOM!')
+    expect(Hackney::Note).to receive(:feed) { raise error }
+    expect(Appsignal).to receive(:set_error).with(error)
+
+    NotesFeedJob.perform_now(1, 1)
+  end
 end
