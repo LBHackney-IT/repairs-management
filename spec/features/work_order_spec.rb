@@ -402,7 +402,7 @@ RSpec.describe 'Work order' do
   scenario 'Viewing the possibly related tab' do
     stub_hackney_repairs_properties(
       reference: '00012345',
-      body: property_response_payload(property_reference: '00012345', address: 'Buckingham Palace')
+      body: property_response_payload(property_reference: '00012345', address: 'Buckingham  Palace')
     )
     stub_hackney_repairs_work_order_block_by_trade(
       body: repairs_work_order_block_by_trade_response(trade: 'Plumbing',
@@ -419,7 +419,7 @@ RSpec.describe 'Work order' do
     expect(cells).to eq [
       "01234567",
       "9 Oct 2011\n8:07am",
-      "Buckingham Palace",
+      "Buckingham\nPalace",
       "Work complete",
       "Plumbing",
       "Something is wrong"

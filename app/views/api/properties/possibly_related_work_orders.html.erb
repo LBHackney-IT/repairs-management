@@ -27,7 +27,9 @@
             <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
           </td>
           <td class="govuk-table__cell">
-            <%= work_order.property.address %>
+            <% work_order.property.address.split('  ').each do |line| %>
+              <p class="address"><%= line %></p>
+            <% end %>
           </td>
           <td class="govuk-table__cell">
             <span class="govuk-body-s status status-<%= work_order.work_order_status %>">
