@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :properties, only: [], param: :ref do
       member do
         get :repairs_history
+        get :repairs_history_5_years
       end
     end
 

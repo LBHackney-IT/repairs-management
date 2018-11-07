@@ -7,13 +7,13 @@ module Hackney
         @property = property
       end
 
-      def call
+      def call(years_ago: 2)
         hierarchy = filtered_hierarchy
         data = hierarchy.each_with_object({}) do |(_, description), hash|
           hash[description] = []
         end
 
-        fetch_work_orders(hierarchy.keys).each do |wo|
+        fetch_work_orders(hierarchy.keys, years_ago).each do |wo|
           description = hierarchy[wo.prop_ref]
           data[description] << wo
         end
@@ -25,9 +25,9 @@ module Hackney
 
       attr_accessor :property
 
-      def fetch_work_orders(property_references)
+      def fetch_work_orders(property_references, years_ago)
         Hackney::WorkOrder.for_property(property_references: property_references,
-                                        date_from: (Date.today - 2.years),
+                                        date_from: (Date.today - years_ago.years),
                                         date_to: Date.tomorrow)
       end
 
