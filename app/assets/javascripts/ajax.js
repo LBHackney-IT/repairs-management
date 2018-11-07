@@ -18,3 +18,8 @@ function handleAjaxResponse(endpoint, ajaxTab) {
   request.onerror = errorHandler;
   request.send();
 }
+
+function ajaxRepairsHistoryFiveYears(endpoint) {
+  var tab = document.getElementById('repair-history-tab')
+  handleAjaxResponse(endpoint, tab)
+}

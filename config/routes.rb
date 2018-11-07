@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       member do
         get :possibly_related_work_orders
         get :repairs_history
+        get :repairs_history_5_years
       end
     end
 
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
         get :notes_and_appointments
         get :documents
         get :repairs_history
+        get :repairs_history_5_years
         get :related_work_orders
       end
     end

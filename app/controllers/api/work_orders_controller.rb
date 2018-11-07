@@ -16,6 +16,10 @@ module Api
       @work_order = Hackney::WorkOrder.find(reference)
     end
 
+    def repairs_history_5_years
+      @work_order = Hackney::WorkOrder.find(reference)
+    end
+
     def related_work_orders
       @work_order = WorkOrderFacade.new(reference)
     end
