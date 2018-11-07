@@ -26,7 +26,7 @@
             <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
             <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
           </td>
-          <td class="govuk-table__cell">
+          <td class="govuk-table__cell" title="<%= work_order.property.address %>">
             <% work_order.property.address.split('  ').each do |line| %>
               <p class="address"><%= line %></p>
             <% end %>
