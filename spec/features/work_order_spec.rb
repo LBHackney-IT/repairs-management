@@ -31,7 +31,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
-    stub_hackney_repairs_work_order_block_by_trade
+    stub_hackney_repairs_work_order_block_by_trade(body: [])
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
     stub_hackney_repairs_work_order_latest_appointments
@@ -90,7 +90,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nPriority: standard\nCreated at: 17 October 2017, 9:27am\nData source: DRS"
 
     click_on('Possibly related')
-    expect(page).to have_content "01106923\n10 Feb 2014\n11:01am\nWork complete Plumbing PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be."
+    expect(page).to have_content "There are no possibly related plumbing work orders from last two weeks."
 
     click_on('Related repairs')
     expect(page).to have_content 'A related work order'
@@ -399,18 +399,30 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "Search by work order reference or postcode"
   end
 
-  scenario 'Viewing addresses on the possibly related tab' do
+  scenario 'Viewing the possibly related tab' do
     stub_hackney_repairs_properties(
       reference: '00012345',
       body: property_response_payload(property_reference: '00012345', address: 'Buckingham Palace')
     )
     stub_hackney_repairs_work_order_block_by_trade(
-      body: repairs_work_order_block_by_trade_response('Plumbing', '00012345')
+      body: repairs_work_order_block_by_trade_response(trade: 'Plumbing',
+                                                       reference: '00012345',
+                                                       work_order_reference: '01234567',
+                                                       created: '2011-10-09T08:07:06',
+                                                       problem_description: 'Something is wrong')
     )
 
     visit possibly_related_work_orders_api_property_path(property_reference1)
 
     expect(page).to have_content 'Possibly related'
-    expect(page).to have_content 'Buckingham Palace'
+    cells = all('tbody tr td').map(&:text)
+    expect(cells).to eq [
+      "01234567",
+      "9 Oct 2011\n8:07am",
+      "Buckingham Palace",
+      "Work complete",
+      "Plumbing",
+      "Something is wrong"
+    ]
   end
 end
