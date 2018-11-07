@@ -77,12 +77,15 @@ module Helpers
 
     # GET /#{API_VERSION}/properties/:reference
 
-    def property_response_payload
+    def property_response_payload(address: "Homerton High Street 12 Banister House",
+                                  postcode: "E9 6BH",
+                                  property_reference: "00014665",
+                                  maintainable: true)
       {
-        "address" => "Homerton High Street 12 Banister House",
-        "postcode" => "E9 6BH",
-        "propertyReference" => "00014665",
-        "maintainable" => true
+        "address" => address,
+        "postcode" => postcode,
+        "propertyReference" => property_reference,
+        "maintainable" => maintainable
       }
     end
 

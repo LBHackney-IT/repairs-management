@@ -398,4 +398,19 @@ RSpec.describe 'Work order' do
     end
     expect(page).to have_content "Search by work order reference or postcode"
   end
+
+  scenario 'Viewing addresses on the possibly related tab' do
+    stub_hackney_repairs_properties(
+      reference: '00012345',
+      body: property_response_payload(property_reference: '00012345', address: 'Buckingham Palace')
+    )
+    stub_hackney_repairs_work_order_block_by_trade(
+      body: repairs_work_order_block_by_trade_response('Plumbing', '00012345')
+    )
+
+    visit possibly_related_work_orders_api_property_path(property_reference1)
+
+    expect(page).to have_content 'Possibly related'
+    expect(page).to have_content 'Buckingham Palace'
+  end
 end
