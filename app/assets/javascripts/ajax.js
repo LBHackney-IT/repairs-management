@@ -20,6 +20,11 @@ function handleAjaxResponse(endpoint, ajaxTab) {
 }
 
 function ajaxRepairsHistoryFiveYears(endpoint) {
-  var tab = document.getElementById('repair-history-tab')
-  handleAjaxResponse(endpoint, tab)
+  var loadBtn = document.getElementById('load-repair-history-btn');
+  loadBtn.classList.add('ajax-loading')
+
+  var tab = document.getElementById('repair-history-tab');
+  handleAjaxResponse(endpoint, tab);
+
+  loadBtn.parentNode.removeChild(loadBtn);
 }

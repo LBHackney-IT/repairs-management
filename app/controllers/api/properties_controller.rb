@@ -4,6 +4,10 @@ module Api
       @property = Hackney::Property.find(reference)
     end
 
+    def repairs_history_5_years
+      @property = Hackney::Property.find(reference)
+    end
+
     private
 
     def reference
