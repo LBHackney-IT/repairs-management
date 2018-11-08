@@ -12,6 +12,7 @@
       <tr>
         <th class="govuk-table__header" scope="col">Reference</th>
         <th class="govuk-table__header" scope="col">Date raised</th>
+        <th class="govuk-table__header" scope="col">Address</th>
         <th class="govuk-table__header" scope="col">Status</th>
         <th class="govuk-table__header" scope="col">Trade</th>
         <th class="govuk-table__header" scope="col">Description</th>
@@ -24,6 +25,11 @@
           <td class="govuk-table__cell hackney-work-order-date-raised--left">
             <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
             <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
+          </td>
+          <td class="govuk-table__cell" title="<%= @address_map[work_order.prop_ref] %>">
+            <% @address_map[work_order.prop_ref].split('  ').each do |line| %>
+              <p class="address"><%= line %></p>
+            <% end %>
           </td>
           <td class="govuk-table__cell">
             <span class="govuk-body-s status status-<%= work_order.work_order_status %>">

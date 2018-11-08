@@ -77,12 +77,15 @@ module Helpers
 
     # GET /#{API_VERSION}/properties/:reference
 
-    def property_response_payload
+    def property_response_payload(address: "Homerton High Street 12 Banister House",
+                                  postcode: "E9 6BH",
+                                  property_reference: "00014665",
+                                  maintainable: true)
       {
-        "address" => "Homerton High Street 12 Banister House",
-        "postcode" => "E9 6BH",
-        "propertyReference" => "00014665",
-        "maintainable" => true
+        "address" => address,
+        "postcode" => postcode,
+        "propertyReference" => property_reference,
+        "maintainable" => maintainable
       }
     end
 
@@ -95,15 +98,21 @@ module Helpers
 
     # GET #{API_VERSION}/repairs/:reference/block/work_orders?trade=:trade
 
-    def repairs_work_order_block_by_trade_response(trade, reference)
+    def repairs_work_order_block_by_trade_response(
+          trade:,
+          reference:,
+          work_order_reference: '01106923',
+          created: '2014-02-10T11:01:53',
+          problem_description: 'PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be.'
+        )
       [
         {
           'sorCode' => '21000006',
           'trade' => trade,
-          'workOrderReference' => '01106923',
+          'workOrderReference' => work_order_reference,
           'repairRequestReference' => '02643677',
-          'problemDescription' => 'PLM RECALL 01097105 FRED DICKENS: Tenant reports that kithcen sink is draining slowly again. REport back where blockag might be.',
-          'created' => '2014-02-10T11:01:53',
+          'problemDescription' => problem_description,
+          'created' => created,
           'authDate' => '0001-01-01T00:00:00',
           'estimatedCost' => 55.65,
           'actualCost' => 0,
@@ -129,7 +138,7 @@ module Helpers
           trade: 'Plumbing',
           date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
           date_to: Date.today.strftime("%d-%m-%Y"),
-          body: repairs_work_order_block_by_trade_response(trade, reference)
+          body: repairs_work_order_block_by_trade_response(trade: trade, reference: reference)
           )
 
       stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}")

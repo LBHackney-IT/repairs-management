@@ -90,6 +90,13 @@
     vertical-align: top;
   }
 
+  p.address {
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
+
   td {
     white-space: nowrap;
 
