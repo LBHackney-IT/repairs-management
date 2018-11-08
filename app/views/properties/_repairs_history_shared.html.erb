@@ -47,12 +47,6 @@
   </div>
 
   <% else %>
-    <p class="govuk-body-s">There are no work orders.</p>
+    <p class="govuk-body-s">There are no work orders within the last 2 years.</p>
   <% end %>
-
-  <div id="load-repair-history-btn" >
-    <button onClick='ajaxRepairsHistoryFiveYears("/api/work_orders/<%= property.reference %>/repairs_history_5_years")'>
-      Load 5 years data
-    </button>
-  </div>
 </div>

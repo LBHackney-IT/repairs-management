@@ -53,10 +53,6 @@ class Hackney::Property
     @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq.sort
   end
 
-  def trades_hierarchy_work_orders_5_years
-    @_trades ||= dwelling_work_orders_hierarchy_5_years.values.flatten.map(&:trade).uniq.sort
-  end
-
   def is_estate?
     hierarchy.map(&:description) - ['Owner'] == ['Estate']
   end
