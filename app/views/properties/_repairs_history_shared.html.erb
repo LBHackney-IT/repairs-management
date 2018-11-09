@@ -41,12 +41,19 @@
             <% end %>
             </tbody>
           </table>
+          <p class='repair-history-years-info govuk-body-s'>
+            Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
+          </p>
+          <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
         </div>
       </div>
     <% end %>
   </div>
 
   <% else %>
-    <p class="govuk-body-s">There are no work orders within the last 2 years.</p>
+    <p class="govuk-body-s repair-history-no-work-orders">
+      There are no work orders within the <strong>last 2 years</strong>.
+    </p>
+    <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
   <% end %>
 </div>
