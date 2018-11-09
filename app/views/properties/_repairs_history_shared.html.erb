@@ -1,59 +1,57 @@
-<div class="hackney-work-order-tabs-info" id="repair-history-tab">
-  <h2 class="govuk-heading-l">
-    Repairs history
-  </h2>
+<h2 class="govuk-heading-l">
+  Repairs history
+</h2>
 
-  <% if property_dwelling_work_orders_hierarchy.any? %>
-  <div class="govuk-grid-row">
-    <%= render 'properties/repair_history_filters', hierarchy: property_dwelling_work_orders_hierarchy, work_orders_trades: property.trades_hierarchy_work_orders %>
+<% if property_dwelling_work_orders_hierarchy.any? %>
+<div class="govuk-grid-row">
+  <%= render 'properties/repair_history_filters', hierarchy: property_dwelling_work_orders_hierarchy, work_orders_trades: property.trades_hierarchy_work_orders %>
 
-    <% property_dwelling_work_orders_hierarchy.each_with_index do |(description, work_orders), index| %>
-      <div class="tabcontent <%= 'hidden' unless index == 0 %>" id="<%= description.parameterize %>-content">
+  <% property_dwelling_work_orders_hierarchy.each_with_index do |(description, work_orders), index| %>
+    <div class="tabcontent <%= 'hidden' unless index == 0 %>" id="<%= description.parameterize %>-content">
 
-        <div class="govuk-grid-column-three-quarters">
-          <table class="govuk-table hackney-history hackney-work-order-table">
-            <thead class="govuk-table__head">
-            <tr>
-              <th class="govuk-table__header" scope="col">Reference</th>
-              <th class="govuk-table__header" scope="col">Date raised</th>
-              <th class="govuk-table__header" scope="col">Status</th>
-              <th class="govuk-table__header" scope="col">Trade</th>
-              <th class="govuk-table__header" scope="col">Description</th>
-            </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-            <% work_orders.sort_by(&:created).reverse.each do |work_order| %>
-              <tr class="govuk-table__row hackney-work-order-rows repairs-history"
+      <div class="govuk-grid-column-three-quarters">
+        <table class="govuk-table hackney-history hackney-work-order-table">
+          <thead class="govuk-table__head">
+          <tr>
+            <th class="govuk-table__header" scope="col">Reference</th>
+            <th class="govuk-table__header" scope="col">Date raised</th>
+            <th class="govuk-table__header" scope="col">Status</th>
+            <th class="govuk-table__header" scope="col">Trade</th>
+            <th class="govuk-table__header" scope="col">Description</th>
+          </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+          <% work_orders.sort_by(&:created).reverse.each do |work_order| %>
+            <tr class="govuk-table__row hackney-work-order-rows repairs-history"
                   data-trade="trade-<%= property.trades_hierarchy_work_orders.index(work_order.trade) %>">
-                <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference), onClick: "clickAndDisableLink(this);" %></td>
-                <td class="govuk-table__cell hackney-work-order-date-raised">
-                  <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
-                  <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
-                </td>
-                <td class="govuk-table__cell">
-                  <span class="govuk-body-s status status-<%= work_order.work_order_status %>">
-                    <%= work_order_status_description(work_order.work_order_status).capitalize %>
-                  </span>
-                </td>
-                <td class="govuk-table__cell description work-order-trade"><%= work_order.trade %></td>
-                <td class="govuk-table__cell description"><%= work_order.problem_description %></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
-          <p class='repair-history-years-info govuk-body-s'>
-            Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
-          </p>
-          <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
-        </div>
+              <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference), onClick: "clickAndDisableLink(this);" %></td>
+              <td class="govuk-table__cell hackney-work-order-date-raised">
+                <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
+                <p class='govuk-body-s work_order_time_created'><%= work_order.created.to_s(:govuk_time) %></p>
+              </td>
+              <td class="govuk-table__cell">
+                <span class="govuk-body-s status status-<%= work_order.work_order_status %>">
+                  <%= work_order_status_description(work_order.work_order_status).capitalize %>
+                </span>
+              </td>
+              <td class="govuk-table__cell description work-order-trade"><%= work_order.trade %></td>
+              <td class="govuk-table__cell description"><%= work_order.problem_description %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <p class='repair-history-years-info govuk-body-s'>
+          Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
+        </p>
+        <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
       </div>
-    <% end %>
-  </div>
-
-  <% else %>
-    <p class="govuk-body-s repair-history-no-work-orders">
-      There are no work orders within the <strong>last 2 years</strong>.
-    </p>
-    <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
+    </div>
   <% end %>
 </div>
+
+<% else %>
+  <p class="repair-history-years-info govuk-body-s">
+    There are no work orders within the <strong>last 2 years</strong>.
+  </p>
+  <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
+<% end %>
