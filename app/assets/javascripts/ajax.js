@@ -22,6 +22,7 @@ function handleAjaxResponse(endpoint, ajaxTab) {
 function ajaxRepairsHistoryFiveYears(endpoint, ajaxTab) {
   var loadBtn = document.getElementById('load-repair-history-btn');
   var loadingText = document.createElement('p');
+  document.querySelector('.repair-history-years-info').classList.add('hidden')
   loadingText.innerHTML = 'Loading repairs history'
 
   loadBtn.parentNode.replaceChild(loadingText, loadBtn);
@@ -41,10 +42,12 @@ function ajaxRepairsHistoryFiveYears(endpoint, ajaxTab) {
         ajaxTab.innerHTML = request.response;
 
         var repairHistoryYearsInfo = document.querySelector('.repair-history-years-info')
-        if (repairHistoryYearsInfo) {
+        repairHistoryYearsInfo.classList.remove('hidden');
+
+        if (document.querySelector('.hackney-work-order-table')) {
           repairHistoryYearsInfo.innerHTML = 'Repairs history is showing jobs raised in the last <strong>5 years</strong>.'
         } else {
-          document.querySelector('.repair-history-no-work-orders').innerHTML = 'There are no work orders within the last <strong>5 years</strong>.'
+          repairHistoryYearsInfo.innerHTML = 'There are no work orders within the last <strong>5 years</strong>.'
         }
 
         document.querySelector('.load-repairs-history').classList.add('hidden');

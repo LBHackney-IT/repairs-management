@@ -1,10 +1,10 @@
-<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="work-order-repair-history-tab">
+<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="repair-history-tab">
   <p class="govuk-caption-m ajax-loading">Loading repairs history data</p>
 </div>
 
 <script>
   var endpoint = "/api/work_orders/<%= work_order_reference %>/repairs_history"
-  var ajaxTab = document.getElementById('work-order-repair-history-tab');
+  var ajaxTab = document.getElementById('repair-history-tab');
 
   handleAjaxResponse(endpoint, ajaxTab);
 </script>
