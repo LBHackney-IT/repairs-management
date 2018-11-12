@@ -31,14 +31,13 @@ module Api
         @to = work_order.created.to_date + 1.week
 
         work_orders = property.possibly_related(from: @from, to: @to)
+                              .sort_by(&:created).reverse
 
         if work_orders.empty?
           render 'possibly_related_empty_result'
         else
-          @possibly_related_to_property = {}
-
-          work_orders.each do |wo|
-            @possibly_related_to_property[wo] = find_and_cache_property(wo)
+          @possibly_related_to_property = work_orders.map do |wo|
+            [wo, find_and_cache_property(wo)]
           end
           # render possibly_related_work_orders
         end
