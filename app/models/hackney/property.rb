@@ -32,12 +32,12 @@ class Hackney::Property
     end
   end
 
-  def work_orders_plumbing_from_block_and_last_two_weeks
-    @_work_orders_plumbing_from_block_and_last_two_weeks ||= Hackney::WorkOrder.for_property_block_and_trade(
+  def possibly_related(from:, to: )
+    @_possibly_related ||= Hackney::WorkOrder.for_property_block_and_trade(
       property_reference: reference,
       trade: Hackney::Trades::PLUMBING,
-      date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
-      date_to: Date.today.strftime("%d-%m-%Y")
+      date_from: from.strftime("%d-%m-%Y"),
+      date_to: to.strftime("%d-%m-%Y")
     )
   end
 
