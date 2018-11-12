@@ -52,8 +52,10 @@
 </div>
 
 <% else %>
-  <p class="repair-history-years-info govuk-body-s">
-    There are no work orders within the <strong>last 2 years</strong>.
-  </p>
-  <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
+  <div class="repairs-history_load_years">
+    <p class="repair-history-years-info govuk-body-s">
+      There are no work orders within the <strong>last 2 years</strong>.
+    </p>
+    <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
+  </div>
 <% end %>
