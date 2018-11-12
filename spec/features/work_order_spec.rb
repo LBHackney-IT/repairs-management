@@ -90,7 +90,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nPriority: standard\nCreated at: 17 October 2017, 9:27am\nData source: DRS"
 
     click_on('Possibly related')
-    expect(page).to have_content "There are no possibly related plumbing work orders from last two weeks."
+    expect(page).to have_content "There are no possibly related plumbing work orders from 17 Apr 2018 to 5 Jun 2018."
 
     click_on('Related repairs')
     expect(page).to have_content 'A related work order'
@@ -416,7 +416,7 @@ RSpec.describe 'Work order' do
                                                        problem_description: 'Something is wrong')
     )
 
-    visit possibly_related_work_orders_api_property_path(property_reference1)
+    visit possibly_related_work_orders_api_work_order_path('01551932')
 
     expect(page).to have_content 'Possibly related'
     cells = all('tbody tr td').map(&:text)
