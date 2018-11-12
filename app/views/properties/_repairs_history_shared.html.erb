@@ -40,10 +40,12 @@
           <% end %>
           </tbody>
         </table>
-        <p class='repair-history-years-info govuk-body-s'>
-          Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
-        </p>
-        <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
+        <div class="repairs-history_load_years">
+          <p class='repair-history-years-info govuk-body-s'>
+            Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
+          </p>
+          <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
+        </div>
       </div>
     </div>
   <% end %>
