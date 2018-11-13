@@ -7,7 +7,7 @@ module Hackney
         @property = property
       end
 
-      def call(years_ago: 2)
+      def call(years_ago)
         hierarchy = filtered_hierarchy
         data = hierarchy.each_with_object({}) do |(_, description), hash|
           hash[description] = []

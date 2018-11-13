@@ -54,6 +54,7 @@ end
 
 describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   let(:reference) { 'ref' }
+  let(:years_ago) { 2 }
   let(:result) { {} }
   let(:klass_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
   let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
@@ -62,7 +63,7 @@ describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
     allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(klass_instance).and_return(associated_with_property_double)
   end
 
-  subject { klass_instance.dwelling_work_orders_hierarchy }
+  subject { klass_instance.dwelling_work_orders_hierarchy(years_ago) }
 
   it 'calls valid class with a property parameter' do
     expect(associated_with_property_double).to receive(:call)

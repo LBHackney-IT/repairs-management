@@ -15,6 +15,7 @@ class WorkOrdersController < ApplicationController
   def show
     if is_work_order?(reference)
       @work_order = WorkOrderFacade.new(reference)
+      @property = @work_order.property
     elsif is_postcode?(reference)
       redirect_to search_properties_path(ref: reference)
     else

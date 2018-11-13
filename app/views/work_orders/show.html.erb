@@ -33,7 +33,7 @@
     </li>
   </ul>
 
-  <%= render 'properties/property_repairs_history', property_reference: @work_order.property.reference %>
+  <%= render 'properties/property_repairs_history', property_reference: @property.reference %>
   <%= render 'work_order_notes', work_order_reference: @work_order.reference %>
   <%= render 'work_order_possibly_related', work_order_reference: @work_order.reference %>
   <%= render 'work_order_related', work_order_reference: @work_order.reference %>

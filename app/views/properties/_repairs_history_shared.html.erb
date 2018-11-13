@@ -2,14 +2,13 @@
   Repairs history
 </h2>
 
-<% if property_dwelling_work_orders_hierarchy.any? %>
 <div class="govuk-grid-row">
-  <%= render 'properties/repair_history_filters', hierarchy: property_dwelling_work_orders_hierarchy, work_orders_trades: property.trades_hierarchy_work_orders %>
+  <%= render 'properties/repair_history_filters', hierarchy: property_dwelling_work_orders_hierarchy, work_orders_trades: property_trades_hierarchy_work_orders %>
 
   <% property_dwelling_work_orders_hierarchy.each_with_index do |(description, work_orders), index| %>
     <div class="tabcontent <%= 'hidden' unless index == 0 %>" id="<%= description.parameterize %>-content">
-
       <div class="govuk-grid-column-three-quarters">
+
         <table class="govuk-table hackney-history hackney-work-order-table">
           <thead class="govuk-table__head">
           <tr>
@@ -23,7 +22,7 @@
           <tbody class="govuk-table__body">
           <% work_orders.sort_by(&:created).reverse.each do |work_order| %>
             <tr class="govuk-table__row hackney-work-order-rows repairs-history"
-                  data-trade="trade-<%= property.trades_hierarchy_work_orders.index(work_order.trade) %>">
+                  data-trade="trade-<%= property_trades_hierarchy_work_orders.index(work_order.trade) %>">
               <td class="govuk-table__cell"><%= link_to work_order.reference, work_order_path(work_order.reference), onClick: "clickAndDisableLink(this);" %></td>
               <td class="govuk-table__cell hackney-work-order-date-raised">
                 <p class='work_order_date_created'><%= work_order.created.to_date.to_s(:govuk_date_short) %></p>
@@ -40,22 +39,15 @@
           <% end %>
           </tbody>
         </table>
+
         <div class="repairs-history_load_years">
           <p class='repair-history-years-info govuk-body-s'>
             Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
           </p>
           <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
         </div>
+
       </div>
     </div>
   <% end %>
 </div>
-
-<% else %>
-  <div class="repairs-history_load_years">
-    <p class="repair-history-years-info govuk-body-s">
-      There are no work orders within the <strong>last 2 years</strong>.
-    </p>
-    <%= render 'properties/load_repairs_history_button', endpoint: endpoint %>
-  </div>
-<% end %>

@@ -1,1 +1,1 @@
-<%= render 'properties/repairs_history_shared', property: @property, property_dwelling_work_orders_hierarchy: @property.dwelling_work_orders_hierarchy_5_years, endpoint: "/api/properties/#{@property.reference}/repairs_history_5_years" %>
+<%= render 'properties/repairs_history_shared', property_dwelling_work_orders_hierarchy: @property_hierarchy, property_trades_hierarchy_work_orders: @trades, endpoint: @endpoint %>

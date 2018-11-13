@@ -4,6 +4,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
   include Helpers::HackneyRepairsRequestStubs
 
   describe '#call' do
+    let(:years_ago) { 2 }
     let(:property) { build :property }
 
     let(:service_instance) { described_class.new(property) }
@@ -29,32 +30,11 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       ]
     end
 
-    let(:property_reference_response_body) do
-      [
-        {
-          "sorCode" => "20060060",
-          "trade" => "Plumbing",
-          "workOrderReference" => "00545095",
-          "repairRequestReference" => "02054981",
-          "problemDescription" => "rem - leak affecting 2 props below.",
-          "created" => "2010-12-20T09:53:27",
-          "estimatedCost" => 115.02,
-          "actualCost" => 0,
-          "completedOn" => "1900-01-01T00:00:00",
-          "dateDue" => "2011-01-18T09:53:00",
-          "workOrderStatus" => "300",
-          "dloStatus" => "3",
-          "servitorReference" => "00746221",
-          "propertyReference" => "00014665"
-        }
-      ]
-    end
-
     before do
       allow(property).to receive(:hierarchy).and_return(property_hierarchy_response)
     end
 
-    subject { service_instance.call }
+    subject { service_instance.call(years_ago) }
 
     it 'gets a grouped list (a hash) of work orders associated with a dwelling grouped by a description' do
       references = (property_hierarchy_response - [property_hierarchy_random]).map(&:reference)
