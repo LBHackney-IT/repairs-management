@@ -27,6 +27,7 @@
           </td>
         </tr>
         <tr>
+          <th></th>
           <td>
             <%= @work_order.repair_request.contact&.telephone_number.empty? ? "N/A" : @work_order.repair_request.contact&.telephone_number %>
           </td>
@@ -52,45 +53,12 @@
         Appointment details
       </span><br>
     <% if @work_order.latest_appointment.present? %>
-      <span class="govuk-!-font-weight-bold hackney-appointment-<%= appointment_status_color(@work_order.latest_appointment.status, @work_order.latest_appointment.outcome) %>">
-        <%= appointment_status(@work_order.latest_appointment.status, @work_order.latest_appointment.outcome).capitalize  %>
-      </span><br>
-      <% if @work_order.latest_appointment.begin_date %>
-        <span class="govuk-body-xs hackney-body-xs hackney-appointment-<%= appointment_status_color(@work_order.latest_appointment.status, @work_order.latest_appointment.outcome) %>">
-          <%= format_appointment_date_short(@work_order.latest_appointment) %>
-        </span>
-      <% end %>
-    </p>
-
-    <table class="govuk-table hackney-appointment-info">
-      <tbody class="govuk-body-xs hackney-body-xs">
-        <tr>
-          <td>
-            <span class="govuk-!-font-weight-bold govuk-body-xs hackney-body-xs hackney-appointment-trade">
-              <%= @work_order.trade %>
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Supplier:</th>
-          <td>
-            <%= @work_order.repair_request.work_orders.supplier_reference %>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Operative:</th>
-          <td>
-            <%= @work_order.latest_appointment.assigned_worker %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <%= render 'latest_appointment', work_order: @work_order %>
     <% else %>
-      <p class="govuk-body-s hackney-body-s">
-        <span class="govuk-!-font-weight-bold">
-          There are no booked appointments.
-        </span>
-      </p>
+      <span class="govuk-!-font-weight-bold">
+        There are no booked appointments.
+      </span>
     <% end %>
+    </p>
   </div>
 </div>

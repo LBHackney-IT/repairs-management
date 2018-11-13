@@ -56,7 +56,7 @@ $govuk-font-family: 'Arial', sans-serif;
 
 .hackney-width-container {
   @include govuk-media-query($from: tablet) {
-    margin: 0 $govuk-gutter * 2;
+    margin: 0 30px;
   }
 }
 
@@ -104,3 +104,16 @@ $govuk-font-family: 'Arial', sans-serif;
   }
 }
 
+// govuk styling specifies this as ems, and the other as pixels,
+// so need to overwrite it directly
+@media (min-width: 40.0625em) {
+  .govuk-width-container {
+    margin: 0 ($govuk-gutter / 6);
+  }
+}
+
+@media (min-width: 1260px) {
+  .govuk-width-container {
+    margin: 0 auto;
+  }
+}

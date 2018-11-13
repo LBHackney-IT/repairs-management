@@ -23,12 +23,10 @@
           <span class="hackney-section-info-header govuk-body-xs hackney-body-xs">
             Dwelling
           </span><br>
-          <span class="govuk-!-font-weight-bold">
-            <%= format_address(work_order.property.address).first %>
-            <% if format_address(work_order.property.address).length > 1 %>
-              <br><%= format_address(work_order.property.address).last %>
-            <% end %>
-          </span><br>
+          <% format_address(work_order.property.address).each do |line| %>
+            <span class="govuk-!-font-weight-bold"><%= line %></span><br />
+          <% end %>
+          </span>
           <span class="govuk-body-xs hackney-text-green hackney-body-xs">
             <%= work_order.property.postcode %>
           </span>

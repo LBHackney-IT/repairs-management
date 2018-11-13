@@ -2,37 +2,37 @@
   background-color: govuk-colour('white');
   padding: 2px;
   .status-100 { // Collated
-    color: #009ca6;
+    color: hackney-colour('status-planned');
   }
   .status-200 { // In Progress
-    color: #009ca6;
+    color: hackney-colour('status-planned');
   }
   .status-300 { // Work Complete
-    color: darkgray;
+    color: hackney-colour('status-complete');
   }
   .status-350 { // Work Defective
-    color: crimson;
+    color: hackney-colour('status-not-complete');
   }
   .status-400 { // Hold
-    color: crimson;
+    color: hackney-colour('status-not-complete');
   }
   .status-425 { // Variation Outstanding
-    color: crimson;
+    color: hackney-colour('status-not-complete');
   }
   .status-450 { // In Dispute
-    color: crimson;
+    color: hackney-colour('status-not-complete');
   }
   .status-500 { // Approved for Statement
-    color: darkgray;
+    color: hackney-colour('status-complete');
   }
   .status-600 { // Statemented
-    color: darkgray;
+    color: hackney-colour('status-complete');
   }
   .status-700 { // Cancel Order
-    color: crimson;
+    color: hackney-colour('status-not-complete');
   }
   .status-900 { // Complete
-    color: darkgray;
+    color: hackney-colour('status-complete');
   }
 }
 .hackney-main-section-info h5 {
@@ -46,13 +46,13 @@
 .hackney-section-info-header {
   color: govuk-colour('grey-2');
 }
-.hackney-appointment-green {
+.hackney-appointment-planned {
   color: hackney-colour("housing-2");
 }
-.hackney-appointment-grey {
+.hackney-appointment-complete {
   color: govuk-colour('grey-2');
 }
-.hackney-appointment-red {
+.hackney-appointment-not-complete {
   color: crimson;
 }
 .hackney-work-order-references {
@@ -175,7 +175,7 @@
       max-width: 400px;
     }
     .status {
-      color: white;
+      color: govuk-colour('white');
       padding: 4px 10px;
       font-weight: bold;
       display: inline-block;
@@ -184,37 +184,37 @@
       text-align: center;
     }
     .status-100 { // Collated
-      background-color: #009ca6;
+      background-color: hackney-colour('status-planned');
     }
     .status-200 { // In Progress
-      background-color: #009ca6;
+      background-color: hackney-colour('status-planned');
     }
     .status-300 { // Work Complete
-      background-color: darkgray;
+      background-color: hackney-colour('status-complete');
     }
     .status-350 { // Work Defective
-      background-color: crimson;
+      background-color: hackney-colour('status-not-complete');
     }
     .status-400 { // Hold
-      background-color: crimson;
+      background-color: hackney-colour('status-not-complete');
     }
     .status-425 { // Variation Outstanding
-      background-color: crimson;
+      background-color: hackney-colour('status-not-complete');
     }
     .status-450 { // In Dispute
-      background-color: crimson;
+      background-color: hackney-colour('status-not-complete');
     }
     .status-500 { // Approved for Statement
-      background-color: darkgray;
+      background-color: hackney-colour('status-complete');
     }
     .status-600 { // Statemented
-      background-color: darkgray;
+      background-color: hackney-colour('status-complete');
     }
     .status-700 { // Cancel Order
-      background-color: crimson;
+      background-color: hackney-colour('status-not-complete');
     }
     .status-900 { // Complete
-      background-color: darkgray;
+      background-color: hackney-colour('status-complete');
     }
   }
 }

@@ -92,11 +92,11 @@ module WorkOrderHelper
   def appointment_status_color(status, outcome)
     description = appointment_status_description(outcome)
     if status == "completed" && description != "Complete"
-      "red"
+      "not-complete"
     elsif description == "Complete" || status == "Unknown"
-      "grey"
+      "complete"
     else
-      "green"
+      "planned"
     end
   end
 end

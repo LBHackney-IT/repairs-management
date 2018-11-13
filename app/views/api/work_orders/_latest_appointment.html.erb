@@ -1,0 +1,32 @@
+<span class="govuk-!-font-weight-bold hackney-appointment-<%= appointment_status_color(work_order.latest_appointment.status, work_order.latest_appointment.outcome) %>">
+  <%= appointment_status(work_order.latest_appointment.status, work_order.latest_appointment.outcome).capitalize  %>
+</span><br>
+<% if work_order.latest_appointment.begin_date %>
+  <span class="govuk-body-xs hackney-body-xs hackney-appointment-<%= appointment_status_color(work_order.latest_appointment.status, work_order.latest_appointment.outcome) %>">
+    <%= format_appointment_date_short(work_order.latest_appointment) %>
+  </span>
+<% end %>
+
+<table class="govuk-table hackney-appointment-info">
+  <tbody class="govuk-body-xs hackney-body-xs">
+    <tr>
+      <th colspan="2">
+        <span class="govuk-!-font-weight-bold govuk-body-xs hackney-body-xs hackney-appointment-trade">
+          <%= work_order.trade %>
+        </span>
+      </th>
+    </tr>
+    <tr>
+      <th scope="row">Supplier:</th>
+      <td>
+        <%= work_order.repair_request.work_orders.supplier_reference %>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Operative:</th>
+      <td>
+        <%= work_order.latest_appointment.assigned_worker %>
+      </td>
+    </tr>
+  </tbody>
+</table>

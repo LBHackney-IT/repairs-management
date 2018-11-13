@@ -193,7 +193,7 @@ module Helpers
         {
           "id" => "01551932",
           "status" => "planned",
-          "outcome" => "nil",
+          "outcome" => nil,
           "assignedWorker" => "(PLM) Fatima Bagam TEST",
           "phonenumber" => nil,
           "priority" => "standard",
