@@ -4,7 +4,7 @@
 
 <script>
   window.addEventListener("load", function() {
-    var endpoint = "/api/work_orders/<%= work_order.reference %>/related_work_orders"
+    var endpoint = "/api/work_orders/<%= work_order_reference %>/related_work_orders"
     var ajaxTab = document.getElementById('related-tab');
 
     handleAjaxResponse(endpoint, ajaxTab);

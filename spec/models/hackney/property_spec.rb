@@ -70,19 +70,22 @@ describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   end
 end
 
-describe Hackney::Property, '#work_orders_plumbing_from_block_and_last_two_weeks' do
+describe Hackney::Property, '#possibly_related' do
   let(:trade) { Hackney::Trades::PLUMBING }
   let(:reference) { 'reference' }
   let(:klass_instance) { described_class.new(reference: reference) }
 
-  subject { klass_instance.work_orders_plumbing_from_block_and_last_two_weeks }
+  let(:two_weeks_ago) { Date.today - 2.weeks }
+  let(:today) { Date.today }
+
+  subject { klass_instance.possibly_related(from: two_weeks_ago, to: today) }
 
   it 'returns work orders which are not older than 2 week and have different reference than work_order.prop_ref' do
     expect(Hackney::WorkOrder).to receive(:for_property_block_and_trade).with(
       property_reference: reference,
       trade: trade,
-      date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
-      date_to: Date.today.strftime("%d-%m-%Y")
+      date_from: two_weeks_ago.strftime("%d-%m-%Y"),
+      date_to: today.strftime("%d-%m-%Y")
     )
     subject
   end

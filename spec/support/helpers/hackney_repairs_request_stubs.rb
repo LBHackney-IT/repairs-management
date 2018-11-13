@@ -136,8 +136,8 @@ module Helpers
           reference: '00014665',
           status: 200,
           trade: 'Plumbing',
-          date_from: (Date.today - 2.weeks).strftime("%d-%m-%Y"),
-          date_to: Date.today.strftime("%d-%m-%Y"),
+          date_from: '17-04-2018',
+          date_to: '05-06-2018',
           body: repairs_work_order_block_by_trade_response(trade: trade, reference: reference)
           )
 

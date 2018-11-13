@@ -35,7 +35,7 @@
 
   <%= render 'work_order_repairs_history', work_order_reference: @work_order.reference %>
   <%= render 'work_order_notes', work_order_reference: @work_order.reference %>
-  <%= render 'work_order_possibly_related', property: @work_order.property %>
-  <%= render 'work_order_related', work_order: @work_order %>
+  <%= render 'work_order_possibly_related', work_order_reference: @work_order.reference %>
+  <%= render 'work_order_related', work_order_reference: @work_order.reference %>
   <%= render 'work_order_documents', work_order_reference: @work_order.reference %>
 </div>
