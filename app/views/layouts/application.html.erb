@@ -22,6 +22,18 @@
 
   <meta property="og:image" content="/assets/images/govuk-opengraph-image.png">
 
+  <% if ENV['GOOGLE_ANALYTICS'] %>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GOOGLE_ANALYTICS'] %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '<%= ENV['GOOGLE_ANALYTICS'] %>');
+  </script>
+  <% end %>
+
   <% if ENV['HOT_JAR_ID'] %>
   <script>
     (function(h,o,t,j,a,r){
