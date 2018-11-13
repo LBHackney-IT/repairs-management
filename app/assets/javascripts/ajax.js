@@ -19,7 +19,7 @@ function handleAjaxResponse(endpoint, ajaxTab) {
   request.send();
 }
 
-function handleAjaxRepairsHistoryFiveYears(endpoint, ajaxTab) {
+function handleAjaxRepairsHistoryFiveYears(endpoint) {
   handleClickShowRepairsHistoryBtn();
 
   var ajaxTab = document.getElementById('repair-history-tab');
