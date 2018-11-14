@@ -8,15 +8,17 @@ module Api
       repairs_history_data(years_ago: 5)
     end
 
-    def repairs_history_data(years_ago: 2)
+    def repairs_history_data(years_ago: params[:years_ago]&.to_i || 2)
       property = Hackney::Property.find(reference)
-      property_reference = property.reference
+
+      if years_ago == 2
+        @endpoint_5_years = "/api/properties/#{property.reference}/repairs_history_5_years"
+      end
 
       @property_hierarchy = property.dwelling_work_orders_hierarchy(years_ago)
-      @trades = property.trades_hierarchy_work_orders(years_ago)
-      @endpoint = "/api/properties/#{property_reference}/repairs_history_5_years"
 
       if @property_hierarchy.any?
+        @trades = property.trades_hierarchy_work_orders(years_ago)
         render 'repairs_history'
       else
         render 'no_repairs_history'

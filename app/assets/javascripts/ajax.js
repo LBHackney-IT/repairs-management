@@ -20,7 +20,7 @@ function handleAjaxResponse(endpoint, ajaxTab) {
 }
 
 function handleAjaxRepairsHistoryFiveYears(endpoint) {
-  handleClickShowRepairsHistoryBtn();
+  showLoadingMessage();
 
   var ajaxTab = document.getElementById('repair-history-tab');
 
@@ -45,7 +45,7 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
   request.send();
 }
 
-function handleClickShowRepairsHistoryBtn() {
+function showLoadingMessage() {
   var loadBtn = document.getElementById('load-repair-history-btn');
   var loadingText = document.createElement('p');
 
@@ -62,13 +62,10 @@ function handleRepairHistoryYearsInfoText() {
 
   for(var i = 0; i < repairHistoryYearsInfo.length; i++) {
     repairHistoryYearsInfo[i].classList.remove('hidden');
-  }
-
-  for(var i = 0; i < repairHistoryYearsInfo.length; i++) {
     if (document.querySelector('.hackney-work-order-table')) {
-      repairHistoryYearsInfo[i].innerHTML = 'Repairs history is showing jobs raised in the last <strong>5 years</strong>.'
+      repairHistoryYearsInfo[i].innerHTML = 'Repairs history is showing jobs raised in the <strong>last 5 years</strong>.'
     } else {
-      repairHistoryYearsInfo[i].innerHTML = 'There are no work orders within the last <strong>5 years</strong>.'
+      repairHistoryYearsInfo[i].innerHTML = 'There are no work orders within the <strong>last 5 years</strong>.'
     }
   }
 
