@@ -7,6 +7,49 @@
     var endpoint = "/api/work_orders/<%= work_order_reference %>/possibly_related_work_orders";
     var ajaxTab = document.getElementById('possibly-related-work-orders');
 
-    handleAjaxResponse(endpoint, ajaxTab);
+    ajax(endpoint,
+         function(request) {
+           ajaxTab.innerHTML = request.response;
+           loadAddresses()
+         },
+         function() {
+           ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
+         });
+
+    function loadAddresses() {
+      var addressElements = document.getElementsByClassName("possibly-related-address");
+      var propertyIds = [];
+
+      for(var i = 0; i < addressElements.length; i++) {
+        propertyIds.push(addressElements[i].dataset.propertyref)
+      }
+
+      ajax('/api/properties/addresses?property_ids=' + propertyIds,
+        function (response) {
+          var addressMap = JSON.parse(response.responseText);
+
+          for(var i = 0; i < addressElements.length; i++) {
+            var address = addressElements[i];
+            while (address.hasChildNodes()) {
+              address.removeChild(address.firstChild);
+            }
+
+            addressMap[address.dataset.propertyref].forEach(function(line) {
+              p = document.createElement("p");
+              p.appendChild(document.createTextNode(line));
+              address.appendChild(p)
+            });
+
+            address.title = addressMap[address.dataset.propertyref].join(' ')
+          }
+        },
+        function () {
+          for(var i = 0; i < addressElements.length; i++) {
+            addressElements[i].innerHTML = 'Error'
+          }
+        }
+      );
+    }
+
   });
 </script>

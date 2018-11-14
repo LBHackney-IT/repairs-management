@@ -23,6 +23,10 @@ Rails.application.routes.draw do
       member do
         get :repairs_history
       end
+
+      collection do
+        get :addresses
+      end
     end
 
     resources :work_orders, only: [], param: :ref do
