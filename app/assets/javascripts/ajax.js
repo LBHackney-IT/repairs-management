@@ -57,14 +57,22 @@ function handleClickShowRepairsHistoryBtn() {
 }
 
 function handleRepairHistoryYearsInfoText() {
-  var repairHistoryYearsInfo = document.querySelector('.repair-history-years-info')
-  repairHistoryYearsInfo.classList.remove('hidden');
+  var repairHistoryYearsInfo = document.querySelectorAll('.repair-history-years-info');
+  var loadRepairsDiv = document.querySelectorAll('.load-repairs-history');
 
-  if (document.querySelector('.hackney-work-order-table')) {
-    repairHistoryYearsInfo.innerHTML = 'Repairs history is showing jobs raised in the last <strong>5 years</strong>.'
-  } else {
-    repairHistoryYearsInfo.innerHTML = 'There are no work orders within the last <strong>5 years</strong>.'
+  for(var i = 0; i < repairHistoryYearsInfo.length; i++) {
+    repairHistoryYearsInfo[i].classList.remove('hidden');
   }
 
-  document.querySelector('.load-repairs-history').classList.add('hidden');
+  for(var i = 0; i < repairHistoryYearsInfo.length; i++) {
+    if (document.querySelector('.hackney-work-order-table')) {
+      repairHistoryYearsInfo[i].innerHTML = 'Repairs history is showing jobs raised in the last <strong>5 years</strong>.'
+    } else {
+      repairHistoryYearsInfo[i].innerHTML = 'There are no work orders within the last <strong>5 years</strong>.'
+    }
+  }
+
+  for(var i = 0; i < loadRepairsDiv.length; i++) {
+    loadRepairsDiv[i].parentNode.removeChild(loadRepairsDiv[i]);
+  }
 }
