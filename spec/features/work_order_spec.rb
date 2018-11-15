@@ -131,26 +131,28 @@ RSpec.describe 'Work order' do
     expect(page).not_to have_content "Repairs history is showing jobs raised in the last 2 years."
   end
 
+  scenario "Expect button click to trigger expected behaviour", js: true do
+    stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2],
+                                          body: work_orders_by_property_reference_payload + work_orders_by_property_reference_payload__different_property)
+
+    within('#repair-history-tab') do
+      expect(page).to have_selector 'label', text: 'Estate', count: 1
+      expect(page).to have_selector 'label', text: 'Block', count: 1
+    end
+
+    choose('hierarchy', option: 'hierarchy-1')
+
+    visit "/api/properties/#{property_reference1}/repairs_history?years_ago=5"
+
+    expect(page).to have_content "Loading repairs history"
+  end
+
   scenario "There are no work orders within the last 2 years but there are within the last 5", js: true do
     stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2], body: [])
 
-    visit work_order_path('01551932')
     expect(page).to have_content 'There are no work orders within the last 2 years.'
 
-    stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2], body: [
-      work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
-      work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
-    ])
-
-    within('.load-repairs-history') do
-      click_on 'Show last 5 years'
-    end
-
-    expect(page).to have_content 'Problem 1'
-    expect(page).to have_content 'Problem 2'
-    expect(page).to have_link("12345678", href: work_order_path("12345678"))
-    expect(page).to have_link("87654321", href: work_order_path("87654321"))
-    expect(page).to have_content "Repairs history is showing jobs raised in the last 5 years."
+    expect(page).to have_selector(:button, 'Show last 5 years')
   end
 
   scenario "There are no work orders within the last 5 years", js: true do

@@ -1,0 +1,26 @@
+.govuk-button {
+  background-color: hackney-colour('housing-2');
+
+  &:hover {
+    background-color: #10767c;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+  }
+}
+
+.govuk-button[disabled="disabled"],
+.govuk-button[disabled] {
+  opacity: (.5);
+  background: hackney-colour('housing-2');
+
+  &:hover {
+    background-color: hackney-colour('housing-2');
+    cursor: default;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
