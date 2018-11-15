@@ -1,3 +1,4 @@
+$govuk-page-width: 1200px;
 $govuk-font-family: 'Arial', sans-serif;
 @import "govuk-frontend/all";
 @import "hackney_colour";
@@ -43,11 +44,6 @@ $govuk-font-family: 'Arial', sans-serif;
     }
   }
 
-.turbolinks-progress-bar {
-  height: 3px;
-  background-color: hackney-colour("housing-2");
-}
-
 .hackney-page-header {
   background-color: govuk-colour("grey-4");
   border-bottom: 1px solid govuk-colour("grey-2");
@@ -60,7 +56,7 @@ $govuk-font-family: 'Arial', sans-serif;
 
 .hackney-width-container {
   @include govuk-media-query($from: tablet) {
-    margin: 0 $govuk-gutter * 2;
+    margin: 0 30px;
   }
 }
 
@@ -108,3 +104,16 @@ $govuk-font-family: 'Arial', sans-serif;
   }
 }
 
+// govuk styling specifies this as ems, and the other as pixels,
+// so need to overwrite it directly
+@media (min-width: 40.0625em) {
+  .govuk-width-container {
+    margin: 0 ($govuk-gutter / 6);
+  }
+}
+
+@media (min-width: 1260px) {
+  .govuk-width-container {
+    margin: 0 auto;
+  }
+}

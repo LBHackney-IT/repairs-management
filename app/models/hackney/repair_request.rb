@@ -1,7 +1,7 @@
 class Hackney::RepairRequest
   include ActiveModel::Model
 
-  attr_accessor :reference, :description, :contact, :priority
+  attr_accessor :reference, :description, :contact, :priority, :work_orders
 
   NULL_OBJECT = self.new(description: 'Repair info missing')
 
@@ -15,7 +15,8 @@ class Hackney::RepairRequest
       reference: attributes['repairRequestReference'].strip,
       description: attributes['problemDescription'],
       contact: Hackney::Contact.build(attributes.dig('contact') || {}),
-      priority: attributes['priority']
+      priority: attributes['priority'],
+      work_orders: Hackney::Supplier.build(attributes.dig('workOrders')&.first || {})
     )
   end
 end

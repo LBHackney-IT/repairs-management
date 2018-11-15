@@ -33,10 +33,18 @@
 }
 
 .hackney-appointment__tag {
-  background: hackney-colour("housing-2");
-  color: govuk-colour("white");
+  color: govuk-colour('white');
   padding: 4px 10px;
   font-weight: bold;
   display: inline-block;
   text-align: center;
+}
+.hackney-appointment__tag-not-complete {
+  background-color: crimson;
+}
+.hackney-appointment__tag-complete {
+  background-color: govuk-colour('grey-2');
+}
+.hackney-appointment__tag-planned {
+  background-color: #009ca6;
 }
