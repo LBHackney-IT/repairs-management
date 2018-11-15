@@ -46,14 +46,15 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
 }
 
 function showLoadingMessage() {
-  var loadBtn = document.getElementById('load-repair-history-btn');
-  var loadingText = document.createElement('p');
+  var loadRepairsDiv = document.querySelectorAll('.load-repairs-history');
+  var loadingText = document.querySelectorAll('.loading-repairs-history-text');
+  var repairHistoryYearsInfo = document.querySelectorAll('.repair-history-years-info');
 
-  document.querySelector('.repair-history-years-info').classList.add('hidden')
-  loadingText.innerHTML = 'Loading repairs history'
-
-  loadBtn.parentNode.replaceChild(loadingText, loadBtn);
-  loadingText.classList.add('ajax-loading', 'govuk-caption-m');
+  for(var i = 0; i < loadRepairsDiv.length; i++) {
+    repairHistoryYearsInfo[i].classList.add('hidden');
+    loadingText[i].classList.remove('hidden');
+    loadRepairsDiv[i].parentNode.replaceChild(loadingText[i], loadRepairsDiv[i]);
+  }
 }
 
 function handleRepairHistoryYearsInfoText() {

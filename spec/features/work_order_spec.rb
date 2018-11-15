@@ -119,7 +119,7 @@ RSpec.describe 'Work order' do
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
 
-    within('#load-repair-history-btn') do
+    within('.load-repairs-history') do
       click_on 'Show last 5 years'
     end
 
@@ -142,7 +142,7 @@ RSpec.describe 'Work order' do
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
 
-    within('#load-repair-history-btn') do
+    within('.load-repairs-history') do
       click_on 'Show last 5 years'
     end
 
@@ -158,7 +158,7 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
-    within('#load-repair-history-btn') do
+    within('.load-repairs-history') do
       click_on 'Show last 5 years'
     end
 
