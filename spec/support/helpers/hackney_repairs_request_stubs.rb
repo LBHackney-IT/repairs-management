@@ -415,10 +415,12 @@ module Helpers
     def stub_hackney_work_orders_for_property(
           reference: '00014665',
           status: 200,
-          date_from: (Date.today - 2.years).strftime("%d-%m-%Y"),
+          years_ago: 2,
           date_to: Date.tomorrow.strftime("%d-%m-%Y"),
           body: work_orders_by_property_reference_payload
           )
+
+      date_from = (Date.today - years_ago.years).strftime("%d-%m-%Y")
 
       reference = [reference] if reference.is_a? String
       references = reference.map{|r| "propertyReference=#{r}" }.join('&')

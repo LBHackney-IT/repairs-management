@@ -19,6 +19,10 @@ $govuk-font-family: 'Arial', sans-serif;
   animation: dots 1s steps(5, end) infinite;
 }
 
+.hackney-focus-colour:focus {
+  outline: 3px solid hackney-colour('housing-3');
+}
+
 @keyframes dots {
   0%, 20% {
     color: #009ca6;

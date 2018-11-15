@@ -1,11 +1,11 @@
-<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="property-repair-history-tab">
+<div class="govuk-tabs__panel hackney-work-order-tabs-info" id="repair-history-tab">
   <p class="govuk-caption-m ajax-loading">Loading repairs history data</p>
 </div>
 
 <script>
   window.addEventListener("load", function() {
-    var endpoint = "/api/properties/<%= property_reference %>/repairs_history"
-    var ajaxTab = document.getElementById('property-repair-history-tab');
+    var endpoint = "<%= repairs_history_api_property_path(property_reference, years_ago: 2) %>";
+    var ajaxTab = document.getElementById('repair-history-tab');
 
     handleAjaxResponse(endpoint, ajaxTab);
   })

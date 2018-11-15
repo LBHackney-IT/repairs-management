@@ -54,15 +54,16 @@ end
 
 describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   let(:reference) { 'ref' }
+  let(:years_ago) { 2 }
   let(:result) { {} }
-  let(:klass_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
+  let(:class_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
   let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
 
   before do
-    allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(klass_instance).and_return(associated_with_property_double)
+    allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(class_instance).and_return(associated_with_property_double)
   end
 
-  subject { klass_instance.dwelling_work_orders_hierarchy }
+  subject { class_instance.dwelling_work_orders_hierarchy(years_ago) }
 
   it 'calls valid class with a property parameter' do
     expect(associated_with_property_double).to receive(:call)
@@ -73,12 +74,12 @@ end
 describe Hackney::Property, '#possibly_related' do
   let(:trade) { Hackney::Trades::PLUMBING }
   let(:reference) { 'reference' }
-  let(:klass_instance) { described_class.new(reference: reference) }
+  let(:class_instance) { described_class.new(reference: reference) }
 
   let(:two_weeks_ago) { Date.today - 2.weeks }
   let(:today) { Date.today }
 
-  subject { klass_instance.possibly_related(from: two_weeks_ago, to: today) }
+  subject { class_instance.possibly_related(from: two_weeks_ago, to: today) }
 
   it 'returns work orders which are not older than 2 week and have different reference than work_order.prop_ref' do
     expect(Hackney::WorkOrder).to receive(:for_property_block_and_trade).with(

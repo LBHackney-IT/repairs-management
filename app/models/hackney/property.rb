@@ -41,12 +41,8 @@ class Hackney::Property
     )
   end
 
-  def dwelling_work_orders_hierarchy
-    @_dwelling_work_orders_hierarchy ||= Hackney::WorkOrders::AssociatedWithProperty.new(self).call
-  end
-
-  def trades_hierarchy_work_orders
-    @_trades ||= dwelling_work_orders_hierarchy.values.flatten.map(&:trade).uniq.sort
+  def dwelling_work_orders_hierarchy(years_ago)
+    Hackney::WorkOrders::AssociatedWithProperty.new(self).call(years_ago)
   end
 
   def is_estate?
