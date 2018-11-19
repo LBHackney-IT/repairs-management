@@ -339,7 +339,7 @@ RSpec.describe 'Work order' do
 
   scenario 'The property is an estate', js: true do
     stub_hackney_work_orders_for_property(reference: property_reference2, body: work_orders_by_property_reference_payload__different_property)
-    stub_hackney_property_hierarchy(body: property_hierarchy_response_body__estate)
+    stub_hackney_repairs_properties(body: property_response_payload(level_code: 2))
     stub_hackney_repairs_work_order_block_by_trade(status: 403, body: {
       "developerMessage"=>"Exception of type 'HackneyRepairs.Actions.InvalidParameterException' was thrown.",
       "userMessage"=>"403 Forbidden - Invalid parameter provided."

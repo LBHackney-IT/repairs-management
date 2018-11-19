@@ -1,6 +1,8 @@
 class Hackney::Property
   include ActiveModel::Model
 
+  ESTATE_LEVEL = 2
+
   attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode
 
   def self.find(property_reference)
@@ -46,6 +48,6 @@ class Hackney::Property
   end
 
   def is_estate?
-    hierarchy.map(&:description) - ['Owner'] == ['Estate']
+    level_code == ESTATE_LEVEL
   end
 end
