@@ -80,12 +80,16 @@ module Helpers
     def property_response_payload(address: "Homerton High Street 12 Banister House",
                                   postcode: "E9 6BH",
                                   property_reference: "00014665",
-                                  maintainable: true)
+                                  maintainable: true,
+                                  level_code: 7,
+                                  description: "Dwelling")
       {
         "address" => address,
         "postcode" => postcode,
         "propertyReference" => property_reference,
-        "maintainable" => maintainable
+        "maintainable" => maintainable,
+        "levelCode" => level_code,
+        "description" => description
       }
     end
 

@@ -222,3 +222,18 @@ describe Hackney::Property, '#for_postcode' do
     end
   end
 end
+
+describe Hackney::Property, '#is_estate?' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  it 'returns false if a property is not an estate' do
+    property = Hackney::Property.build(property_response_payload)
+    expect(property.is_estate?).to eq(false)
+  end
+
+  it 'returns true if a property is an estate' do
+    property = Hackney::Property.build(property_response_payload(level_code: 2))
+    expect(property.is_estate?).to eq(true)
+  end
+end
+
