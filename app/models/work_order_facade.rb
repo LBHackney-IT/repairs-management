@@ -9,7 +9,7 @@ class WorkOrderFacade
 
   def related_properties
     refs = related.map(&:prop_ref).uniq
-    refs.map {|prop_ref| Hackney::Property.find(prop_ref)}
+    Hackney::Property.find_all(refs)
   end
 
   def related_for_property(property)

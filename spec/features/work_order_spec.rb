@@ -42,7 +42,12 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders_by_reference(
       references: ["11235813"],
       body: [work_order_response_payload("workOrderReference" => "11235813",
-                                         "problemDescription" => "A related work order")]
+                                         "problemDescription" => "A related work order",
+                                         "propertyReference" => "00009999")]
+    )
+    stub_hackney_repairs_properties_by_references(
+      references: ["00009999"],
+      body: [property_response_payload(property_reference: '00009999', address: 'Taj Mahal')]
     )
 
     sign_in
