@@ -120,6 +120,14 @@ module HackneyAPI
       )
     end
 
+    def get_properties_by_references(references)
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/properties/by_references",
+        params: { reference: references }
+      )
+    end
+
     def get_property_hierarchy(reference)
       request(
         http_method: :get,
