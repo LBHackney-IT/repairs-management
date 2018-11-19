@@ -1,155 +1,19 @@
 require 'rails_helper'
 
-describe Hackney::Property, '.build' do
-  include Helpers::HackneyRepairsRequestStubs
-
-  it 'builds a property from the API response' do
-    model = described_class.build(property_response_payload)
-
-    expect(model).to be_a(Hackney::Property)
-    expect(model.reference).to eq('00014665')
-  end
-end
-
-describe Hackney::Property, '#find' do
-  include Helpers::HackneyRepairsRequestStubs
-
-  context 'when the API responds with a record' do
-    before do
-      stub_hackney_repairs_properties
-    end
-
-    it 'finds a property' do
-      property = described_class.find('00014665')
-
-      expect(property).to be_a(Hackney::Property)
-      expect(property.reference).to eq('00014665')
-    end
-  end
-
-  context 'when the API responds with RecordNotFound' do
-    before do
-      stub_hackney_repairs_properties(status: 404)
-    end
-
-    it 'raises a RecordNotFoundError error' do
-      expect {
-        described_class.find('00014665')
-      }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
-    end
-  end
-
-  context 'when the API fails' do
-    before do
-      stub_hackney_repairs_properties(status: 500)
-    end
-
-    it 'raises an api error' do
-      expect {
-        described_class.find('00014665')
-      }.to raise_error HackneyAPI::RepairsClient::ApiError
-    end
-  end
-end
-
-describe Hackney::Property, '#find_all' do
-  include Helpers::HackneyRepairsRequestStubs
-
-  it 'fetches multiple properties' do
-    stub_hackney_repairs_properties_by_references(references: ["00000001", "00000002"], body: [
-      property_response_payload(property_reference: "00000001", postcode: "ABC 123"),
-      property_response_payload(property_reference: "00000002", postcode: "CBA 321"),
-    ])
-
-    properties = described_class.find_all(["00000001", "00000002"])
-
-    expect(properties.size).to eq 2
-    expect(properties.first.reference).to eq '00000001'
-    expect(properties.first.postcode).to eq 'ABC 123'
-    expect(properties.last.reference).to eq '00000002'
-    expect(properties.last.postcode).to eq 'CBA 321'
-  end
-
-  it 'returns [] if the references are not found' do
-    stub_hackney_repairs_properties_by_references(status: 404, references: ["00000001"], body: {
-      "developerMessage": "Exception of type 'HackneyRepairs.Actions.MissingWorkOrderException' was thrown.",
-      "userMessage": "Could not find one or more of the given work orders"
-    })
-
-    expect(described_class.find_all(["00000001"])).to eq []
-  end
-end
-
-describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
-  let(:reference) { 'ref' }
-  let(:years_ago) { 2 }
-  let(:result) { {} }
-  let(:class_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
-  let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
-
-  before do
-    allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(class_instance).and_return(associated_with_property_double)
-  end
-
-  subject { class_instance.dwelling_work_orders_hierarchy(years_ago) }
-
-  it 'calls valid class with a property parameter' do
-    expect(associated_with_property_double).to receive(:call)
-    expect(subject).to eq(result)
-  end
-end
-
-describe Hackney::Property, '#possibly_related' do
-  let(:trade) { Hackney::Trades::PLUMBING }
-  let(:reference) { 'reference' }
-  let(:class_instance) { described_class.new(reference: reference) }
-
-  let(:two_weeks_ago) { Date.today - 2.weeks }
-  let(:today) { Date.today }
-
-  subject { class_instance.possibly_related(from: two_weeks_ago, to: today) }
-
-  it 'returns work orders which are not older than 2 week and have different reference than work_order.prop_ref' do
-    expect(Hackney::WorkOrder).to receive(:for_property_block_and_trade).with(
-      property_reference: reference,
-      trade: trade,
-      date_from: two_weeks_ago.strftime("%d-%m-%Y"),
-      date_to: today.strftime("%d-%m-%Y")
-    )
-    subject
-  end
-end
-
 describe Hackney::Property do
-  describe '#hierarchy' do
-    let(:hierarchy_object) do
-      {
-        'propertyReference' => '1',
-        'levelCode' => '2',
-        'description' => '3',
-        'majorReference' => '4',
-        'address' => '5',
-        'postCode' => '6'
-      }
-    end
-    let(:api_response) { [hierarchy_object] }
-    let(:repairs_client_double) { instance_double(HackneyAPI::RepairsClient, get_property_hierarchy: api_response) }
+  include Helpers::HackneyRepairsRequestStubs
 
-    before do
-      allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
-    end
+  describe '.build for the property api' do
 
-    subject { build :property, reference: 11111 }
+    it 'builds a property from the API response' do
+      model = described_class.build(property_response_payload)
 
-    it 'returns an array with instances of Hackney::Property built based on an API response' do
-      expect(repairs_client_double).to receive(:get_property_hierarchy).with(subject.reference)
-      expect(described_class).to receive(:build).once
-
-      subject.hierarchy
+      expect(model).to be_a(Hackney::Property)
+      expect(model.reference).to eq('00014665')
     end
   end
 
-  describe '.build' do
+  describe '.build for the hierarchy json' do
     let(:postcode) { 'postcode' }
     let(:reference) { 'reference' }
     let(:level_code) { 'level_code' }
@@ -179,61 +43,194 @@ describe Hackney::Property do
       expect(subject.address).to eq(address)
     end
   end
-end
 
-describe Hackney::Property, '.build' do
-  include Helpers::HackneyRepairsRequestStubs
 
-  it 'builds a property from the API response' do
-    model = described_class.build(property_by_postcode_response_body[:results].first)
-    expect(model).to be_a(Hackney::Property)
+  describe '.build for the postcode search' do
 
-    expect(model.address).to eq("Homerton High Street 10 Banister House")
-    expect(model.postcode).to eq("E9 6BH")
-    expect(model.reference).to eq("00014663")
-    expect(model.description).to eq("Dwelling")
+    it 'builds a property from the API response' do
+      model = described_class.build(property_by_postcode_response_body[:results].first)
+      expect(model).to be_a(Hackney::Property)
+
+      expect(model.address).to eq("Homerton High Street 10 Banister House")
+      expect(model.postcode).to eq("E9 6BH")
+      expect(model.reference).to eq("00014663")
+      expect(model.description).to eq("Dwelling")
+    end
   end
-end
 
-describe Hackney::Property, '#for_postcode' do
-  include Helpers::HackneyRepairsRequestStubs
+  describe '.find' do
 
-  context 'when the API responds with RecordNotFound' do
+    context 'when the API responds with a record' do
+      before do
+        stub_hackney_repairs_properties
+      end
+
+      it 'finds a property' do
+        property = described_class.find('00014665')
+
+        expect(property).to be_a(Hackney::Property)
+        expect(property.reference).to eq('00014665')
+      end
+    end
+
+    context 'when the API responds with RecordNotFound' do
+      before do
+        stub_hackney_repairs_properties(status: 404)
+      end
+
+      it 'raises a RecordNotFoundError error' do
+        expect {
+          described_class.find('00014665')
+        }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+      end
+    end
+
+    context 'when the API fails' do
+      before do
+        stub_hackney_repairs_properties(status: 500)
+      end
+
+      it 'raises an api error' do
+        expect {
+          described_class.find('00014665')
+        }.to raise_error HackneyAPI::RepairsClient::ApiError
+      end
+    end
+  end
+
+  describe '.find_all' do
+
+    it 'fetches multiple properties' do
+      stub_hackney_repairs_properties_by_references(references: ["00000001", "00000002"], body: [
+        property_response_payload(property_reference: "00000001", postcode: "ABC 123"),
+        property_response_payload(property_reference: "00000002", postcode: "CBA 321"),
+      ])
+
+      properties = described_class.find_all(["00000001", "00000002"])
+
+      expect(properties.size).to eq 2
+      expect(properties.first.reference).to eq '00000001'
+      expect(properties.first.postcode).to eq 'ABC 123'
+      expect(properties.last.reference).to eq '00000002'
+      expect(properties.last.postcode).to eq 'CBA 321'
+    end
+
+    it 'returns [] if the references are not found' do
+      stub_hackney_repairs_properties_by_references(status: 404, references: ["00000001"], body: {
+        "developerMessage": "Exception of type 'HackneyRepairs.Actions.MissingWorkOrderException' was thrown.",
+        "userMessage": "Could not find one or more of the given work orders"
+      })
+
+      expect(described_class.find_all(["00000001"])).to eq []
+    end
+  end
+
+  describe '.for_postcode' do
+
+    context 'when the API responds with RecordNotFound' do
+      before do
+        stub_hackney_property_by_postcode(status: 404)
+      end
+
+      it 'raises a RecordNotFoundError error' do
+        expect {
+          described_class.for_postcode('E96BH')
+        }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+      end
+    end
+
+    context 'when the API fails' do
+      before do
+        stub_hackney_property_by_postcode(status: 500)
+      end
+
+      it 'raises an api error' do
+        expect {
+          described_class.for_postcode('E96BH')
+        }.to raise_error HackneyAPI::RepairsClient::ApiError
+      end
+    end
+  end
+
+  describe '#possibly_related' do
+    let(:trade) { Hackney::Trades::PLUMBING }
+    let(:reference) { 'reference' }
+    let(:class_instance) { described_class.new(reference: reference) }
+
+    let(:two_weeks_ago) { Date.today - 2.weeks }
+    let(:today) { Date.today }
+
+    subject { class_instance.possibly_related(from: two_weeks_ago, to: today) }
+
+    it 'returns work orders which are not older than 2 week and have different reference than work_order.prop_ref' do
+      expect(Hackney::WorkOrder).to receive(:for_property_block_and_trade).with(
+        property_reference: reference,
+        trade: trade,
+        date_from: two_weeks_ago.strftime("%d-%m-%Y"),
+        date_to: today.strftime("%d-%m-%Y")
+      )
+      subject
+    end
+  end
+
+  describe '#hierarchy' do
+    let(:hierarchy_object) do
+      {
+        'propertyReference' => '1',
+        'levelCode' => '2',
+        'description' => '3',
+        'majorReference' => '4',
+        'address' => '5',
+        'postCode' => '6'
+      }
+    end
+    let(:api_response) { [hierarchy_object] }
+    let(:repairs_client_double) { instance_double(HackneyAPI::RepairsClient, get_property_hierarchy: api_response) }
+
     before do
-      stub_hackney_property_by_postcode(status: 404)
+      allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
     end
 
-    it 'raises a RecordNotFoundError error' do
-      expect {
-        described_class.for_postcode('E96BH')
-      }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+    subject { build :property, reference: 11111 }
+
+    it 'returns an array with instances of Hackney::Property built based on an API response' do
+      expect(repairs_client_double).to receive(:get_property_hierarchy).with(subject.reference)
+      expect(described_class).to receive(:build).once
+
+      subject.hierarchy
     end
   end
 
-  context 'when the API fails' do
+  describe '#is_estate?' do
+
+    it 'returns false if a property is not an estate' do
+      property = Hackney::Property.build(property_response_payload)
+      expect(property.is_estate?).to eq(false)
+    end
+
+    it 'returns true if a property is an estate' do
+      property = Hackney::Property.build(property_response_payload(level_code: 2))
+      expect(property.is_estate?).to eq(true)
+    end
+  end
+
+  describe '#dwelling_work_orders_hierarchy' do
+    let(:reference) { 'ref' }
+    let(:years_ago) { 2 }
+    let(:result) { {} }
+    let(:class_instance) { described_class.new(reference: reference, address: 'address', postcode: 'postcode') }
+    let(:associated_with_property_double) { instance_double(Hackney::WorkOrders::AssociatedWithProperty, call: result) }
+
     before do
-      stub_hackney_property_by_postcode(status: 500)
+      allow(Hackney::WorkOrders::AssociatedWithProperty).to receive(:new).with(class_instance).and_return(associated_with_property_double)
     end
 
-    it 'raises an api error' do
-      expect {
-        described_class.for_postcode('E96BH')
-      }.to raise_error HackneyAPI::RepairsClient::ApiError
+    subject { class_instance.dwelling_work_orders_hierarchy(years_ago) }
+
+    it 'calls valid class with a property parameter' do
+      expect(associated_with_property_double).to receive(:call)
+      expect(subject).to eq(result)
     end
-  end
-end
-
-describe Hackney::Property, '#is_estate?' do
-  include Helpers::HackneyRepairsRequestStubs
-
-  it 'returns false if a property is not an estate' do
-    property = Hackney::Property.build(property_response_payload)
-    expect(property.is_estate?).to eq(false)
-  end
-
-  it 'returns true if a property is an estate' do
-    property = Hackney::Property.build(property_response_payload(level_code: 2))
-    expect(property.is_estate?).to eq(true)
   end
 end
 
