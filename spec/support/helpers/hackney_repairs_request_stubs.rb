@@ -96,6 +96,14 @@ module Helpers
         .to_return(status: status, body: body.to_json)
     end
 
+    # GET /#{API_VERSION}/properties/by_references?reference=:reference
+
+    def stub_hackney_repairs_properties_by_references(status: 200, references: [], body: [])
+      params = references.map{ |ref| "reference=" + ref}.join('&')
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/by_references?#{params}")
+        .to_return(status: status, body: body.to_json)
+    end
+
     # GET #{API_VERSION}/repairs/:reference/block/work_orders?trade=:trade
 
     def repairs_work_order_block_by_trade_response(
