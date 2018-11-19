@@ -18,7 +18,7 @@ module Api
 
     def possibly_related_work_orders
       work_order = Hackney::WorkOrder.find(reference)
-      property = find_and_cache_property(work_order)
+      property = work_order.property
 
       if property.is_estate?
         render 'possibly_related_for_estate'
@@ -32,8 +32,10 @@ module Api
         if work_orders.empty?
           render 'possibly_related_empty_result'
         else
+          properties = Hackney::Property.find_all(work_orders.map(&:prop_ref).uniq)
+
           @possibly_related_to_property = work_orders.map do |wo|
-            [wo, find_and_cache_property(wo)]
+            [wo, find_matching_property(wo, properties)]
           end
           # render possibly_related_work_orders
         end
@@ -42,9 +44,8 @@ module Api
 
     private
 
-    def find_and_cache_property(work_order)
-      @_properties ||= {}
-      @_properties[work_order.prop_ref] || Hackney::Property.find(work_order.prop_ref)
+    def find_matching_property(work_order, properties)
+      properties.find { |property| property.reference == work_order.prop_ref }
     end
 
     def reference

@@ -452,10 +452,10 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Viewing the possibly related tab' do
-    stub_hackney_repairs_properties(
-      reference: '00012345',
-      body: property_response_payload(property_reference: '00012345', address: 'Buckingham  Palace')
-    )
+    stub_hackney_repairs_properties_by_references(
+        references: ["00012345"],
+        body: [property_response_payload(property_reference: '00012345', address: 'Buckingham  Palace')]
+        )
     stub_hackney_repairs_work_order_block_by_trade(
       body: repairs_work_order_block_by_trade_response(trade: 'Plumbing',
                                                        reference: '00012345',
