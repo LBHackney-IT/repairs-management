@@ -52,6 +52,34 @@ describe Hackney::Property, '#find' do
   end
 end
 
+describe Hackney::Property, '#find_all' do
+  include Helpers::HackneyRepairsRequestStubs
+
+  it 'fetches multiple properties' do
+    stub_hackney_repairs_properties_by_references(references: ["00000001", "00000002"], body: [
+      property_response_payload(property_reference: "00000001", postcode: "ABC 123"),
+      property_response_payload(property_reference: "00000002", postcode: "CBA 321"),
+    ])
+
+    properties = described_class.find_all(["00000001", "00000002"])
+
+    expect(properties.size).to eq 2
+    expect(properties.first.reference).to eq '00000001'
+    expect(properties.first.postcode).to eq 'ABC 123'
+    expect(properties.last.reference).to eq '00000002'
+    expect(properties.last.postcode).to eq 'CBA 321'
+  end
+
+  it 'returns [] if the references are not found' do
+    stub_hackney_repairs_properties_by_references(status: 404, references: ["00000001"], body: {
+      "developerMessage": "Exception of type 'HackneyRepairs.Actions.MissingWorkOrderException' was thrown.",
+      "userMessage": "Could not find one or more of the given work orders"
+    })
+
+    expect(described_class.find_all(["00000001"])).to eq []
+  end
+end
+
 describe Hackney::Property, '.dwelling_work_orders_hierarchy' do
   let(:reference) { 'ref' }
   let(:years_ago) { 2 }

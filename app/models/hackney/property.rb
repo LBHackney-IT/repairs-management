@@ -8,6 +8,19 @@ class Hackney::Property
     build(response)
   end
 
+  def self.find_all(references)
+    if references.any?
+      response = HackneyAPI::RepairsClient.new.get_properties_by_references(references)
+      response.map { |r| build(r) }
+    else
+      []
+    end
+  rescue HackneyAPI::RepairsClient::RecordNotFoundError => e
+    Rails.logger.error(e)
+    Appsignal.set_error(e, message: "Properties not found")
+    []
+  end
+
   def self.for_postcode(postcode)
     HackneyAPI::RepairsClient.new.get_property_by_postcode(postcode)["results"].map do |attributes|
       build(attributes)

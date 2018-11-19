@@ -173,6 +173,31 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
+  describe '#get_properties_by_references' do
+    it 'fetches multiple properties' do
+      json = '[{ "some": "stuff" }]'
+      stub_request(:get, "#{base_url}/#{api_version}/properties/by_references?reference=a&reference=b").to_return(status: 200, body: json)
+
+      expect(api_client.get_properties_by_references(['a', 'b'])).to eq([{"some" => "stuff"}])
+    end
+
+    it 'raises if the references are not found' do
+      json = <<-JSON
+        {
+          "developerMessage": "Exception of type 'HackneyRepairs.Actions.MissingWorkOrderException' was thrown.",
+          "userMessage": "Could not find one or more of the given properties"
+        }
+      JSON
+
+      stub_request(:get, "#{base_url}/#{api_version}/properties/by_references?reference=a").to_return(status: 404, body: json)
+
+      expect { api_client.get_properties_by_references(['a']) }.to(
+        raise_error(described_class::RecordNotFoundError).
+          with_message("#{api_version}/properties/by_references, {:reference=>[\"a\"]}")
+      )
+    end
+  end
+
   describe '#get_work_order_appointments' do
     subject { api_client.get_work_order_appointments(reference) }
 
