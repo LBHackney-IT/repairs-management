@@ -48,3 +48,7 @@ App is hosted on Unboxed's Heroku: [hackney-repairs pipeline](https://dashboard.
 
 ## Neo4j
 The neo4j web interface is on http://localhost:7474 . Password should be `neo4j`
+
+## Further documentation
+
+[Documentation](docs/Documentation.md)
