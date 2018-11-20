@@ -16,6 +16,16 @@ The following commands are available:
 | `./bin/test -f d path/to/file` | Run RSpec with options and files/directories |
 | `rspec --tag ~db_connection`   | Run tests that aren't reliant on neo4j/postgres |
 
+## Tips and Tricks for Docker
+
+To get the server running, type `docker-compose up`.
+
+To get a console running in Docker, first run `docker-compose up` and then in a separate terminal run `docker-compose run rails_app bash`.
+
+To be able to use `binding.pry`, you'll need to run `docker-compose run -p 3000:3000 rails_app bash` and then `bundle exec rails s`.
+
+When Docker starts going weird, stop the server, run `docker-compose down` and then start it up again. You might need to remove something in the `tmp` folder, but Docker will tell you about that.
+
 ## Environment variables
 
 Create a `.env` file and update it as needed using the `.env.test` as a template.
