@@ -42,6 +42,12 @@ Test are configured two ways: (1) `./bin/test` will run all tests in Docker Comp
 
 App is hosted on Unboxed's Heroku: [hackney-repairs pipeline](https://dashboard.heroku.com/pipelines/9820fae2-6834-4969-a4d6-774d00af55f1)
 
+## Active Directory
+
+To sign in to the app you'll need a Hackney account. Someone in Hackney will create a ticket for you, you can then call up the IT services to get your name and password. General details about account information are in 1password in the Hackney vault. Information for using the VPN is also in 1password.
+
+If setting up a review app on Heroku, you need to use the review app credentials. Those details are also in 1password.
+
 ## GOV.UK Frontend
 
 [https://github.com/alphagov/govuk-frontend](https://github.com/alphagov/govuk-frontend)
