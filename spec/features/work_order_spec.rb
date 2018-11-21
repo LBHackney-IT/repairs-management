@@ -135,7 +135,7 @@ RSpec.describe 'Work order' do
     stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2], body: [])
 
     visit work_order_path('01551932')
-    expect(page).to have_content 'There are no work orders within the last 2 years.'
+    expect(page).to have_content 'There are no work orders for this dwelling within the last 2 years.'
 
     stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2], body: [
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),

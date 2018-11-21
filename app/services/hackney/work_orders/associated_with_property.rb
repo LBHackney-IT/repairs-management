@@ -18,7 +18,8 @@ module Hackney
           data[description] << wo
         end
 
-        data.delete_if { |_, value|  value.empty? }
+        data
+
       end
 
       private
