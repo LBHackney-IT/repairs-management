@@ -1,5 +1,8 @@
-<div class='load-repairs-history' id= 'load-repair-history-btn'>
+<div class='load-repairs-history'>
   <button class='govuk-button hackney-focus-colour' onClick="handleAjaxRepairsHistoryFiveYears('<%= repairs_history_api_property_path(property_reference, years_ago: 5) %>')">
     Show last 5 years
   </button>
+  <div class="loading-repairs-history-text hidden ajax-loading govuk-caption-m">
+    Loading repairs history
+  </div>
 </div>
