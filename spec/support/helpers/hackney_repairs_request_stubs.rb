@@ -526,8 +526,8 @@ module Helpers
             "postcode" => "E9 6BH",
             "propertyReference" => "00014666",
             "levelCode" => "7",
-            "description": "Dwelling",
-            "majorReference": "00074486"
+            "description" => "Dwelling",
+            "majorReference" => "00074486"
           }
         ]
       }.merge(overrides)

@@ -64,14 +64,7 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
         work_order_response_payload('propertyReference' => property_hierarchy_estate.reference)
       ])
 
-      expect(subject.keys).to eq %w(Estate Free)
-    end
-
-    it 'returns an empty hash when there are no work orders for any property in the hierarchy' do
-      references = (property_hierarchy_response - [property_hierarchy_random]).map(&:reference)
-      stub_hackney_work_orders_for_property(reference: references, body: [])
-
-      expect(subject).to be_empty
+      expect(subject.keys).to eq %w(Estate Free Block Sub-Block Facilities Dwelling Non-Dwell)
     end
   end
 end

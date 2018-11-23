@@ -42,12 +42,17 @@
 
         <div class="repairs-history__years">
           <p class='repair-history-years-info govuk-body-s'>
-            Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
+            <% if work_orders.any? %>
+              Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
+            <% else %>
+              There are no work orders for this <%= @property.description.downcase %> within the <strong>last 2 years</strong>.
+            <% end %>
           </p>
           <%= render 'load_repairs_history_button', property_reference: @property.reference  %>
         </div>
 
       </div>
     </div>
+
   <% end %>
 </div>

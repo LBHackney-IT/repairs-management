@@ -62,7 +62,7 @@ function handleRepairHistoryYearsInfoText() {
 
   for(var i = 0; i < repairHistoryYearsInfo.length; i++) {
     repairHistoryYearsInfo[i].classList.remove('hidden');
-    if (document.querySelector('.hackney-work-order-table')) {
+    if (document.querySelector('.hackney-work-order-rows')) {
       repairHistoryYearsInfo[i].innerHTML = 'Repairs history is showing jobs raised in the <strong>last 5 years</strong>.'
     } else {
       repairHistoryYearsInfo[i].innerHTML = 'There are no work orders within the <strong>last 5 years</strong>.'
