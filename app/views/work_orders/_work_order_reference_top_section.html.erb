@@ -21,7 +21,7 @@
       <div class="hackney-main-section-info">
         <p class="govuk-body-s hackney-body-s">
           <span class="hackney-section-info-header govuk-body-xs hackney-body-xs">
-            Dwelling
+            <%= work_order.property.description %>
           </span><br>
           <% format_address(work_order.property.address).each do |line| %>
             <span class="govuk-!-font-weight-bold"><%= line %></span><br />
