@@ -1,5 +1,18 @@
-<div class='load-repairs-history' id= 'load-repair-history-btn'>
-  <button class='govuk-button hackney-focus-colour' onClick="handleAjaxRepairsHistoryFiveYears('<%= repairs_history_api_property_path(property_reference, years_ago: 5) %>')">
-    Show last 5 years
-  </button>
+<div class="repairs-history__years">
+  <p class='repair-history-years-info govuk-body-s'>
+    <% if work_orders.any? %>
+      Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
+    <% else %>
+      There are no work orders for this <%= property_description %> within the <strong>last 2 years</strong>.
+    <% end %>
+  </p>
+
+  <div class='load-repairs-history' id= 'load-repair-history-btn'>
+    <button class='govuk-button hackney-focus-colour' onClick="handleAjaxRepairsHistoryFiveYears('<%= repairs_history_api_property_path(property_reference, years_ago: 5) %>')">
+      Show last 5 years
+    </button>
+    <div class="loading-repairs-history-text hidden ajax-loading govuk-caption-m">
+      Loading repairs history
+    </div>
+  </div>
 </div>
