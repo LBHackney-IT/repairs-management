@@ -201,6 +201,47 @@ describe Hackney::Property do
     end
   end
 
+  describe '#facilities' do
+    let(:hierarchy_response) do
+      [{
+        'propertyReference' => '001',
+        'levelCode' => '2',
+        'description' => 'Estate',
+        'majorReference' => '000',
+        'address' => '5',
+        'postCode' => 'W1A 1AA'
+      }]
+    end
+
+    let(:by_postcode_response) do
+      {
+        'results' => [{
+                        'propertyReference' => '002',
+                        'levelCode' => '6',
+                        'description' => 'Facilities',
+                        'majorReference' => '001',
+                        'address' => '5',
+                        'postCode' => 'W1A 1AA'
+                      }]
+      }
+    end
+
+    let(:repairs_client_double) { instance_double(HackneyAPI::RepairsClient) }
+
+    before do
+      allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
+      allow(repairs_client_double).to receive(:get_property_hierarchy).with('003') { hierarchy_response }
+      level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
+      allow(repairs_client_double).to receive(:get_property_by_postcode).with('W1A 1AA', level, level) { by_postcode_response }
+    end
+
+    subject { build :property, reference: '003', postcode: 'W1A 1AA' }
+
+    it 'finds facilities associated with the same hierarchy' do
+      expect(subject.facilities.map(&:reference)).to eq ['002']
+    end
+  end
+
   describe '#is_estate?' do
 
     it 'returns false if a property is not an estate' do

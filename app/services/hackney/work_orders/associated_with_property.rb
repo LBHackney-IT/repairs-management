@@ -33,9 +33,19 @@ module Hackney
       end
 
       def filtered_hierarchy
-        property.hierarchy.each_with_object({}) do |element, hash|
-          hash[element.reference] = element.description if element.description.in?(HIERARCHY_DESCRIPTIONS)
+        hierarchy = property.hierarchy + property.facilities
+
+        hierarchy.select! {|property| property.description.in?(HIERARCHY_DESCRIPTIONS) }
+
+        hierarchy.sort! { |p1, p2| ord(p1) <=> ord(p2) }
+
+        hierarchy.each_with_object({}) do |property, hash|
+          hash[property.reference] = property.description
         end
+      end
+
+      def ord(property)
+        HIERARCHY_DESCRIPTIONS.index(property.description)
       end
     end
   end

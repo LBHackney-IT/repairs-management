@@ -31,6 +31,10 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+
+    level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
+    stub_hackney_property_by_postcode(reference: 'E9 6BH', min_level: level, max_level: level)
+
     stub_hackney_repairs_work_order_block_by_trade(body: [])
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
@@ -79,10 +83,14 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Target: 27 Jun 2018, 2:09pm'
 
     click_on('Repairs history')
-    expect(page).to have_content 'Problem 1'
-    expect(page).to have_content 'Problem 2'
-    expect(page).to have_link("12345678", href: work_order_path("12345678"))
-    expect(page).to have_link("87654321", href: work_order_path("87654321"))
+    within('#repair-history-tab') do
+      choose('Block')
+
+      expect(page).to have_content 'Problem 1'
+      expect(page).to have_content 'Problem 2'
+      expect(page).to have_link("12345678", href: work_order_path("12345678"))
+      expect(page).to have_link("87654321", href: work_order_path("87654321"))
+    end
 
     click_on('Notes and appointments')
     expect(page).to have_content "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath"
@@ -113,20 +121,24 @@ RSpec.describe 'Work order' do
   feature "Loading 5 years repairs history" do
     scenario "Click button to load back 5 years of repairs history", js: true do
       visit work_order_path('01551932')
-      expect(page).to have_content "Repairs history is showing jobs raised in the last 2 years."
 
-      stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2], body: [
-        work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
-      ])
+      within('#repair-history-tab') do
+        choose 'Block'
 
-      within('.load-repairs-history') do
+        expect(page).to have_content "Repairs history is showing jobs raised in the last 2 years."
+
+        stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2], body: [
+          work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
+        ])
+
         click_on 'Show last 5 years'
-      end
+        choose 'Block'
 
-      expect(page).to have_content 'Problem 1'
-      expect(page).to have_link("12345678", href: work_order_path("12345678"))
-      expect(page).to have_content "Repairs history is showing jobs raised in the last 5 years."
-      expect(page).not_to have_content "Repairs history is showing jobs raised in the last 2 years."
+        expect(page).to have_content 'Problem 1'
+        expect(page).to have_link("12345678", href: work_order_path("12345678"))
+        expect(page).to have_content "Repairs history is showing jobs raised in the last 5 years."
+        expect(page).not_to have_content "Repairs history is showing jobs raised in the last 2 years."
+      end
     end
 
     scenario "Expect button click to trigger expected behaviour on different hierarchy filter", js: true do
@@ -375,6 +387,8 @@ RSpec.describe 'Work order' do
   scenario 'Filtering the repairs history by trade related to the property', js: true do
     visit work_order_path('01551932')
 
+    choose 'Block'
+
     within('#repair-history-tab table') do
       expect(page).to have_selector 'td', text: 'Electrical', count: 1
       expect(page).to have_selector 'td', text: 'Domestic gas: servicing', count: 1
@@ -432,25 +446,20 @@ RSpec.describe 'Work order' do
     within('#repair-history-tab') do
       expect(page).to have_selector 'label', text: 'Estate', count: 1
       expect(page).to have_selector 'label', text: 'Block', count: 1
-    end
 
-    within('#repair-history-tab table') do
-      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
-      expect(page).to have_selector 'td', text: 'Electrical', count: 1
-    end
+      choose('Estate')
 
-    choose('hierarchy', option: 'hierarchy-1')
+      within('table') do
+        expect(page).to have_selector 'td', text: 'Plumbing', count: 1
+        expect(page).to have_selector 'td', text: 'Electrical', count: 0
+      end
 
-    within('#repair-history-tab table') do
-      expect(page).to have_selector 'td', text: 'Plumbing', count: 1
-      expect(page).to have_selector 'td', text: 'Electrical', count: 0
-    end
+      choose('Block')
 
-    choose('hierarchy', option: 'hierarchy-0')
-
-    within('#repair-history-tab table') do
-      expect(page).to have_selector 'td', text: 'Plumbing', count: 2
-      expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      within('table') do
+        expect(page).to have_selector 'td', text: 'Plumbing', count: 2
+        expect(page).to have_selector 'td', text: 'Electrical', count: 1
+      end
     end
   end
 

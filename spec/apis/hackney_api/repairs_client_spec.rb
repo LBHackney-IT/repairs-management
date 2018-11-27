@@ -342,7 +342,7 @@ describe HackneyAPI::RepairsClient do
     subject { api_client.get_property_by_postcode(postcode) }
 
     context 'successfull response' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&max_level=2").to_return(body: empty_response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&min_level=8&max_level=2").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -350,7 +350,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&max_level=2").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&min_level=8&max_level=2").to_return(status: 404) }
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -365,10 +365,10 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&max_level=2").to_return(status: 500, body: response_body.to_json) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&min_level=8&max_level=2").to_return(status: 500, body: response_body.to_json) }
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties?postcode=#{postcode}&max_level=2, {}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties, {:postcode=>1, :min_level=>8, :max_level=>2}, 500, #{response_body}")
       end
     end
   end
