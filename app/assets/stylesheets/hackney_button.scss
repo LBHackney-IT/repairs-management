@@ -1,21 +1,26 @@
 .govuk-button {
   background-color: hackney-colour('housing-2');
-   &:hover {
+  &:hover {
     background-color: #10767c;
   }
-   &:disabled {
+  &:disabled {
     opacity: 0.3;
   }
 }
- .govuk-button[disabled="disabled"],
+
+.govuk-button[disabled="disabled"],
 .govuk-button[disabled] {
   opacity: (.5);
   background: hackney-colour('housing-2');
-   &:hover {
+  &:hover {
     background-color: hackney-colour('housing-2');
     cursor: default;
   }
-   &:focus {
+  &:focus {
     outline: none;
+    background-color: hackney-colour('housing-2') !important;
   }
+}
+.govuk-button:hover, .govuk-button:focus {
+  background-color: hackney-colour('housing-2') !important;
 }
