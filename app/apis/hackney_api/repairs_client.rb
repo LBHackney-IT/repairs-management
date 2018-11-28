@@ -9,7 +9,9 @@ module HackneyAPI
     API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
     API_VERSION = "v1"
 
-    MAX_LEVEL_ESTATE = "max_level=2"
+    LEVEL_ESTATE = 2
+    LEVEL_FACILITIES = 6
+    LEVEL_NON_DWELL = 8
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
@@ -135,10 +137,15 @@ module HackneyAPI
       )
     end
 
-    def get_property_by_postcode(postcode)
+    def get_property_by_postcode(postcode, min_level=LEVEL_NON_DWELL, max_level=LEVEL_ESTATE)
       request(
         http_method: :get,
-        endpoint: "#{API_VERSION}/properties?postcode=#{postcode}&#{MAX_LEVEL_ESTATE}"
+        endpoint: "#{API_VERSION}/properties",
+        params: {
+          postcode: postcode,
+          min_level: min_level,
+          max_level: max_level
+        }
       )
     end
 

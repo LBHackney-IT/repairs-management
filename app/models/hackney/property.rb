@@ -47,7 +47,18 @@ class Hackney::Property
     end
   end
 
-  def possibly_related(from:, to: )
+  def facilities
+    @_facilities ||= begin
+      references = hierarchy.map(&:reference)
+
+      level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
+      api_result = HackneyAPI::RepairsClient.new.get_property_by_postcode(postcode, level, level)
+      api_result["results"].map { |attributes| Hackney::Property.build(attributes) }
+                           .select { |f| references.include? f.major_reference }
+    end
+  end
+
+  def possibly_related(from:, to:)
     @_possibly_related ||= Hackney::WorkOrder.for_property_block_and_trade(
       property_reference: reference,
       trade: Hackney::Trades::PLUMBING,

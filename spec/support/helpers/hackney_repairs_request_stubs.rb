@@ -540,9 +540,11 @@ module Helpers
     end
 
     def stub_hackney_property_by_postcode(reference: 'E96BH', status: 200,
-                                          body: property_by_postcode_response_body)
+                                          body: property_by_postcode_response_body,
+                                          min_level: 8,
+                                          max_level: 2)
 
-      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties?postcode=#{reference}&max_level=2")
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties?postcode=#{reference}&min_level=#{min_level}&max_level=#{max_level}")
         .to_return(status: status, body: body.to_json)
     end
   end
