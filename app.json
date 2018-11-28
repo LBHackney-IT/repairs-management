@@ -37,7 +37,7 @@
     "HEROKU_APP_NAME": {
       "required": true
     },
-    "QUOTAGUARDSTATIC_URL": {
+    "X_API_KEY": {
       "required": true
     }
   },
