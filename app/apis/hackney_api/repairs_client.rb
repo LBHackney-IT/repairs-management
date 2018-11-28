@@ -176,7 +176,7 @@ module HackneyAPI
     end
 
     def connection(cache_request:)
-      Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }) do |faraday|
+      Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }, headers: {"x-api-key"=>"#{ENV['X_API_KEY']}"}) do |faraday|
         faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
