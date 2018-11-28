@@ -71,14 +71,14 @@ describe Hackney::WorkOrders::AssociatedWithProperty do
       expect(subject["Facilities"].size).to eq 1
     end
 
-    it 'returns the hash in the property hierarchy "order"' do
+    it 'returns the hash in reverse property hierarchy "order"' do
       references = (property_hierarchy_response + property_facilities_response - [property_hierarchy_random]).map(&:reference)
       stub_hackney_work_orders_for_property(reference: references, body: [
         work_order_response_payload('propertyReference' => property_hierarchy_free.reference),
         work_order_response_payload('propertyReference' => property_hierarchy_estate.reference)
       ])
 
-      expect(subject.keys).to eq %w(Estate Block Sub-Block Free Facilities Dwelling Non-Dwell)
+      expect(subject.keys).to eq Hackney::WorkOrders::AssociatedWithProperty::HIERARCHY_DESCRIPTIONS.reverse
     end
   end
 end
