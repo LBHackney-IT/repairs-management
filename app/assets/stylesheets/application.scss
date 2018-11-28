@@ -11,6 +11,10 @@ $govuk-font-family: 'Arial', sans-serif;
 @import "hackney_address_list";
 @import "hackney_document";
 
+.hackney-template {
+  min-width: 1024px;
+}
+
 .hidden {
   display: none;
 }
