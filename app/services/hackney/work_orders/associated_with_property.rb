@@ -37,7 +37,7 @@ module Hackney
 
         hierarchy.select! {|property| property.description.in?(HIERARCHY_DESCRIPTIONS) }
 
-        hierarchy.sort! { |p1, p2| ord(p1) <=> ord(p2) }
+        hierarchy.sort! { |p1, p2| ord(p2) <=> ord(p1) }
 
         hierarchy.each_with_object({}) do |property, hash|
           hash[property.reference] = property.description
