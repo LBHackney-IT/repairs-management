@@ -166,7 +166,7 @@ RSpec.describe 'Work order' do
       stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2], body: [])
 
       visit work_order_path('01551932')
-      expect(page).to have_content 'There are no work orders for this dwelling within the last 2 years.'
+      expect(find('#repair-history-tab')).to have_content 'There are no work orders for this block within the last 2 years.'
 
       expect(page).to have_selector(:button, 'Show last 5 years')
     end
