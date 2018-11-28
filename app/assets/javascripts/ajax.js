@@ -1,22 +1,13 @@
 function handleAjaxResponse(endpoint, ajaxTab) {
-  var request = new XMLHttpRequest();
   var errorHandler = function() {
     ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
   };
 
-  request.open('GET', endpoint, true);
-  request.onreadystatechange = function() {
-    if (request.readyState === 4) {
-      if (request.status === 200) {
-        ajaxTab.innerHTML = request.response;
-      } else {
-        errorHandler();
-      }
-    }
+  var successHandler = function(request) {
+    ajaxTab.innerHTML = request.response;
   };
 
-  request.onerror = errorHandler;
-  request.send();
+  sendAjaxRequest('GET', endpoint, successHandler, errorHandler)
 }
 
 function handleAjaxRepairsHistoryFiveYears(endpoint) {
@@ -24,17 +15,30 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
 
   var ajaxTab = document.getElementById('repair-history-tab');
 
-  var request = new XMLHttpRequest();
   var errorHandler = function() {
     ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
   };
 
-  request.open('GET', endpoint, true);
+  var successHandler = function(request) {
+    ajaxTab.innerHTML = request.response;
+    handleRepairHistoryYearsInfoText();
+  };
+
+  sendAjaxRequest('GET', endpoint, successHandler, errorHandler)
+}
+
+function sendAjaxRequest(method, endpoint, successHandler, errorHandler) {
+  var request = new XMLHttpRequest();
+  request.open(method, endpoint, true);
+
+  if (method === 'POST') {
+    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  }
+
   request.onreadystatechange = function() {
     if (request.readyState === 4) {
       if (request.status === 200) {
-        ajaxTab.innerHTML = request.response;
-        handleRepairHistoryYearsInfoText();
+        successHandler(request);
       } else {
         errorHandler();
       }
