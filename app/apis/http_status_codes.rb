@@ -1,4 +1,5 @@
 module HttpStatusCodes
   HTTP_STATUS_OK = 200
+  HTTP_STATUS_NO_CONTENT = 204
   HTTP_STATUS_NOT_FOUND = 404
 end

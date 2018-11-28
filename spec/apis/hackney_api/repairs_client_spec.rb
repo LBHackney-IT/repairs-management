@@ -11,7 +11,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_work_orders' do
     subject { api_client.get_work_orders }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/work_orders").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -46,7 +46,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_work_order' do
     subject { api_client.get_work_order(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -106,7 +106,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_repair_request' do
     subject { api_client.get_repair_request(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/repairs/#{reference}").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -141,7 +141,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_property' do
     subject { api_client.get_property(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -201,7 +201,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_work_order_appointments' do
     subject { api_client.get_work_order_appointments(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -236,7 +236,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_work_order_appointments_latest' do
     subject { api_client.get_work_order_appointments_latest(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/appointments/latest").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -271,7 +271,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_work_order_notes' do
     subject { api_client.get_work_order_notes(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/notes").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -306,7 +306,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_property_hierarchy' do
     subject { api_client.get_property_hierarchy(reference) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/hierarchy").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -341,7 +341,7 @@ describe HackneyAPI::RepairsClient do
   describe '#get_property_by_postcode' do
     subject { api_client.get_property_by_postcode(postcode) }
 
-    context 'successfull response' do
+    context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/properties?postcode=#{postcode}&min_level=8&max_level=2").to_return(body: empty_response_body.to_json) }
 
       it 'returns successful response body' do
@@ -449,6 +449,25 @@ describe HackneyAPI::RepairsClient do
         expect { subject }.to raise_error(described_class::ApiError).with_message(
           "#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}, {}, 500, #{response_body}"
         )
+      end
+    end
+  end
+
+  describe '#post_work_order_note' do
+
+    subject { api_client.post_work_order_note("00000001", "It's all fine") }
+
+    context 'successful response' do
+      it 'posts a note' do
+        stub_request(:post, "#{base_url}/#{api_version}/notes")
+        .with(headers: { "Content-Type" => "application/json-patch+json" },
+              body: {
+                objectKey: "uhorder",
+                objectReference: "00000001",
+                text: "It's all fine"}.to_json)
+        .to_return(status: 204)
+
+        expect(subject).to eq(nil)
       end
     end
   end

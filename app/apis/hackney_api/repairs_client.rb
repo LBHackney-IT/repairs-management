@@ -158,14 +158,27 @@ module HackneyAPI
       []
     end
 
+    def post_work_order_note(work_order_reference, text)
+      request(
+        http_method: :post,
+        endpoint: "#{API_VERSION}/notes",
+        headers: {"Content-Type" => "application/json-patch+json"},
+        params: {
+          objectKey: "uhorder",
+          objectReference: work_order_reference,
+          text: text
+        }.to_json
+      )
+    end
+
     private
 
-    def request(http_method:, endpoint:, cache_request: true, params: {})
+    def request(http_method:, endpoint:, cache_request: true, headers: {}, params: {})
       caller = caller_locations.first.label
 
       response = begin
         Appsignal.instrument("api.#{caller}") do
-          connection(cache_request: cache_request).public_send(http_method, endpoint, **params)
+          connection(cache_request: cache_request, headers: headers).public_send(http_method, endpoint, params)
         end
       rescue => e
         Rails.logger.error(e)
@@ -173,7 +186,7 @@ module HackneyAPI
       end
 
       case response.status
-      when HTTP_STATUS_OK
+      when HTTP_STATUS_OK, HTTP_STATUS_NO_CONTENT
         response.body
       when HTTP_STATUS_NOT_FOUND
         raise RecordNotFoundError, [endpoint, params].join(', ')
@@ -182,8 +195,8 @@ module HackneyAPI
       end
     end
 
-    def connection(cache_request:)
-      Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }, headers: {"x-api-key"=>"#{ENV['X_API_KEY']}"}) do |faraday|
+    def connection(cache_request:, headers:)
+      Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }, headers: {"x-api-key"=>"#{ENV['X_API_KEY']}"}.merge(headers)) do |faraday|
         faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
