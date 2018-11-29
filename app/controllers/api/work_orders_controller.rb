@@ -42,6 +42,16 @@ module Api
       end
     end
 
+    def notes
+      @work_order = Hackney::WorkOrder.find(reference)
+
+      puts "-" * 80
+      puts params[:note][:text]
+      puts "-" * 80
+
+      render 'notes_and_appointments'
+    end
+
     private
 
     def find_matching_property(work_order, properties)
