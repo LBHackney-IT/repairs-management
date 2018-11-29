@@ -90,7 +90,8 @@ function postAjaxForm(event, destinationId) {
 
   var FD = new FormData(form);
 
-  destination.innerHTML = "Loading...";
+  destination.classList.add('ajax-loading', 'govuk-caption-m');
+  destination.innerHTML = "Publishing note";
 
   sendAjaxRequest('POST', form.action, FD, csrfToken,
     function (request) { destination.innerHTML = request.response; },

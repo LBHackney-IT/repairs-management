@@ -84,8 +84,8 @@ class Hackney::WorkOrder
     @_appointments ||= Hackney::Appointment.all_for_work_order(reference)
   end
 
-  def notes
-    @_notes ||= Hackney::Note.for_work_order(reference)
+  def notes(cache_request: true)
+    Hackney::Note.for_work_order(reference, cache_request)
   end
 
   def reports

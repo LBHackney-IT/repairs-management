@@ -73,9 +73,10 @@ module HackneyAPI
       end
     end
 
-    def get_work_order_notes(reference)
+    def get_work_order_notes(reference, cache_request)
       request(
         http_method: :get,
+        cache_request: cache_request,
         endpoint: "#{API_VERSION}/work_orders/#{reference}/notes"
       )
     end
