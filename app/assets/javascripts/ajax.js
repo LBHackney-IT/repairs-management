@@ -7,7 +7,7 @@ function handleAjaxResponse(endpoint, ajaxTab) {
     ajaxTab.innerHTML = request.response;
   };
 
-  sendAjaxRequest('GET', endpoint, successHandler, errorHandler)
+  sendAjaxRequest('GET', endpoint, null, successHandler, errorHandler)
 }
 
 function handleAjaxRepairsHistoryFiveYears(endpoint) {
@@ -24,15 +24,15 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
     handleRepairHistoryYearsInfoText();
   };
 
-  sendAjaxRequest('GET', endpoint, successHandler, errorHandler)
+  sendAjaxRequest('GET', endpoint, null, successHandler, errorHandler)
 }
 
-function sendAjaxRequest(method, endpoint, successHandler, errorHandler) {
+function sendAjaxRequest(method, endpoint, formData, successHandler, errorHandler) {
   var request = new XMLHttpRequest();
   request.open(method, endpoint, true);
 
   if (method === 'POST') {
-    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    request.setRequestHeader('X-CSRF-Token', formData.get('authenticity_token'));
   }
 
   request.onreadystatechange = function() {
@@ -46,7 +46,7 @@ function sendAjaxRequest(method, endpoint, successHandler, errorHandler) {
   };
 
   request.onerror = errorHandler;
-  request.send();
+  request.send(formData);
 }
 
 function showLoadingMessage() {
@@ -77,4 +77,20 @@ function handleRepairHistoryYearsInfoText() {
   for(var i = 0; i < loadRepairsDiv.length; i++) {
     loadRepairsDiv[i].parentNode.removeChild(loadRepairsDiv[i]);
   }
+}
+
+function postAjaxForm(event, destinationId) {
+  event.preventDefault();
+
+  var destination = document.getElementById(destinationId);
+
+  var form = event.target;
+  var FD = new FormData(form);
+
+  destination.innerHTML = "Loading...";
+
+  sendAjaxRequest('POST', form.action, FD,
+    function (request) { destination.innerHTML = request.response; },
+    function () { destination.innerHTML = "We had problems submitting your form"; }
+  );
 }

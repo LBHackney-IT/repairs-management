@@ -1,6 +1,13 @@
 <h2 class='govuk-heading-l'>
   Notes and appointments
 </h2>
+
+<%= form_tag(notes_api_work_order_path(@work_order.reference), method: :post,
+             class: "notes-form", id: 'notes-form', onsubmit: "postAjaxForm(event, 'notes-tab')") do %>
+  <%= text_area :note, :text %>
+  <%= submit_tag "Create Note" %>
+<% end %>
+
 <% if sort_notes_and_appointments(@work_order).any? %>
   <ul class="govuk-list hackney-note-timeline">
   <% sort_notes_and_appointments(@work_order).each do |note_or_appointment| %>
