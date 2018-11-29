@@ -7,7 +7,7 @@ function handleAjaxResponse(endpoint, ajaxTab) {
     ajaxTab.innerHTML = request.response;
   };
 
-  sendAjaxRequest('GET', endpoint, null, successHandler, errorHandler)
+  sendAjaxRequest('GET', endpoint, null, null, successHandler, errorHandler)
 }
 
 function handleAjaxRepairsHistoryFiveYears(endpoint) {
@@ -24,15 +24,15 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
     handleRepairHistoryYearsInfoText();
   };
 
-  sendAjaxRequest('GET', endpoint, null, successHandler, errorHandler)
+  sendAjaxRequest('GET', endpoint, null, null, successHandler, errorHandler)
 }
 
-function sendAjaxRequest(method, endpoint, formData, successHandler, errorHandler) {
+function sendAjaxRequest(method, endpoint, formData, csrfToken, successHandler, errorHandler) {
   var request = new XMLHttpRequest();
   request.open(method, endpoint, true);
 
   if (method === 'POST') {
-    request.setRequestHeader('X-CSRF-Token', formData.get('authenticity_token'));
+    request.setRequestHeader('X-CSRF-Token', csrfToken);
   }
 
   request.onreadystatechange = function() {
@@ -85,11 +85,14 @@ function postAjaxForm(event, destinationId) {
   var destination = document.getElementById(destinationId);
 
   var form = event.target;
+
+  var csrfToken = form.elements.namedItem('authenticity_token').value;
+
   var FD = new FormData(form);
 
   destination.innerHTML = "Loading...";
 
-  sendAjaxRequest('POST', form.action, FD,
+  sendAjaxRequest('POST', form.action, FD, csrfToken,
     function (request) { destination.innerHTML = request.response; },
     function () { destination.innerHTML = "We had problems submitting your form"; }
   );
