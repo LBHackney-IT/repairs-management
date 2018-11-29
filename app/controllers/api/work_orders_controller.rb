@@ -7,8 +7,19 @@ module Api
     def notes_and_appointments
       @work_order = Hackney::WorkOrder.find(reference)
 
-      @work_order.notes(cache_request: false)
-      # @notes = Hackney::Note.for_work_order(reference, cache_request: false)
+      @notes_and_appointments = @work_order.notes(true) + (@work_order.appointments.nil? ? [] : @work_order.appointments)
+    end
+
+    def notes
+      @work_order = Hackney::WorkOrder.find(reference)
+
+      @notes_and_appointments = @work_order.notes(false) + (@work_order.appointments.nil? ? [] : @work_order.appointments)
+
+      if !params[:note][:text].blank?
+        Hackney::Note.create_work_order_note(reference, params[:note][:text])
+
+        render 'notes_and_appointments'
+      end
     end
 
     def documents
@@ -42,21 +53,6 @@ module Api
           end
           # render possibly_related_work_orders
         end
-      end
-    end
-
-    def notes
-      puts "-" * 80
-      puts params[:note][:text]
-      puts "-" * 80
-
-      if !params[:note][:text].blank?
-        Hackney::Note.create_work_order_note(reference, params[:note][:text])
-
-        @work_order = Hackney::WorkOrder.find(reference)
-        # @notes = Hackney::Note.for_work_order(reference, cache_request: false)
-
-        render 'notes_and_appointments'
       end
     end
 

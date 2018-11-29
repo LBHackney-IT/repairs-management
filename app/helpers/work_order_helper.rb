@@ -66,8 +66,8 @@ module WorkOrderHelper
     end
   end
 
-  def sort_notes_and_appointments(work_order, cache_request: true)
-    notes_and_appointments = work_order.notes(cache_request: false) + (work_order.appointments.nil? ? [] : work_order.appointments)
+  def sort_notes_and_appointments(notes_and_appointments)
+    # notes_and_appointments = work_order.notes(cache_request) + (work_order.appointments.nil? ? [] : work_order.appointments)
     notes_and_appointments.sort_by{ |a| a.respond_to?(:logged_at) ? a.logged_at : a.begin_date }.reverse
   end
 

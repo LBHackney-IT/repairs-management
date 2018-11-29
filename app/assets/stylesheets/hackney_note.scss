@@ -48,3 +48,20 @@
 .hackney-appointment__tag-planned {
   background-color: #009ca6;
 }
+
+.hackney-add-note__text {
+  color: hackney-colour('housing-2');
+  font-weight: bold;
+  display: inline;
+  text-decoration: underline;
+  cursor: pointer;
+  border: none;
+  background-color: govuk-colour('white');
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.hackney-add-note__form {
+
+}

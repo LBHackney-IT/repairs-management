@@ -7,6 +7,7 @@ describe HackneyAPI::RepairsClient do
   let(:reference) { 1 }
   let(:empty_response_body) { {} }
   let(:postcode) { 1 }
+  let(:cache_request) { true }
 
   describe '#get_work_orders' do
     subject { api_client.get_work_orders }
@@ -269,7 +270,7 @@ describe HackneyAPI::RepairsClient do
   end
 
   describe '#get_work_order_notes' do
-    subject { api_client.get_work_order_notes(reference) }
+    subject { api_client.get_work_order_notes(reference, cache_request) }
 
     context 'successful response' do
       before { stub_request(:get, "#{base_url}/#{api_version}/work_orders/#{reference}/notes").to_return(body: empty_response_body.to_json) }

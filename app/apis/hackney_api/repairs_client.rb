@@ -159,6 +159,7 @@ module HackneyAPI
       []
     end
 
+
     def post_work_order_note(work_order_reference, text)
       request(
         http_method: :post,
@@ -198,7 +199,12 @@ module HackneyAPI
 
     def connection(cache_request:, headers:)
       Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }, headers: {"x-api-key"=>"#{ENV['X_API_KEY']}"}.merge(headers)) do |faraday|
-        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
+        if cache_request && !Rails.env.test?
+          faraday.use :manual_cache,
+                      logger: Rails.logger,
+                      expires_in: API_CACHE_TIME_IN_SECONDS,
+                      cache_key: ->(env) { raise("*" * 80, env.url, "*" * 80); "prefix-#{env.url}" }
+        end
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
         faraday.response :logger, Rails.logger unless Rails.env.test?

@@ -49,6 +49,26 @@ function sendAjaxRequest(method, endpoint, formData, csrfToken, successHandler, 
   request.send(formData);
 }
 
+function postAjaxForm(event, destinationId) {
+  event.preventDefault();
+
+  var destination = document.getElementById(destinationId);
+
+  var form = event.target;
+
+  var csrfToken = form.elements.namedItem('authenticity_token').value;
+
+  var FD = new FormData(form);
+
+  destination.classList.add('ajax-loading', 'govuk-caption-m');
+  destination.innerHTML = "Publishing note";
+
+  sendAjaxRequest('POST', form.action, FD, csrfToken,
+    function (request) { destination.innerHTML = request.response; },
+    function () { destination.innerHTML = "We had problems submitting your form"; }
+  );
+}
+
 function showLoadingMessage() {
   var loadRepairsDiv = document.querySelectorAll('.load-repairs-history');
   var loadingText = document.querySelectorAll('.loading-repairs-history-text');
@@ -77,24 +97,4 @@ function handleRepairHistoryYearsInfoText() {
   for(var i = 0; i < loadRepairsDiv.length; i++) {
     loadRepairsDiv[i].parentNode.removeChild(loadRepairsDiv[i]);
   }
-}
-
-function postAjaxForm(event, destinationId) {
-  event.preventDefault();
-
-  var destination = document.getElementById(destinationId);
-
-  var form = event.target;
-
-  var csrfToken = form.elements.namedItem('authenticity_token').value;
-
-  var FD = new FormData(form);
-
-  destination.classList.add('ajax-loading', 'govuk-caption-m');
-  destination.innerHTML = "Publishing note";
-
-  sendAjaxRequest('POST', form.action, FD, csrfToken,
-    function (request) { destination.innerHTML = request.response; },
-    function () { destination.innerHTML = "We had problems submitting your form"; }
-  );
 }
