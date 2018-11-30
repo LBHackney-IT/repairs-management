@@ -27,9 +27,8 @@ describe WorkOrderHelper, 'sort_notes_and_appointments' do
     note = Hackney::Note.new(logged_at: 3.days.ago)
 
     work_order = double(notes: [note], appointments: [appointment, appointment_two])
-    cache_request = true
 
     sorted = [note, appointment_two, appointment]
-    expect(helper.sort_notes_and_appointments(work_order, cache_request)).to eq(sorted)
+    expect(helper.sort_notes_and_appointments(work_order)).to eq(sorted)
   end
 end

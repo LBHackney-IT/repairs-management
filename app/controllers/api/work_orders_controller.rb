@@ -7,16 +7,16 @@ module Api
     def notes_and_appointments
       @work_order = Hackney::WorkOrder.find(reference)
 
-      @notes_and_appointments = @work_order.notes(true) + (@work_order.appointments.nil? ? [] : @work_order.appointments)
+      @notes_and_appointments = @work_order.notes + (@work_order.appointments.nil? ? [] : @work_order.appointments)
     end
 
     def notes
       @work_order = Hackney::WorkOrder.find(reference)
 
-      @notes_and_appointments = @work_order.notes(false) + (@work_order.appointments.nil? ? [] : @work_order.appointments)
 
       if !params[:note][:text].blank?
         Hackney::Note.create_work_order_note(reference, params[:note][:text])
+        @notes_and_appointments = @work_order.notes + (@work_order.appointments.nil? ? [] : @work_order.appointments)
 
         render 'notes_and_appointments'
       end

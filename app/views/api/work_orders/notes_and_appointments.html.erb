@@ -1,11 +1,13 @@
-<h2 class='govuk-heading-l'>
-  Notes and appointments
-  <div class='hackney-add-note-text govuk-body-m', onclick="showAddNoteForm()">
-    Add a new note
-  </div>
-</h2>
+<div class="hackney-note__header">
+  <h2 class='govuk-heading-l'>
+    Notes and appointments
+    <div class='hackney-add-note__text govuk-body-m', onclick="showAddNoteForm()">
+      Add a new note
+    </div>
+  </h2>
+</div>
 
-<div class='hackney-add-note-form hidden'>
+<div class='hackney-add-note__form hidden'>
   <%= form_tag(notes_api_work_order_path(@work_order.reference), method: :post,
   class: "notes-form", id: 'notes-form', onsubmit: "postAjaxForm(event, 'notes-tab')") do %>
     <%= text_area :note, :text, required: true %>
