@@ -81,7 +81,7 @@ module HackneyAPI
     end
 
     def post_work_order_note(work_order_reference, text)
-      request(
+      value = request(
         http_method: :post,
         endpoint: "#{API_VERSION}/notes",
         headers: {"Content-Type" => "application/json-patch+json"},
@@ -95,6 +95,8 @@ module HackneyAPI
       url = "prefix-#{@base_url}/#{notes_endpoint(work_order_reference)}"
 
       API_REQUEST_CACHE.expire(url, 0)
+
+      value
     end
 
     def get_work_order_reports(reference)

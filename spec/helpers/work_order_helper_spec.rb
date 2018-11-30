@@ -26,9 +26,7 @@ describe WorkOrderHelper, 'sort_notes_and_appointments' do
     appointment_two = Hackney::Appointment.new(begin_date: 5.days.ago)
     note = Hackney::Note.new(logged_at: 3.days.ago)
 
-    work_order = double(notes: [note], appointments: [appointment, appointment_two])
-
     sorted = [note, appointment_two, appointment]
-    expect(helper.sort_notes_and_appointments(work_order)).to eq(sorted)
+    expect(helper.sort_notes_and_appointments(sorted.reverse)).to eq(sorted)
   end
 end

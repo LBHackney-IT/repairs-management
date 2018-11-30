@@ -13,11 +13,12 @@ module Api
     def notes
       @work_order = Hackney::WorkOrder.find(reference)
 
-
-      if !params[:note][:text].blank?
+      if !params[:note][:text].empty?
         Hackney::Note.create_work_order_note(reference, params[:note][:text])
         @notes_and_appointments = @work_order.notes + (@work_order.appointments.nil? ? [] : @work_order.appointments)
 
+        render 'notes_and_appointments'
+      else
         render 'notes_and_appointments'
       end
     end

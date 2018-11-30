@@ -60,12 +60,12 @@ function postAjaxForm(event, destinationId) {
 
   var FD = new FormData(form);
 
-  destination.classList.add('ajax-loading', 'govuk-caption-m');
   destination.innerHTML = "Publishing note";
+  destination.classList.add('ajax-loading', 'govuk-caption-m');
 
   sendAjaxRequest('POST', form.action, FD, csrfToken,
     function (request) { destination.innerHTML = request.response; },
-    function () { destination.innerHTML = "We had problems submitting your form"; }
+    function () { destination.innerHTML = "There was a problem submitting your form"; }
   );
 }
 
