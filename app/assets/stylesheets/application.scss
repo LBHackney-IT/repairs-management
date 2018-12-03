@@ -1,5 +1,11 @@
 $govuk-page-width: 1200px;
 $govuk-font-family: 'Arial', sans-serif;
+$govuk-breakpoints: (
+  mobile:  0px,
+  tablet:  0px,
+  desktop: 769px
+) !default;
+
 @import "govuk-frontend/all";
 @import "hackney_colour";
 @import "hackney_header";
