@@ -92,7 +92,7 @@ module HackneyAPI
         }.to_json
       )
 
-      url = "prefix-#{@base_url}/#{notes_endpoint(work_order_reference)}"
+      url = "prefix-#{@base_url}#{notes_endpoint(work_order_reference)}"
 
       API_REQUEST_CACHE.expire(url, 0)
 
