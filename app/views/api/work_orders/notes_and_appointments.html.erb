@@ -9,9 +9,9 @@
 
 <div class='hackney-add-note__form hidden'>
   <%= form_tag(notes_api_work_order_path(@work_order.reference), method: :post,
-  class: "notes-form", id: 'notes-form', onsubmit: "postAjaxForm(event, 'notes-tab')") do %>
-    <%= text_area :note, :text, required: true, placeholder: 'Write a new note...', class: 'govuk-textarea hackney-add-note__text-area hackney-focus-colour', rows: 4 %>
-    <%= submit_tag "Publish note", class: 'govuk-button hackney-focus-colour testing' %>
+  class: "notes-form", id: 'notes-form', onsubmit: "isValidNote(event, 'notes-tab')") do %>
+    <%= text_area :note, :text, placeholder: 'Write a new note...', class: 'govuk-textarea hackney-add-note__text-area hackney-focus-colour', rows: 4 %>
+    <%= submit_tag "Publish note", class: 'govuk-button publish-notes-button hackney-focus-colour' %>
   <% end %>
 </div>
 

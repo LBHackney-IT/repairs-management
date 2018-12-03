@@ -79,6 +79,8 @@
   width: 700px;
 }
 
-.hackney-note__invalid {
-  border: 3px solid crimson;
+.hackney-note__invalid-border {
+  padding: 15px;
+  margin-bottom: 30px;
+  border: 4px solid #b10e1e;
 }

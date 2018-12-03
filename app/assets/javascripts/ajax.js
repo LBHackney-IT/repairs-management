@@ -60,8 +60,12 @@ function postAjaxForm(event, destinationId) {
 
   var FD = new FormData(form);
 
-  destination.innerHTML = "Publishing note";
-  destination.classList.add('ajax-loading', 'govuk-caption-m');
+  var loadingPublishNote = document.createElement("p");
+  loadingPublishNote.classList.add('ajax-loading', 'govuk-caption-m');
+  loadingPublishNote.innerHTML = "Publishing note";
+
+  destination.innerHTML = "";
+  destination.appendChild(loadingPublishNote);
 
   sendAjaxRequest('POST', form.action, FD, csrfToken,
     function (request) { destination.innerHTML = request.response; },
