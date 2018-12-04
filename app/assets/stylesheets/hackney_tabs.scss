@@ -1,7 +1,5 @@
 .hackney-tabs-list {
-  @media (min-width: 641px) {
-    margin-top: -86px;
-  }
+  margin-top: -86px;
 }
 .hackney-work-order-tabs-info {
   border: none !important;
@@ -9,10 +7,8 @@
   padding-right: 0 !important;
 }
 .hackney-work-order-tab {
-  @media (min-width: 641px) {
-    background-color: govuk-colour("grey-2") !important;
-    color: govuk-colour('white') !important;
-  }
+  background-color: govuk-colour("grey-2") !important;
+  color: govuk-colour('white') !important;
 
   // To change the colour of selected tab, we can only use the aria-selected
   // because of the way gov-uk tabs are working
