@@ -21,7 +21,7 @@ class Hackney::RepairRequest
   end
 
   def telephone_number
-    contact&.telephone_number&.empty? ? "N/A" : contact&.telephone_number
+    contact&.telephone_number.blank? ? "N/A" : contact&.telephone_number
   end
 
   def contact_name
