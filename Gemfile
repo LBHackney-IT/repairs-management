@@ -80,6 +80,7 @@ group :test do
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
   gem 'webmock'
+  gem "fakeredis", :require => "fakeredis/rspec"
 end
 
 group :production do

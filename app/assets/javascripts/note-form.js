@@ -10,10 +10,8 @@ function isValidNote(event) {
 
   if (formText.replace(/\s/g, "") == "") {
     if (!document.querySelector('.govuk-error-message')) {
-      addErrorSummary(event);
+      addNoteErrorSummary(event);
     }
-
-    return false;
 
   } else {
 
@@ -22,7 +20,7 @@ function isValidNote(event) {
   }
 }
 
-function addErrorSummary(event) {
+function addNoteErrorSummary(event) {
   var notesForm = document.getElementById("notes-form");
   var invalidText = document.createElement("div");
   var notesTextField = event.target.elements.note_text;
