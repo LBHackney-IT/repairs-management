@@ -94,7 +94,9 @@ module HackneyAPI
 
       url = "prefix-#{@base_url}#{notes_endpoint(work_order_reference)}"
 
-      API_REQUEST_CACHE.expire(url, 0)
+      unless Rails.env.test?
+        API_REQUEST_CACHE.expire(url, 0)
+      end
 
       value
     end
