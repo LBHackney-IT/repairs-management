@@ -19,4 +19,12 @@ class Hackney::RepairRequest
       work_orders: Hackney::Supplier.build(attributes.dig('workOrders')&.first || {})
     )
   end
+
+  def telephone_number
+    contact&.telephone_number&.empty? ? "N/A" : contact&.telephone_number
+  end
+
+  def contact_name
+    contact&.name
+  end
 end

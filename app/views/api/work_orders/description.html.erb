@@ -23,13 +23,13 @@
         <tr>
           <th scope="row">Caller:</th>
           <td>
-            <%= format_caller_name(@work_order.repair_request.contact&.name) %>
+            <%= format_caller_name(@work_order.repair_request.contact_name) %>
           </td>
         </tr>
         <tr>
           <th></th>
           <td>
-            <%= @work_order.repair_request.contact&.telephone_number.empty? ? "N/A" : @work_order.repair_request.contact&.telephone_number %>
+            <%= @work_order.repair_request.telephone_number %>
           </td>
         </tr>
       </tbody>
