@@ -30,6 +30,12 @@ $govuk-breakpoints: (
   animation: dots 1s steps(5, end) infinite;
 }
 
+.hackney-heading {
+  font-size: 30px;
+  line-height: 40px;
+  margin-top: 0;
+}
+
 .hackney-focus-colour:focus {
   outline: 3px solid hackney-colour('housing-3');
 }
