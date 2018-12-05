@@ -7,18 +7,21 @@ module Api
     def notes_and_appointments
       @work_order = Hackney::WorkOrder.find(reference)
 
-      @notes_and_appointments = @work_order.notes + (@work_order.appointments.nil? ? [] : @work_order.appointments)
+      @notes_and_appointments = get_notes_and_appointments(@work_order)
     end
 
     def notes
       @work_order = Hackney::WorkOrder.find(reference)
+      notes_text = params[:note][:text]
 
-      if !params[:note][:text].empty?
+      if notes_text.present? && notes_text.length <= 2000
         Hackney::Note.create_work_order_note(reference, params[:note][:text])
-        @notes_and_appointments = @work_order.notes + (@work_order.appointments.nil? ? [] : @work_order.appointments)
+        @notes_and_appointments = get_notes_and_appointments(@work_order)
 
         render 'notes_and_appointments'
       else
+        @notes_and_appointments = get_notes_and_appointments(@work_order)
+
         render 'notes_and_appointments'
       end
     end
@@ -61,6 +64,10 @@ module Api
 
     def find_matching_property(work_order, properties)
       properties.find { |property| property.reference == work_order.prop_ref }
+    end
+
+    def get_notes_and_appointments(work_order)
+      work_order.notes + (work_order.appointments.nil? ? [] : work_order.appointments)
     end
 
     def reference

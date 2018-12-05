@@ -10,7 +10,7 @@ function isValidNote(event) {
 
   if (formText.replace(/\s/g, "") == "") {
     addNoteErrorSummary(event, 'Notes field cannot be empty');
-    // Api needs to change from 50 to 2000
+    // Api needs to change from 50 to 2000 max characters
   } else if (formText.length > 2000) {
     addNoteErrorSummary(event, "Notes field cannot exceed 2000 characters");
   } else {
