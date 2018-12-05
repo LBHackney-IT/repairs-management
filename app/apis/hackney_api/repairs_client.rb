@@ -207,7 +207,7 @@ module HackneyAPI
 
     def connection(cache_request:, headers:)
       Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }, headers: {"x-api-key"=>"#{ENV['X_API_KEY']}"}.merge(headers)) do |faraday|
-        if cache_request && !Rails.env.test?
+        if cache_request
           faraday.use :manual_cache,
                       logger: Rails.logger,
                       expires_in: API_CACHE_TIME_IN_SECONDS,

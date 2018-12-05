@@ -9,27 +9,29 @@ function isValidNote(event) {
   var formText = event.target.elements.note_text.value;
 
   if (formText.replace(/\s/g, "") == "") {
-    if (!document.querySelector('.govuk-error-message')) {
-      addNoteErrorSummary(event);
-    }
-
+    addNoteErrorSummary(event, 'Notes field cannot be empty');
+    // Api needs to change from 50 to 2000
+  } else if (formText.length > 2000) {
+    addNoteErrorSummary(event, "Notes field cannot exceed 2000 characters");
   } else {
-
-    var destinationId = 'notes-tab';
-    postAjaxForm(event, destinationId);
+    postAjaxForm(event, 'notes-tab');
   }
 }
 
-function addNoteErrorSummary(event) {
-  var notesForm = document.getElementById("notes-form");
-  var invalidText = document.createElement("div");
-  var notesTextField = event.target.elements.note_text;
+function addNoteErrorSummary(event, errorMessage) {
+  var invalidText = document.querySelector('#notes-form .govuk-error-message');
 
-  invalidText.classList.add('govuk-error-message');
-  invalidText.innerHTML = 'Notes field cannot be empty';
+  if (!invalidText) {
+    var notesForm = document.getElementById("notes-form");
+    var notesTextField = event.target.elements.note_text;
 
-  notesForm.insertBefore(invalidText, notesForm.firstChild);
-  notesTextField.classList.add('hackney-note__invalid-border');
+    invalidText = document.createElement("div");
+    invalidText.classList.add('govuk-error-message');
+    notesForm.insertBefore(invalidText, notesForm.firstChild);
+    notesTextField.classList.add('hackney-note__invalid-border');
+  }
+
+  invalidText.innerHTML = errorMessage;
 
   document.querySelector('.govuk-button.publish-notes-button').removeAttribute("data-disable-with");
 }
