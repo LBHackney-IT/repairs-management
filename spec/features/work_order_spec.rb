@@ -213,6 +213,8 @@ RSpec.describe 'Work order' do
       click_on 'Search'
     end
 
+    expect(page).to have_title "01551932 - Hackney Repairs Hub"
+
     expect(page).to have_content 'Works order: 01551932'
     expect(page).to have_content 'Servitor ref: 10162765'
     expect(page).to have_content 'TEST problem'
@@ -254,6 +256,8 @@ RSpec.describe 'Work order' do
     end
 
     click_on 'Homerton High Street 12 Banister House'
+
+    expect(page).to have_title "Homerton High Street 12 Banister House - Hackney Repairs Hub"
 
     expect(page).to have_content 'Property details'
     expect(page).to have_content 'Homerton High Street 12 Banister House'
