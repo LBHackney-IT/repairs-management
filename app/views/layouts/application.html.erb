@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Hackney Repairs Management</title>
+  <title><%= content_for?(:title) ? yield(:title) : "Hackney Repairs Hub" %></title>
   <meta name="viewport" content="width=device-width">
   <meta name="theme-color" content="#0b0c0c" />
 
@@ -60,7 +60,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <%= image_tag 'Hackney_Logo_White.png', class: "hackney-header__logo" %>
-          <%= link_to 'Repairs management', root_path, class: "hackney-header__title" %>
+          <%= link_to 'Repairs Hub', root_path, class: "hackney-header__title" %>
           <strong class="hackney_header__tag">beta</strong>
         </div>
         <div class="govuk-grid-column-one-third hackney-header__links hackney-header__right_links">
