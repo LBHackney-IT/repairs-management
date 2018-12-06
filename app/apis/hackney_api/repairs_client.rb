@@ -92,9 +92,9 @@ module HackneyAPI
         }.to_json
       )
 
-      url = "prefix-#{@base_url}#{notes_endpoint(work_order_reference)}"
+      key = "hackney-api-cache-#{notes_endpoint(work_order_reference)}"
 
-      API_REQUEST_CACHE.expire(url, 0)
+      API_REQUEST_CACHE.expire(key, 0)
 
       value
     end
@@ -211,7 +211,7 @@ module HackneyAPI
           faraday.use :manual_cache,
                       logger: Rails.logger,
                       expires_in: API_CACHE_TIME_IN_SECONDS,
-                      cache_key: ->(env) { "prefix-#{env.url}" }
+                      cache_key: ->(env) { "hackney-api-cache-" + env.url.to_s.sub(@base_url, '') }
         end
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
