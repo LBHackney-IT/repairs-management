@@ -39,6 +39,9 @@
     color: hackney-colour('status-complete');
   }
 }
+.main-section-box {
+  min-height: 225px;
+}
 .hackney-main-section-info h5 {
   color: $govuk-secondary-text-colour;
   margin: 5px 10px;
@@ -48,13 +51,13 @@
   margin: 15px 10px;
 }
 .hackney-section-info-header {
-  color: govuk-colour('grey-2');
+  color: darkgray;
 }
 .hackney-appointment-planned {
   color: hackney-colour("housing-2");
 }
 .hackney-appointment-complete {
-  color: govuk-colour('grey-2');
+  color: darkgray;
 }
 .hackney-appointment-not-complete {
   color: crimson;
@@ -101,25 +104,14 @@
   color: crimson;
 }
 .hackney-work-order-date-raised {
-  text-align: center;
+  text-align: left;
 
   .work_order_date_created {
     margin: 0;
   }
   .work_order_time_created {
     color: $govuk-secondary-text-colour;
-    margin: 5px;
-  }
-}
-
-.hackney-work-order-date-raised--left {
-  .work_order_date_created {
-    margin: 0;
-  }
-  .work_order_time_created {
-    color: $govuk-secondary-text-colour;
-    margin: 5px;
-    padding-left: 20px;
+    margin: 5px 0;
   }
 }
 
