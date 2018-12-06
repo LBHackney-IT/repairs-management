@@ -20,9 +20,7 @@ module Api
 
         render 'notes_and_appointments'
       else
-        @notes_and_appointments = get_notes_and_appointments(@work_order)
-
-        render 'notes_and_appointments'
+        render plain: "Note text must be between 1 and 2000 characters", status: :bad_request
       end
     end
 
