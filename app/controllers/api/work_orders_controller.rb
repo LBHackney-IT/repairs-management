@@ -6,6 +6,22 @@ module Api
 
     def notes_and_appointments
       @work_order = Hackney::WorkOrder.find(reference)
+
+      @notes_and_appointments = get_notes_and_appointments(@work_order)
+    end
+
+    def notes
+      @work_order = Hackney::WorkOrder.find(reference)
+      notes_text = params[:note][:text]
+
+      if notes_text.present? && notes_text.length <= 2000
+        Hackney::Note.create_work_order_note(reference, params[:note][:text])
+        @notes_and_appointments = get_notes_and_appointments(@work_order)
+
+        render 'notes_and_appointments'
+      else
+        render plain: "Note text must be between 1 and 2000 characters", status: :bad_request
+      end
     end
 
     def documents
@@ -46,6 +62,10 @@ module Api
 
     def find_matching_property(work_order, properties)
       properties.find { |property| property.reference == work_order.prop_ref }
+    end
+
+    def get_notes_and_appointments(work_order)
+      work_order.notes + (work_order.appointments.nil? ? [] : work_order.appointments)
     end
 
     def reference

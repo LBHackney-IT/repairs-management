@@ -45,7 +45,7 @@ gem 'neo4j'
 
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'faraday-manual-cache', github: 'unboxed/faraday-manual-cache', branch: 'master'
+gem 'faraday-manual-cache', github: 'dobs/faraday-manual-cache', branch: 'master'
 gem 'redis-activesupport'
 
 gem 'appsignal'
@@ -80,6 +80,7 @@ group :test do
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
   gem 'webmock'
+  gem "fakeredis", :require => "fakeredis/rspec"
 end
 
 group :production do

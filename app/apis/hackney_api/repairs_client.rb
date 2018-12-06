@@ -76,8 +76,27 @@ module HackneyAPI
     def get_work_order_notes(reference)
       request(
         http_method: :get,
-        endpoint: "#{API_VERSION}/work_orders/#{reference}/notes"
+        endpoint: notes_endpoint(reference)
       )
+    end
+
+    def post_work_order_note(work_order_reference, text)
+      value = request(
+        http_method: :post,
+        endpoint: "#{API_VERSION}/notes",
+        headers: {"Content-Type" => "application/json-patch+json"},
+        params: {
+          objectKey: "uhorder",
+          objectReference: work_order_reference,
+          text: text
+        }.to_json
+      )
+
+      key = "hackney-api-cache-#{notes_endpoint(work_order_reference)}"
+
+      API_REQUEST_CACHE.expire(key, 0)
+
+      value
     end
 
     def get_work_order_reports(reference)
@@ -158,20 +177,11 @@ module HackneyAPI
       []
     end
 
-    def post_work_order_note(work_order_reference, text)
-      request(
-        http_method: :post,
-        endpoint: "#{API_VERSION}/notes",
-        headers: {"Content-Type" => "application/json-patch+json"},
-        params: {
-          objectKey: "uhorder",
-          objectReference: work_order_reference,
-          text: text
-        }.to_json
-      )
-    end
-
     private
+
+    def notes_endpoint(reference)
+      "#{API_VERSION}/work_orders/#{reference}/notes"
+    end
 
     def request(http_method:, endpoint:, cache_request: true, headers: {}, params: {})
       caller = caller_locations.first.label
@@ -197,7 +207,12 @@ module HackneyAPI
 
     def connection(cache_request:, headers:)
       Faraday.new(@base_url, request: { :params_encoder => Faraday::FlatParamsEncoder }, headers: {"x-api-key"=>"#{ENV['X_API_KEY']}"}.merge(headers)) do |faraday|
-        faraday.use :manual_cache, logger: Rails.logger, expires_in: API_CACHE_TIME_IN_SECONDS if cache_request && !Rails.env.test?
+        if cache_request
+          faraday.use :manual_cache,
+                      logger: Rails.logger,
+                      expires_in: API_CACHE_TIME_IN_SECONDS,
+                      cache_key: ->(env) { "hackney-api-cache-" + env.url.to_s.sub(@base_url, '') }
+        end
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
         faraday.response :logger, Rails.logger unless Rails.env.test?

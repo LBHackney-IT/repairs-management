@@ -1,22 +1,13 @@
 function handleAjaxResponse(endpoint, ajaxTab) {
-  var request = new XMLHttpRequest();
   var errorHandler = function() {
     ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
   };
 
-  request.open('GET', endpoint, true);
-  request.onreadystatechange = function() {
-    if (request.readyState === 4) {
-      if (request.status === 200) {
-        ajaxTab.innerHTML = request.response;
-      } else {
-        errorHandler();
-      }
-    }
+  var successHandler = function(request) {
+    ajaxTab.innerHTML = request.response;
   };
 
-  request.onerror = errorHandler;
-  request.send();
+  sendAjaxRequest('GET', endpoint, null, null, successHandler, errorHandler)
 }
 
 function handleAjaxRepairsHistoryFiveYears(endpoint) {
@@ -24,17 +15,30 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
 
   var ajaxTab = document.getElementById('repair-history-tab');
 
-  var request = new XMLHttpRequest();
   var errorHandler = function() {
     ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
   };
 
-  request.open('GET', endpoint, true);
+  var successHandler = function(request) {
+    ajaxTab.innerHTML = request.response;
+    handleRepairHistoryYearsInfoText();
+  };
+
+  sendAjaxRequest('GET', endpoint, null, null, successHandler, errorHandler)
+}
+
+function sendAjaxRequest(method, endpoint, formData, csrfToken, successHandler, errorHandler) {
+  var request = new XMLHttpRequest();
+  request.open(method, endpoint, true);
+
+  if (method === 'POST') {
+    request.setRequestHeader('X-CSRF-Token', csrfToken);
+  }
+
   request.onreadystatechange = function() {
     if (request.readyState === 4) {
       if (request.status === 200) {
-        ajaxTab.innerHTML = request.response;
-        handleRepairHistoryYearsInfoText();
+        successHandler(request);
       } else {
         errorHandler();
       }
@@ -42,7 +46,26 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
   };
 
   request.onerror = errorHandler;
-  request.send();
+  request.send(formData);
+}
+
+function postAjaxForm(event, destinationId) {
+  event.preventDefault();
+
+  var destination = document.getElementById(destinationId);
+
+  var form = event.target;
+
+  var csrfToken = form.elements.namedItem('authenticity_token').value;
+
+  var FD = new FormData(form);
+
+  destination.innerHTML = '<p class="ajax-loading govuk-caption-m">Publishing note</p>';
+
+  sendAjaxRequest('POST', form.action, FD, csrfToken,
+    function (request) { destination.innerHTML = request.response; },
+    function () { destination.innerHTML = "There was a problem submitting your form"; }
+  );
 }
 
 function showLoadingMessage() {
