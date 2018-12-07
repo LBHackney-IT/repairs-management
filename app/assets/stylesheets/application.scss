@@ -69,10 +69,7 @@ $govuk-breakpoints: (
   background-color: govuk-colour("grey-4");
   border-bottom: 1px solid govuk-colour("grey-2");
   padding-top: 10px;
-
-  @media (min-width: 641px) {
-    padding-bottom: 50px;
-  }
+  padding-bottom: 30px;
 }
 
 .hackney-width-container {
@@ -127,10 +124,8 @@ $govuk-breakpoints: (
 
 // govuk styling specifies this as ems, and the other as pixels,
 // so need to overwrite it directly
-@media (min-width: 40.0625em) {
-  .govuk-width-container {
-    margin: 0 ($govuk-gutter / 6);
-  }
+.govuk-width-container {
+  margin: 0 ($govuk-gutter / 6);
 }
 
 @media (min-width: 1260px) {

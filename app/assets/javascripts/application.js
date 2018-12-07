@@ -18,3 +18,8 @@
 //= require building-type-filter
 //= require disable-link-after-click
 //= require_tree .
+
+// This disables govuk tab behaviour. On a mobile device the tab content now remain in separate tabs, rather than
+// being on one long page.
+Tabs.prototype.setupResponsiveChecks = function () {
+};
