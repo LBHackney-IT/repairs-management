@@ -18,3 +18,4 @@
 //= require building-type-filter
 //= require disable-link-after-click
 //= require_tree .
+
