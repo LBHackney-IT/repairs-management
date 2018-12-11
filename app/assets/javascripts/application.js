@@ -21,5 +21,8 @@
 
 // This disables govuk tab behaviour. On a mobile device the tab content now remain in separate tabs, rather than
 // being on one long page.
-Tabs.prototype.setupResponsiveChecks = function () {
+window.GOVUKFrontend.Tabs.prototype.setupResponsiveChecks = function () {
+  this.mql = window.matchMedia('(min-width: 0em)');
+  this.mql.addListener(this.checkMode.bind(this));
+  this.checkMode();
 };
