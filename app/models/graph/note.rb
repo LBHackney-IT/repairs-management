@@ -14,9 +14,13 @@ class Graph::Note
   end
 
   FIRST_NOTE_ID = 1
+  LAST_NOTE_HACK = 9_000_000
 
   def self.last_note_id
-    last_note = self.last
+    scope = self.query_as(:z).order("z.note_id DESC").limit(1)
+
+    last_note = scope.where("z.note_id > #{LAST_NOTE_HACK}").pluck(:z).first
+    last_note ||= scope.pluck(:z).first
     last_note.nil? ? FIRST_NOTE_ID : last_note.note_id
   end
 end
