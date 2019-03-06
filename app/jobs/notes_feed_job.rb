@@ -1,10 +1,8 @@
 class NotesFeedJob < ApplicationJob
   queue_as :feed
 
-  ENQUEUE_LIMIT = 50
-
-  def perform(enqueues, max_enqueues)
-    notes = Hackney::Note.feed(Graph::Note.last_note_id)
+  def perform(enqueues, max_enqueues, enqueue_limit)
+    notes = Hackney::Note.feed(Graph::Note.last_note_id, limit: enqueue_limit)
 
     notes.each do |hackney_note|
       RelatedWorkOrderJob.perform_later(hackney_note.note_id,
@@ -13,7 +11,7 @@ class NotesFeedJob < ApplicationJob
                                         extract_references(hackney_note))
     end
 
-    if enqueues < max_enqueues && notes.size >= ENQUEUE_LIMIT
+    if enqueues < max_enqueues && notes.size >= enqueue_limit
       NotesFeedJob.perform_later(enqueues + 1, max_enqueues)
     end
 

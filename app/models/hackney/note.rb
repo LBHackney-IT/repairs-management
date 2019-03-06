@@ -20,8 +20,8 @@ class Hackney::Note
     [] # The API currently returns 500 for notes... so patch it like this until the API is working
   end
 
-  def self.feed(note_id)
-    HackneyAPI::RepairsClient.new.notes_feed(note_id).map { |attrs| Hackney::Note.build(attrs) }
+  def self.feed(note_id, opts={})
+    HackneyAPI::RepairsClient.new.notes_feed(note_id, opts).map { |attrs| Hackney::Note.build(attrs) }
   end
 
   def self.create_work_order_note(work_order_reference, text)
