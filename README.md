@@ -2,7 +2,7 @@
 
 ## Getting started
 
-Ensure that you have [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install/). Then run `./bin/setup`.
+Ensure that you have [Docker](https://www.docker.com/community-edition#/download) and [Docker Compose](https://docs.docker.com/compose/install/). Then set the _environment variables_ (see below), copy the _rails credentials_ (see below) and run `./bin/setup`.
 
 The following commands are available:
 
@@ -33,6 +33,11 @@ Create a `.env` file and update it as needed using the `.env.test` as a template
 ## Rails credentials
 
 To run the app locally, you’ll need to have the Rails master key set in the app directory. Copy the password from the Hackney folder in Unboxed’s 1Password and save it to a `master.key` file in the config directory.
+
+If you don't copy the credentials, you might run into this error:
+```
+NoMethodError: undefined method `slice' for nil:NilClass
+```
 
 ## Testing
 
