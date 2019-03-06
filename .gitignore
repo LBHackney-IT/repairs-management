@@ -29,3 +29,9 @@
 # Ignore local environments
 .env
 .DS_Store
+
+# vim swaps
+*.swp
+
+# ctags
+tags
