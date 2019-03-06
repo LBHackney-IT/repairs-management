@@ -49,7 +49,7 @@ module HackneyAPI
     def notes_feed(previous_note_id)
       request(
         http_method: :get,
-        endpoint: "#{API_VERSION}/notes/feed?startId=#{previous_note_id}&noteTarget=uhorder"
+        endpoint: "#{API_VERSION}/notes/feed?startId=#{previous_note_id}&noteTarget=uhorder&resultSize=25"
       )
     end
 
