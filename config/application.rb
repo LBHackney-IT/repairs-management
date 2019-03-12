@@ -20,3 +20,5 @@ module RepairsManagement
     config.active_job.queue_adapter = :delayed_job
   end
 end
+
+require Rails.root.join('lib', 'heroku_helper')
