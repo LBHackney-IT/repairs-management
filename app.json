@@ -47,18 +47,9 @@
     }
   },
   "addons": [
-    {
-      "plan": "graphenedb",
-      "options": {
-        "version": "3.3.9"
-      }
-    },
-    {
-      "plan": "heroku-postgresql"
-    },
-    {
-      "plan": "heroku-redis"
-    }
+      "graphenedb",
+      "heroku-postgresql",
+      "heroku-redis"
   ],
   "buildpacks": [
     {
