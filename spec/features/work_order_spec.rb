@@ -72,7 +72,7 @@ RSpec.describe 'Work order' do
                                                work_order_reference: "11235813",
                                                target_numbers: ['01551932'])
 
-    fill_in 'Search by work order reference or postcode', with: '01551932'
+    fill_in 'Search by work order reference, postcode or address', with: '01551932'
     within('.hackney-search') do
       click_on 'Search'
     end
@@ -185,7 +185,7 @@ RSpec.describe 'Work order' do
   end
 
   scenario "Entering an unknown work order reference" do
-    fill_in 'Search by work order reference or postcode', with: ''
+    fill_in 'Search by work order reference, postcode or address', with: ''
     within('.hackney-search') do
       click_on 'Search'
     end
@@ -194,7 +194,7 @@ RSpec.describe 'Work order' do
 
     stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
 
-    fill_in 'Search by work order reference or postcode', with: '00000000'
+    fill_in 'Search by work order reference, postcode or address', with: '00000000'
     within('.hackney-search') do
       click_on 'Search'
     end
@@ -208,7 +208,7 @@ RSpec.describe 'Work order' do
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
 
-    fill_in 'Search by work order reference or postcode', with: '01551932'
+    fill_in 'Search by work order reference, postcode or address', with: '01551932'
     within('.hackney-search') do
       click_on 'Search'
     end
@@ -230,7 +230,7 @@ RSpec.describe 'Work order' do
   scenario 'Search for a work order by postcode', js: true do
     stub_hackney_property_by_postcode(reference: 'E98BH', body: property_by_postcode_response_body__no_properties)
 
-    fill_in 'Search by work order reference or postcode', with: 'E98BH'
+    fill_in 'Search by work order reference, postcode or address', with: 'E98BH'
     within('.hackney-search') do
       click_on 'Search'
     end
@@ -239,7 +239,7 @@ RSpec.describe 'Work order' do
 
     stub_hackney_property_by_postcode
 
-    fill_in 'Search by work order reference or postcode', with: 'E96BH'
+    fill_in 'Search by work order reference, postcode or address', with: 'E96BH'
     within('.hackney-search') do
       click_on 'Search'
     end
@@ -269,6 +269,91 @@ RSpec.describe 'Work order' do
     within("#repair-history-tab") do
       expect(page).to have_css("h2", text: "Repairs history")
     end
+  end
+
+  scenario 'Search for a work order by address', js: true do
+    stub_hackney_property_by_address(reference: 'Acacia2', body: property_by_address_response_body__no_properties)
+
+    fill_in 'Search by work order reference, postcode or address', with: 'Acacia2'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
+
+    expect(page).to have_content 'We found 0 matching results for Acacia2 ...'
+
+    stub_hackney_property_by_address(reference: 'Acacia', body: property_by_address_response_body)
+
+    fill_in 'Search by work order reference, postcode or address', with: 'Acacia'
+    within('.hackney-search') do
+      click_on 'Search'
+    end
+
+    expect(page).to have_content 'Acacia'
+    expect(page).to have_content '00000017'
+    expect(page).to have_content 'We found 28 matching results for Acacia ...'
+
+    within('#hackney-addresses table') do
+      expect(page).to have_selector 'td', text: "1 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "2 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "3 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "4 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "5 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "6 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "7 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "8 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "9 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "10 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "11 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "12 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "13 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "14 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "15 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "16 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "17 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "18 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "19 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "20 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "21 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "22 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "Psp 5 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "Lift 1449 3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "Lift 1448 1-2 & 5-7 & 11-13 & 17-19 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "1-22 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "1-2 & 5-7 & 11-13 & 17-19 Acacia House Lordship Road"
+      expect(page).to have_selector 'td', text: "3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road"
+    end
+
+    #
+    # FIXME: is it really necessary to test the following?
+    #
+
+    #stub_hackney_repairs_properties(reference: '00000017', status: 200, body: {
+    #  "address" => "1 Acacia House  Lordship Road",
+    #  "description" => "Dwelling",
+    #  "levelCode" => "7",
+    #  "maintainable" => true,
+    #  "majorReference" => "00087477",
+    #  "postcode" => "N16 0PX",
+    #  "propertyReference" => "00000017"
+    #})
+
+    #stub_hackney_property_hierarchy(reference: '00000017', status: 200)
+    #stub_hackney_property_by_postcode(reference: 'N16 0PX', min_level: 6, max_level: 6, body: property_by_address_response_body)
+
+    #click_on '1 Acacia House Lordship Road'
+
+    #expect(page).to have_title "1 Acacia House Lordship Road - Hackney Repairs Hub"
+
+    #expect(page).to have_content 'Property details'
+    #expect(page).to have_content '1 Acacia House Lordship Road'
+
+    #expect(page).to have_css(".hackney-work-order-tab", count: 1)
+
+    #expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
+
+    #within("#repair-history-tab") do
+    #  expect(page).to have_css("h2", text: "Repairs history")
+    #end
   end
 
   scenario 'No notes or appointments are returned', js: true do # TODO: remove when the api in sandbox is deployed
@@ -473,7 +558,7 @@ RSpec.describe 'Work order' do
     within(".hackney-header__right_links") do
       click_on "Search"
     end
-    expect(page).to have_content "Search by work order reference or postcode"
+    expect(page).to have_content "Search by work order reference, postcode or address"
   end
 
   scenario 'Viewing the possibly related tab' do

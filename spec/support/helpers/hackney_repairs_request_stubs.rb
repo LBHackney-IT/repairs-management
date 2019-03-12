@@ -547,5 +547,253 @@ module Helpers
       stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties?postcode=#{reference}&min_level=#{min_level}&max_level=#{max_level}")
         .to_return(status: status, body: body.to_json)
     end
+
+    # GET /#{API_VERSION}/properties/fladdress?address=:reference
+
+    def property_by_address_response_body(overrides = {})
+      {
+        "results": [
+          {
+            "propertyReference" => "00000017",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "1 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000018",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "2 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000019",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "3 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000020",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "4 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000021",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "5 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000022",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "6 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000023",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "7 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000024",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "8 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000025",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "9 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000026",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "10 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000027",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "11 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000028",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "12 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000029",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "13 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000030",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "14 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000031",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "15 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000032",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "16 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000033",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "17 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000034",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "18 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000035",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087477",
+            "address" => "19 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000036",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "20 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000037",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "21 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00000038",
+            "levelCode" => "7",
+            "description" => "Dwelling",
+            "majorReference" => "00087478",
+            "address" => "22 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00050654",
+            "levelCode" => "8",
+            "description" => "Non-Dwell",
+            "majorReference" => "00087086",
+            "address" => "Psp 5 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00072649",
+            "levelCode" => "6",
+            "description" => "Facilities",
+            "majorReference" => "00087478",
+            "address" => "Lift 1449 3-4 & 8-10 & 14-16 & 20-22 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00072650",
+            "levelCode" => "6",
+            "description" => "Facilities",
+            "majorReference" => "00087477",
+            "address" => "Lift 1448 1-2 & 5-7 & 11-13 & 17-19 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00073953",
+            "levelCode" => "3",
+            "description" => "Block",
+            "majorReference" => "00078393",
+            "address" => "1-22 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00087477",
+            "levelCode" => "4",
+            "description" => "Sub-Block",
+            "majorReference" => "00073953",
+            "address" => "1-2 & 5-7 & 11-13 & 17-19 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00087478",
+            "levelCode" => "4",
+            "description" => "Sub-Block",
+            "majorReference" => "00073953",
+            "address" => "3-4 & 8-10 & 14-16 & 20-22 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          }
+        ]
+      }.merge(overrides)
+    end
+
+    def property_by_address_response_body__no_properties
+      {
+        "results": []
+      }
+    end
+
+    def stub_hackney_property_by_address(reference: 'Acacia', status: 200,
+                                          body: property_by_address_response_body,
+                                          min_level: 8,
+                                          max_level: 2)
+
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/fladdress?address=#{reference}&min_level=#{min_level}&max_level=#{max_level}")
+        .to_return(status: status, body: body.to_json)
+    end
   end
 end

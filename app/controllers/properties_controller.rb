@@ -6,7 +6,11 @@ class PropertiesController < ApplicationController
   end
 
   def search
-    @address_list_for_postcode = Hackney::Property.for_postcode(params[:ref])
+    if params[:ref].present?
+      @address_list_for_postcode = Hackney::Property.for_postcode(params[:ref])
+    elsif params[:addr].present?
+      @address_list_for_postcode = Hackney::Property.for_address(params[:addr])
+    end
   end
 
   private

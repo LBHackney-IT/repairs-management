@@ -18,8 +18,7 @@ class WorkOrdersController < ApplicationController
     elsif is_postcode?(reference)
       redirect_to search_properties_path(ref: reference)
     else
-      flash.notice = "#{reference} is not a valid work order or postcode"
-      redirect_to root_path
+      redirect_to search_properties_path(addr: reference)
     end
   end
 
