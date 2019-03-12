@@ -42,7 +42,7 @@ class SessionsController < ApplicationController
   private
 
   def review_app_login?
-    ENV['HEROKU_APP_NAME'] =~ /^hackney-repairs-staging-pr-\d+$/
+    heroku_review_app?
   end
 
   def review_app_compare(username, password)
