@@ -5,21 +5,19 @@ class WorkOrdersController < ApplicationController
 
   def search
     if reference.present?
-      redirect_to action: :show, ref: params[:ref]
+      if is_work_order?(reference)
+        redirect_to action: :show, ref: reference
+      else
+        redirect_to search_properties_path(ref: params[:ref])
+      end
     else
-      flash.notice = 'Please provide a reference or postcode'
+      flash.notice = 'Please provide a reference, postcode or address'
       redirect_to root_path
     end
   end
 
   def show
-    if is_work_order?(reference)
-      @work_order = WorkOrderFacade.new(reference)
-    elsif is_postcode?(reference)
-      redirect_to search_properties_path(ref: reference)
-    else
-      redirect_to search_properties_path(addr: params[:ref])
-    end
+    @work_order = WorkOrderFacade.new(reference)
   end
 
 private
@@ -29,15 +27,15 @@ private
     redirect_to root_path
   end
 
+  def query
+    params[:ref].to_s
+  end
+
   def reference
-    params[:ref].gsub(/\s+/, "")
+    query.gsub(/\s+/, "")
   end
 
-  def is_work_order?(reference)
-    reference[/\A\d{8}\z/]
-  end
-
-  def is_postcode?(postcode)
-    postcode.upcase[/^[A-Z]{1,2}([0-9]{1,2}|[0-9][A-Z])[0-9][A-Z]{2}$/]
+  def is_work_order?(s)
+    s[/\A\d{8}\z/]
   end
 end

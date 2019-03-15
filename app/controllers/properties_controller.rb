@@ -1,4 +1,5 @@
 class PropertiesController < ApplicationController
+  include PropertyHelper
   rescue_from HackneyAPI::RepairsClient::RecordNotFoundError, with: :routing_error
 
   def show
@@ -6,11 +7,14 @@ class PropertiesController < ApplicationController
   end
 
   def search
-    if params[:ref].present?
-      @address_list_for_postcode = Hackney::Property.for_postcode(params[:ref])
-    elsif params[:addr].present?
-      @address_list_for_postcode = Hackney::Property.for_address(params[:addr])
-    end
+    @address_list =
+      if params[:ref].present?
+        if is_postcode?(params[:ref])
+          Hackney::Property.for_postcode(params[:ref])
+        else
+          Hackney::Property.for_address(params[:ref])
+        end
+      end
   end
 
   private

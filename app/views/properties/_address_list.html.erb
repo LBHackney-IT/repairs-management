@@ -1,9 +1,9 @@
 <p class="govuk-heading-s">
-  We found <%= address_list.count %> matching results for
-  <% if params[:ref].present? %>
-    <%= params[:ref].upcase if params[:ref] %>
-  <% elsif params[:addr].present? %>
-    <%= params[:addr] %>
+  We found <%= address_list.count %> matching results for <%= query %> ...
+  <% if is_postcode?(query) %>
+    <%= format_postcode(query) %>
+  <% else %>
+    <%= query %>
   <% end %>
   ...
 </p>

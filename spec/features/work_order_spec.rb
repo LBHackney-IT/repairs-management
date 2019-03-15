@@ -190,7 +190,7 @@ RSpec.describe 'Work order' do
       click_on 'Search'
     end
 
-    expect(page).to have_content 'Please provide a reference or postcode'
+    expect(page).to have_content 'Please provide a reference, postcode or address'
 
     stub_hackney_repairs_work_orders(reference: '00000000', status: 404)
 
