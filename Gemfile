@@ -41,7 +41,7 @@ gem 'omniauth-azure-activedirectory'
 gem 'omniauth-google-oauth2'
 gem 'sentry-raven'
 
-gem 'neo4j'
+gem 'neo4j', github: 'ayghor/neo4j', branch: 'fix_wait_for_connection'
 
 gem 'faraday'
 gem 'faraday_middleware'

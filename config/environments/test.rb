@@ -43,7 +43,4 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-
-  # Wait for neo4j database to boot up
-  config.neo4j.wait_for_connection = true
 end

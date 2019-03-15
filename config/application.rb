@@ -9,6 +9,7 @@ Bundler.require(*Rails.groups)
 
 module RepairsManagement
   class Application < Rails::Application
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
@@ -18,6 +19,9 @@ module RepairsManagement
     # the framework and any gems in your application.
 
     config.active_job.queue_adapter = :delayed_job
+
+    # Wait for neo4j database to boot up
+    config.neo4j.wait_for_connection = true
   end
 end
 
