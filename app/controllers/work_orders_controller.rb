@@ -5,7 +5,7 @@ class WorkOrdersController < ApplicationController
 
   def search
     if reference.present?
-      redirect_to action: :show, ref: reference
+      redirect_to action: :show, ref: params[:ref]
     else
       flash.notice = 'Please provide a reference or postcode'
       redirect_to root_path
@@ -18,7 +18,7 @@ class WorkOrdersController < ApplicationController
     elsif is_postcode?(reference)
       redirect_to search_properties_path(ref: reference)
     else
-      redirect_to search_properties_path(addr: reference)
+      redirect_to search_properties_path(addr: params[:ref])
     end
   end
 
