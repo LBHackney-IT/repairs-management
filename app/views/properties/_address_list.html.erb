@@ -1,5 +1,5 @@
 <p class="govuk-heading-s">
-  We found <%= address_list.count %> matching results for <%= query %> ...
+  We found <%= address_list.count %> matching results for
   <% if is_postcode?(query) %>
     <%= format_postcode(query) %>
   <% else %>
