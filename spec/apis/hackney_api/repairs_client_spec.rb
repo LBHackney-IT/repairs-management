@@ -7,6 +7,7 @@ describe HackneyAPI::RepairsClient do
   let(:reference) { 1 }
   let(:empty_response_body) { {} }
   let(:postcode) { 1 }
+  let(:address) { "1 Somewhere" }
 
   describe '#get_work_orders' do
     subject { api_client.get_work_orders }
@@ -369,6 +370,42 @@ describe HackneyAPI::RepairsClient do
 
       it 'raises ApiError error' do
         expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties, {:postcode=>1, :min_level=>8, :max_level=>2}, 500, #{response_body}")
+      end
+    end
+  end
+
+  # TODO: check if this make any sense
+  describe '#get_property_by_address' do
+    subject { api_client.get_property_by_address(address) }
+
+    context 'successful response' do
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress?address=#{address}&min_level=8&max_level=2").to_return(body: empty_response_body.to_json) }
+
+      it 'returns successful response body' do
+        expect(subject).to eq(empty_response_body)
+      end
+    end
+
+    context 'not found error' do
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress?address=#{address}&min_level=8&max_level=2").to_return(status: 404) }
+
+      it 'raises RecordNotFoundError error' do
+        expect { subject }.to raise_error(described_class::RecordNotFoundError)
+      end
+    end
+
+    context 'API general error' do
+      let(:response_body) do
+        {
+          "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+          "userMessage" => "We had some problems processing your request"
+        }
+      end
+
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress?address=#{address}&min_level=8&max_level=2").to_return(status: 500, body: response_body.to_json) }
+
+      it 'raises ApiError error' do
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties/fladdress, {:address=>\"#{address}\", :min_level=>8, :max_level=>2}, 500, #{response_body}")
       end
     end
   end

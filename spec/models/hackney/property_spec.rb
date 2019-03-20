@@ -58,6 +58,19 @@ describe Hackney::Property do
     end
   end
 
+  describe '.build for the address search' do
+
+    it 'builds a property from the API response' do
+      model = described_class.build(property_by_address_response_body[:results].first)
+      expect(model).to be_a(Hackney::Property)
+
+      expect(model.address).to eq("1 Acacia House  Lordship Road")
+      expect(model.postcode).to eq("N16 0PX")
+      expect(model.reference).to eq("00000017")
+      expect(model.description).to eq("Dwelling")
+    end
+  end
+
   describe '.find' do
 
     context 'when the API responds with a record' do
@@ -147,6 +160,33 @@ describe Hackney::Property do
       it 'raises an api error' do
         expect {
           described_class.for_postcode('E96BH')
+        }.to raise_error HackneyAPI::RepairsClient::ApiError
+      end
+    end
+  end
+
+  describe '.for_address' do
+
+    context 'when the API responds with RecordNotFound' do
+      before do
+        stub_hackney_property_by_address(status: 404)
+      end
+
+      it 'raises a RecordNotFoundError error' do
+        expect {
+          described_class.for_address('Acacia')
+        }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
+      end
+    end
+
+    context 'when the API fails' do
+      before do
+        stub_hackney_property_by_address(status: 500)
+      end
+
+      it 'raises an api error' do
+        expect {
+          described_class.for_address('Acacia')
         }.to raise_error HackneyAPI::RepairsClient::ApiError
       end
     end

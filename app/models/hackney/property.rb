@@ -29,6 +29,12 @@ class Hackney::Property
     end
   end
 
+  def self.for_address(address)
+    HackneyAPI::RepairsClient.new.get_property_by_address(address)["results"].map do |attributes|
+      build(attributes)
+    end
+  end
+
   def self.build(attributes)
     # TODO: remove strip from attributes['attr'].strip - API should be fixed soon
     new(

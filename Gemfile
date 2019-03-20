@@ -56,6 +56,7 @@ gem 'delayed_job_active_record'
 gem "delayed_job_web"
 
 group :development, :test do
+  gem 'byebug'
   gem 'pry'
   gem 'rspec-rails'
   gem 'factory_bot_rails'

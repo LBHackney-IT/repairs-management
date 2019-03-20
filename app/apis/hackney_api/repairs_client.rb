@@ -168,6 +168,19 @@ module HackneyAPI
       )
     end
 
+    def get_property_by_address(address, min_level=LEVEL_NON_DWELL, max_level=LEVEL_ESTATE)
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/properties/fladdress",
+        params: {
+          address: address,
+          # FIXME: are those two used?
+          min_level: min_level,
+          max_level: max_level
+        }
+      )
+    end
+
     def get_property_block_work_orders_by_trade(reference:, trade:, date_from:, date_to:)
       request(
         http_method: :get,
