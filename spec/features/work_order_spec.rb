@@ -323,37 +323,7 @@ RSpec.describe 'Work order' do
       expect(page).to have_selector 'td', text: "3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road"
     end
 
-    #
-    # FIXME: is it really necessary to test the following?
-    #
-
-    #stub_hackney_repairs_properties(reference: '00000017', status: 200, body: {
-    #  "address" => "1 Acacia House  Lordship Road",
-    #  "description" => "Dwelling",
-    #  "levelCode" => "7",
-    #  "maintainable" => true,
-    #  "majorReference" => "00087477",
-    #  "postcode" => "N16 0PX",
-    #  "propertyReference" => "00000017"
-    #})
-
-    #stub_hackney_property_hierarchy(reference: '00000017', status: 200)
-    #stub_hackney_property_by_postcode(reference: 'N16 0PX', min_level: 6, max_level: 6, body: property_by_address_response_body)
-
-    #click_on '1 Acacia House Lordship Road'
-
-    #expect(page).to have_title "1 Acacia House Lordship Road - Hackney Repairs Hub"
-
-    #expect(page).to have_content 'Property details'
-    #expect(page).to have_content '1 Acacia House Lordship Road'
-
-    #expect(page).to have_css(".hackney-work-order-tab", count: 1)
-
-    #expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
-
-    #within("#repair-history-tab") do
-    #  expect(page).to have_css("h2", text: "Repairs history")
-    #end
+    expect(page).to have_link("22 Acacia House Lordship Road", href: property_path("00000038"))
   end
 
   scenario 'No notes or appointments are returned', js: true do # TODO: remove when the api in sandbox is deployed
