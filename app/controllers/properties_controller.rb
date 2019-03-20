@@ -7,12 +7,13 @@ class PropertiesController < ApplicationController
   end
 
   def search
+    @limit = 201
     @address_list =
       if params[:ref].present?
         if is_postcode?(params[:ref])
           Hackney::Property.for_postcode(params[:ref])
         else
-          Hackney::Property.for_address(params[:ref])
+          Hackney::Property.for_address(params[:ref], limit: @limit)
         end
       end
   end
