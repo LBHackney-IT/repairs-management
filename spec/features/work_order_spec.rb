@@ -293,37 +293,35 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'We found 28 matching results for Acacia ...'
 
     within('#hackney-addresses table') do
-      expect(page).to have_selector 'td', text: "1 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "2 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "3 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "4 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "5 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "6 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "7 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "8 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "9 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "10 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "11 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "12 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "13 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "14 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "15 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "16 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "17 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "18 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "19 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "20 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "21 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "22 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "Psp 5 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "Lift 1449 3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "Lift 1448 1-2 & 5-7 & 11-13 & 17-19 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "1-22 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "1-2 & 5-7 & 11-13 & 17-19 Acacia House Lordship Road"
-      expect(page).to have_selector 'td', text: "3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road"
+      expect(page).to have_link("1 Acacia House Lordship Road", href: property_path("00000017"))
+      expect(page).to have_link("2 Acacia House Lordship Road", href: property_path("00000018"))
+      expect(page).to have_link("3 Acacia House Lordship Road", href: property_path("00000019"))
+      expect(page).to have_link("4 Acacia House Lordship Road", href: property_path("00000020"))
+      expect(page).to have_link("5 Acacia House Lordship Road", href: property_path("00000021"))
+      expect(page).to have_link("6 Acacia House Lordship Road", href: property_path("00000022"))
+      expect(page).to have_link("7 Acacia House Lordship Road", href: property_path("00000023"))
+      expect(page).to have_link("8 Acacia House Lordship Road", href: property_path("00000024"))
+      expect(page).to have_link("9 Acacia House Lordship Road", href: property_path("00000025"))
+      expect(page).to have_link("10 Acacia House Lordship Road", href: property_path("00000026"))
+      expect(page).to have_link("11 Acacia House Lordship Road", href: property_path("00000027"))
+      expect(page).to have_link("12 Acacia House Lordship Road", href: property_path("00000028"))
+      expect(page).to have_link("13 Acacia House Lordship Road", href: property_path("00000029"))
+      expect(page).to have_link("14 Acacia House Lordship Road", href: property_path("00000030"))
+      expect(page).to have_link("15 Acacia House Lordship Road", href: property_path("00000031"))
+      expect(page).to have_link("16 Acacia House Lordship Road", href: property_path("00000032"))
+      expect(page).to have_link("17 Acacia House Lordship Road", href: property_path("00000033"))
+      expect(page).to have_link("18 Acacia House Lordship Road", href: property_path("00000034"))
+      expect(page).to have_link("19 Acacia House Lordship Road", href: property_path("00000035"))
+      expect(page).to have_link("20 Acacia House Lordship Road", href: property_path("00000036"))
+      expect(page).to have_link("21 Acacia House Lordship Road", href: property_path("00000037"))
+      expect(page).to have_link("22 Acacia House Lordship Road", href: property_path("00000038"))
+      expect(page).to have_link("Psp 5 Acacia House Lordship Road", href: property_path("00050654"))
+      expect(page).to have_link("Lift 1449 3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road", href: property_path("00072649"))
+      expect(page).to have_link("Lift 1448 1-2 & 5-7 & 11-13 & 17-19 Acacia House Lordship Road", href: property_path("00072650"))
+      expect(page).to have_link("1-22 Acacia House Lordship Road", href: property_path("00073953"))
+      expect(page).to have_link("1-2 & 5-7 & 11-13 & 17-19 Acacia House Lordship Road", href: property_path("00087477"))
+      expect(page).to have_link("3-4 & 8-10 & 14-16 & 20-22 Acacia House Lordship Road", href: property_path("00087478"))
     end
-
-    expect(page).to have_link("22 Acacia House Lordship Road", href: property_path("00000038"))
   end
 
   scenario 'No notes or appointments are returned', js: true do # TODO: remove when the api in sandbox is deployed
