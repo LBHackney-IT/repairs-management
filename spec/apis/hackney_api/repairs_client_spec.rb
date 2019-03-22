@@ -376,10 +376,14 @@ describe HackneyAPI::RepairsClient do
 
   # TODO: check if this make any sense
   describe '#get_property_by_address' do
-    subject { api_client.get_property_by_address(address) }
+    subject { api_client.get_property_by_address(address, limit: 201) }
 
     context 'successful response' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress?address=#{address}&min_level=8&max_level=2").to_return(body: empty_response_body.to_json) }
+      before do
+        stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress")
+          .with(query: {address: address, limit: 201, min_level: 8, max_level: 2})
+          .to_return(body: empty_response_body.to_json)
+      end
 
       it 'returns successful response body' do
         expect(subject).to eq(empty_response_body)
@@ -387,7 +391,11 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress?address=#{address}&min_level=8&max_level=2").to_return(status: 404) }
+      before do
+        stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress")
+          .with(query: {address: address, limit: 201, min_level: 8, max_level: 2})
+          .to_return(status: 404)
+      end
 
       it 'raises RecordNotFoundError error' do
         expect { subject }.to raise_error(described_class::RecordNotFoundError)
@@ -402,10 +410,14 @@ describe HackneyAPI::RepairsClient do
         }
       end
 
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress?address=#{address}&min_level=8&max_level=2").to_return(status: 500, body: response_body.to_json) }
+      before do
+        stub_request(:get, "#{base_url}/#{api_version}/properties/fladdress")
+          .with(query: {address: address, limit: 201, min_level: 8, max_level: 2})
+          .to_return(status: 500, body: response_body.to_json)
+      end
 
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties/fladdress, {:address=>\"#{address}\", :min_level=>8, :max_level=>2}, 500, #{response_body}")
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/properties/fladdress, {:address=>\"#{address}\", :limit=>201, :min_level=>8, :max_level=>2}, 500, #{response_body}")
       end
     end
   end

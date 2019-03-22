@@ -789,7 +789,7 @@ module Helpers
 
     def stub_hackney_property_by_address(reference: 'Acacia', status: 200,
                                           body: property_by_address_response_body,
-                                          limit: nil,
+                                          limit:,
                                           min_level: 8,
                                           max_level: 2)
       params = {
@@ -797,7 +797,7 @@ module Helpers
         limit: limit,
         min_level: min_level,
         max_level: max_level,
-      }.compact
+      }
 
       stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/properties/fladdress")
         .with(query: params)

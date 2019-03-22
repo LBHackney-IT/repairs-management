@@ -168,7 +168,7 @@ module HackneyAPI
       )
     end
 
-    def get_property_by_address(address, min_level=LEVEL_NON_DWELL, max_level=LEVEL_ESTATE, limit: nil)
+    def get_property_by_address(address, min_level=LEVEL_NON_DWELL, max_level=LEVEL_ESTATE, limit:)
       request(
         http_method: :get,
         endpoint: "#{API_VERSION}/properties/fladdress",
@@ -178,7 +178,7 @@ module HackneyAPI
           # FIXME: are those two used?
           min_level: min_level,
           max_level: max_level
-        }.compact
+        }
       )
     end
 

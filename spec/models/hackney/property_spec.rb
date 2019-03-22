@@ -169,24 +169,24 @@ describe Hackney::Property do
 
     context 'when the API responds with RecordNotFound' do
       before do
-        stub_hackney_property_by_address(status: 404)
+        stub_hackney_property_by_address(status: 404, limit: 201)
       end
 
       it 'raises a RecordNotFoundError error' do
         expect {
-          described_class.for_address('Acacia')
+          described_class.for_address('Acacia', limit: 201)
         }.to raise_error HackneyAPI::RepairsClient::RecordNotFoundError
       end
     end
 
     context 'when the API fails' do
       before do
-        stub_hackney_property_by_address(status: 500)
+        stub_hackney_property_by_address(status: 500, limit: 201)
       end
 
       it 'raises an api error' do
         expect {
-          described_class.for_address('Acacia')
+          described_class.for_address('Acacia', limit: 201)
         }.to raise_error HackneyAPI::RepairsClient::ApiError
       end
     end
