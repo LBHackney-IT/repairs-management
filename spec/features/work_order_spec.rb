@@ -272,7 +272,7 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Search for a work order by address', js: true do
-    stub_hackney_property_by_address(reference: 'Acacia2', body: property_by_address_response_body__no_properties)
+    stub_hackney_property_by_address(reference: 'Acacia2', body: property_by_address_response_body__no_properties, limit: 201)
 
     fill_in 'Search by work order reference, postcode or address', with: 'Acacia2'
     within('.hackney-search') do
@@ -281,7 +281,7 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'We found 0 matching results for Acacia2 ...'
 
-    stub_hackney_property_by_address(reference: 'Acacia', body: property_by_address_response_body)
+    stub_hackney_property_by_address(reference: 'Acacia', body: property_by_address_response_body, limit: 201)
 
     fill_in 'Search by work order reference, postcode or address', with: 'Acacia'
     within('.hackney-search') do

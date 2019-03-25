@@ -1,5 +1,5 @@
 <%= render 'pages/home_search' %>
 
 <div class="hackney-address-list-for-postcode">
-  <%= render 'properties/address_list', query: params[:ref], address_list: @address_list %>
+  <%= render 'properties/address_list', query: params[:ref], address_list: @address_list, limit: @limit %>
 </div>

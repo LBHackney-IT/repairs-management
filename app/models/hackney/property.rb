@@ -29,8 +29,8 @@ class Hackney::Property
     end
   end
 
-  def self.for_address(address)
-    HackneyAPI::RepairsClient.new.get_property_by_address(address)["results"].map do |attributes|
+  def self.for_address(address, limit:)
+    HackneyAPI::RepairsClient.new.get_property_by_address(address, limit: limit)["results"].map do |attributes|
       build(attributes)
     end
   end

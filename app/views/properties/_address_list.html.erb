@@ -1,11 +1,24 @@
 <p class="govuk-heading-s">
-  We found <%= address_list.count %> matching results for
-  <% if is_postcode?(query) %>
-    <%= format_postcode(query) %>
-  <% else %>
-    <%= query %>
-  <% end %>
-  ...
+We found
+
+<% if address_list.count < limit %>
+  <%= address_list.count %>
+<% else %>
+  more than <%= limit - 1 %>
+<% end %>
+
+matching results for
+
+<% if is_postcode?(query) %>
+  <%= format_postcode(query) -%>
+<% else %>
+  <%= query -%>
+<% end %>
+<% unless address_list.count < limit %>
+.  Showing the first <%= limit - 1 %>
+<% end %>
+
+...
 </p>
 
 <% if address_list.present? %>
