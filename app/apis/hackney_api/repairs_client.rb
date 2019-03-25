@@ -46,10 +46,10 @@ module HackneyAPI
       )
     end
 
-    def notes_feed(previous_note_id)
+    def notes_feed(previous_note_id, limit: 50)
       request(
         http_method: :get,
-        endpoint: "#{API_VERSION}/notes/feed?startId=#{previous_note_id}&noteTarget=uhorder"
+        endpoint: "#{API_VERSION}/notes/feed?startId=#{previous_note_id}&noteTarget=uhorder&resultSize=#{limit}"
       )
     end
 

@@ -10,10 +10,10 @@ namespace :hackney do
   end
 
   desc "Update notes in the graph DB"
-  task :update_graph_notes, [:enqueues, :wait_seconds] => [:environment] do |_t, args|
+  task :update_graph_notes, [:enqueues, :limit, :wait_seconds] => [:environment] do |_t, args|
     waits = args[:wait_seconds].split('-').map(&:to_i)
     waits.each do |wait|
-      NotesFeedJob.set(wait: wait.seconds).perform_later(1, args[:enqueues].to_i)
+      NotesFeedJob.set(wait: wait.seconds).perform_later(1, args[:enqueues].to_i, args[:limit].to_i)
     end
   end
 
