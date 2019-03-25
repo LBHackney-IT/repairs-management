@@ -1,4 +1,4 @@
-<div class="hackney-note-info">
+<div class="hackney-note-info" data-note-id="<%= note_or_appointment.note_id %>">
   <%= note_or_appointment.logged_at.to_s(:govuk_date_time) %> by <%= note_or_appointment.logged_by %>
 </div>
 <%= simple_format(note_or_appointment.text) %>

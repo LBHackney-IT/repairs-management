@@ -164,12 +164,14 @@ module Helpers
         {
           "text": "Tenant called to confirm appointment",
           "loggedAt": "2018-08-23T10:12:56+01:00",
-          "loggedBy": "MOSHEA"
+          "loggedBy": "MOSHEA",
+          "noteId": 3000
         },
         {
           "text": "Further works required; Tiler required to renew splash back and reseal bath",
           "loggedAt": "2018-09-02T11:32:14+01:00",
-          "loggedBy": "Servitor"
+          "loggedBy": "Servitor",
+          "noteId": 4000
         }
       ]
     end
