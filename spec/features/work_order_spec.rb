@@ -93,8 +93,10 @@ RSpec.describe 'Work order' do
     end
 
     click_on('Notes and appointments')
-    expect(page).to have_content "2 September 2018, 11:32am by Servitor\nFurther works required; Tiler required to renew splash back and reseal bath"
-    expect(page).to have_content "23 August 2018, 10:12am by MOSHEA\nTenant called to confirm appointment"
+    expect(find('div[data-note-id="4000"]')).to have_content '2 September 2018, 11:32am by Servitor'
+    expect(find('div[data-note-id="4000"]+p')).to have_content 'Further works required; Tiler required to renew splash back and reseal bath'
+    expect(find('div[data-note-id="3000"]')).to have_content '23 August 2018, 10:12am by MOSHEA'
+    expect(find('div[data-note-id="3000"]+p')).to have_content 'Tenant called to confirm appointment'
     expect(page).to have_content "30 May 2018, 8:00am-12:00pm\nAppointment: Planned\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nCreated: 29 May 2018, 2:10pm\nData source: DRS"
     expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nCreated: 29 May 2018, 2:51pm\nData source: DRS"
     expect(page).to have_content "17 October 2017, 9:27am to 24 October 2017, 9:27am\nAppointment: Completed\nOperative name: (PLM) Fatima Bagam TEST\nPhone number:\nCreated: 17 October 2017, 9:27am\nData source: DRS"
