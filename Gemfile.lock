@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ayghor/neo4j.git
-  revision: 44b616a8d0dc66d298223fc7433849f9cf22627c
+  revision: 8ab64aa8181accba1aa64d06a0e55585524591df
   branch: fix_wait_for_connection
   specs:
     neo4j (9.4.0)
