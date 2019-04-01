@@ -21,6 +21,8 @@ namespace :hackney do
   task :delete_old_notes, [:years] => :environment do |_t, args|
     years = args[:years].to_i
 
+    raise 'Can only delete notes older than 1 year' unless years >= 1
+
     DeleteOldNotesJob.perform_later(years.years.ago.iso8601)
   end
 end
