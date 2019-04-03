@@ -1,5 +1,6 @@
 class Graph::Citation
   include Neo4j::ActiveRel
+  include Profiling
 
   from_class 'Graph::WorkOrder'
   to_class 'Graph::WorkOrder'

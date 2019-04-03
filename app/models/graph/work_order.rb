@@ -1,5 +1,6 @@
 class Graph::WorkOrder
   include Neo4j::ActiveNode
+  include Profiling
   MAX_RELATIONS = 20
 
   id_property :reference

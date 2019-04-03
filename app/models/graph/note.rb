@@ -1,5 +1,6 @@
 class Graph::Note
   include Neo4j::ActiveNode
+  include Profiling
 
   id_property :note_id
 

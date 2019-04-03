@@ -5,6 +5,7 @@
 class Graph::LastFromFeed
   include Neo4j::ActiveNode
   include Neo4j::Timestamps::Updated
+  include Profiling
 
   id_property :feed_type
 
