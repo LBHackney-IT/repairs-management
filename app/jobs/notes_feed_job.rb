@@ -1,6 +1,10 @@
 class NotesFeedJob < ApplicationJob
   queue_as :feed
 
+  # FIXME: NotesFeedJob and RelatedWorkOrderJob must be performed in order.
+  #
+  # If NotesFeedJob is performed twice before RelatedWorkOrderJob, then the
+  # RelatedWorkOrderJob jobs will be duplicated.
   def perform(enqueues, max_enqueues, enqueue_limit)
     notes = Hackney::Note.feed(Graph::Note.last_note_id, limit: enqueue_limit)
 
@@ -12,7 +16,7 @@ class NotesFeedJob < ApplicationJob
     end
 
     if enqueues < max_enqueues && notes.size >= enqueue_limit
-      NotesFeedJob.perform_later(enqueues + 1, max_enqueues)
+      NotesFeedJob.perform_later(enqueues + 1, max_enqueues, enqueue_limit)
     end
 
   rescue StandardError => e

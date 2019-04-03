@@ -70,7 +70,7 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
 
     expect {
       NotesFeedJob.perform_now(1, 2, 25)
-    }.to have_enqueued_job(NotesFeedJob).with(2, 2)
+    }.to have_enqueued_job(NotesFeedJob).with(2, 2, 25)
   end
 
   it "doesn't enqueues another job if there are < 25 results" do
