@@ -134,6 +134,26 @@ module HackneyAPI
       )
     end
 
+    def post_repair_request(name:, phone:, sor_code:, priority:, property_ref:, description:)
+      request(
+        http_method: :post,
+        endpoint: "#{API_VERSION}/repairs",
+        headers: {"Content-Type" => "application/json-patch+json"},
+        params: {
+          "contact": {
+            "name": name,
+            "telephoneNumber": phone,
+          },
+          "workOrders": [
+            "sorCode": sor_code,
+          ],
+          "priority": priority,
+          "propertyReference": property_ref,
+          "problemDescription": description
+        }.to_json
+      )
+    end
+
     def get_property(reference)
       request(
         http_method: :get,

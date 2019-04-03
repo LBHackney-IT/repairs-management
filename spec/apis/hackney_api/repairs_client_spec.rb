@@ -139,6 +139,43 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
+  describe '#post_repair_request' do
+    pending "invalid SOR code 4896802H"
+
+    pending "invalid property reference 000017"
+
+    it 'posts a repair' do
+      stub_request(:post, "#{base_url}/#{api_version}/repairs").with(
+        headers: {
+          "Content-Type" => "application/json-patch+json"
+        },
+        body: {
+          "contact": {
+            "name": "blablabla",
+            "telephoneNumber": "01234567890",
+          },
+          "workOrders": [
+            "sorCode": "08500820",
+          ],
+          "priority": "G",
+          "propertyReference": "00000018",
+          "problemDescription": "it's broken fix it"
+        }.to_json
+      ).to_return(status: 204)
+
+      expect(
+        api_client.post_repair_request(
+          name: "blablabla",
+          phone: "01234567890",
+          sor_code: "08500820",
+          priority: "G",
+          property_ref: "00000018",
+          description: "it's broken fix it"
+        )
+      ).to be_nil
+    end
+  end
+
   describe '#get_property' do
     subject { api_client.get_property(reference) }
 
