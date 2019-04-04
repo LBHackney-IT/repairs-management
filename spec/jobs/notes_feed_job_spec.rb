@@ -57,12 +57,25 @@ RSpec.describe NotesFeedJob, :db_connection, type: :job do
     NotesFeedJob.perform_now(1, 1, 50)
   end
 
-  it "asks for notes that we don't know about" do
-    Graph::Note.create!(note_id: 2, logged_at: Time.current, source: 'test', work_order_reference: '01234567')
-
-    expect(Hackney::Note).to receive(:feed).with(2, limit: 50) { [] }
+  it 'saves the last note' do
+    notes = (1..3).map { build :hackney_note }
+    expect(Hackney::Note).to receive(:feed).with(1, limit: 50) { notes }
 
     NotesFeedJob.perform_now(1, 1, 50)
+
+    expect(Graph::LastFromFeed.last_note.last_id.to_i).to eq notes.last.note_id
+  end
+
+  it "asks for notes that we don't know about" do
+    notes = (1..3).map { build :hackney_note }
+
+    Graph::LastFromFeed.update_last_note!(notes.first.note_id)
+
+    expect(Hackney::Note).to receive(:feed).with(notes.first.note_id, limit: 50) { notes.last(2) }
+
+    NotesFeedJob.perform_now(1, 1, 50)
+
+    expect(Graph::LastFromFeed.last_note.last_id.to_i).to eq notes.last.note_id
   end
 
   it 'enqueues another job if there are 25 results' do
