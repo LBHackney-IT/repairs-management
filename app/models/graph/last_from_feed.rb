@@ -26,4 +26,15 @@ class Graph::LastFromFeed
     ordered_sources = [GraphModelImporter::WORK_ORDERS_IMPORT, WorkOrderFeedJob.source_name]
     Graph::WorkOrder.where(source: ordered_sources, reference: /^\d{8}$/).last&.reference
   end
+
+  def self.last_note
+    last = Graph::LastFromFeed.find_by(feed_type: Graph::Note.name)
+    last ||= Graph::LastFromFeed.create!(feed_type: Graph::Note.name,
+                                         last_id: Graph::Note.last_note_id)
+    last
+  end
+
+  def self.update_last_note!(note_id)
+    last_note.update!(last_id: note_id)
+  end
 end
