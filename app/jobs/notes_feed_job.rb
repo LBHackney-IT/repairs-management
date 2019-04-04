@@ -6,7 +6,7 @@ class NotesFeedJob < ApplicationJob
   # If NotesFeedJob is performed twice before RelatedWorkOrderJob, then the
   # RelatedWorkOrderJob jobs will be duplicated.
   def perform(enqueues, max_enqueues, enqueue_limit)
-    notes = Hackney::Note.feed(Graph::Note.last_note_id, limit: enqueue_limit)
+    notes = Hackney::Note.feed(Graph::Note.profile.last_note_id, limit: enqueue_limit)
 
     notes.each do |hackney_note|
       RelatedWorkOrderJob.perform_later(hackney_note.note_id,
