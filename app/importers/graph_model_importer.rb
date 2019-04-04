@@ -63,7 +63,7 @@ class GraphModelImporter
   end
 
   def last_imported_work_order
-    @_last ||= Graph::WorkOrder.profile.where(source: WORK_ORDERS_IMPORT).last&.reference || '00000000'
+    Graph::LastFromFeed.profile.last_work_order.last_id || '00000000'
   end
 
   def find_or_create_graph_work_order(work_order_reference)
