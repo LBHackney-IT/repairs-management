@@ -3,7 +3,7 @@ class Hackney::WorkOrder
 
   attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
                 :work_order_status, :dlo_status, :servitor_reference,
-                :problem_description, :trade
+                :problem_description, :trade, :supplier_reference, :sor_code
 
   def self.find(reference)
     response = HackneyAPI::RepairsClient.new.get_work_order(reference)
@@ -51,16 +51,17 @@ class Hackney::WorkOrder
 
   def self.build(attributes)
     new(
-      reference: attributes['workOrderReference'].strip,
+      reference: attributes['workOrderReference']&.strip,
       rq_ref: attributes['repairRequestReference']&.strip,
-      prop_ref: attributes['propertyReference'].strip,
-      created: attributes['created'].to_datetime,
+      prop_ref: attributes['propertyReference']&.strip,
+      created: attributes['created']&.to_datetime,
       date_due: attributes['dateDue']&.to_datetime,
       work_order_status: attributes['workOrderStatus']&.strip,
       dlo_status: attributes['dloStatus']&.strip,
       servitor_reference: attributes['servitorReference']&.strip,
       problem_description: attributes['problemDescription'],
-      trade: attributes['trade']
+      trade: attributes['trade'],
+      supplier_reference: attributes['supplierRef']
     )
   end
 
