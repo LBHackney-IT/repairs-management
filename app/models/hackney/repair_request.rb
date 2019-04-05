@@ -1,7 +1,7 @@
 class Hackney::RepairRequest
   include ActiveModel::Model
 
-  attr_accessor :reference, :description, :contact, :priority, :work_orders
+  attr_accessor :reference, :description, :contact, :priority, :work_orders, :property_reference
 
   NULL_OBJECT = self.new(description: 'Repair info missing')
 
@@ -10,14 +10,9 @@ class Hackney::RepairRequest
     build(response)
   end
 
+  # TODO: improve naming
   def self.build(attributes)
-    new(
-      reference: attributes['repairRequestReference'].strip,
-      description: attributes['problemDescription'],
-      contact: Hackney::Contact.build(attributes.dig('contact') || {}),
-      priority: attributes['priority'],
-      work_orders: Hackney::Supplier.build(attributes.dig('workOrders')&.first || {})
-    )
+    new.tap {|x| x.attributes_from_api = attributes }
   end
 
   def telephone_number
@@ -26,5 +21,44 @@ class Hackney::RepairRequest
 
   def contact_name
     contact&.name
+  end
+
+  #
+  # persistence
+  #
+  def work_orders_attributes=(a)
+    self.work_orders = a.map {|x| Hackney::WorkOrder.new(x)}
+  end
+
+  def contact_attributes=(a)
+    self.contact = Hackney::Contact.new(a)
+  end
+
+  def save
+    response = HackneyAPI::RepairsClient.new.post_repair_request(
+      name: contact_name,
+      phone: telephone_number,
+      sor_code: work_orders&.first&.sor_code,
+      priority: priority,
+      property_ref: property_reference,
+      description: description
+    )
+
+    response.present? or raise "*** API ERROR SAVING REPAIR REQUEST. response: #{response} ***" # TODO
+    self.attributes_from_api = response
+  end
+
+  #
+  # read attributes from API
+  #
+  def attributes_from_api=(a)
+    self.attributes = {
+      reference: a['repairRequestReference']&.strip,
+      description: a['problemDescription'],
+      contact: Hackney::Contact.build(a['contact'] || {}),
+      priority: a['priority'],
+      work_orders: (a['workOrders'] || []).map {|y| Hackney::WorkOrder.build(y)},
+      property_reference: a['propertyReference']
+    }
   end
 end
