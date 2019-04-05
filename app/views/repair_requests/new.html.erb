@@ -1,0 +1,51 @@
+<h1 class=govuk-heading-m>Raise a repair</h1>
+
+<%= form_with(
+  model: @repair_request,
+  url: property_repair_requests_path(@property.reference),
+  local: true
+) do |form|
+%>
+  <div class="hackney-search">
+    <div class="govuk-form-group">
+      <%= form.label :description %>
+      <%= form.text_area :description %>
+    </div>
+  </div>
+
+  <div class="hackney-search">
+    <div class="govuk-form-group">
+      <%= form.label :priority %>
+      <%= form.text_area :priority %>
+    </div>
+  </div>
+
+  <div class="hackney-search">
+    <div class="govuk-form-group">
+      <%= form.fields_for :work_orders do |fields| %>
+        <%= fields.label :sor_code %>
+        <%= fields.text_field :sor_code %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= form.fields_for :contact do |fields| %>
+    <div class="hackney-search">
+      <div class="govuk-form-group">
+        <%= fields.label :name %>
+        <%= fields.text_field :name %>
+      </div>
+    </div>
+
+    <div class="hackney-search">
+      <div class="govuk-form-group">
+        <%= fields.label :telephone_number %>
+        <%= fields.text_field :telephone_number %>
+      </div>
+    </div>
+  <% end %>
+
+
+
+  <%= form.submit class: 'govuk-button hackney-focus-colour' %>
+<% end %>

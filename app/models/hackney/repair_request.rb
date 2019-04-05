@@ -27,6 +27,7 @@ class Hackney::RepairRequest
   # persistence
   #
   def work_orders_attributes=(a)
+    a = a.values if a.is_a?(Hash)
     self.work_orders = a.map {|x| Hackney::WorkOrder.new(x)}
   end
 

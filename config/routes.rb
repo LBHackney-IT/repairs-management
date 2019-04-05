@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :properties, only: [:show], param: :ref do
     get :search, on: :collection
+    resources :repair_requests, only: %i(new create)
   end
 
   root to: 'pages#home'
