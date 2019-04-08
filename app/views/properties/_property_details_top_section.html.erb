@@ -33,6 +33,20 @@
         <p class="<%= clazz %>">
           <%= property.tenure %>
         </p>
+
+        <% if @cautionary_contact.present? %>
+          <table class="hackney-cautionary-contact-table">
+            <tbody class="govuk-body-xs hackney-body-xs hackney-cautionary-contact">
+              <th scope="row" class="govuk-!-font-weight-bold">
+                <%= @cautionary_contact.alert_code %>:
+              </th>
+              <td>
+                <%= @cautionary_contact.caller_notes %>
+              </td>
+            </tbody>
+          </table>
+        <% end %>
+
       </div>
     </div>
   </div>

@@ -4,11 +4,11 @@ $hackney-colours: (
   "housing-3": #2dccd3,
   "status-planned": #009ca6,
   "status-complete": darkgray,
-  "status-not-complete": crimson
+  "status-not-complete": crimson,
+  "hackney-warning": #FFA400
 );
 
 
 @function hackney-colour($colour) {
   @return map-get($hackney-colours, quote($colour));
 }
-

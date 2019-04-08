@@ -133,6 +133,18 @@ $govuk-breakpoints: (
   }
 }
 
+.hackney-cautionary-contact {
+  color: white !important;
+}
+
+.hackney-cautionary-contact-table {
+  background-color: hackney-colour("hackney-warning");
+  display: inline-block;
+  margin: 10px;
+  min-width: 100px;
+  padding: 2px 3px;
+}
+
 // govuk styling specifies this as ems, and the other as pixels,
 // so need to overwrite it directly
 .govuk-width-container {
