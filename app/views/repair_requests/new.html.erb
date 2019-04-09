@@ -1,51 +1,68 @@
-<h1 class=govuk-heading-m>Raise a repair</h1>
+<% content_for :title, "New repair for #{@property.address} - Hackney Repairs Hub" %>
 
-<%= form_with(
-  model: @repair_request,
-  url: property_repair_requests_path(@property.reference),
-  local: true
-) do |form|
-%>
-  <div class="hackney-search">
-    <div class="govuk-form-group">
-      <%= form.label :description %>
-      <%= form.text_area :description %>
-    </div>
-  </div>
+<div class="govuk-width-container">
+  <%= link_to 'Back', property_path(@property.reference), class: 'govuk-back-link' %>
+  <main class="govuk-main-wrapper">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
 
-  <div class="hackney-search">
-    <div class="govuk-form-group">
-      <%= form.label :priority %>
-      <%= form.text_area :priority %>
-    </div>
-  </div>
+        <h1 class="govuk-heading-l">
+          New repair for <%= @property.address %>
+        </h1>
 
-  <div class="hackney-search">
-    <div class="govuk-form-group">
-      <%= form.fields_for :work_orders do |fields| %>
-        <%= fields.label :sor_code %>
-        <%= fields.text_field :sor_code %>
-      <% end %>
-    </div>
-  </div>
+        <%= form_with(
+          model: @repair_request,
+          url: property_repair_requests_path(@property.reference),
+          local: true
+        ) do |form|
+        %>
+          <div class="govuk-form-group">
+            <%= form.label :description, "Problem description", class: 'govuk-label' %>
+            <span id="more-detail-hint" class="govuk-hint">
+              max of 200 characters.
+            </span>
+            <%= form.text_area :description, class: 'govuk-textarea', rows: 5 %>
+          </div>
 
-  <%= form.fields_for :contact do |fields| %>
-    <div class="hackney-search">
-      <div class="govuk-form-group">
-        <%= fields.label :name %>
-        <%= fields.text_field :name %>
+          <%= form.fields_for :contact do |fields| %>
+            <div class="govuk-form-group">
+              <%= fields.label :name, "Tenant name", class: 'govuk-label' %>
+              <%= fields.text_field :name, class: 'govuk-input' %>
+            </div>
+
+            <div class="govuk-form-group">
+              <%= fields.label :telephone_number, "Contact number", class: 'govuk-label' %>
+              <%= fields.text_field :telephone_number, class: 'govuk-input' %>
+            </div>
+          <% end %>
+
+        <h2 class="govuk-heading-m">
+          Repair task details
+        </h2>
+
+          <div class="govuk-form-group">
+            <%= form.fields_for :work_orders do |fields| %>
+              <%= fields.label :sor_code, "SOR Code", class: 'govuk-label' %>
+              <div class="govuk-grid-row" style="height: auto">
+                <div class="govuk-grid-column-one-half">
+                  <%= fields.text_field :sor_code, class: 'govuk-input' %>
+                </div>
+                <div class="govuk-grid-column-one-half">
+                  <%= link_to "Launch Keyfax", "#", class: "govuk-button govuk-!-margin-bottom-0" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="govuk-form-group">
+            <%= form.label :priority, "Task priority", class: 'govuk-label' %>
+            <%= form.collection_select :priority, [['N', '[N] Normal'], ['G', '[G] Great']], :first, :last, {}, class: 'govuk-input' %>
+          </div>
+
+          <%= form.submit 'Raise repair', class: 'govuk-button hackney-focus-colour' %>
+        <% end %>
+
       </div>
     </div>
-
-    <div class="hackney-search">
-      <div class="govuk-form-group">
-        <%= fields.label :telephone_number %>
-        <%= fields.text_field :telephone_number %>
-      </div>
-    </div>
-  <% end %>
-
-
-
-  <%= form.submit class: 'govuk-button hackney-focus-colour' %>
-<% end %>
+  </main>
+</div>

@@ -81,17 +81,17 @@ RSpec.describe 'Repair request' do
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
 
-    click_on 'Raise a repair'
+    click_on 'Raise a repair on this property'
 
-    fill_in "Description", with: "it's broken fix it"
-    fill_in "Priority", with: "G"
-    fill_in "Name", with: "blablabla"
-    fill_in "Telephone number", with: "01234567890"
-    fill_in "Sor code", with: "08500820"
+    fill_in "Problem description", with: "it's broken fix it"
+    fill_in "Tenant name", with: "blablabla"
+    fill_in "Contact number", with: "01234567890"
+    fill_in "SOR Code", with: "08500820"
+    select "[G] Great", from: "Task priority"
 
     stub_work_order
 
-    click_on 'Create Repair request'
+    click_on 'Raise repair'
 
     expect(current_path).to be == work_order_path("01552718")
   end
