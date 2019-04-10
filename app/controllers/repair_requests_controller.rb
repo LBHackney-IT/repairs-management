@@ -14,12 +14,8 @@ class RepairRequestsController < ApplicationController
     respond_to do |format|
       if @repair_request.save
         format.html { redirect_to work_order_path(@repair_request.work_orders.first.reference), notice: 'Repair raised!' }
-        # TODO?
-        #format.json { render :show, status: :created, location: @repair_request }
       else
         format.html { render :new }
-        # TODO?
-        #format.json { render json: @repair_request.errors, status: :unprocessable_entity }
       end
     end
   end
