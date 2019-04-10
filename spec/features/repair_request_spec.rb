@@ -76,7 +76,7 @@ RSpec.describe 'Repair request' do
     stub_post_repair_request
     stub_property
     sign_in
-    visit property_path('00000018')
+    visit property_path('00000018', show_raise_a_repair: true)
 
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
