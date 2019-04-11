@@ -16,6 +16,7 @@ $govuk-breakpoints: (
 @import "hackney_trade_and_hierarchy_filtering";
 @import "hackney_address_list";
 @import "hackney_document";
+@import "hackney_property";
 
 .hackney-template {
   min-width: 1024px;

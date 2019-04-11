@@ -3,7 +3,7 @@ class Hackney::Property
 
   ESTATE_LEVEL = 2
 
-  attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode
+  attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode, :tenure
 
   def self.find(property_reference)
     response = HackneyAPI::RepairsClient.new.get_property(property_reference)
@@ -43,7 +43,8 @@ class Hackney::Property
       description: attributes['description']&.strip,
       major_reference: attributes['majorReference']&.strip,
       address: attributes['address']&.strip,
-      postcode: attributes['postcode']
+      postcode: attributes['postcode'],
+      tenure: attributes['tenure']
     )
   end
 
