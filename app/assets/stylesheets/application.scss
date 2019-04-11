@@ -78,15 +78,25 @@ $govuk-breakpoints: (
   }
 }
 
+%hackney-link, .hackney-link {
+  color: hackney-colour('housing-2');
+  &:visited {
+    color: hackney-colour('housing-1');
+  }
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.hackney-link-no-visited {
+  &:visited {
+    color: hackney-colour('housing-2');
+  }
+}
+
 .hackney-main-wrapper {
   a {
-    color: hackney-colour('housing-2');
-    &:visited {
-      color: hackney-colour('housing-1');
-    }
-    &:hover {
-      opacity: 0.7;
-    }
+    @extend %hackney-link;
   }
 }
 
@@ -132,10 +142,4 @@ $govuk-breakpoints: (
   .govuk-width-container {
     margin: 0 auto;
   }
-}
-
-.raise-a-repair-button {
-  font-size: 24px;
-  line-height: 30px;
-  vertical-align: middle;
 }

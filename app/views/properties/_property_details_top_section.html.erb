@@ -2,10 +2,12 @@
   <h1 class="govuk-heading-l">
     <%= property.address %>
     <% if params[:show_raise_a_repair] %>
-    <small class="raise-a-repair-button">
-      <%= link_to "Raise a repair on this property", new_property_repair_request_path(property.reference) %>
-    </small>
     <% end %>
+    <span class="govuk-caption-l">
+      <strong>
+        <%= link_to "Raise a repair on this property", new_property_repair_request_path(property.reference), class: 'hackney-link hackney-link-no-visited' %>
+      </strong>
+    </span>
   </h1>
 
   <div class="govuk-grid-row">
