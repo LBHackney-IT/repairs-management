@@ -113,7 +113,72 @@ describe Hackney::RepairRequest, '#save' do
     expect(repair_request.contact).to be_a(Hackney::Contact)
   end
 
-  pending "raises when SOR code is bad"
-  pending "raises when property is invalid"
-  pending "other errors..."
+  it "fails when data is bad" do
+    stub_request(:post, "https://hackneyrepairs/v1/repairs").with(
+      headers: {
+        "Content-Type" => "application/json-patch+json"
+      },
+      body: {
+        "contact": {
+          "name": "",
+          # FIXME: must fix view logic inside model
+          "telephoneNumber": "N/A",
+        },
+        "workOrders": [
+          "sorCode": "",
+        ],
+        "priority": "G",
+        "propertyReference": "00000018",
+        "problemDescription": ""
+      }.to_json
+    ).to_return(
+      status: 400,
+      body: [
+        {
+          "developerMessage" => "Please provide a valid Problem",
+          "userMessage" => "Please provide a valid Problem"
+        },
+        {
+          "developerMessage" => "If Repair request has workOrders you must provide a valid sorCode",
+          "userMessage" => "If Repair request has workOrders you must provide a valid sorCode"
+        },
+        {
+          "developerMessage" => "Contact Name cannot be empty",
+          "userMessage" => "Contact Name cannot be empty"
+        },
+        {
+          "developerMessage" => "Telephone number must contain minimum of 10 and maximum of 11 digits.",
+          "userMessage" => "Telephone number must contain minimum of 10 and maximum of 11 digits."
+        }
+      ].to_json
+    )
+
+    repair_request = Hackney::RepairRequest.new(
+      contact_attributes: {
+        name: "",
+        telephone_number: ""
+      },
+      work_orders_attributes: [
+        { sor_code: "" }
+      ],
+      priority: "G",
+      property_reference: "00000018",
+      description: ""
+    )
+
+    expect(repair_request.save).to be_falsey
+
+    expect(repair_request.reference).not_to be_present
+
+    expect(repair_request.errors.include?("contact.name")).to be_truthy
+    expect(repair_request.contact.errors.include?("name")).to be_truthy
+
+    expect(repair_request.errors.include?("contact.telephone_number")).to be_truthy
+    expect(repair_request.contact.errors.include?("telephone_number")).to be_truthy
+
+    expect(repair_request.errors.include?("work_orders[0].sor_code")).to be_truthy
+    expect(repair_request.work_orders[0].errors.include?("sor_code")).to be_truthy
+
+    expect(repair_request.errors.include?("description")).to be_truthy
+  end
 end

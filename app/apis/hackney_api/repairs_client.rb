@@ -4,7 +4,14 @@ module HackneyAPI
 
     class HackneyApiError < StandardError; end
     class RecordNotFoundError < HackneyApiError; end
-    class ApiError < HackneyApiError; end
+    class ApiError < HackneyApiError;
+      attr_reader :errors
+
+      def initialize msg = nil, errors = nil
+        super(msg)
+        @errors = errors
+      end
+    end
 
     API_CACHE_TIME_IN_SECONDS = 5.minutes.to_i
     API_VERSION = "v1"
@@ -235,7 +242,7 @@ module HackneyAPI
       when HTTP_STATUS_NOT_FOUND
         raise RecordNotFoundError, [endpoint, params].join(', ')
       else
-        raise ApiError, [endpoint, params, response.status, response.body].join(', ')
+        raise ApiError.new([endpoint, params, response.status, response.body].join(', '), response.body)
       end
     end
 
