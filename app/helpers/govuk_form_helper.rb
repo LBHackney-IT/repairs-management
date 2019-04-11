@@ -10,7 +10,7 @@ module GovukFormHelper
 
     def form_group(key, &b)
       clazz = "govuk-form-group"
-      if object.errors[key].any? || object.try(key).try(:invalid?)
+      if object.errors.include?(key)
         clazz += " govuk-form-group--error"
       end
       @template.content_tag(:div, class: clazz) do
@@ -26,13 +26,29 @@ module GovukFormHelper
 
     def text_field(*args)
       options = args.extract_options!
-      args << options.merge(class: "govuk-input")
+      class_and_error_wrap(args.first, "govuk-input", "govuk-input--error", options)
+      args << options
+      super
+    end
+
+    def text_area(*args)
+      options = args.extract_options!
+      class_and_error_wrap(args.first, "govuk-textarea", "govuk-textarea--error", options)
+      args << options
       super
     end
 
     def collection_select(method, collection, value_method, text_method, options = {}, html_options = {})
-      html_options[:class] ||= "govuk-input"
+      class_and_error_wrap(method, "govuk-select", "govuk-select--error", html_options)
       super
+    end
+
+    private
+
+    def class_and_error_wrap method, clazz, error_clazz, options
+      options[:class] ||= clazz
+      options[:class] += " " + error_clazz if object.errors.include?(method)
+      options
     end
   end
 
