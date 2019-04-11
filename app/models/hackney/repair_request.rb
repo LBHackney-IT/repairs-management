@@ -15,6 +15,7 @@ class Hackney::RepairRequest
     new(attributes_from_api(attributes))
   end
 
+  # FIXME: this is view logic and shouldn't be here
   def telephone_number
     contact&.telephone_number.blank? ? "N/A" : contact&.telephone_number
   end
@@ -44,9 +45,16 @@ class Hackney::RepairRequest
       property_ref: property_reference,
       description: description
     )
-
-    response.present? or raise "*** API ERROR SAVING REPAIR REQUEST. response: #{response} ***" # TODO
     self.attributes = self.class.attributes_from_api(response)
+    true
+  rescue HackneyAPI::RepairsClient::ApiError => e
+    self.class.errors_from_api(e.errors).each do |key, list|
+      list.each do |msg|
+        errors.add(key, msg)
+      end
+    end
+    add_nested_errors
+    false
   end
 
   #
@@ -62,5 +70,37 @@ class Hackney::RepairRequest
       work_orders: (a['workOrders'] || []).map {|y| Hackney::WorkOrder.build(y)},
       property_reference: a['propertyReference']
     }
+  end
+
+  private
+
+  # TODO: API should give better error descriptions
+  def add_nested_errors
+    errors.each do |key, msg|
+      case key
+      when /^contact\.(.*)$/i
+        contact.errors.add($1, msg)
+      when /^work_orders\[0\]\.(.*)$/i
+        work_orders[0].errors.add($1, msg)
+      end
+    end
+  end
+
+  # TODO: API should give better error descriptions
+  def self.errors_from_api(e)
+    e.map {|x| x["userMessage"] }.group_by do |x|
+      case x
+      when /Telephone/i
+        "contact.telephone_number"
+      when /Contact Name/i
+        "contact.name"
+      when /Problem/i
+        "description"
+      when /sorCode/i
+        "work_orders[0].sor_code"
+      else
+        "base"
+      end
+    end
   end
 end
