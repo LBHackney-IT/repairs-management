@@ -161,7 +161,7 @@ describe HackneyAPI::RepairsClient do
           "propertyReference": "00000018",
           "problemDescription": "it's broken fix it"
         }.to_json
-      ).to_return(status: 204)
+      ).to_return(status: 200, body: '{"works": true }')
 
       expect(
         api_client.post_repair_request(
@@ -172,7 +172,7 @@ describe HackneyAPI::RepairsClient do
           property_ref: "00000018",
           description: "it's broken fix it"
         )
-      ).to be_nil
+      ).to be == {"works" => true}
     end
   end
 
