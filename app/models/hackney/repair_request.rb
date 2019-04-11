@@ -12,7 +12,7 @@ class Hackney::RepairRequest
 
   # TODO: improve naming
   def self.build(attributes)
-    new.tap {|x| x.attributes_from_api = attributes }
+    new(attributes_from_api(attributes))
   end
 
   def telephone_number
@@ -46,14 +46,15 @@ class Hackney::RepairRequest
     )
 
     response.present? or raise "*** API ERROR SAVING REPAIR REQUEST. response: #{response} ***" # TODO
-    self.attributes_from_api = response
+    self.attributes = self.class.attributes_from_api(response)
   end
 
   #
   # read attributes from API
   #
-  def attributes_from_api=(a)
-    self.attributes = {
+
+  def self.attributes_from_api(a)
+    {
       reference: a['repairRequestReference']&.strip,
       description: a['problemDescription'],
       contact: Hackney::Contact.build(a['contact'] || {}),
