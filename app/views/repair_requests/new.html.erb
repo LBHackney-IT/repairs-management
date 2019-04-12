@@ -63,7 +63,12 @@
           <%= form.form_group :priority do %>
             <%= form.label :priority, "Task priority" %>
             <%= form.error_messages :priority %>
-            <%= form.collection_select :priority, [['N', '[N] Normal'], ['G', '[G] Great']], :first, :last %>
+            <%= form.collection_select(
+              :priority,
+              Hackney::RepairRequest::PRIORITIES,
+              :first,
+              -> (x) { "#{x.first} - #{x.last}" },
+            ) %>
           <% end %>
 
           <%= form.submit 'Raise repair', class: 'govuk-button hackney-focus-colour' %>
