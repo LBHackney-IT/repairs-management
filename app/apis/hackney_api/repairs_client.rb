@@ -7,7 +7,7 @@ module HackneyAPI
     class ApiError < HackneyApiError;
       attr_reader :errors
 
-      def initialize msg = nil, errors = nil
+      def initialize(msg = nil, errors = nil)
         super(msg)
         @errors = errors
       end
