@@ -30,4 +30,35 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activemodel:
+    attributes:
+      hackney/repair_request/priority:
+        A:  "ASBESTOS SURVEY"
+        B:  "FRA WORKS"
+        C:  "GAS-NEW BOILER INST"
+        D:  "GAS-NEW HTG INST"
+        E:  "Emergency"
+        F:  "LIFTS - PL MAINT"
+        G:  "GAS SERVICING"
+        H:  "GAS - CARCASS TEST"
+        I:  "Immediate"
+        J:  "INSTALLATION DOORS"
+        K:  "RTR"
+        L:  "Legal Disrepair"
+        M:  "[M] CYC MAINT 365 DA"
+        N:  "Normal"
+        O:  "OOH"
+        P:  "9 [P] PLANNED MAINT"
+        P1: "[P1] New Build 1 Day"
+        P2: "[P2] New Bld 7 Days"
+        P3: "[P3] New Bld 28 Days"
+        Q:  "VOID - 3 WORK DAYS"
+        R:  "ELECTRICAL PLANS"
+        S:  "LIFT CTR PLANS"
+        T:  "VOIDS NON-REP 2 DAYS"
+        U:  "Urgent"
+        V:  "Void Repairs"
+        W:  "10[W] WATER QUALITY"
+        X:  "GAS - EXTRA WORK"
+        Y:  "VOID - 10 WKG DAYS"
+        Z:  "VOIDS INITIATIVE"
