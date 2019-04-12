@@ -87,8 +87,8 @@ class Hackney::RepairRequest
   end
 
   # TODO: API should give better error descriptions
-  def self.errors_from_api(e)
-    e.map {|x| x["userMessage"] }.group_by do |x|
+  def self.errors_from_api(response)
+    response.map {|x| x["userMessage"] }.group_by do |x|
       case x
       when /Telephone/i
         "contact.telephone_number"
