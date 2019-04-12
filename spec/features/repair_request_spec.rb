@@ -87,7 +87,7 @@ RSpec.describe 'Repair request' do
     fill_in "Tenant name", with: "blablabla"
     fill_in "Contact number", with: "01234567890"
     fill_in "SOR Code", with: "08500820"
-    select "[G] Great", from: "Task priority"
+    select "G -", from: "Task priority"
 
     stub_work_order
 
