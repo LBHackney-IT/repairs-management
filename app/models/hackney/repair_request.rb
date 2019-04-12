@@ -37,6 +37,17 @@ class Hackney::RepairRequest
     "Z" => "VOIDS INITIATIVE",
   }
 
+  RAISABLE_PRIORITIES = {
+    "E" => "Emergency",
+    "I" => "Immediate",
+    "K" => "RTR",
+    "O" => "OOH",
+    "U" => "Urgent",
+    "V" => "Void Repairs",
+    "N" => "Normal",
+    "L" => "Legal Disrepair",
+  }
+
   def self.find(repair_request_reference)
     response = HackneyAPI::RepairsClient.new.get_repair_request(repair_request_reference)
     build(response)

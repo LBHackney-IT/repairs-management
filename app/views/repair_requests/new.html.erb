@@ -65,7 +65,7 @@
             <%= form.error_messages :priority %>
             <%= form.collection_select(
               :priority,
-              Hackney::RepairRequest::PRIORITIES,
+              Hackney::RepairRequest::RAISABLE_PRIORITIES,
               :first,
               -> (x) { "#{x.first} - #{x.last}" },
             ) %>

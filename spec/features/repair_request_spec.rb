@@ -17,7 +17,7 @@ RSpec.describe 'Repair request' do
         "workOrders": [
           "sorCode": "08500820",
         ],
-        "priority": "G",
+        "priority": "N",
         "propertyReference": "00000018",
         "problemDescription": "it's broken fix it"
       }.to_json
@@ -27,7 +27,7 @@ RSpec.describe 'Repair request' do
         "repairRequestReference" => "03210303",
         "propertyReference" =>"00000018",
         "problemDescription" => "it's broken fix it",
-        "priority" => "G",
+        "priority" => "N",
         "contact" => {
           "name" => "blablabla",
           "telephoneNumber" => "01234567890"
@@ -87,7 +87,7 @@ RSpec.describe 'Repair request' do
     fill_in "Tenant name", with: "blablabla"
     fill_in "Contact number", with: "01234567890"
     fill_in "SOR Code", with: "08500820"
-    select "G -", from: "Task priority"
+    select "N -", from: "Task priority"
 
     stub_work_order
 
