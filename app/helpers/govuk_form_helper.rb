@@ -45,7 +45,7 @@ module GovukFormHelper
 
     private
 
-    def class_and_error_wrap method, clazz, error_clazz, options
+    def class_and_error_wrap(method, clazz, error_clazz, options)
       options[:class] ||= clazz
       options[:class] += " " + error_clazz if object.errors.include?(method)
       options
