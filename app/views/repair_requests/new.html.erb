@@ -67,7 +67,7 @@
               :priority,
               Hackney::RepairRequest::RAISABLE_PRIORITIES,
               :first,
-              -> (x) { "#{x.first} - #{x.last}" },
+              -> (x) { "#{x} - #{@repair_request.class.human_attribute_name("priority.#{x}")}" },
             ) %>
           <% end %>
 

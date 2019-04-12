@@ -5,48 +5,8 @@ class Hackney::RepairRequest
 
   NULL_OBJECT = self.new(description: 'Repair info missing')
 
-  PRIORITIES = {
-    "A" => "ASBESTOS SURVEY",
-    "B" => "FRA WORKS",
-    "C" => "GAS-NEW BOILER INST",
-    "D" => "GAS-NEW HTG INST",
-    "E" => "2 [E] EMERGENCY",
-    "F" => "LIFTS - PL MAINT",
-    "G" => "GAS SERVICING",
-    "H" => "GAS - CARCASS TEST",
-    "I" => "1 [I] IMMEDIATE",
-    "J" => "INSTALLATION DOORS",
-    "K" => "3 [K] RTR 3 DAYS",
-    "L" => "8 [L] LEGAL DISREP",
-    "M" => "[M] CYC MAINT 365 DA",
-    "N" => "5 [N] NORMAL",
-    "O" => "7 [O] OUT OF HOURS",
-    "P" => "9 [P] PLANNED MAINT",
-    "P1" => "[P1] New Build 1 Day",
-    "P2" => "[P2] New Bld 7 Days",
-    "P3" => "[P3] New Bld 28 Days",
-    "Q" => "VOID - 3 WORK DAYS",
-    "R" => "ELECTRICAL PLANS",
-    "S" => "LIFT CTR PLANS",
-    "T" => "VOIDS NON-REP 2 DAYS",
-    "U" => "4 [U] URGENT",
-    "V" => "6 [V] VOID REPAIRS",
-    "W" => "10[W] WATER QUALITY",
-    "X" => "GAS - EXTRA WORK",
-    "Y" => "VOID - 10 WKG DAYS",
-    "Z" => "VOIDS INITIATIVE",
-  }
-
-  RAISABLE_PRIORITIES = {
-    "E" => "Emergency",
-    "I" => "Immediate",
-    "K" => "RTR",
-    "O" => "OOH",
-    "U" => "Urgent",
-    "V" => "Void Repairs",
-    "N" => "Normal",
-    "L" => "Legal Disrepair",
-  }
+  PRIORITIES = (?A..?P).to_a + %w(P1 P2 P3) + (?Q..?Z).to_a
+  RAISABLE_PRIORITIES = %w(E I K O U V N L)
 
   def self.find(repair_request_reference)
     response = HackneyAPI::RepairsClient.new.get_repair_request(repair_request_reference)
