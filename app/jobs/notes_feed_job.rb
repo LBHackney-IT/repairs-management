@@ -31,6 +31,6 @@ class NotesFeedJob < ApplicationJob
   def extract_references(hackney_note)
     WorkOrderReferenceFinder
       .new(hackney_note.work_order_reference)
-      .find(hackney_note.text || "")
+      .find_in_note(hackney_note)
   end
 end

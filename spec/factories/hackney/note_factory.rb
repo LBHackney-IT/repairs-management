@@ -5,5 +5,9 @@ FactoryBot.define do
     logged_at { Time.current }
     logged_by { 'javaize' }
     work_order_reference { '01234567' }
+
+    trait :servitor do
+      logged_by { 'Servitor' }
+    end
   end
 end
