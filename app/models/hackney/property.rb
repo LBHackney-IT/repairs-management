@@ -3,7 +3,7 @@ class Hackney::Property
 
   ESTATE_LEVEL = 2
 
-  RAISABLE_TENURES = %w(SEC)
+  RAISABLE_TENURES = %w(INT MPA NON SEC LEA)
 
   attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode, :tenure, :tenure_code
 
