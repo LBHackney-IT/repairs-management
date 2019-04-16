@@ -3,7 +3,9 @@ class Hackney::Property
 
   ESTATE_LEVEL = 2
 
-  attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode, :tenure
+  RAISABLE_TENURES = %w(SEC)
+
+  attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode, :tenure, :tenure_code
 
   def self.find(property_reference)
     response = HackneyAPI::RepairsClient.new.get_property(property_reference)
@@ -44,7 +46,8 @@ class Hackney::Property
       major_reference: attributes['majorReference']&.strip,
       address: attributes['address']&.strip,
       postcode: attributes['postcode'],
-      tenure: attributes['tenure']
+      tenure: attributes['tenure'],
+      tenure_code: attributes['tenureCode']
     )
   end
 
@@ -80,5 +83,9 @@ class Hackney::Property
 
   def is_estate?
     level_code == ESTATE_LEVEL
+  end
+
+  def can_raise_repair?
+    RAISABLE_TENURES.include? tenure_code
   end
 end

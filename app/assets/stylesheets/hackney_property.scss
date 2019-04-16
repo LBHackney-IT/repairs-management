@@ -1,6 +1,13 @@
 .hackney-property-tenure {
-  background: $govuk-focus-colour;
   padding: 4px 8px;
   color: white !important;
   width: 50%;
+}
+
+.hackney-property-tenure-turquoise {
+  background: govuk-colour("turquoise");
+}
+
+.hackney-property-tenure-orange {
+  background: $govuk-focus-colour;
 }
