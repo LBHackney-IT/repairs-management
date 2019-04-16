@@ -53,7 +53,24 @@ RSpec.describe 'Repair request' do
         "maintainable" => true,
         "levelCode" => 7,
         "description" => "Dwelling",
+        "tenureCode": "SEC",
         "tenure" => "Secure"
+      }.to_json
+    )
+  end
+
+  def stub_property_leasehold
+    stub_request(:get, "https://hackneyrepairs/v1/properties/00000020").to_return(
+      status: 200,
+      body: {
+        "address": "4 Acacia House  Lordship Road",
+        "postcode": "N16 0PX",
+        "propertyReference": "00000020",
+        "maintainable": false,
+        "levelCode": 7,
+        "description": "Dwelling",
+        "tenureCode": "LEA",
+        "tenure": "Leasehold (RTB)"
       }.to_json
     )
   end
@@ -72,27 +89,45 @@ RSpec.describe 'Repair request' do
     )
   end
 
-  scenario 'Raise a repair' do
-    stub_post_repair_request
-    stub_property
-    sign_in
-    visit property_path('00000018', show_raise_a_repair: true)
+  context 'Secure tenure' do
+    scenario 'Raise a repair' do
+      stub_post_repair_request
+      stub_property
+      sign_in
+      visit property_path('00000018', show_raise_a_repair: true)
 
-    stub_hackney_repairs_repair_requests
-    stub_hackney_repairs_properties
+      stub_hackney_repairs_repair_requests
+      stub_hackney_repairs_properties
 
-    click_on 'Raise a repair on this property'
+      expect(page).to have_css(".hackney-property-tenure-turquoise")
+      click_on 'Raise a repair on this property'
 
-    fill_in "Problem description", with: "it's broken fix it"
-    fill_in "Tenant name", with: "blablabla"
-    fill_in "Contact number", with: "01234567890"
-    fill_in "SOR Code", with: "08500820"
-    select "N -", from: "Task priority"
+      fill_in "Problem description", with: "it's broken fix it"
+      fill_in "Tenant name", with: "blablabla"
+      fill_in "Contact number", with: "01234567890"
+      fill_in "SOR Code", with: "08500820"
+      select "N -", from: "Task priority"
 
-    stub_work_order
+      stub_work_order
 
-    click_on 'Raise repair'
+      click_on 'Raise repair'
 
-    expect(current_path).to be == work_order_path("01552718")
+      expect(current_path).to be == work_order_path("01552718")
+    end
+  end
+
+  context 'Leasehold RTB tenure' do
+    scenario 'Cannot raise repair' do
+      stub_post_repair_request
+      stub_property_leasehold
+      sign_in
+      visit property_path('00000020', show_raise_a_repair: true)
+
+      stub_hackney_repairs_repair_requests
+      stub_hackney_repairs_properties
+
+      expect(page).to have_css(".hackney-property-tenure-orange")
+      expect(page).not_to have_text("Raise a repair on this property")
+    end
   end
 end

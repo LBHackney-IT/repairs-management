@@ -1,12 +1,14 @@
 <% content_for :page_header do %>
   <h1 class="govuk-heading-l">
     <%= property.address %>
-    <% if params[:show_raise_a_repair] %>
-    <span class="govuk-caption-l">
-      <strong>
-        <%= link_to "Raise a repair on this property", new_property_repair_request_path(property.reference), class: 'hackney-link hackney-link-no-visited' %>
-      </strong>
-    </span>
+    <% if property.can_raise_repair? %>
+      <% if params[:show_raise_a_repair] %>
+        <span class="govuk-caption-l">
+          <strong>
+            <%= link_to "Raise a repair on this property", new_property_repair_request_path(property.reference), class: 'hackney-link hackney-link-no-visited' %>
+          </strong>
+        </span>
+      <% end %>
     <% end %>
   </h1>
 
@@ -20,7 +22,15 @@
           </span><br>
           <%= property.postcode %>
         </p>
-        <p class="govuk-body-s hackney-property-tenure">
+        <%
+          clazz = "govuk-body-s hackney-property-tenure"
+          if property.can_raise_repair?
+            clazz += " hackney-property-tenure-turquoise"
+          else
+            clazz += " hackney-property-tenure-orange"
+          end
+        %>
+        <p class="<%= clazz %>">
           <%= property.tenure %>
         </p>
       </div>
