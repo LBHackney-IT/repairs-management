@@ -59,18 +59,18 @@ RSpec.describe 'Repair request' do
     )
   end
 
-  def stub_property_leasehold
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000020").to_return(
+  def stub_property_temp_annex
+    stub_request(:get, "https://hackneyrepairs/v1/properties/207044451").to_return(
       status: 200,
       body: {
-        "address": "4 Acacia House  Lordship Road",
-        "postcode": "N16 0PX",
-        "propertyReference": "00000020",
-        "maintainable": false,
+        "address": "FLAT 6 36-38 BANK APARTMENTS",
+        "postcode": "N11 1NA",
+        "propertyReference": "207044451",
+        "maintainable": true,
         "levelCode": 7,
         "description": "Dwelling",
-        "tenureCode": "LEA",
-        "tenure": "Leasehold (RTB)"
+        "tenureCode": "TLA",
+        "tenure": "Temp Annex"
       }.to_json
     )
   end
@@ -119,9 +119,9 @@ RSpec.describe 'Repair request' do
   context 'Leasehold RTB tenure' do
     scenario 'Cannot raise repair' do
       stub_post_repair_request
-      stub_property_leasehold
+      stub_property_temp_annex
       sign_in
-      visit property_path('00000020', show_raise_a_repair: true)
+      visit property_path('207044451', show_raise_a_repair: true)
 
       stub_hackney_repairs_repair_requests
       stub_hackney_repairs_properties
