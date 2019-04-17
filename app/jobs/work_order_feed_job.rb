@@ -27,7 +27,7 @@ class WorkOrderFeedJob < ApplicationJob
     end
 
     if execution < max_executions && work_orders.size >= EXECUTION_LIMIT
-      perform(execution + 1, max_executions)
+      WorkOrderFeedJob.perform_later(execution + 1, max_executions)
     end
 
   rescue StandardError => e
