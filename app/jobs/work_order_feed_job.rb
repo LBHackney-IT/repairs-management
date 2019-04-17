@@ -8,7 +8,7 @@ class WorkOrderFeedJob < ApplicationJob
   FIRST_REFERENCE = "00000000".freeze
 
   def perform(execution, max_executions)
-    last = Graph::LastFromFeed.last_work_order.last_id || FIRST_REFERENCE
+    last = Graph::LastFromFeed.profile.last_work_order.last_id || FIRST_REFERENCE
     work_orders = Hackney::WorkOrder.feed(last)
 
     importer = GraphModelImporter.new(self.class.source_name)
@@ -22,7 +22,7 @@ class WorkOrderFeedJob < ApplicationJob
                                    created: work_order.created,
                                    target_numbers: numbers)
 
-        Graph::LastFromFeed.update_last_work_order!(work_order.reference)
+        Graph::LastFromFeed.profile.update_last_work_order!(work_order.reference)
       end
     end
 
