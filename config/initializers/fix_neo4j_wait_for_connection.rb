@@ -13,10 +13,9 @@ module Neo4j
       protected
 
       def wait_and_retry(session)
-        logger = Neo4j::Config[:logger]
         Timeout.timeout(60) do
           begin
-            logger.fatal ?.
+            print ?.
             session.constraints
           rescue Neo4j::Core::CypherSession::ConnectionFailedError
             sleep(1)
