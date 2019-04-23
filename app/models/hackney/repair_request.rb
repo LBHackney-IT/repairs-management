@@ -43,7 +43,7 @@ class Hackney::RepairRequest
     response = HackneyAPI::RepairsClient.new.post_repair_request(
       name: contact_name,
       phone: telephone_number,
-      sor_code: work_orders&.first&.sor_code,
+      sor_codes: work_orders&.map(&:sor_code) || [],
       priority: priority,
       property_ref: property_reference,
       description: description
@@ -83,27 +83,35 @@ class Hackney::RepairRequest
       case key
       when /^contact\.(.*)$/i
         contact.errors.add($1, msg)
-      when /^work_orders\[0\]\.(.*)$/i
-        work_orders[0].errors.add($1, msg)
+      when /^work_orders\[(\d+)\]\.(.*)$/i
+        work_orders[$1.to_i].errors.add($2, msg)
       end
     end
   end
 
   # TODO: API should give better error descriptions
   def self.errors_from_api(response)
-    response.map {|x| x["userMessage"] }.group_by do |x|
-      case x
-      when /Telephone/i
-        "contact.telephone_number"
-      when /Contact Name/i
-        "contact.name"
-      when /Problem/i
-        "description"
-      when /sorCode/i
-        "work_orders[0].sor_code"
-      else
-        "base"
-      end
+    err = {}
+    response.each do |x|
+      key = parse_json_pointer(x["source"])
+      err[key] ||= []
+      err[key] << x["userMessage"]
+    end
+    err
+  end
+
+  def self.parse_json_pointer p
+    case p
+    when /^\/contact\/telephoneNumber/i
+      "contact.telephone_number"
+    when /^\/contact\/name/i
+      "contact.name"
+    when /^\/problemDescription/i
+      "description"
+    when /^\/workOrders\/(\d+)\/sorCode/i
+      "work_orders[#{$1.to_i}].sor_code"
+    else
+      "base"
     end
   end
 end

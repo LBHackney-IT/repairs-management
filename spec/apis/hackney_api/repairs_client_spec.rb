@@ -167,7 +167,7 @@ describe HackneyAPI::RepairsClient do
         api_client.post_repair_request(
           name: "blablabla",
           phone: "01234567890",
-          sor_code: "08500820",
+          sor_codes: ["08500820"],
           priority: "G",
           property_ref: "00000018",
           description: "it's broken fix it"

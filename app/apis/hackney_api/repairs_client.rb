@@ -141,7 +141,7 @@ module HackneyAPI
       )
     end
 
-    def post_repair_request(name:, phone:, sor_code:, priority:, property_ref:, description:)
+    def post_repair_request(name:, phone:, sor_codes:, priority:, property_ref:, description:)
       request(
         http_method: :post,
         endpoint: "#{API_VERSION}/repairs",
@@ -151,9 +151,7 @@ module HackneyAPI
             "name": name,
             "telephoneNumber": phone,
           },
-          "workOrders": [
-            "sorCode": sor_code,
-          ],
+          "workOrders": sor_codes.map {|x| { "sorCode": x } },
           "priority": priority,
           "propertyReference": property_ref,
           "problemDescription": description
