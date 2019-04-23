@@ -15,7 +15,6 @@ module Neo4j
       def wait_and_retry(session)
         Timeout.timeout(60) do
           begin
-            print ?.
             session.constraints
           rescue Neo4j::Core::CypherSession::ConnectionFailedError
             sleep(1)
