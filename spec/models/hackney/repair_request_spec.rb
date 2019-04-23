@@ -125,7 +125,8 @@ describe Hackney::RepairRequest, '#save' do
           "telephoneNumber": "N/A",
         },
         "workOrders": [
-          "sorCode": "",
+          { "sorCode": "" },
+          { "sorCode": "" }
         ],
         "priority": "G",
         "propertyReference": "00000018",
@@ -135,20 +136,34 @@ describe Hackney::RepairRequest, '#save' do
       status: 400,
       body: [
         {
-          "developerMessage" => "Please provide a valid Problem",
+          "code" => 400,
+          "source" => "/problemDescription",
+          "developerMessage" => "Problem description cannot be null or empty",
           "userMessage" => "Please provide a valid Problem"
         },
         {
-          "developerMessage" => "If Repair request has workOrders you must provide a valid sorCode",
+          "code" => 400,
+          "source" => "/workOrders/0/sorCode",
+          "developerMessage" => "sorCode is invalid",
           "userMessage" => "If Repair request has workOrders you must provide a valid sorCode"
         },
         {
-          "developerMessage" => "Contact Name cannot be empty",
-          "userMessage" => "Contact Name cannot be empty"
+          "code" => 400,
+          "source" => "/workOrders/1/sorCode",
+          "developerMessage" => "sorCode is invalid",
+          "userMessage" => "If Repair request has workOrders you must provide a valid sorCode"
         },
         {
-          "developerMessage" => "Telephone number must contain minimum of 10 and maximum of 11 digits.",
-          "userMessage" => "Telephone number must contain minimum of 10 and maximum of 11 digits."
+          "code" => 400,
+          "source" => "/contact/name",
+          "developerMessage" => "Contact Name cannot be empty",
+          "userMessage" => "Please provide a name for the contact"
+        },
+        {
+          "code" => 400,
+          "source" => "/contact/telephoneNumber",
+          "developerMessage" => "Contact Telephone number is invalid",
+          "userMessage" => "Telephone number must contain minimum of 10 and maximum of 11 digits"
         }
       ].to_json
     )
@@ -159,6 +174,7 @@ describe Hackney::RepairRequest, '#save' do
         telephone_number: ""
       },
       work_orders_attributes: [
+        { sor_code: "" },
         { sor_code: "" }
       ],
       priority: "G",
@@ -170,15 +186,19 @@ describe Hackney::RepairRequest, '#save' do
 
     expect(repair_request.reference).not_to be_present
 
-    expect(repair_request.errors.include?("contact.name")).to be_truthy
-    expect(repair_request.contact.errors.include?("name")).to be_truthy
 
-    expect(repair_request.errors.include?("contact.telephone_number")).to be_truthy
-    expect(repair_request.contact.errors.include?("telephone_number")).to be_truthy
+    expect(repair_request.errors.added?("contact.name", "Please provide a name for the contact")).to be_truthy
+    expect(repair_request.contact.errors.added?("name", "Please provide a name for the contact")).to be_truthy
 
-    expect(repair_request.errors.include?("work_orders[0].sor_code")).to be_truthy
-    expect(repair_request.work_orders[0].errors.include?("sor_code")).to be_truthy
+    expect(repair_request.errors.added?("contact.telephone_number", "Telephone number must contain minimum of 10 and maximum of 11 digits")).to be_truthy
+    expect(repair_request.contact.errors.added?("telephone_number", "Telephone number must contain minimum of 10 and maximum of 11 digits")).to be_truthy
 
-    expect(repair_request.errors.include?("description")).to be_truthy
+    expect(repair_request.errors.added?("work_orders[0].sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
+    expect(repair_request.work_orders[0].errors.added?("sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
+
+    expect(repair_request.errors.added?("work_orders[1].sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
+    expect(repair_request.work_orders[1].errors.added?("sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
+
+    expect(repair_request.errors.added?("description", "Please provide a valid Problem")).to be_truthy
   end
 end
