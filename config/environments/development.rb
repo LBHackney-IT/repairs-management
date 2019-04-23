@@ -59,9 +59,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Wait for neo4j database to boot up
-  config.neo4j.wait_for_connection = true
-
   # Silence sidekiq/web complaints about "Cannot render console from 172.26.0.1"
   config.web_console.whitelisted_ips = '172.26.0.1'
 
