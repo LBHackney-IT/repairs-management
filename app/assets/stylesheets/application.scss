@@ -107,6 +107,18 @@ $govuk-breakpoints: (
   color: govuk-colour("grey-4");
   margin-bottom: 10px;
   padding: 10px 20px;
+
+  /*
+   * FIXME: generic rules should be less specific.
+   * see .hackney-main-section-info p, ul
+   */
+  ul {
+    color: inherit;
+  }
+}
+
+.hackney-flash-message-error {
+  background-color: $govuk-error-colour;
 }
 
 .hackney-note-info {
