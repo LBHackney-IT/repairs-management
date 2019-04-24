@@ -15,6 +15,7 @@ class RepairRequestsController < ApplicationController
       if @repair_request.save
         format.html { redirect_to work_order_path(@repair_request.work_orders.first.reference), notice: 'Repair raised!' }
       else
+        flash[:error] = @repair_request.errors["base"]
         format.html { render :new }
       end
     end
