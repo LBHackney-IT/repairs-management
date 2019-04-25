@@ -218,6 +218,13 @@ module HackneyAPI
       []
     end
 
+    def get_cautionary_contact(reference)
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/cautionary_contact/?reference=#{reference}"
+      )
+    end
+
     private
 
     def notes_endpoint(reference)
