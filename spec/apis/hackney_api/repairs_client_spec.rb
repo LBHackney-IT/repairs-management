@@ -592,4 +592,35 @@ describe HackneyAPI::RepairsClient do
       end
     end
   end
+
+  describe '#get_facilities_by_property_reference' do
+    it 'returns a list of facilities' do
+      results = {
+        "results" => [
+          {
+            "propertyReference" => "00072649",
+            "levelCode" => "6",
+            "description" => "Facilities",
+            "majorReference" => "00087478",
+            "address" => "Lift 1449 3-4 & 8-10 & 14-16 & 20-22 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          },
+          {
+            "propertyReference" => "00072650",
+            "levelCode" => "6",
+            "description" => "Facilities",
+            "majorReference" => "00087477",
+            "address" => "Lift 1448 1-2 & 5-7 & 11-13 & 17-19 Acacia House  Lordship Road",
+            "postcode" => "N16 0PX"
+          }
+        ]
+      }
+
+      stub_request(:get, "#{base_url}/#{api_version}/properties/00000018/facilities")
+        .to_return(status: 200, body: results.to_json)
+
+      expect(api_client.get_facilities_by_property_reference('00000018'))
+        .to be == results
+    end
+  end
 end
