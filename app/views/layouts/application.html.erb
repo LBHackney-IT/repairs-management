@@ -78,15 +78,11 @@
     <div class='hackney-flash-message hackney-flash-message-<%= name %>'>
       <div class="govuk-width-container">
         <% messages = [messages].flatten %>
-        <% if 1 == messages.count %>
-          <p><%= messages.first %></p>
-        <% elsif 1 < messages.count %>
-          <ul>
-            <% messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        <% end %>
+        <ul>
+          <% messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
     </div>
   <% end %>
