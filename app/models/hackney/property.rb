@@ -37,6 +37,11 @@ class Hackney::Property
     end
   end
 
+  def self.facilities_for_property_reference(reference)
+    r = HackneyAPI::RepairsClient.new.get_facilities_by_property_reference(reference)
+    r["results"].map {|x| build(x) }
+  end
+
   def self.build(attributes)
     # TODO: remove strip from attributes['attr'].strip - API should be fixed soon
     new(
@@ -58,14 +63,7 @@ class Hackney::Property
   end
 
   def facilities
-    @_facilities ||= begin
-      references = hierarchy.map(&:reference)
-
-      level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
-      api_result = HackneyAPI::RepairsClient.new.get_property_by_postcode(postcode, level, level)
-      api_result["results"].map { |attributes| Hackney::Property.build(attributes) }
-                           .select { |f| references.include? f.major_reference }
-    end
+    @_facilities ||= self.class.facilities_for_property_reference(reference)
   end
 
   def possibly_related(from:, to:)

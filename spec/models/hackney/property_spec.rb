@@ -271,8 +271,9 @@ describe Hackney::Property do
     before do
       allow(HackneyAPI::RepairsClient).to receive(:new).and_return(repairs_client_double)
       allow(repairs_client_double).to receive(:get_property_hierarchy).with('003') { hierarchy_response }
-      level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
-      allow(repairs_client_double).to receive(:get_property_by_postcode).with('W1A 1AA', level, level) { by_postcode_response }
+      allow(repairs_client_double)
+        .to receive(:get_facilities_by_property_reference)
+        .with('003') { by_postcode_response }
     end
 
     subject { build :property, reference: '003', postcode: 'W1A 1AA' }
