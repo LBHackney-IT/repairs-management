@@ -4,7 +4,7 @@ class PropertiesController < ApplicationController
 
   def show
     @property_details = Hackney::Property.find(params[:ref])
-    @cautionary_contact = Hackney::CautionaryContact.find(@property_details.reference)
+    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property_details.reference)
   end
 
   def search

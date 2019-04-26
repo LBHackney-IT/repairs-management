@@ -3,17 +3,19 @@ class Hackney::CautionaryContact
 
   attr_accessor :property_reference, :contact_number, :title, :forename, :surname, :caller_notes, :alert_code
 
-  def self.find(property_reference)
-    response = HackneyAPI::RepairsClient.new.get_cautionary_contact(property_reference)
-    if response['results'].any?
-      build(response['results'].first)
-    else
-      nil
+  def self.find_by_property_reference(property_reference)
+    response = HackneyAPI::RepairsClient.new.get_cautionary_contact_by_property_reference(property_reference)
+    response["results"].map do |attributes|
+      Hackney::CautionaryContact.build(attributes)
     end
   end
 
   def self.build(attributes)
-    new(
+    new(attributes_from_api(attributes))
+  end
+
+  def self.attributes_from_api(attributes)
+    {
       property_reference: attributes['propertyReference'],
       contact_number: attributes['contactNo'],
       title: attributes['title'],
@@ -21,6 +23,6 @@ class Hackney::CautionaryContact
       surname: attributes['surename'],
       caller_notes: attributes['callerNotes'],
       alert_code: attributes['alertCode']
-    )
+    }
   end
 end

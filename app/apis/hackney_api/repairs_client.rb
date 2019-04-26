@@ -218,7 +218,7 @@ module HackneyAPI
       []
     end
 
-    def get_cautionary_contact(reference)
+    def get_cautionary_contact_by_property_reference(reference)
       request(
         http_method: :get,
         endpoint: "#{API_VERSION}/cautionary_contact/?reference=#{reference}"
