@@ -85,7 +85,7 @@ class Hackney::Property
     level_code == ESTATE_LEVEL
   end
 
-  def can_raise_repair?
+  def can_raise_a_repair?
     RAISABLE_TENURES.include? tenure_code
   end
 end
