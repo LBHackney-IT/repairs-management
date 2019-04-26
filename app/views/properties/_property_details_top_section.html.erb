@@ -22,7 +22,7 @@
           </span><br>
           <%= property.postcode %>
         </p>
-<<<<<<< HEAD
+
         <%
           clazz = "govuk-body-s hackney-property-tenure"
           if property.can_raise_repair?
@@ -35,12 +35,9 @@
           <%= property.tenure %>
         </p>
 
-        <% if @cautionary_contact.present? %>
-=======
         <% if @cautionary_contacts.present? %>
->>>>>>> Accomodating for array of cautionary contacts
-          <table class="hackney-cautionary-contact-table">
-            <tbody class="govuk-body-xs hackney-body-xs hackney-cautionary-contact">
+          <table class="cautionary-contact-table">
+            <tbody class="govuk-body-xs hackney-body-xs cautionary-contact">
               <% @cautionary_contacts.each do |cautionary_contact| %>
                 <tr>
                   <th scope="row" class="govuk-!-font-weight-bold">
