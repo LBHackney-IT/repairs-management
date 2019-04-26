@@ -1,7 +1,7 @@
 <% content_for :page_header do %>
   <h1 class="govuk-heading-l">
     <%= property.address %>
-    <% if property.can_raise_repair? %>
+    <% if property.can_raise_a_repair? %>
       <% if params[:show_raise_a_repair] %>
         <span class="govuk-caption-l">
           <strong>
@@ -24,7 +24,7 @@
         </p>
         <%
           clazz = "govuk-body-s hackney-property-tenure"
-          if property.can_raise_repair?
+          if property.can_raise_a_repair?
             clazz += " hackney-property-tenure-turquoise"
           else
             clazz += " hackney-property-tenure-orange"

@@ -313,5 +313,41 @@ describe Hackney::Property do
       expect(subject).to eq(result)
     end
   end
+
+  describe '#can_raise_a_repair?' do
+    it 'is only true for some tenure codes' do
+      expect(Hackney::Property.new(tenure_code: 'ASY').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'COM').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'DEC').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'FRE').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'FRS').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'HPH').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'INT').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'LEA').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'LHS').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'LTA').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'MPA').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'NON').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'PVG').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'RSL').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'RTM').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'SEC').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'SHO').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'SLL').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'SMW').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'SPS').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'SPT').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'SSE').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'TAF').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'TBB').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'TGA').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'THA').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'THL').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'THO').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'TLA').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'TPL').can_raise_a_repair?).to be_falsey
+      expect(Hackney::Property.new(tenure_code: 'TRA').can_raise_a_repair?).to be_truthy
+    end
+  end
 end
 
