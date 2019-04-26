@@ -89,10 +89,27 @@ RSpec.describe 'Repair request' do
     )
   end
 
+  def stub_cautionary_contact_by_property_reference(reference:)
+    stub_request(:get, "https://hackneyrepairs/v1/cautionary_contact/?reference=#{reference}").to_return(
+      status: 200,
+      body:
+      { "results": [{
+        "propertyReference" => "#{reference}",
+        "contactNo" => "",
+        "title" => "",
+        "forenames" => "",
+        "suruname" => "",
+        "callerNotes" => "",
+        "alertCode" => ""
+      }]}.to_json
+    )
+  end
+
   context 'Secure tenure' do
     scenario 'Raise a repair' do
       stub_post_repair_request
       stub_property
+      stub_cautionary_contact_by_property_reference(reference: '00000018')
       sign_in
       visit property_path('00000018', show_raise_a_repair: true)
 
@@ -120,6 +137,7 @@ RSpec.describe 'Repair request' do
     scenario 'Cannot raise repair' do
       stub_post_repair_request
       stub_property_temp_annex
+      stub_cautionary_contact_by_property_reference(reference: '207044451')
       sign_in
       visit property_path('207044451', show_raise_a_repair: true)
 
