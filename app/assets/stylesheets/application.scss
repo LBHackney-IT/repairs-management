@@ -150,7 +150,7 @@ $govuk-breakpoints: (
 }
 
 .cautionary-contact-table {
-  background-color: hackney-colour("warning");
+  background-color: $govuk-focus-colour;
   display: inline-block;
   margin: 10px;
   min-width: 51.5%;
