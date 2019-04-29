@@ -86,6 +86,6 @@ class Hackney::Property
   end
 
   def can_raise_a_repair?
-    RAISABLE_TENURES.include? tenure_code
+    tenure_code.blank? || RAISABLE_TENURES.include?(tenure_code)
   end
 end

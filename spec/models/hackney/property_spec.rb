@@ -316,6 +316,8 @@ describe Hackney::Property do
 
   describe '#can_raise_a_repair?' do
     it 'is only true for some tenure codes' do
+      expect(Hackney::Property.new(tenure_code: '').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: nil).can_raise_a_repair?).to be_truthy
       expect(Hackney::Property.new(tenure_code: 'ASY').can_raise_a_repair?).to be_truthy
       expect(Hackney::Property.new(tenure_code: 'COM').can_raise_a_repair?).to be_truthy
       expect(Hackney::Property.new(tenure_code: 'DEC').can_raise_a_repair?).to be_truthy
