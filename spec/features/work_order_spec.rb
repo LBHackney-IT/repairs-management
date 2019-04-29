@@ -41,6 +41,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_latest_appointments
     stub_hackney_repairs_work_order_reports
     stub_hackney_work_orders_for_property
+    stub_cautionary_contact_by_property_reference
     stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2])
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
     stub_hackney_repairs_work_orders_by_reference(
@@ -263,6 +264,8 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'Property details'
     expect(page).to have_content 'Homerton High Street 12 Banister House'
+    expect(page).to have_content 'CC: Do not attend'
+    expect(page).to have_content 'SA'
 
     expect(page).to have_css(".hackney-work-order-tab", count: 1)
 

@@ -24,12 +24,11 @@
             <%= work_order.property.description %>
           </span><br>
           <% format_address(work_order.property.address).each do |line| %>
-            <span class="govuk-!-font-weight-bold"><%= line %></span><br />
+            <span class="govuk-!-font-weight-bold"><%= line %></span><br>
           <% end %>
-          </span>
           <span class="govuk-body-xs hackney-text-green hackney-body-xs">
             <%= work_order.property.postcode %>
-          </span>
+          </span><br>
         </p>
       </div>
     </div>

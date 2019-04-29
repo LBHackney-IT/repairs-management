@@ -539,6 +539,41 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
+  describe '#get_cautionary_contact' do
+    subject { api_client.get_cautionary_contact_by_property_reference(reference) }
+
+    context 'successful response' do
+      before { stub_request(:get, "#{base_url}/#{api_version}/cautionary_contact/?reference=#{reference}").to_return(body: empty_response_body.to_json) }
+
+      it 'returns successful response body' do
+        expect(subject).to eq(empty_response_body)
+      end
+    end
+
+    context 'not found error' do
+      before { stub_request(:get, "#{base_url}/#{api_version}/cautionary_contact/?reference=#{reference}").to_return(status: 404) }
+
+      it 'raises RecordNotFoundError error' do
+        expect { subject }.to raise_error(described_class::RecordNotFoundError)
+      end
+    end
+
+    context 'API general error' do
+      let(:response_body) do
+        {
+          "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+          "userMessage" => "We had some problems processing your request"
+        }
+      end
+
+      before { stub_request(:get, "#{base_url}/#{api_version}/cautionary_contact/?reference=#{reference}").to_return(status: 500, body: response_body.to_json) }
+
+      it 'raises ApiError error' do
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/cautionary_contact/?reference=#{reference}, {}, 500, #{response_body}")
+      end
+    end
+  end
+
   describe '#post_work_order_note' do
 
     subject { api_client.post_work_order_note("00000001", "It's all fine") }

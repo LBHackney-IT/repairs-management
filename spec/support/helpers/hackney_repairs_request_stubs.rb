@@ -805,5 +805,36 @@ module Helpers
         .with(query: params)
         .to_return(status: status, body: body.to_json)
     end
+
+    def cautionary_contact_response_body
+      {
+        "results": [
+          {
+            "propertyReference" => "00014665",
+            "contactNo" => "01234567",
+            "title" => "MR",
+            "forenames" => "Tom",
+            "suruname" => "Jones",
+            "callerNotes" => "Do not attend, bad singing",
+            "alertCode" => "CC"
+          },
+          {
+            "propertyReference" => "00014665",
+            "contactNo" => "01234567",
+            "title" => "MR",
+            "forenames" => "Tom",
+            "surename" => "Jones",
+            "callerNotes" => "",
+            "alertCode" => "SA"
+          }
+        ]
+      }
+    end
+
+    def stub_cautionary_contact_by_property_reference(reference: '00014665', status: 200,
+                                                      body: cautionary_contact_response_body)
+      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/cautionary_contact/?reference=#{reference}")
+        .to_return(status: status, body: body.to_json)
+    end
   end
 end

@@ -145,6 +145,18 @@ $govuk-breakpoints: (
   }
 }
 
+.cautionary-contact {
+  color: white !important;
+}
+
+.cautionary-contact-table {
+  background-color: hackney-colour("warning");
+  display: inline-block;
+  margin: 10px;
+  min-width: 51.5%;
+  padding: 2px 3px;
+}
+
 // govuk styling specifies this as ems, and the other as pixels,
 // so need to overwrite it directly
 .govuk-width-container {
