@@ -6,11 +6,11 @@ class Hackney::CautionaryContact
   def self.find_by_property_reference(property_reference)
     response = HackneyAPI::RepairsClient.new.get_cautionary_contact_by_property_reference(property_reference)
     response["results"].map do |attributes|
-      Hackney::CautionaryContact.build(attributes)
+      Hackney::CautionaryContact.new_from_api(attributes)
     end
   end
 
-  def self.build(attributes)
+  def self.new_from_api(attributes)
     new(attributes_from_api(attributes))
   end
 
