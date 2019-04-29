@@ -73,6 +73,18 @@ $govuk-breakpoints: (
   padding-bottom: 30px;
 }
 
+/* FIXME: this is a hack */
+.hackney-page-header-no-raise-a-repair {
+  margin-top: -20px;
+  margin-bottom: 20px;
+}
+
+/* FIXME: this is a hack */
+.hackney-page-header-raise-a-repair {
+  margin-top: -15px;
+  margin-bottom: 25px;
+}
+
 .hackney-width-container {
   @include govuk-media-query($from: tablet) {
     margin: 0 30px;
