@@ -31,9 +31,11 @@
             clazz += " hackney-property-tenure-orange"
           end
         %>
-        <p class="<%= clazz %>">
-          <%= property.tenure %>
-        </p>
+        <% if property.tenure.present? %>
+          <p class="<%= clazz %>">
+            <%= property.tenure %>
+          </p>
+        <% end %>
 
         <% if @cautionary_contacts.present? %>
           <table class="cautionary-contact-table">
