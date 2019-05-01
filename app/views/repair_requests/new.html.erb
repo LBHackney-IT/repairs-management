@@ -29,7 +29,7 @@
 
           <%= form.fields_for :contact do |fields| %>
             <%= fields.form_group :name do %>
-              <%= fields.label :name, "Tenant name" %>
+              <%= fields.label :name, "Caller name" %>
               <%= fields.error_messages :name %>
               <%= fields.text_field :name %>
             <% end %>
@@ -71,7 +71,7 @@
             ) %>
           <% end %>
 
-          <%= form.submit 'Raise repair', class: 'govuk-button hackney-focus-colour' %>
+          <%= form.submit 'Create works order', class: 'govuk-button hackney-focus-colour' %>
         <% end %>
       </div>
     </div>
