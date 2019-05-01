@@ -1,7 +1,11 @@
+.hackney-warning-labels {
+  width: 50%;
+}
+
 .hackney-property-tenure {
   padding: 4px 8px;
   color: white !important;
-  width: 50%;
+  width: 100%;
 }
 
 .hackney-property-tenure-turquoise {
@@ -20,7 +24,7 @@
   background-color: hackney-colour("warning");
   display: inline-block;
   margin: 10px;
-  width: 50%;
+  width: 100%;
   padding: 4px 8px;
 
   th {
