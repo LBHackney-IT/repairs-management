@@ -10,6 +10,23 @@
           New repair for <%= @property.address %>
         </h1>
 
+        <% if @cautionary_contacts.present? %>
+          <table class="cautionary-contact-table">
+            <tbody class="govuk-body-xs hackney-body-xs cautionary-contact">
+              <% @cautionary_contacts.each do |cautionary_contact| %>
+                <tr>
+                  <th scope="row" class="govuk-!-font-weight-bold">
+                    <%= cautionary_contact.alert_code -%><%=  cautionary_contact.caller_notes.present? ? ":" : ""  %>
+                  </th>
+                  <td>
+                    <%=  cautionary_contact.caller_notes %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>
+
         <%= govuk_form_with(
           model: @repair_request,
           url: property_repair_requests_path(@property.reference),

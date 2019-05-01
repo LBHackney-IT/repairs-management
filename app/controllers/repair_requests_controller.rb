@@ -6,6 +6,7 @@ class RepairRequestsController < ApplicationController
       contact_attributes: {},
       work_orders_attributes: [{}]
     )
+    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
   end
 
   def create
