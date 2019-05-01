@@ -120,14 +120,14 @@ RSpec.describe 'Repair request' do
       click_on 'Raise a repair on this property'
 
       fill_in "Problem description", with: "it's broken fix it"
-      fill_in "Tenant name", with: "blablabla"
+      fill_in "Caller name", with: "blablabla"
       fill_in "Contact number", with: "01234567890"
       fill_in "SOR Code", with: "08500820"
       select "N -", from: "Task priority"
 
       stub_work_order
 
-      click_on 'Raise repair'
+      click_on 'Create works order'
 
       expect(current_path).to be == work_order_path("01552718")
     end
