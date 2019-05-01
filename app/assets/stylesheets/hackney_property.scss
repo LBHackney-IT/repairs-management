@@ -1,7 +1,11 @@
+.hackney-warning-labels {
+  width: 50%;
+}
+
 .hackney-property-tenure {
   padding: 4px 8px;
   color: white !important;
-  width: 50%;
+  width: 100%;
 }
 
 .hackney-property-tenure-turquoise {
@@ -10,4 +14,20 @@
 
 .hackney-property-tenure-orange {
   background: hackney-colour("warning");
+}
+
+.hackney-cautionary-contact {
+  color: white !important;
+}
+
+.hackney-cautionary-contact-table {
+  background-color: hackney-colour("warning");
+  display: inline-block;
+  margin: 10px;
+  width: 100%;
+  padding: 4px 8px;
+
+  th {
+    vertical-align: top;
+  }
 }
