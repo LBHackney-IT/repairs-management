@@ -11,3 +11,19 @@
 .hackney-property-tenure-orange {
   background: hackney-colour("warning");
 }
+
+.hackney-cautionary-contact {
+  color: white !important;
+}
+
+.hackney-cautionary-contact-table {
+  background-color: hackney-colour("warning");
+  display: inline-block;
+  margin: 10px;
+  width: 50%;
+  padding: 4px 8px;
+
+  th {
+    vertical-align: top;
+  }
+}
