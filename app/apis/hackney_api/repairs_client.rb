@@ -230,6 +230,13 @@ module HackneyAPI
       )
     end
 
+    def get_keyfax_url
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/keyfax/get_startup_url",
+      )
+    end
+
     private
 
     def notes_endpoint(reference)
