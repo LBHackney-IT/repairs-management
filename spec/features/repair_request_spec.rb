@@ -98,9 +98,9 @@ RSpec.describe 'Repair request' do
         "contactNo" => "",
         "title" => "",
         "forenames" => "",
-        "suruname" => "",
+        "surename" => "",
         "callerNotes" => "",
-        "alertCode" => ""
+        "alertCode" => "CC"
       }]}.to_json
     )
   end
@@ -118,6 +118,8 @@ RSpec.describe 'Repair request' do
 
       expect(page).to have_css(".hackney-property-tenure-turquoise")
       click_on 'Raise a repair on this property'
+
+      expect(page).to have_content "CC"
 
       fill_in "Problem description", with: "it's broken fix it"
       fill_in "Caller name", with: "blablabla"

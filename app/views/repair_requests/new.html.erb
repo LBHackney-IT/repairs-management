@@ -10,6 +10,12 @@
           New repair for <%= @property.address %>
         </h1>
 
+        <div class="hackney-warning-labels">
+          <% if @cautionary_contacts.present? %>
+            <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
+          <% end %>
+        </div>
+
         <%= govuk_form_with(
           model: @repair_request,
           url: property_repair_requests_path(@property.reference),

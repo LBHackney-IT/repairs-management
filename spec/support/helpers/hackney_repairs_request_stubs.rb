@@ -814,7 +814,7 @@ module Helpers
             "contactNo" => "01234567",
             "title" => "MR",
             "forenames" => "Tom",
-            "suruname" => "Jones",
+            "surename" => "Jones",
             "callerNotes" => "Do not attend, bad singing",
             "alertCode" => "CC"
           },
