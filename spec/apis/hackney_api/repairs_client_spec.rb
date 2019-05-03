@@ -470,7 +470,7 @@ describe HackneyAPI::RepairsClient do
       before do
         response = []
         stub_request(:get, "#{base_url}/#{api_version}/work_orders?propertyReference=#{reference}&since=#{date_from.strftime("%d-%m-%Y")}&until=#{date_to.strftime("%d-%m-%Y")}")
-        .to_return(status: 200, body: response)
+          .to_return(status: 200, body: response.to_json)
       end
 
       it 'returns empty list when a property has no work orders' do
