@@ -623,4 +623,31 @@ describe HackneyAPI::RepairsClient do
         .to be == results
     end
   end
+=======
+  describe '#get_keyfax_url' do
+    subject { api_client.get_keyfax_url }
+
+    context 'successful response' do
+      before { stub_request(:get, "#{base_url}/#{api_version}/keyfax/get_startup_url").to_return(body: empty_response_body.to_json) }
+
+      it 'returns successful response body' do
+        expect(subject).to eq(empty_response_body)
+      end
+    end
+
+    context 'API general error' do
+      let(:response_body) do
+        {
+          "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
+          "userMessage" => "We had some problems processing your request"
+        }
+      end
+
+      before { stub_request(:get, "#{base_url}/#{api_version}/keyfax/get_startup_url").to_return(status: 500, body: response_body.to_json) }
+
+      it 'raises ApiError error' do
+        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/keyfax/get_startup_url, {}, 500, #{response_body}")
+      end
+    end
+  end
 end
