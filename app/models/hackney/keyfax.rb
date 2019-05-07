@@ -8,6 +8,10 @@ class Hackney::Keyfax
     new_from_api(response.dig("body", "startupResult"))
   end
 
+  def self.get_response(guid)
+    response = HackneyAPI::RepairsClient.new.get_keyfax_result(guid)
+  end
+
   def self.new_from_api(attributes)
     new(attributes_from_api(attributes))
   end

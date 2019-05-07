@@ -237,6 +237,13 @@ module HackneyAPI
       )
     end
 
+    def get_keyfax_result(guid)
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/keyfax/kf_result/#{guid}"
+      )
+    end
+
     private
 
     def notes_endpoint(reference)

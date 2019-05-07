@@ -107,11 +107,40 @@ RSpec.describe 'Repair request' do
     )
   end
 
+  def stub_keyfax_get_startup_url
+    stub_request(:get, "https://hackneyrepairs/v1/keyfax/get_startup_url").to_return(
+      status: 200,
+      body:
+      { "body":
+        { "startupResult":
+          { "launchUrl" => "www.blah.com",
+            "guid" => "123456789"
+          }
+        }
+      }.to_json
+    )
+  end
+
+  def stub_keyfax_get_result
+    stub_request(:get, "https://hackneyrepairs/v1/keyfax/kf_result/123456789").to_return(
+      status: 200,
+      body:
+      { "body":
+        { "getResultsResult":
+          { "blah" => "www.blah.com",
+          }
+        }
+      }.to_json
+    )
+  end
+
   context 'Secure tenure' do
     scenario 'Raise a repair' do
       stub_post_repair_request
       stub_property
       stub_cautionary_contact_by_property_reference(reference: '00000018')
+      stub_keyfax_get_startup_url
+      stub_keyfax_get_result
       sign_in
       visit property_path('00000018', show_raise_a_repair: true)
 
