@@ -45,6 +45,12 @@
           </p>
           <% end %>
 
+          <% if property.is_tmo? %>
+          <p class="govuk-body-s hackney-property-tenure hackney-property-tenure-orange">
+            <%= property.letting_area %>
+          </p>
+          <% end %>
+
           <% if @cautionary_contacts.present? %>
             <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
           <% end %>
