@@ -192,8 +192,8 @@ RSpec.describe 'Property' do
     visit property_path('00000666')
     expect(page).to have_content('1 Madeup Road')
 
-    click_on 'Related properties'
-    within '#related-properties-tab' do
+    click_on 'Related facilities'
+    within '#related-facilities-tab' do
       expect(page).to have_link("Madeup Estate",                                    href: property_path("00000663"))
       expect(page).to have_link("1-21 Madeup Road",                                 href: property_path("00000664"))
       expect(page).to have_link("1-2 & 5-7 & 11-13 & 17-19 Madeup Road",            href: property_path("00000665"))

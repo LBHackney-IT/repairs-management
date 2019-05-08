@@ -1,13 +1,13 @@
 <h2 class="hackney-heading">
-  Related properties
+  Related facilities
 </h2>
 
 <div class="govuk-grid-row">
-  <% @related_properties.group_by(&:description).each do |description, properties| %>
+  <% @related_facilities.group_by(&:description).each do |description, properties| %>
     <div class="tabcontent">
       <div class="govuk-grid-column-full">
 
-        <table class="govuk-table hackney-related-properties-table">
+        <table class="govuk-table hackney-related-facilities-table">
           <thead class="govuk-table__head">
             <tr>
               <th class="govuk-table__header" scope="col">

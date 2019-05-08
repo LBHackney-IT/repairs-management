@@ -12,10 +12,10 @@ module Api
       render 'repairs_history'
     end
 
-    def related_properties
+    def related_facilities
       @property = Hackney::Property.find(reference)
       @hierarchy = @property.hierarchy
-      @related_properties = @property.facilities
+      @related_facilities = @property.facilities
     end
 
     def reference
