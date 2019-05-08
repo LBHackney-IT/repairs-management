@@ -13,7 +13,13 @@
         Repairs history
       </a>
     </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab hackney-related-properties-tab" href="#related-properties-tab">
+        Related properties
+      </a>
+    </li>
   </ul>
 
   <%= render 'property_repairs_history', property_reference: @property_details.reference %>
+  <%= render 'property_related_properties', property_reference: @property_details.reference %>
 </div>

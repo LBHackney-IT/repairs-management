@@ -1,0 +1,12 @@
+<div class="govuk-tabs__panel hackney-related-properties-tabs-info" id="related-properties-tab">
+  <p class="govuk-caption-m ajax-loading">Loading related properties data</p>
+</div>
+
+<script>
+  window.addEventListener("load", function() {
+    var endpoint = "<%= related_properties_api_property_path %>";
+    var ajaxTab = document.getElementById('related-properties-tab');
+
+    handleAjaxResponse(endpoint, ajaxTab);
+  })
+</script>

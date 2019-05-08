@@ -74,8 +74,6 @@ RSpec.describe 'Work order' do
     #
     # stub facilities work orders
     #
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders?propertyReference=00014665&propertyReference=00024665&propertyReference=00072698&propertyReference=00072699&propertyReference=00072700&since=26-04-2017&until=27-04-2019")
-      .to_return(status: 200, body: [].to_json, headers: {})
 
     stub_hackney_repairs_work_order_block_by_trade(body: [])
     stub_hackney_repairs_work_order_notes
