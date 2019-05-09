@@ -113,6 +113,14 @@ VCR.configure do |config|
     erb: :true
   }
 
+  # NOTE: fixes VCR interfering with webdrivers downloads.
+  config.ignore_hosts(
+    "chromedriver.storage.googleapis.com",
+    "github.com/mozilla/geckodriver/releases",
+    "selenium-release.storage.googleapis.com",
+    "developer.microsoft.com/en-us/microsoft-edge/tools/webdriver"
+  )
+
   # Cerealize with custom jason cerealizer
   config.cassette_serializers[:json] = JasonCerealizer.new
   config.cassette_serializers[:rb] = MockCerealizer.new
