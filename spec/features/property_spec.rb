@@ -128,7 +128,8 @@ RSpec.describe 'Property' do
     #
     # work orders
     #
-    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?propertyReference=00000666&propertyReference=00000667&propertyReference=00000664&propertyReference=00000663&propertyReference=00000668&propertyReference=00000665&since=08-05-2017&until=09-05-2019")
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?propertyReference=00000666&propertyReference=00000667&propertyReference=00000664&propertyReference=00000663&propertyReference=00000668&propertyReference=00000665&since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
       .to_return(status: 200, body: [
         {
           "sorCode": "06550090",
