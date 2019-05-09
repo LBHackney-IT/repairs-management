@@ -54,7 +54,8 @@ RSpec.describe 'Repair request' do
         "levelCode" => 7,
         "description" => "Dwelling",
         "tenureCode": "SEC",
-        "tenure" => "Secure"
+        "tenure" => "Secure",
+        "lettingArea" => "neighbourhood"
       }.to_json
     )
   end
@@ -70,7 +71,8 @@ RSpec.describe 'Repair request' do
         "levelCode": 7,
         "description": "Dwelling",
         "tenureCode": "TLA",
-        "tenure": "Temp Annex"
+        "tenure": "Temp Annex",
+        "lettingArea" => "neighbourhood"
       }.to_json
     )
   end
