@@ -5,7 +5,8 @@ class Hackney::Property
 
   RAISABLE_TENURES = %w(ASY COM DEC FRS INT LEA MPA NON PVG SEC TAF TGA TRA)
 
-  attr_accessor :reference, :level_code, :description, :major_reference, :address, :postcode, :tenure, :tenure_code
+  attr_accessor :reference, :level_code, :description, :major_reference, :address,
+                :postcode, :tenure, :tenure_code, :letting_area
 
   def self.find(property_reference)
     response = HackneyAPI::RepairsClient.new.get_property(property_reference)
@@ -47,7 +48,8 @@ class Hackney::Property
       address: attributes['address']&.strip,
       postcode: attributes['postcode'],
       tenure: attributes['tenure'],
-      tenure_code: attributes['tenureCode']
+      tenure_code: attributes['tenureCode'],
+      letting_area: attributes['lettingArea']
     )
   end
 
@@ -87,5 +89,9 @@ class Hackney::Property
 
   def can_raise_a_repair?
     tenure_code.blank? || RAISABLE_TENURES.include?(tenure_code)
+  end
+
+  def is_tmo?
+    letting_area.downcase.include? "tmo"
   end
 end
