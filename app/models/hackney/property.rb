@@ -92,6 +92,6 @@ class Hackney::Property
   end
 
   def is_tmo?
-    letting_area != "NA"
+    letting_area.downcase.include? "tmo"
   end
 end
