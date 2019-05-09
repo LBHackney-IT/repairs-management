@@ -82,14 +82,16 @@ module Helpers
                                   property_reference: "00014665",
                                   maintainable: true,
                                   level_code: 7,
-                                  description: "Dwelling")
+                                  description: "Dwelling",
+                                  letting_area: "Blah blah TMO")
       {
         "address" => address,
         "postcode" => postcode,
         "propertyReference" => property_reference,
         "maintainable" => maintainable,
         "levelCode" => level_code,
-        "description" => description
+        "description" => description,
+        "lettingArea" => letting_area
       }
     end
 

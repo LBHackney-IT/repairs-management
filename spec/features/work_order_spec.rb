@@ -264,6 +264,7 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_content 'Property details'
     expect(page).to have_content 'Homerton High Street 12 Banister House'
+    expect(page).to have_content 'Blah blah TMO'
     expect(page).to have_content 'CC: Do not attend'
     expect(page).to have_content 'SA'
 

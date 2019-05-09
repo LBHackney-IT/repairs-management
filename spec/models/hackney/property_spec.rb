@@ -351,5 +351,11 @@ describe Hackney::Property do
       expect(Hackney::Property.new(tenure_code: 'TRA').can_raise_a_repair?).to be_truthy
     end
   end
-end
 
+  describe '#is_tmo?' do
+    it 'is true when a property is a tmo' do
+      expect(Hackney::Property.new(letting_area: 'This is a tmo').is_tmo?).to be_truthy
+      expect(Hackney::Property.new(letting_area: 'NA').is_tmo?).to be_falsey
+    end
+  end
+end
