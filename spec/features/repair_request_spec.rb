@@ -118,7 +118,7 @@ RSpec.describe 'Repair request' do
       stub_hackney_repairs_repair_requests
       stub_hackney_repairs_properties
 
-      expect(page).to have_css(".hackney-property-tenure-turquoise")
+      expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this property'
 
       expect(page).to have_content "CC"
@@ -148,7 +148,7 @@ RSpec.describe 'Repair request' do
       stub_hackney_repairs_repair_requests
       stub_hackney_repairs_properties
 
-      expect(page).to have_css(".hackney-property-tenure-orange")
+      expect(page).to have_css(".hackney-property-warning-label-orange")
       expect(page).not_to have_text("Raise a repair on this property")
     end
   end

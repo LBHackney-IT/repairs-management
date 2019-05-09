@@ -32,11 +32,11 @@
         </p>
         <div class="hackney-warning-labels">
           <%
-          clazz = "govuk-body-s hackney-property-tenure"
+          clazz = "govuk-body-s hackney-property-warning-label"
           if property.can_raise_a_repair?
-          clazz += " hackney-property-tenure-turquoise"
+          clazz += " hackney-property-warning-label-turquoise"
           else
-          clazz += " hackney-property-tenure-orange"
+          clazz += " hackney-property-warning-label-orange"
           end
           %>
           <% if property.tenure.present? %>
@@ -46,7 +46,7 @@
           <% end %>
 
           <% if property.is_tmo? %>
-          <p class="govuk-body-s hackney-property-tenure hackney-property-tenure-orange">
+          <p class="govuk-body-s hackney-property-warning-label hackney-property-warning-label-orange">
             <%= property.letting_area %>
           </p>
           <% end %>

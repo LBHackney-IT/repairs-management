@@ -83,7 +83,7 @@ module Helpers
                                   maintainable: true,
                                   level_code: 7,
                                   description: "Dwelling",
-                                  letting_area: "Blah blah TMO")
+                                  letting_area: "Lordship South TMO (SN) H2556")
       {
         "address" => address,
         "postcode" => postcode,
