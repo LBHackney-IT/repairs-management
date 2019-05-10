@@ -108,7 +108,8 @@ RSpec.describe 'Repair request' do
   end
 
   def stub_keyfax_get_startup_url
-    stub_request(:get, "https://hackneyrepairs/v1/keyfax/get_startup_url").to_return(
+    stub_request(:get, "https://hackneyrepairs/v1/keyfax/get_startup_url/?returnurl=http://www.example.com/properties/00000018/repair_requests/new")
+    .to_return(
       status: 200,
       body:
       { "body":
@@ -139,16 +140,19 @@ RSpec.describe 'Repair request' do
       stub_post_repair_request
       stub_property
       stub_cautionary_contact_by_property_reference(reference: '00000018')
-      stub_keyfax_get_startup_url
-      stub_keyfax_get_result
+
       sign_in
       visit property_path('00000018', show_raise_a_repair: true)
 
+      stub_keyfax_get_startup_url
+      # stub_keyfax_get_result
       stub_hackney_repairs_repair_requests
       stub_hackney_repairs_properties
 
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this property'
+
+      stub_keyfax_get_startup_url
 
       expect(page).to have_content "CC"
 
