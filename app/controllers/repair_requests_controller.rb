@@ -7,8 +7,12 @@ class RepairRequestsController < ApplicationController
       work_orders_attributes: [{}]
     )
     @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
-    @keyfax_url = Hackney::Keyfax.get_startup_url
-    @keyfax_response = Hackney::Keyfax.get_response(@keyfax_url.guid)
+    @keyfax_url = Hackney::Keyfax.get_startup_url(request.original_url)
+
+    if request.original_url.include? ('guid')
+      guid = request.original_url.match(/guid=(\S+)/)[1]
+      @keyfax_response = Hackney::Keyfax.get_response(guid)
+    end
   end
 
   def create
