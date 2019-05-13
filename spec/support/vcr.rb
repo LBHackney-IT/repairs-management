@@ -1,31 +1,31 @@
 require 'vcr'
 
-# Cerealizes jason bodies as jason instead of string
-class JasonCerealizer
+# Serializes json bodies as json instead of string
+class JsonSerializer
   def file_extension
     "json"
   end
 
   def serialize(hash)
-    each_jason_message(hash) {|msg| to_jason(msg) }
+    each_json_message(hash) {|msg| to_json(msg) }
     JSON.pretty_generate(hash)
   end
 
   def deserialize(string)
     hash = JSON.parse(string)
-    each_jason_message(hash) {|msg| from_jason(msg) }
+    each_json_message(hash) {|msg| from_json(msg) }
     hash
   end
 
   private
 
-  def each_jason_message(hash, &block)
+  def each_json_message(hash, &block)
     Enumerator.new do |y|
       hash["http_interactions"].each do |pair|
         pair.each do |direction, message|
           case direction
           when "request", "response"
-            if is_jason?(message)
+            if is_json?(message)
               y << message
             end
           end
@@ -34,25 +34,25 @@ class JasonCerealizer
     end.each(&block)
   end
 
-  def is_jason?(message)
+  def is_json?(message)
     message.dig("headers", "Content-Type")&.grep(/json/)
   end
 
-  def to_jason message
+  def to_json message
     body = message["body"]
     string = body.delete("string")
     body["json"] = JSON.parse(string)
   end
 
-  def from_jason message
+  def from_json message
     body = message["body"]
-    jason = body.delete("json")
-    body["string"] = jason.to_json
+    json = body.delete("json")
+    body["string"] = json.to_json
   end
 end
 
-# Cerealizes to convenient webmock format for copy-pasting
-class MockCerealizer
+# Serializes to convenient webmock format for copy-pasting
+class MockSerializer
   def file_extension
     "rb"
   end
@@ -80,14 +80,14 @@ class MockCerealizer
 
   private
 
-  def is_jason?(message)
+  def is_json?(message)
     message.dig("headers", "Content-Type")&.grep(/json/)
   end
 
   def body_string(message)
-    if is_jason?(message)
-      jason = JSON.parse(message["body"]["string"])
-      JSON.pretty_generate(jason).gsub(": null", ": nil") + ".to_json"
+    if is_json?(message)
+      json = JSON.parse(message["body"]["string"])
+      JSON.pretty_generate(json).gsub(": null", ": nil") + ".to_json"
     else
       message["body"]["string"].inspect
     end
@@ -121,9 +121,9 @@ VCR.configure do |config|
     "developer.microsoft.com/en-us/microsoft-edge/tools/webdriver"
   )
 
-  # Cerealize with custom jason cerealizer
-  config.cassette_serializers[:json] = JasonCerealizer.new
-  config.cassette_serializers[:rb] = MockCerealizer.new
+  # Serialize with custom json cerealizer
+  config.cassette_serializers[:json] = JsonSerializer.new
+  config.cassette_serializers[:rb] = MockSerializer.new
 
   # Use webmock for recording/replaying
   config.hook_into :webmock
