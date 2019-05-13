@@ -1,5 +1,6 @@
 require 'webmock/rspec'
 
+# NOTE: fixes Webmock interfering with webdrivers downloads
 allowed_sites = [
   "https://chromedriver.storage.googleapis.com",
   "https://github.com/mozilla/geckodriver/releases",

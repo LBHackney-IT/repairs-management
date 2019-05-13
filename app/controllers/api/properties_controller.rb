@@ -12,6 +12,12 @@ module Api
       render 'repairs_history'
     end
 
+    def related_facilities
+      @property = Hackney::Property.find(reference)
+      @hierarchy = @property.hierarchy
+      @related_facilities = @property.facilities
+    end
+
     def reference
       params[:ref]
     end

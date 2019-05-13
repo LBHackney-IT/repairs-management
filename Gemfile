@@ -62,6 +62,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'dotenv-rails'
   gem 'neo4j-rake_tasks'
+  gem 'vcr'
 end
 
 group :development do

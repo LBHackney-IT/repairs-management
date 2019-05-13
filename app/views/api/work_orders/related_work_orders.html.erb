@@ -1,10 +1,10 @@
 <h2 class="hackney-heading">
   Related repairs
 </h2>
-<% if @work_order.related_properties.any? %>
+<% if @work_order.related_facilities.any? %>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full hackney-work-order-related__flex">
-      <% @work_order.related_properties.sort_by(&:address).each do |property| %>
+      <% @work_order.related_facilities.sort_by(&:address).each do |property| %>
         <div class="hackney-work-order-related__property">
           <p class="address">
             <%= property.address %><%= '*' if property == @work_order.property %>

@@ -43,6 +43,40 @@ NoMethodError: undefined method `slice' for nil:NilClass
 
 Test are configured two ways: (1) `./bin/test` will run all tests in Docker Compose, you should use this for a full test suite. (2) Some tests can be ran without Docker Compose, this is faster to run without Docker Compose, but it only covers a subset.
 
+### Webmock and VCR
+
+If you need to mock multiple web interactions, like with the Hackney API, the VCR gem is available with a custom cassete writer that will record a test's network traffic as a sequence of Webmock's `stub_request` calls for easy copy-pasting.
+
+**DO NOT FORGET TO FILTER SENSITIVE DATA BEFORE COMMITTING**
+
+For example:
+
+```ruby
+RSpec.describe "Some stuff" do
+  feature "Some feature" do
+    scenario "Do some browsing", :js, :vcr do
+      ...
+    end
+  end
+end
+```
+
+will generate a `.rb` file under `spec/vcr_cassettes` containing something like:
+
+```ruby
+stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666")
+  .to_return(status: 200, body: {
+    ...
+  }.to_json)
+
+stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
+  .to_return(status: 200, body: {
+    ...
+  }.to_json)
+
+...
+```
+
 ## Deployments
 
 App is hosted on Unboxed's Heroku: [hackney-repairs pipeline](https://dashboard.heroku.com/pipelines/9820fae2-6834-4969-a4d6-774d00af55f1)

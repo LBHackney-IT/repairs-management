@@ -31,3 +31,13 @@
     vertical-align: top;
   }
 }
+
+.hackney-related-facilities-table {
+  th {
+    width: 15%;
+
+    &:first-of-type {
+      width: auto;
+    }
+  }
+}

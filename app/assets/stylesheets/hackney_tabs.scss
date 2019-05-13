@@ -1,18 +1,22 @@
 .hackney-tabs-list {
   margin-top: -86px;
 }
-.hackney-work-order-tabs-info {
+
+.hackney-tabs-info {
+  /* FIXME: those three importants are still important... */
   border: none !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-.hackney-work-order-tab {
-  background-color: govuk-colour("grey-2") !important;
-  color: govuk-colour('white') !important;
+
+.hackney-tabs-list > li > a {
+  background-color: govuk-colour("grey-2");
+  color: govuk-colour('white');
 
   // To change the colour of selected tab, we can only use the aria-selected
   // because of the way gov-uk tabs are working
   &[aria-selected="true"] {
+    /* FIXME: those two importants are still important... */
     background-color: govuk-colour('white') !important;
     color: govuk-colour('black') !important;
   }

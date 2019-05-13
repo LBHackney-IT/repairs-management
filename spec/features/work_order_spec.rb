@@ -4,6 +4,7 @@ RSpec.describe 'Work order' do
   include Helpers::Authentication
   include Helpers::HackneyRepairsRequestStubs
 
+  let(:repairs_history_property_references) { %w(00014665 00024665 00072698 00072699 00072700) }
   let(:property_reference1) { '00014665' }
   let(:property_reference2) { '00024665' }
   let(:property_hierarchy_response) do
@@ -35,6 +36,45 @@ RSpec.describe 'Work order' do
     level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
     stub_hackney_property_by_postcode(reference: 'E9 6BH', min_level: level, max_level: level)
 
+    #
+    # stub get_facilities_by_property_reference
+    #
+    facilities = {
+      "results" => [
+        {
+          "propertyReference" => "00072698",
+          "levelCode" => "6",
+          "description" => "Facilities",
+          "majorReference" => "00074486",
+          "address" => "Lift 4031 1-18 Banister House  Homerton High Street",
+          "postcode" => "E9 6BH"
+        },
+        {
+          "propertyReference" => "00072699",
+          "levelCode" => "6",
+          "description" => "Facilities",
+          "majorReference" => "00074489",
+          "address" => "Lift 4441 109-126 Banister House  Homerton High Street",
+          "postcode" => "E9 6BL"
+        },
+        {
+          "propertyReference" => "00072700",
+          "levelCode" => "6",
+          "description" => "Facilities",
+          "majorReference" => "00076278",
+          "address" => "Lift 4439 127-144 Banister House  Homerton High Street",
+          "postcode" => "E9 6BN"
+        }
+      ]
+    }
+
+    stub_request(:get, "https://hackneyrepairs/v1/properties/00014665/facilities").
+      to_return(status: 200, body: facilities.to_json)
+
+    #
+    # stub facilities work orders
+    #
+
     stub_hackney_repairs_work_order_block_by_trade(body: [])
     stub_hackney_repairs_work_order_notes
     stub_hackney_repairs_work_order_appointments
@@ -42,7 +82,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_order_reports
     stub_hackney_work_orders_for_property
     stub_cautionary_contact_by_property_reference
-    stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2])
+    stub_hackney_work_orders_for_property(reference: repairs_history_property_references)
     stub_hackney_property_hierarchy(body: property_hierarchy_response)
     stub_hackney_repairs_work_orders_by_reference(
       references: ["11235813"],
@@ -59,7 +99,7 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Search for a work order by reference (only AJAX content)', js: true do
-    stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2], body: [
+    stub_hackney_work_orders_for_property(reference: repairs_history_property_references, body: [
       work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
       work_order_response_payload("workOrderReference" => "87654321", "problemDescription" => "Problem 2"),
     ])
@@ -130,7 +170,7 @@ RSpec.describe 'Work order' do
 
         expect(page).to have_content "Repairs history is showing jobs raised in the last 2 years."
 
-        stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2], body: [
+        stub_hackney_work_orders_for_property(years_ago: 5, reference: repairs_history_property_references, body: [
           work_order_response_payload("workOrderReference" => "12345678", "problemDescription" => "Problem 1"),
         ])
 
@@ -144,8 +184,8 @@ RSpec.describe 'Work order' do
       end
     end
 
-    scenario "Expect button click to trigger expected behaviour on different hierarchy filter", js: true do
-      stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2],
+      scenario "Expect button click to trigger expected behaviour on different hierarchy filter", js: true do
+      stub_hackney_work_orders_for_property(reference: repairs_history_property_references,
                                             body: work_orders_by_property_reference_payload + work_orders_by_property_reference_payload__different_property)
 
       visit work_order_path('01551932')
@@ -157,25 +197,28 @@ RSpec.describe 'Work order' do
 
       choose('hierarchy', option: 'hierarchy-1')
 
-      stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2],
+      stub_hackney_work_orders_for_property(years_ago: 5, reference: repairs_history_property_references,
                                             body: work_orders_by_property_reference_payload)
 
+      # FIXME: if capybara's chromium is not headless, the test will crash at
+      # the end trying to find favicon.ico, probably because of this line.
       visit "/api/properties/#{property_reference1}/repairs_history?years_ago=5"
 
       expect(page).to have_content "Loading repairs history"
     end
 
     scenario "There are no work orders within the last 2 years but there are within the last 5", js: true do
-      stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2], body: [])
+      stub_hackney_work_orders_for_property(reference: repairs_history_property_references, body: [])
 
       visit work_order_path('01551932')
+      choose "Block"
       expect(find('#repair-history-tab')).to have_content 'There are no work orders for this block within the last 2 years.'
 
       expect(page).to have_selector(:button, 'Show last 5 years')
     end
 
     scenario "There are no work orders within the last 5 years", js: true do
-      stub_hackney_work_orders_for_property(years_ago: 5, reference: [property_reference1, property_reference2], body: [])
+      stub_hackney_work_orders_for_property(years_ago: 5, reference: repairs_history_property_references, body: [])
 
       visit work_order_path('01551932')
 
@@ -268,9 +311,9 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'CC: Do not attend'
     expect(page).to have_content 'SA'
 
-    expect(page).to have_css(".hackney-work-order-tab", count: 1)
+    expect(page).to have_css(".hackney-tabs-list > li > a", count: 2)
 
-    expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
+    expect(page.all('.hackney-tabs-list > li > a').map(&:text)).not_to have_content 'Notes and appointments'
 
     within("#repair-history-tab") do
       expect(page).to have_css("h2", text: "Repairs history")
@@ -501,7 +544,7 @@ RSpec.describe 'Work order' do
   end
 
   scenario 'Filtering the repairs history by the hierarchy of the property', js: true do
-    stub_hackney_work_orders_for_property(reference: [property_reference1, property_reference2],
+    stub_hackney_work_orders_for_property(reference: repairs_history_property_references,
                                           body: work_orders_by_property_reference_payload + work_orders_by_property_reference_payload__different_property)
 
     visit work_order_path('01551932')
