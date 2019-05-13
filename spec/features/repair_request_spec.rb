@@ -139,7 +139,7 @@ RSpec.describe 'Repair request' do
       stub_post_repair_request
 
       sign_in
-      visit property_path('00000666', show_raise_a_repair: true)
+      visit property_path('00000666')
 
       stub_keyfax_get_startup_url
 
@@ -175,7 +175,7 @@ RSpec.describe 'Repair request' do
   #     stub_property_temp_annex
   #     stub_cautionary_contact_by_property_reference(reference: '207044451')
   #     sign_in
-  #     visit property_path('207044451', show_raise_a_repair: true)
+  #     visit property_path('207044451')
   #
   #     stub_hackney_repairs_repair_requests
   #     stub_hackney_repairs_properties
