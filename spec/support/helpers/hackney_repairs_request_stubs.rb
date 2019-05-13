@@ -838,40 +838,5 @@ module Helpers
       stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/cautionary_contact/?reference=#{reference}")
         .to_return(status: status, body: body.to_json)
     end
-
-    def keyfax_url_response_body
-      {
-        "body": {
-          "startupResult":
-            {
-              "launchUrl" => "http://LBHKFXAPPT01/InterView/Main/Main.aspx?co=Hackney_Test&guid=6eb27594-18ca-4224-b95f-3afac7db0857",
-              "guid" => "6f3ca92d-8171-42b3-bfb0-a135a47e604a",
-            }
-        }
-      }
-    end
-
-    def stub_keyfax_get_startup_url(current_page_url: 'https://repairs-hub.hackney.gov.uk/properties/00004769/repair_requests/new', status: 200,
-                                                      body: keyfax_url_response_body)
-      stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/keyfax/get_startup_url/?returnurl=#{current_page_url}")
-        .to_return(status: status, body: body.to_json)
-    end
-
-    # def keyfax_results_response_body
-    #   {
-    #     "startupResult": [
-    #       {
-    #         "launchUrl" => "http://LBHKFXAPPT01/InterView/Main/Main.aspx?co=Hackney_Test&guid=6eb27594-18ca-4224-b95f-3afac7db0857",
-    #         "guid" => "6f3ca92d-8171-42b3-bfb0-a135a47e604a",
-    #       }
-    #     ]
-    #   }
-    # end
-    #
-    # def stub_keyfax_get_results_response(guid: 'e7ed9140-8516-40fe-b99a-cb6d7c32d66e', status: 200,
-    #                                                   body: keyfax_results_response_body)
-    #   stub_request(:get, "https://hackneyrepairs/#{API_VERSION}/keyfax/kf_result/#{guid}")
-    #     .to_return(status: status, body: body.to_json)
-    # end
   end
 end

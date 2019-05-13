@@ -1,4 +1,4 @@
-class Hackney::Keyfax
+class Hackney::KeyfaxSession
   include ActiveModel::Model
 
   attr_accessor :launch_url, :guid
@@ -13,22 +13,6 @@ class Hackney::Keyfax
   end
 
   def self.attributes_from_api_for_url(attributes)
-    {
-      launch_url: attributes['launchUrl'],
-      guid: attributes['guid']
-    }
-  end
-
-  def self.get_response(guid)
-    response = HackneyAPI::RepairsClient.new.get_keyfax_result(guid)
-    # new_from_api_for_response(response.dig("body", "getResultsResult"))
-  end
-
-  def self.new_from_api_for_response(attributes)
-    new(attributes_from_api_for_result(attributes))
-  end
-
-  def self.attributes_from_api_for_result(attributes)
     {
       launch_url: attributes['launchUrl'],
       guid: attributes['guid']

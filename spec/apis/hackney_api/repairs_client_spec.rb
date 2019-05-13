@@ -653,7 +653,7 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
-  describe '#get_keyfax_url' do
+  describe '#get_keyfax_result' do
     let(:guid) { "bf8abbea-b5ca-48b5-9712-5aef7bdb8a52" }
 
     subject { api_client.get_keyfax_result(guid) }
