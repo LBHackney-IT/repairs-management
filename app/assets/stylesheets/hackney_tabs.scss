@@ -2,10 +2,8 @@
   margin-top: -86px;
 }
 
-/* FIXME: this should be generic, not specific to work-order or
- * related-facilities */
-.hackney-work-order-tabs-info,
-.hackney-related-facilities-tabs-info {
+.hackney-tabs-info {
+  /* FIXME: those three importants are still important... */
   border: none !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
