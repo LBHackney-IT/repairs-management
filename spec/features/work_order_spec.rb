@@ -310,9 +310,9 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'CC: Do not attend'
     expect(page).to have_content 'SA'
 
-    expect(page).to have_css(".hackney-work-order-tab", count: 1)
+    expect(page).to have_css(".hackney-tabs-list > li > a", count: 2)
 
-    expect(page.all('.hackney-work-order-tab').map(&:text)).not_to have_content 'Notes and appointments'
+    expect(page.all('.hackney-tabs-list > li > a').map(&:text)).not_to have_content 'Notes and appointments'
 
     within("#repair-history-tab") do
       expect(page).to have_css("h2", text: "Repairs history")
