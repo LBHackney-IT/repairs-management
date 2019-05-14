@@ -10,8 +10,9 @@
 }
 
 .hackney-tabs-list > li > a {
-  background-color: govuk-colour("grey-2");
-  color: govuk-colour('white');
+  /* FIXME: those two importants are still important... */
+  background-color: govuk-colour("grey-2") !important;
+  color: govuk-colour('white') !important;
 
   // To change the colour of selected tab, we can only use the aria-selected
   // because of the way gov-uk tabs are working
