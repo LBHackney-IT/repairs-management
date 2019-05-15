@@ -24,7 +24,7 @@ describe Hackney::KeyfaxSession do
     it 'gets a url' do
       stub_keyfax_get_startup_url
 
-      keyfax_instance = KeyfaxSession.get_startup_url("https://repairs-hub.hackney.gov.uk/properties/00004769/repair_requests/new")
+      keyfax_instance = Hackney::KeyfaxSession.get_startup_url("https://repairs-hub.hackney.gov.uk/properties/00004769/repair_requests/new")
 
       expect(keyfax_instance).to be_a(Hackney::KeyfaxSession)
     end

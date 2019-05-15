@@ -19,7 +19,7 @@ RSpec.describe 'Repair request' do
         }],
         "priority": "E",
         "propertyReference": "00000666",
-        "problemDescription": "it's broken fix it"
+        "problemDescription": "It's broken"
       }.to_json
     ).to_return(
       status: 200,
@@ -84,6 +84,52 @@ RSpec.describe 'Repair request' do
         "dateDue" => "2018-06-27T14:09:00",
       }.to_json
     )
+
+    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718/notes").to_return(
+      status: 200,
+      body: []
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/repairs/").to_return(
+      status: 200,
+      body: {
+        "repairRequestReference" => "03210303",
+        "propertyReference" =>"00000666",
+        "problemDescription" => "It's broken",
+        "priority" => "E",
+        "contact" => {
+          "name" => "Miss Piggy",
+          "telephoneNumber" => "01234567890"
+        },
+        "workOrders"=> [
+          {
+            "workOrderReference" => "01552718",
+            "sorCode" => "20110120",
+            "supplierReference" => "H01"
+          }
+        ]
+      }.to_json
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718/appointments/latest").to_return(
+      status: 200,
+      body: [].to_json
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718/appointments").to_return(
+      status: 200,
+      body: [].to_json
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/properties/00000666/block/work_orders?since=17-04-2018&trade=Plumbing&until=05-06-2018").to_return(
+      status: 200,
+      body: [].to_json
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718?include=mobilereports").to_return(
+      status: 200,
+      body: { "mobileReports" => []}.to_json
+    )
   end
 
   def stub_property_00000666
@@ -133,6 +179,37 @@ RSpec.describe 'Repair request' do
       .to_return(status: 200, body: { "results":[]}.to_json)
   end
 
+  def stub_property_temp_annex
+    stub_request(:get, "https://hackneyrepairs/v1/properties/207044451").to_return(
+      status: 200,
+      body: {
+        "address": "FLAT 6 36-38 BANK APARTMENTS",
+        "postcode": "N11 1NA",
+        "propertyReference": "207044451",
+        "maintainable": true,
+        "levelCode": 7,
+        "description": "Dwelling",
+        "tenureCode": "TLA",
+        "tenure": "Temp Annex",
+        "lettingArea" => "neighbourhood"
+      }.to_json
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/cautionary_contact/?reference=207044451").to_return(
+      status: 200,
+      body: {
+      "results": [
+        { "alertCode" => "CC" }
+        ]
+      }.to_json
+    )
+
+    stub_request(:get, "https://hackneyrepairs/v1/properties/207044451/hierarchy").to_return(
+      status: 200,
+      body: [].to_json
+    )
+    end
+
   context 'Secure tenure' do
     scenario 'Raise a repair', :js do
       stub_property_00000666
@@ -169,19 +246,18 @@ RSpec.describe 'Repair request' do
     end
   end
 
-  # context 'Leasehold RTB tenure' do
-  #   scenario 'Cannot raise repair' do
-  #     stub_post_repair_request
-  #     stub_property_temp_annex
-  #     stub_cautionary_contact_by_property_reference(reference: '207044451')
-  #     sign_in
-  #     visit property_path('207044451')
-  #
-  #     stub_hackney_repairs_repair_requests
-  #     stub_hackney_repairs_properties
-  #
-  #     expect(page).to have_css(".hackney-property-warning-label-orange")
-  #     expect(page).not_to have_text("Raise a repair on this property")
-  #   end
-  # end
+  context 'Leasehold RTB tenure' do
+    scenario 'Cannot raise repair' do
+      stub_post_repair_request
+      stub_property_temp_annex
+      sign_in
+      visit property_path('207044451')
+
+      # stub_hackney_repairs_requests
+      # stub_hackney_repairs_properties
+
+      expect(page).to have_css(".hackney-property-warning-label-orange")
+      expect(page).not_to have_text("Raise a repair on this property")
+    end
+  end
 end

@@ -19,7 +19,8 @@ describe Hackney::KeyfaxResult do
 
   describe '.get_response' do
     it 'returns a response' do
-      response = KeyfaxResult.get_response('e7ed9140-8516-40fe-b99a-cb6d7c32d66e')
+      stub_keyfax_get_results_response
+      response = Hackney::KeyfaxResult.get_response('e7ed9140-8516-40fe-b99a-cb6d7c32d66e')
 
       expect(response.fault_text).to eq('Electric lighting: Communal; Block Lighting; 3; All lights out')
       expect(response.sor_code).to eq('20110120')
