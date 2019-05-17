@@ -623,7 +623,7 @@ describe HackneyAPI::RepairsClient do
         .to be == results
     end
   end
-=======
+
   describe '#get_keyfax_url' do
     let(:current_page_url) { "https://repairs-hub.hackney.gov.uk/properties/00004769/repair_requests/new" }
 
