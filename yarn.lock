@@ -31,9 +31,9 @@ fs.realpath@^1.0.0:
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
 glob@^7.1.3:
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.3.tgz#3960832d3f1574108342dafd3a67b332c0969df1"
-  integrity sha512-vcfuiIxogLV4DlGBHIUOwI0IbrJ8HWPc4MU7HzviGeNho/UJDfi6B5p3sHeWIQ0KGIU0Jpxi5ZHxemQfLkkAwQ==
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.4.tgz#aa608a2f6c577ad357e1ae5a5c26d9a8d1969255"
+  integrity sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -43,9 +43,9 @@ glob@^7.1.3:
     path-is-absolute "^1.0.0"
 
 govuk-frontend@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-1.0.0.tgz#c11ab721c4a7480169ca0b1ea040fc6b3366d057"
-  integrity sha512-4qCRrwGEcDC0ybjb5lls3P8tDgM8/hpTy2Mesgp1wa1/HdtlXtShj0E0H41lkXNrX7ZQOoDCc4gUEoOgZD+QfA==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-1.3.0.tgz#b145d8c5d6bd7e88a5b34b340867799f328bbb03"
+  integrity sha512-NROJGh4wZgOSWhEzJOkcijIMR7GeFBOinG45wouVwK7ne6ihR4uyS/LQBkG/GGEkNkLZYuOG8cb+6fMVwP2W7Q==
 
 immediate@~3.0.5:
   version "3.0.6"

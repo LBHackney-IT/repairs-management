@@ -4,85 +4,83 @@
 <% end %>
 
 <div class="govuk-width-container">
-  <main class="govuk-main-wrapper">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
 
-        <h1 class="govuk-heading-l">
-          New repair for <%= @property.address %>
-        </h1>
+      <h1 class="govuk-heading-l">
+        New repair for <%= @property.address %>
+      </h1>
 
-        <div class="hackney-warning-labels">
-          <% if @cautionary_contacts.present? %>
-            <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
-          <% end %>
-        </div>
-
-        <h2 class="govuk-heading-m">
-          Repair task details
-        </h2>
-
-        <%= govuk_form_with(
-          model: @repair_request,
-          url: property_repair_requests_path(@property.reference),
-          local: true
-        ) do |form|
-        %>
-
-        <%= form.fields_for :work_orders do |fields| %>
-          <%= fields.form_group :sor_code do %>
-            <%= fields.label :sor_code, "SOR Code" %>
-            <%= fields.error_messages :sor_code %>
-            <div class="govuk-grid-row" style="height: auto">
-              <div class="govuk-grid-column-one-half">
-                <%= fields.text_field :sor_code %>
-              </div>
-              <div class="govuk-grid-column-one-half">
-                <%= link_to "Launch Keyfax", @keyfax_url.launch_url, class: "govuk-button govuk-!-margin-bottom-0" %>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
-
-        <%= form.form_group :priority do %>
-          <%= form.label :priority, "Task priority" %>
-          <%= form.error_messages :priority %>
-          <%= form.collection_select(
-            :priority,
-            Hackney::RepairRequest::RAISABLE_PRIORITIES,
-            :first,
-            -> (x) { "#{x} - #{@repair_request.class.human_attribute_name("priority.#{x}")}" },
-          ) %>
-        <% end %>
-
-        <%= form.form_group :description do %>
-          <%= form.label :description, "Problem description" %>
-
-          <span class="govuk-hint">
-            max of 200 characters.
-          </span>
-
-          <%= form.error_messages :description %>
-          <%= form.text_area :description, value: @keyfax_result&.fault_text, class: 'govuk-textarea', rows: 5 %>
-        <% end %>
-
-        <%= form.fields_for :contact do |fields| %>
-          <%= fields.form_group :name do %>
-            <%= fields.label :name, "Caller name" %>
-            <%= fields.error_messages :name %>
-            <%= fields.text_field :name %>
-          <% end %>
-
-          <%= fields.form_group :telephone_number do %>
-            <%= fields.label :telephone_number, "Contact number" %>
-            <%= fields.error_messages :telephone_number %>
-            <%= fields.text_field :telephone_number %>
-          <% end %>
-        <% end %>
-
-          <%= form.submit 'Create works order', class: 'govuk-button hackney-focus-colour' %>
+      <div class="hackney-warning-labels">
+        <% if @cautionary_contacts.present? %>
+          <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
         <% end %>
       </div>
+
+      <h2 class="govuk-heading-m">
+        Repair task details
+      </h2>
+
+      <%= govuk_form_with(
+        model: @repair_request,
+        url: property_repair_requests_path(@property.reference),
+        local: true
+      ) do |form|
+      %>
+
+      <%= form.fields_for :work_orders do |fields| %>
+        <%= fields.form_group :sor_code do %>
+          <%= fields.label :sor_code, "SOR Code" %>
+          <%= fields.error_messages :sor_code %>
+          <div class="govuk-grid-row" style="height: auto">
+            <div class="govuk-grid-column-one-half">
+              <%= fields.text_field :sor_code %>
+            </div>
+            <div class="govuk-grid-column-one-half">
+              <%= link_to "Launch Keyfax", @keyfax_url.launch_url, class: "govuk-button govuk-!-margin-bottom-0" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= form.form_group :priority do %>
+        <%= form.label :priority, "Task priority" %>
+        <%= form.error_messages :priority %>
+        <%= form.collection_select(
+          :priority,
+          Hackney::RepairRequest::RAISABLE_PRIORITIES,
+          :first,
+          -> (x) { "#{x} - #{@repair_request.class.human_attribute_name("priority.#{x}")}" },
+        ) %>
+      <% end %>
+
+      <%= form.form_group :description do %>
+        <%= form.label :description, "Problem description" %>
+
+        <span class="govuk-hint">
+          max of 200 characters.
+        </span>
+
+        <%= form.error_messages :description %>
+        <%= form.text_area :description, value: @keyfax_result&.fault_text, class: 'govuk-textarea', rows: 5 %>
+      <% end %>
+
+      <%= form.fields_for :contact do |fields| %>
+        <%= fields.form_group :name do %>
+          <%= fields.label :name, "Caller name" %>
+          <%= fields.error_messages :name %>
+          <%= fields.text_field :name %>
+        <% end %>
+
+        <%= fields.form_group :telephone_number do %>
+          <%= fields.label :telephone_number, "Contact number" %>
+          <%= fields.error_messages :telephone_number %>
+          <%= fields.text_field :telephone_number %>
+        <% end %>
+      <% end %>
+
+        <%= form.submit 'Create works order', class: 'govuk-button hackney-focus-colour' %>
+      <% end %>
     </div>
-  </main>
+  </div>
 </div>

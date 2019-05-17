@@ -125,6 +125,7 @@ $govuk-breakpoints: (
 
 .hackney-notice-summary {
   border: 5px solid hackney-colour("housing-2");
+  margin-bottom: 20px;
 
   &:focus {
     outline: none !important;
@@ -132,6 +133,8 @@ $govuk-breakpoints: (
 }
 
 .hackney-error-summary {
+  margin-bottom: 20px;
+
   &:focus {
     outline: none !important;
   }
