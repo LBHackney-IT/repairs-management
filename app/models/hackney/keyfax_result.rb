@@ -1,7 +1,7 @@
 class Hackney::KeyfaxResult
   include ActiveModel::Model
 
-  attr_accessor :fault_text, :sor_code, :description, :priority
+  attr_accessor :fault_text, :sor_code, :problem_description, :priority
 
   def self.get_response(guid)
     response = HackneyAPI::RepairsClient.new.get_keyfax_result(guid)
@@ -16,7 +16,7 @@ class Hackney::KeyfaxResult
     {
       fault_text: attributes['faultText'],
       sor_code: attributes['repairCode'],
-      description: attributes['repairCodeDesc'],
+      problem_description: attributes['repairCodeDesc'],
       priority: attributes['priority']
     }
   end

@@ -232,9 +232,9 @@ module HackneyAPI
 
     def get_keyfax_url(current_page_url)
       request(
+        cache_request: false,
         http_method: :get,
-        endpoint: "#{API_VERSION}/keyfax/get_startup_url/?returnurl=#{current_page_url}",
-
+        endpoint: "#{API_VERSION}/keyfax/get_startup_url/?returnurl=#{current_page_url}"
       )
     end
 

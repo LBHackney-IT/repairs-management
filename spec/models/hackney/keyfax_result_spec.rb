@@ -24,7 +24,7 @@ describe Hackney::KeyfaxResult do
 
       expect(response.fault_text).to eq('Electric lighting: Communal; Block Lighting; 3; All lights out')
       expect(response.sor_code).to eq('20110120')
-      expect(response.description).to eq('LANDLORDS LIGHTING-FAULT')
+      expect(response.problem_description).to eq('LANDLORDS LIGHTING-FAULT')
       expect(response.priority).to eq('E')
     end
   end

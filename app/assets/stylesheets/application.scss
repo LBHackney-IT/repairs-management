@@ -107,30 +107,48 @@ $govuk-breakpoints: (
   }
 }
 
+.govuk-back-link {
+  margin-top: 20px;
+}
+
 .hackney-main-wrapper {
   a {
     @extend %hackney-link;
   }
 }
 
-.hackney-flash-message {
-  @include govuk-font($size: 16);
-  background-color: hackney-colour("housing-2");
-  color: govuk-colour("grey-4");
-  margin-bottom: 10px;
-  padding: 10px 20px;
+.hackney-flash-messages-container {
+  @include govuk-media-query($from: tablet) {
+    padding: 30px 115px 0px;
+  }
+}
 
-  /*
-   * FIXME: generic rules should be less specific.
-   * see .hackney-main-section-info p, ul
-   */
-  ul {
-    color: inherit;
+.hackney-notice-summary {
+  border: 5px solid hackney-colour("housing-2");
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.hackney-error-summary {
+  &:focus {
+    outline: none !important;
   }
 }
 
 .hackney-flash-message-error {
-  background-color: $govuk-error-colour;
+  color: $govuk-error-colour;
+  li {
+    margin-bottom: 0px
+  }
+}
+
+.hackney-flash-message-notice {
+  color: hackney-colour("housing-2");
+  li {
+    margin-bottom: 0px
+  }
 }
 
 .hackney-note-info {

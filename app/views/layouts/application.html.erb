@@ -74,17 +74,28 @@
     </div>
   </header>
 
+  <% if content_for :back_button %>
+    <div class="govuk-width-container">
+       <%= yield :back_button %>
+    </div>
+  <% end %>
+
   <% flash.each do |name, messages| %>
-    <div class='hackney-flash-message hackney-flash-message-<%= name %>'>
-      <div class="govuk-width-container">
-        <% messages = [messages].flatten %>
-        <ul>
-          <% messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+    <% if messages.present? %>
+    <div class="hackney-flash-messages-container">
+      <div class="govuk-error-summary hackney-<%= name %>-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <% messages.each do |message| %>
+            <li class="govuk-!-font-weight-bold govuk-body-l hackney-flash-message-<%= name %>">
+              <%= message %>
+            </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
+    <% end %>
   <% end %>
 
   <% if content_for :page_header %>

@@ -232,7 +232,7 @@ RSpec.describe 'Repair request' do
 
       stub_keyfax_get_results_response
 
-      visit new_property_repair_request_path('00000666', guid: '123456789')
+      visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
 
       fill_in "Problem description", with: "It's broken"
       fill_in "Caller name", with: "Miss Piggy"
