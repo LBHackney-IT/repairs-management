@@ -23,7 +23,7 @@ class RepairRequestsController < ApplicationController
     )
 
     @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
-    @keyfax_session = Hackney::KeyfaxSession.create(new_property_repair_request_url(@property.reference))
+    @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
   end
 
   def create
@@ -34,7 +34,7 @@ class RepairRequestsController < ApplicationController
         format.html { redirect_to work_order_path(@repair_request.work_orders.first.reference), notice: ['Repair raised!'] }
       else
         @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
-        @keyfax_session = Hackney::KeyfaxSession.get_startup_url(new_property_repair_request_url(@property.reference))
+        @keyfax_session = Hackney::KeyfaxSession.get_startup_url(current_page_url: new_property_repair_request_url(@property.reference))
         flash.now[:error] = @repair_request.errors["base"]
         format.html { render :new }
       end
