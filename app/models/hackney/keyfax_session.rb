@@ -3,7 +3,7 @@ class Hackney::KeyfaxSession
 
   attr_accessor :launch_url, :guid
 
-  def self.get_startup_url(current_page_url)
+  def self.create(current_page_url)
     response = HackneyAPI::RepairsClient.new.get_keyfax_url(current_page_url)
     attributes = response.dig("body", "startupResult")
 

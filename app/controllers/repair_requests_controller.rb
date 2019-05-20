@@ -23,7 +23,7 @@ class RepairRequestsController < ApplicationController
     )
 
     @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
-    @keyfax_session = Hackney::KeyfaxSession.get_startup_url(new_property_repair_request_url(@property.reference))
+    @keyfax_session = Hackney::KeyfaxSession.create(new_property_repair_request_url(@property.reference))
   end
 
   def create
