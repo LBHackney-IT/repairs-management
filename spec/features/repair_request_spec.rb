@@ -73,7 +73,7 @@ RSpec.describe 'Repair request' do
   end
 
   def stub_work_order
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718").to_return(
       status: 200,
       body: {
         "workOrderReference" => "01552718",
@@ -85,12 +85,12 @@ RSpec.describe 'Repair request' do
       }.to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718/notes").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/notes").to_return(
       status: 200,
       body: []
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/repairs/").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs/").to_return(
       status: 200,
       body: {
         "repairRequestReference" => "03210303",
@@ -111,22 +111,22 @@ RSpec.describe 'Repair request' do
       }.to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718/appointments/latest").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/appointments/latest").to_return(
       status: 200,
       body: [].to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718/appointments").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/appointments").to_return(
       status: 200,
       body: [].to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000666/block/work_orders?since=17-04-2018&trade=Plumbing&until=05-06-2018").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666/block/work_orders?since=17-04-2018&trade=Plumbing&until=05-06-2018").to_return(
       status: 200,
       body: [].to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718?include=mobilereports").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718?include=mobilereports").to_return(
       status: 200,
       body: { "mobileReports" => []}.to_json
     )
@@ -180,7 +180,7 @@ RSpec.describe 'Repair request' do
   end
 
   def stub_property_temp_annex
-    stub_request(:get, "https://hackneyrepairs/v1/properties/207044451").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451").to_return(
       status: 200,
       body: {
         "address": "FLAT 6 36-38 BANK APARTMENTS",
@@ -195,7 +195,7 @@ RSpec.describe 'Repair request' do
       }.to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/cautionary_contact/?reference=207044451").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=207044451").to_return(
       status: 200,
       body: {
       "results": [
@@ -204,7 +204,7 @@ RSpec.describe 'Repair request' do
       }.to_json
     )
 
-    stub_request(:get, "https://hackneyrepairs/v1/properties/207044451/hierarchy").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451/hierarchy").to_return(
       status: 200,
       body: [].to_json
     )
@@ -216,7 +216,7 @@ RSpec.describe 'Repair request' do
       stub_post_repair_request
 
       sign_in
-      visit property_path('00000666')
+      visit property_path('00000666', show_raise_a_repair: true)
 
       stub_keyfax_get_startup_url
 
@@ -224,10 +224,6 @@ RSpec.describe 'Repair request' do
       click_on 'Raise a repair on this property'
 
       expect(page).to have_content "CC"
-
-      fill_in "Problem description", with: "it's broken fix it"
-      fill_in "Caller name", with: "blablabla"
-
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 
       stub_keyfax_get_results_response
@@ -252,9 +248,6 @@ RSpec.describe 'Repair request' do
       stub_property_temp_annex
       sign_in
       visit property_path('207044451')
-
-      # stub_hackney_repairs_requests
-      # stub_hackney_repairs_properties
 
       expect(page).to have_css(".hackney-property-warning-label-orange")
       expect(page).not_to have_text("Raise a repair on this property")

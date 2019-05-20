@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
       flash[:notice] = ["You have logged in as Review User"]
       redirect_to root_path
     else
-      flash[:notice] = ["Computer says no"]
+      flash.now[:notice] = ["Computer says no"]
     end
   end
 

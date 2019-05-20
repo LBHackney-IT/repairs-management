@@ -3,21 +3,14 @@ class Hackney::KeyfaxResult
 
   attr_accessor :fault_text, :sor_code, :problem_description, :priority
 
-  def self.get_response(guid)
+  def self.find(guid)
     response = HackneyAPI::RepairsClient.new.get_keyfax_result(guid)
-    new_from_api_for_response(response)
-  end
 
-  def self.new_from_api_for_response(attributes)
-    new(attributes_from_api_for_result(attributes))
-  end
-
-  def self.attributes_from_api_for_result(attributes)
-    {
-      fault_text: attributes['faultText'],
-      sor_code: attributes['repairCode'],
-      problem_description: attributes['repairCodeDesc'],
-      priority: attributes['priority']
-    }
+    new(
+      fault_text: response['faultText'],
+      sor_code: response['repairCode'],
+      problem_description: response['repairCodeDesc'],
+      priority: response['priority']
+    )
   end
 end

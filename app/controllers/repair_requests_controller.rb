@@ -5,7 +5,7 @@ class RepairRequestsController < ApplicationController
 
     if keyfax_session_started?
       if should_get_keyfax_result?
-        set_keyfax_result
+        @keyfax_result = Hackney::KeyfaxResult.find(params["guid"])
         unless sor_code_valid?
           flash.now[:error] = [@keyfax_result.problem_description]
         end
@@ -22,7 +22,8 @@ class RepairRequestsController < ApplicationController
       priority: @keyfax_result&.priority
     )
 
-    set_cautionary_contacts_and_keyfax_url
+    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
+    @keyfax_session = Hackney::KeyfaxSession.get_startup_url(new_property_repair_request_url(@property.reference))
   end
 
   def create
@@ -32,7 +33,8 @@ class RepairRequestsController < ApplicationController
       if @repair_request.save
         format.html { redirect_to work_order_path(@repair_request.work_orders.first.reference), notice: ['Repair raised!'] }
       else
-        set_cautionary_contacts_and_keyfax_url
+        @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
+        @keyfax_session = Hackney::KeyfaxSession.get_startup_url(new_property_repair_request_url(@property.reference))
         flash.now[:error] = @repair_request.errors["base"]
         format.html { render :new }
       end
@@ -49,21 +51,12 @@ class RepairRequestsController < ApplicationController
      params["status"] == "1"
   end
 
-  def set_keyfax_result
-    @keyfax_result = Hackney::KeyfaxResult.get_response(params["guid"])
-  end
-
   def sor_code_valid?
     @keyfax_result.sor_code != 0
   end
 
   def set_property
     @property = Hackney::Property.find(params[:property_ref])
-  end
-
-  def set_cautionary_contacts_and_keyfax_url
-    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
-    @keyfax_url = Hackney::KeyfaxSession.get_startup_url(new_property_repair_request_url(@property.reference))
   end
 
   def repair_request_params

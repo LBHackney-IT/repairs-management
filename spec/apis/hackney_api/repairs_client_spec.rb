@@ -627,28 +627,24 @@ describe HackneyAPI::RepairsClient do
   describe '#get_keyfax_url' do
     let(:current_page_url) { "https://repairs-hub.hackney.gov.uk/properties/00004769/repair_requests/new" }
 
-    subject { api_client.get_keyfax_url(current_page_url) }
+    it 'returns successful response body' do
+      stub_request(:get, "#{base_url}/#{api_version}/keyfax/get_startup_url/?returnurl=#{current_page_url}").to_return(body: {"url" => "www.celia.com"}.to_json)
 
-    context 'successful response' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/keyfax/get_startup_url/?returnurl=#{current_page_url}").to_return(body: empty_response_body.to_json) }
-
-      it 'returns successful response body' do
-        expect(subject).to eq(empty_response_body)
-      end
+      expect(api_client.get_keyfax_url(current_page_url)).to eq({"url" => "www.celia.com"})
     end
 
     context 'API general error' do
       let(:response_body) do
         {
-          "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
-          "userMessage" => "We had some problems processing your request"
+          "developerMessage" => "Bad problem",
+          "userMessage" => "Bad bad problem"
         }
       end
 
-      before { stub_request(:get, "#{base_url}/#{api_version}/keyfax/get_startup_url/?returnurl=#{current_page_url}").to_return(status: 500, body: response_body.to_json) }
-
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/keyfax/get_startup_url/?returnurl=#{current_page_url}, {}, 500, #{response_body}")
+        stub_request(:get, "#{base_url}/#{api_version}/keyfax/get_startup_url/?returnurl=#{current_page_url}").to_return(status: 500, body: response_body.to_json)
+
+        expect { api_client.get_keyfax_url(current_page_url) }.to raise_error(described_class::ApiError).with_message("#{api_version}/keyfax/get_startup_url/?returnurl=#{current_page_url}, {}, 500, #{response_body}")
       end
     end
   end
@@ -656,28 +652,24 @@ describe HackneyAPI::RepairsClient do
   describe '#get_keyfax_result' do
     let(:guid) { "bf8abbea-b5ca-48b5-9712-5aef7bdb8a52" }
 
-    subject { api_client.get_keyfax_result(guid) }
+    it 'returns successful response body' do
+      stub_request(:get, "#{base_url}/#{api_version}/keyfax/kf_result/#{guid}").to_return(body: {"celia" => "thebest"}.to_json)
 
-    context 'successful response' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/keyfax/kf_result/#{guid}").to_return(body: empty_response_body.to_json) }
-
-      it 'returns successful response body' do
-        expect(subject).to eq(empty_response_body)
-      end
+      expect(api_client.get_keyfax_result(guid)).to eq({"celia" => "thebest"})
     end
 
     context 'API general error' do
       let(:response_body) do
         {
-          "developerMessage" => "Exception of type 'HackneyRepairs.Actions.RepairsServiceException' was thrown.",
-          "userMessage" => "We had some problems processing your request"
+          "developerMessage" => "Bad problem",
+          "userMessage" => "Bad bad problem"
         }
       end
 
-      before { stub_request(:get, "#{base_url}/#{api_version}/keyfax/kf_result/#{guid}").to_return(status: 500, body: response_body.to_json) }
-
       it 'raises ApiError error' do
-        expect { subject }.to raise_error(described_class::ApiError).with_message("#{api_version}/keyfax/kf_result/#{guid}, {}, 500, #{response_body}")
+        stub_request(:get, "#{base_url}/#{api_version}/keyfax/kf_result/#{guid}").to_return(status: 500, body: response_body.to_json)
+
+        expect { api_client.get_keyfax_result(guid) }.to raise_error(described_class::ApiError).with_message("#{api_version}/keyfax/kf_result/#{guid}, {}, 500, #{response_body}")
       end
     end
   end

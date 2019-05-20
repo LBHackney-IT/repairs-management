@@ -121,36 +121,36 @@ $govuk-breakpoints: (
   @include govuk-media-query($from: tablet) {
     padding: 30px 115px 0px;
   }
-}
 
-.hackney-notice-summary {
-  border: 5px solid hackney-colour("housing-2");
-  margin-bottom: 20px;
+  .hackney-notice-summary {
+    border: 5px solid hackney-colour("housing-2");
+    margin-bottom: 20px;
 
-  &:focus {
-    outline: none !important;
+    &:focus {
+      outline: none !important;
+    }
   }
-}
 
-.hackney-error-summary {
-  margin-bottom: 20px;
+  .hackney-error-summary {
+    margin-bottom: 20px;
 
-  &:focus {
-    outline: none !important;
+    &:focus {
+      outline: none !important;
+    }
   }
-}
 
-.hackney-flash-message-error {
-  color: $govuk-error-colour;
-  li {
-    margin-bottom: 0px
+  .hackney-flash-message-error {
+    color: $govuk-error-colour;
+    li {
+      margin-bottom: 0px
+    }
   }
-}
 
-.hackney-flash-message-notice {
-  color: hackney-colour("housing-2");
-  li {
-    margin-bottom: 0px
+  .hackney-flash-message-notice {
+    color: hackney-colour("housing-2");
+    li {
+      margin-bottom: 0px
+    }
   }
 }
 
