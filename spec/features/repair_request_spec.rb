@@ -43,7 +43,7 @@ RSpec.describe 'Repair request' do
     )
   end
 
-  def stub_keyfax_get_startup_url
+  def stub_keyfax_session_create
     uri = URI(current_url)
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/keyfax/get_startup_url/?returnurl=#{new_property_repair_request_url('00000666', host: uri.host, port: uri.port)}")
     .to_return(
@@ -218,7 +218,7 @@ RSpec.describe 'Repair request' do
       sign_in
       visit property_path('00000666', show_raise_a_repair: true)
 
-      stub_keyfax_get_startup_url
+      stub_keyfax_session_create
 
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this property'
