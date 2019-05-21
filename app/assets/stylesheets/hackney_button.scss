@@ -9,6 +9,10 @@
   &:focus {
     background-color: hackney-colour('housing-2');
   }
+
+  &:visited {
+    color: white !important;
+  }
 }
 
 .govuk-button[disabled="disabled"],

@@ -3,6 +3,6 @@
 
 
 govuk-frontend@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-1.0.0.tgz#c11ab721c4a7480169ca0b1ea040fc6b3366d057"
-  integrity sha512-4qCRrwGEcDC0ybjb5lls3P8tDgM8/hpTy2Mesgp1wa1/HdtlXtShj0E0H41lkXNrX7ZQOoDCc4gUEoOgZD+QfA==
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-1.3.0.tgz#b145d8c5d6bd7e88a5b34b340867799f328bbb03"
+  integrity sha512-NROJGh4wZgOSWhEzJOkcijIMR7GeFBOinG45wouVwK7ne6ihR4uyS/LQBkG/GGEkNkLZYuOG8cb+6fMVwP2W7Q==

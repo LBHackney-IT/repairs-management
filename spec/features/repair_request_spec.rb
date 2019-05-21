@@ -2,40 +2,40 @@ require 'rails_helper'
 
 RSpec.describe 'Repair request' do
   include Helpers::Authentication
-  include Helpers::HackneyRepairsRequestStubs
+  # include Helpers::HackneyRepairsRequestStubs
 
   def stub_post_repair_request
-    stub_request(:post, "https://hackneyrepairs/v1/repairs").with(
+    stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs").with(
       headers: {
         "Content-Type" => "application/json-patch+json"
       },
       body: {
         "contact": {
-          "name": "blablabla",
+          "name": "Miss Piggy",
           "telephoneNumber": "01234567890",
         },
-        "workOrders": [
-          "sorCode": "08500820",
-        ],
-        "priority": "N",
-        "propertyReference": "00000018",
-        "problemDescription": "it's broken fix it"
+        "workOrders": [{
+          "sorCode": "20110120",
+        }],
+        "priority": "E",
+        "propertyReference": "00000666",
+        "problemDescription": "It's broken"
       }.to_json
     ).to_return(
       status: 200,
       body: {
         "repairRequestReference" => "03210303",
-        "propertyReference" =>"00000018",
-        "problemDescription" => "it's broken fix it",
-        "priority" => "N",
+        "propertyReference" =>"00000666",
+        "problemDescription" => "It's broken",
+        "priority" => "E",
         "contact" => {
-          "name" => "blablabla",
+          "name" => "Miss Piggy",
           "telephoneNumber" => "01234567890"
         },
         "workOrders"=> [
           {
             "workOrderReference" => "01552718",
-            "sorCode" => "08500820",
+            "sorCode" => "20110120",
             "supplierReference" => "H01"
           }
         ]
@@ -43,25 +43,144 @@ RSpec.describe 'Repair request' do
     )
   end
 
-  def stub_property
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000018").to_return(
+  def stub_keyfax_get_startup_url
+    uri = URI(current_url)
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/keyfax/get_startup_url/?returnurl=#{new_property_repair_request_url('00000666', host: uri.host, port: uri.port)}")
+    .to_return(
       status: 200,
-      body: {
-        "address" => "2 Acacia House  Lordship Road",
-        "postcode" => "N16 0PX",
-        "propertyReference" => "00000018",
-        "maintainable" => true,
-        "levelCode" => 7,
-        "description" => "Dwelling",
-        "tenureCode": "SEC",
-        "tenure" => "Secure",
-        "lettingArea" => "neighbourhood"
+      body:
+      { "body":
+        { "startupResult":
+          { "launchUrl" => "https://www.keyfax.com",
+            "guid" => "123456789"
+          }
+        }
       }.to_json
     )
   end
 
+  def stub_keyfax_get_results_response
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/keyfax/kf_result/123456789")
+      .to_return(status: 200,
+        body:
+        {
+          "faultText" => "Electric lighting: Communal; Block Lighting; 3; All lights out",
+          "repairCode" => "20110120",
+          "repairCodeDesc" => "LANDLORDS LIGHTING-FAULT",
+          "priority" => "E"
+        }.to_json
+      )
+  end
+
+  def stub_work_order
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718").to_return(
+      status: 200,
+      body: {
+        "workOrderReference" => "01552718",
+        "sorCode" => "20110120",
+        "supplierReference" => "H01",
+        "propertyReference" => "00000666",
+        "created" => "2018-05-29T14:10:06",
+        "dateDue" => "2018-06-27T14:09:00",
+      }.to_json
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/notes").to_return(
+      status: 200,
+      body: []
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs/").to_return(
+      status: 200,
+      body: {
+        "repairRequestReference" => "03210303",
+        "propertyReference" =>"00000666",
+        "problemDescription" => "It's broken",
+        "priority" => "E",
+        "contact" => {
+          "name" => "Miss Piggy",
+          "telephoneNumber" => "01234567890"
+        },
+        "workOrders"=> [
+          {
+            "workOrderReference" => "01552718",
+            "sorCode" => "20110120",
+            "supplierReference" => "H01"
+          }
+        ]
+      }.to_json
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/appointments/latest").to_return(
+      status: 200,
+      body: [].to_json
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/appointments").to_return(
+      status: 200,
+      body: [].to_json
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666/block/work_orders?since=17-04-2018&trade=Plumbing&until=05-06-2018").to_return(
+      status: 200,
+      body: [].to_json
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718?include=mobilereports").to_return(
+      status: 200,
+      body: { "mobileReports" => []}.to_json
+    )
+  end
+
+  def stub_property_00000666
+    #
+    # property
+    #
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666")
+      .to_return(status: 200, body: {
+      "address": "1 Madeup Road",
+      "postcode": "SW1A 1AA",
+      "propertyReference": "00000666",
+      "maintainable": true,
+      "levelCode": 7,
+      "description": "Dwelling",
+      "tenureCode": "SEC",
+      "tenure": "Secure"
+    }.to_json)
+    #
+    # cautionary contacts
+    #
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
+      .to_return(status: 200, body: {
+      "results": [
+        { "alertCode" => "CC" }
+      ]
+    }.to_json)
+    #
+    # hierarchy
+    #
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666/hierarchy")
+      .to_return(status: 200, body: [].to_json)
+    #
+    # facilities
+    #
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666/facilities")
+      .to_return(status: 200, body: {
+      "results": []}.to_json)
+    #
+    # work orders
+    #
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
+      .to_return(status: 200, body: [].to_json)
+    #
+    # related facilities
+    #
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties?max_level=6&min_level=6&postcode=SW1A%201AA")
+      .to_return(status: 200, body: { "results":[]}.to_json)
+  end
+
   def stub_property_temp_annex
-    stub_request(:get, "https://hackneyrepairs/v1/properties/207044451").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451").to_return(
       status: 200,
       body: {
         "address": "FLAT 6 36-38 BANK APARTMENTS",
@@ -75,59 +194,45 @@ RSpec.describe 'Repair request' do
         "lettingArea" => "neighbourhood"
       }.to_json
     )
-  end
 
-  def stub_work_order
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/01552718").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=207044451").to_return(
       status: 200,
       body: {
-        "workOrderReference" => "01552718",
-        "sorCode" => "08500820",
-        "supplierReference" => "H01",
-        "propertyReference" => "00000018",
-        "created" => "2018-05-29T14:10:06",
-        "dateDue" => "2018-06-27T14:09:00",
+      "results": [
+        { "alertCode" => "CC" }
+        ]
       }.to_json
     )
-  end
 
-  def stub_cautionary_contact_by_property_reference(reference:)
-    stub_request(:get, "https://hackneyrepairs/v1/cautionary_contact/?reference=#{reference}").to_return(
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451/hierarchy").to_return(
       status: 200,
-      body:
-      { "results": [{
-        "propertyReference" => "#{reference}",
-        "contactNo" => "",
-        "title" => "",
-        "forenames" => "",
-        "surename" => "",
-        "callerNotes" => "",
-        "alertCode" => "CC"
-      }]}.to_json
+      body: [].to_json
     )
-  end
+    end
 
   context 'Secure tenure' do
-    scenario 'Raise a repair' do
+    scenario 'Raise a repair', :js do
+      stub_property_00000666
       stub_post_repair_request
-      stub_property
-      stub_cautionary_contact_by_property_reference(reference: '00000018')
-      sign_in
-      visit property_path('00000018', show_raise_a_repair: true)
 
-      stub_hackney_repairs_repair_requests
-      stub_hackney_repairs_properties
+      sign_in
+      visit property_path('00000666', show_raise_a_repair: true)
+
+      stub_keyfax_get_startup_url
 
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this property'
 
       expect(page).to have_content "CC"
+      expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 
-      fill_in "Problem description", with: "it's broken fix it"
-      fill_in "Caller name", with: "blablabla"
+      stub_keyfax_get_results_response
+
+      visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
+
+      fill_in "Problem description", with: "It's broken"
+      fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
-      fill_in "SOR Code", with: "08500820"
-      select "N -", from: "Task priority"
 
       stub_work_order
 
@@ -141,12 +246,8 @@ RSpec.describe 'Repair request' do
     scenario 'Cannot raise repair' do
       stub_post_repair_request
       stub_property_temp_annex
-      stub_cautionary_contact_by_property_reference(reference: '207044451')
       sign_in
-      visit property_path('207044451', show_raise_a_repair: true)
-
-      stub_hackney_repairs_repair_requests
-      stub_hackney_repairs_properties
+      visit property_path('207044451')
 
       expect(page).to have_css(".hackney-property-warning-label-orange")
       expect(page).not_to have_text("Raise a repair on this property")

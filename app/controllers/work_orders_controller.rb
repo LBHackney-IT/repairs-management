@@ -11,7 +11,7 @@ class WorkOrdersController < ApplicationController
         redirect_to search_properties_path(ref: params[:ref])
       end
     else
-      flash.notice = 'Please provide a reference, postcode or address'
+      flash.notice = ['Please provide a reference, postcode or address']
       redirect_to root_path
     end
   end
@@ -23,7 +23,7 @@ class WorkOrdersController < ApplicationController
 private
 
   def redirect_to_homepage
-    flash.notice = "Could not find a work order with reference #{reference}"
+    flash.notice = ["Could not find a work order with reference #{reference}"]
     redirect_to root_path
   end
 
