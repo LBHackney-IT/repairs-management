@@ -2,22 +2,20 @@
   <h1 class="govuk-heading-l hackney-property-heading">
     <%= property.address %>
   </h1>
-  <% if params[:show_raise_a_repair] %>
-    <% if property.can_raise_a_repair? %>
-      <span class="govuk-heading-m hackney-page-header-raise-a-repair">
-        <strong>
-          <%= link_to "Raise a repair on this property", new_property_repair_request_path(property.reference), class: 'hackney-link hackney-link-no-visited' %>
-        </strong>
-      </span>
-    <% else %>
-      <div class="govuk-warning-text hackney-page-header-no-raise-a-repair">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-          <span class="govuk-warning-text__assistive">Warning</span>
-          Cannot raise a repair on this property due to tenure type
-        </strong>
-      </div>
-    <% end %>
+  <% if property.can_raise_a_repair? %>
+    <span class="govuk-heading-m hackney-page-header-raise-a-repair">
+      <strong>
+        <%= link_to "Raise a repair on this property", new_property_repair_request_path(property.reference), class: 'hackney-link hackney-link-no-visited' %>
+      </strong>
+    </span>
+  <% else %>
+    <div class="govuk-warning-text hackney-page-header-no-raise-a-repair">
+      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        Cannot raise a repair on this property due to tenure type
+      </strong>
+    </div>
   <% end %>
 
 
