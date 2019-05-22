@@ -20,7 +20,7 @@ describe Hackney::KeyfaxSession do
       .to_return(status: status, body: body.to_json)
   end
 
-  describe '.get_startup_url' do
+  describe '.create' do
     it 'gets a url' do
       stub_keyfax_get_startup_url
 

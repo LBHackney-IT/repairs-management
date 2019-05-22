@@ -43,6 +43,30 @@ RSpec.describe 'Repair request' do
     )
   end
 
+  def stub_post_bad_repair_request
+    stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs").with(
+      headers: {
+        "Content-Type" => "application/json-patch+json"
+      },
+      body: {
+        "contact": {
+          "name": "Miss Piggy",
+          "telephoneNumber": "01234567890",
+        },
+        "workOrders": [{
+          "sorCode": "Abcdefg",
+        }],
+        "priority": "E",
+        "propertyReference": "00000666",
+        "problemDescription": "It's broken"
+      }.to_json
+    ).to_return(
+      status: 500,
+      body: {
+      }.to_json
+    )
+  end
+
   def stub_keyfax_get_startup_url
     uri = URI(current_url)
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/keyfax/get_startup_url/?returnurl=#{new_property_repair_request_url('00000666', host: uri.host, port: uri.port)}")
@@ -208,10 +232,15 @@ RSpec.describe 'Repair request' do
       status: 200,
       body: [].to_json
     )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451/facilities").to_return(
+      status: 200,
+      body: [].to_json
+    )
     end
 
   context 'Secure tenure' do
-    scenario 'Raise a repair', :js do
+    scenario 'Raise a repair successfully', :js do
       stub_property_00000666
       stub_post_repair_request
 
@@ -239,6 +268,33 @@ RSpec.describe 'Repair request' do
       click_on 'Create works order'
 
       expect(current_path).to be == work_order_path("01552718")
+    end
+
+    scenario 'Raise a repair unsuccessfully', :js do
+      stub_property_00000666
+      stub_post_repair_request
+
+      sign_in
+      visit property_path('00000666', show_raise_a_repair: true)
+
+      stub_keyfax_get_startup_url
+
+      expect(page).to have_css(".hackney-property-warning-label-turquoise")
+      click_on 'Raise a repair on this property'
+
+      expect(page).to have_content "CC"
+      expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
+
+      stub_post_bad_repair_request
+
+      fill_in "SOR Code", with: "Abcdefg"
+      fill_in "Problem description", with: "It's broken"
+      fill_in "Caller name", with: "Miss Piggy"
+      fill_in "Contact number", with: "01234567890"
+
+      click_on 'Create works order'
+
+      expect(current_path).to be == property_repair_requests_path('00000666')
     end
   end
 
