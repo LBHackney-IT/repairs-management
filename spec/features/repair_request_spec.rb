@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+require 'byebug'
 RSpec.describe 'Repair request' do
   include Helpers::Authentication
   # include Helpers::HackneyRepairsRequestStubs
@@ -235,6 +235,13 @@ RSpec.describe 'Repair request' do
 
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451/facilities").to_return(
       status: 200,
+      body: {
+        "results": []
+      }.to_json
+    )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?since=23-05-2017&until=24-05-2019").to_return(
+      status: 200,
       body: [].to_json
     )
     end
@@ -245,7 +252,7 @@ RSpec.describe 'Repair request' do
       stub_post_repair_request
 
       sign_in
-      visit property_path('00000666', show_raise_a_repair: true)
+      visit property_path('00000666')
 
       stub_keyfax_get_startup_url
 
@@ -275,7 +282,7 @@ RSpec.describe 'Repair request' do
       stub_post_repair_request
 
       sign_in
-      visit property_path('00000666', show_raise_a_repair: true)
+      visit property_path('00000666')
 
       stub_keyfax_get_startup_url
 
@@ -299,14 +306,14 @@ RSpec.describe 'Repair request' do
   end
 
   context 'Leasehold RTB tenure' do
-    scenario 'Cannot raise repair' do
+    scenario 'Cannot raise repair', :js do
       stub_post_repair_request
       stub_property_temp_annex
       sign_in
       visit property_path('207044451')
 
       expect(page).to have_css(".hackney-property-warning-label-orange")
-      expect(page).not_to have_text("Raise a repair on this property")
+      expect(page).to have_text("Cannot raise a repair on this property due to tenure type")
     end
   end
 end

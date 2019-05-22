@@ -2,7 +2,7 @@
   <h1 class="govuk-heading-l hackney-property-heading">
     <%= property.address %>
   </h1>
-  <% if params[:show_raise_a_repair] %>
+  <% if Flipper.enabled?(:raise_a_repair) %>
     <% if property.can_raise_a_repair? %>
       <span class="govuk-heading-m hackney-page-header-raise-a-repair">
         <strong>
