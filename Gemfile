@@ -55,6 +55,9 @@ gem 'delayed_job_active_record'
 
 gem "delayed_job_web"
 
+gem "flipper"
+gem 'flipper-active_record'
+
 group :development, :test do
   gem 'byebug'
   gem 'pry'

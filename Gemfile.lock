@@ -136,6 +136,10 @@ GEM
       faraday_middleware
       multi_json
     ffi (1.10.0)
+    flipper (0.16.2)
+    flipper-active_record (0.16.2)
+      activerecord (>= 3.2, < 6)
+      flipper (~> 0.16.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashdiff (0.3.8)
@@ -363,6 +367,8 @@ DEPENDENCIES
   faraday
   faraday-manual-cache!
   faraday_middleware
+  flipper
+  flipper-active_record
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   neo4j
