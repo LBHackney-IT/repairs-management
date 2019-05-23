@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'byebug'
+
 RSpec.describe 'Repair request' do
   include Helpers::Authentication
   # include Helpers::HackneyRepairsRequestStubs
