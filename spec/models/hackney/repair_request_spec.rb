@@ -70,7 +70,8 @@ describe Hackney::RepairRequest, '#save' do
         ],
         "priority": "G",
         "propertyReference": "00000018",
-        "problemDescription": "it's broken fix it"
+        "problemDescription": "it's broken fix it",
+        "lbhEmail": "pudding@hackney.gov.uk"
       }.to_json
     ).to_return(
       status: 200,
@@ -103,7 +104,8 @@ describe Hackney::RepairRequest, '#save' do
       ],
       priority: "G",
       property_reference: "00000018",
-      description: "it's broken fix it"
+      description: "it's broken fix it",
+      created_by_email: "pudding@hackney.gov.uk"
     )
 
     repair_request.save
@@ -130,7 +132,8 @@ describe Hackney::RepairRequest, '#save' do
         ],
         "priority": "G",
         "propertyReference": "00000018",
-        "problemDescription": ""
+        "problemDescription": "",
+        "lbhEmail": "pudding@hackney.gov.uk"
       }.to_json
     ).to_return(
       status: 400,
@@ -179,7 +182,8 @@ describe Hackney::RepairRequest, '#save' do
       ],
       priority: "G",
       property_reference: "00000018",
-      description: ""
+      description: "",
+      created_by_email: "pudding@hackney.gov.uk"
     )
 
     expect(repair_request.save).to be_falsey

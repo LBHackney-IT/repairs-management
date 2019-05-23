@@ -19,7 +19,8 @@ RSpec.describe 'Repair request' do
         }],
         "priority": "E",
         "propertyReference": "00000666",
-        "problemDescription": "It's broken"
+        "problemDescription": "It's broken",
+        "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
       status: 200,
@@ -58,7 +59,8 @@ RSpec.describe 'Repair request' do
         }],
         "priority": "E",
         "propertyReference": "00000666",
-        "problemDescription": "It's broken"
+        "problemDescription": "It's broken",
+        "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
       status: 500,
