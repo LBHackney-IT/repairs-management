@@ -29,6 +29,7 @@ class RepairRequestsController < ApplicationController
   def create
     @repair_request = Hackney::RepairRequest.new(repair_request_params)
     @repair_request.property_reference = @property.reference
+    @repair_request.created_by_email = session[:current_user]["email"]
     respond_to do |format|
       if @repair_request.save
         format.html { redirect_to work_order_path(@repair_request.work_orders.first.reference), notice: ['Repair raised!'] }

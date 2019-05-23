@@ -1,7 +1,8 @@
 class Hackney::RepairRequest
   include ActiveModel::Model
 
-  attr_accessor :reference, :description, :contact, :priority, :work_orders, :property_reference
+  attr_accessor :reference, :description, :contact, :priority, :work_orders,
+    :property_reference, :created_by_email
 
   NULL_OBJECT = self.new(description: 'Repair info missing')
 
@@ -46,10 +47,13 @@ class Hackney::RepairRequest
       sor_codes: work_orders&.map(&:sor_code) || [],
       priority: priority,
       property_ref: property_reference,
-      description: description
+      description: description,
+      created_by_email: created_by_email
     )
     self.attributes = self.class.attributes_from_api(response)
     true
+
+    # FIXME: rescue is grabbing VCR errors
   rescue HackneyAPI::RepairsClient::ApiError => e
     self.class.errors_from_api(e.errors).each do |key, list|
       list.each do |msg|

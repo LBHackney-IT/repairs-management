@@ -13,14 +13,20 @@ class SessionsController < ApplicationController
   end
 
   def create
-    session[:current_user] = { name: auth_hash.info.name }
+    session[:current_user] = {
+      name: auth_hash.info.name,
+      email: auth_hash.info.email
+    }
     flash[:notice] = ["You have logged in as #{auth_hash.info.name}"]
     redirect_to root_path
   end
 
   def review_app_login
     if review_app_login? && review_app_compare(params[:username], params[:password])
-      session[:current_user] = { name: 'Review User' }
+      session[:current_user] = {
+        name: 'Review User',
+        email: ENV['REVIEW_USER_EMAIL']
+      }
       flash[:notice] = ["You have logged in as Review User"]
       redirect_to root_path
     else
