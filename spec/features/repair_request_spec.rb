@@ -307,9 +307,8 @@ RSpec.describe 'Repair request' do
 
   context 'Leasehold RTB tenure' do
     scenario 'Cannot raise repair', :js do
-      stub_post_repair_request
-      stub_property_temp_annex
       sign_in
+      stub_property_temp_annex
       visit property_path('207044451')
 
       expect(page).to have_css(".hackney-property-warning-label-orange")
