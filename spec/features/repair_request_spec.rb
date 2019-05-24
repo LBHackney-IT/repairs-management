@@ -240,11 +240,9 @@ RSpec.describe 'Repair request' do
       }.to_json
     )
 
-    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?since=23-05-2017&until=24-05-2019").to_return(
-      status: 200,
-      body: [].to_json
-    )
-    end
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
+      .to_return(status: 200, body: [].to_json)
+  end
 
   context 'Secure tenure' do
     scenario 'Raise a repair successfully', :js do
