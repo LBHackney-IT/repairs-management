@@ -259,6 +259,8 @@ module HackneyAPI
         Appsignal.instrument("api.#{caller}") do
           connection(cache_request: cache_request, headers: headers).public_send(http_method, endpoint, params)
         end
+      rescue WebMock::NetConnectNotAllowedError, VCR::Errors::UnhandledHTTPRequestError
+        raise
       rescue => e
         Rails.logger.error(e)
         raise ApiError, [endpoint, params, e.message].join(', ')
