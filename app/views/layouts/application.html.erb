@@ -80,23 +80,29 @@
     </div>
   <% end %>
 
-  <% flash.each do |name, messages| %>
-    <% if messages.present? %>
-    <div class="hackney-flash-messages-container">
-      <div class="govuk-error-summary hackney-<%= name %>-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
-        <div class="govuk-error-summary__body">
-          <ul class="govuk-list govuk-error-summary__list">
-            <% messages.each do |message| %>
-            <li class="govuk-!-font-weight-bold govuk-body-l hackney-flash-message-<%= name %>">
-              <%= message %>
-            </li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
+  <div class="govuk-width-container">
+    <% if flash.present? %>
+      <!--<div class="govuk-main-wrapper ">-->
+        <% flash.each do |name, messages| %>
+          <% if messages.present? %>
+            <div class="hackney-flash-messages-container">
+              <div class="govuk-error-summary hackney-<%= name %>-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="error-summary">
+                <div class="govuk-error-summary__body">
+                  <ul class="govuk-list govuk-error-summary__list">
+                    <% messages.each do |message| %>
+                      <li class="govuk-!-font-weight-bold govuk-body-l hackney-flash-message-<%= name %>">
+                        <%= message %>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <!--</div>-->
     <% end %>
-  <% end %>
+  </div>
 
   <% if content_for :page_header %>
     <div class="hackney-page-header">

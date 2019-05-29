@@ -107,10 +107,6 @@ $govuk-breakpoints: (
   }
 }
 
-.govuk-back-link {
-  margin-top: 20px;
-}
-
 .hackney-main-wrapper {
   a {
     @extend %hackney-link;
@@ -118,10 +114,6 @@ $govuk-breakpoints: (
 }
 
 .hackney-flash-messages-container {
-  @include govuk-media-query($from: tablet) {
-    padding: 30px 115px 0px;
-  }
-
   .hackney-notice-summary {
     border: 5px solid hackney-colour("housing-2");
     margin-bottom: 20px;
