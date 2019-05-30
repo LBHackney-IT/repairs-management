@@ -323,10 +323,10 @@ describe Hackney::Property do
       expect(Hackney::Property.new(tenure_code: 'COM').can_raise_a_repair?).to be_truthy
       expect(Hackney::Property.new(tenure_code: 'DEC').can_raise_a_repair?).to be_truthy
       expect(Hackney::Property.new(tenure_code: 'FRE').can_raise_a_repair?).to be_falsey
-      expect(Hackney::Property.new(tenure_code: 'FRS').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'FRS').can_raise_a_repair?).to be_falsey
       expect(Hackney::Property.new(tenure_code: 'HPH').can_raise_a_repair?).to be_falsey
       expect(Hackney::Property.new(tenure_code: 'INT').can_raise_a_repair?).to be_truthy
-      expect(Hackney::Property.new(tenure_code: 'LEA').can_raise_a_repair?).to be_truthy
+      expect(Hackney::Property.new(tenure_code: 'LEA').can_raise_a_repair?).to be_falsey
       expect(Hackney::Property.new(tenure_code: 'LHS').can_raise_a_repair?).to be_falsey
       expect(Hackney::Property.new(tenure_code: 'LTA').can_raise_a_repair?).to be_falsey
       expect(Hackney::Property.new(tenure_code: 'MPA').can_raise_a_repair?).to be_truthy
