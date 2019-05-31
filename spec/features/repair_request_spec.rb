@@ -274,7 +274,13 @@ RSpec.describe 'Repair request' do
 
       click_on 'Create works order'
 
-      expect(current_path).to be == work_order_path("01552718")
+      expect(current_path).to be == property_repair_requests_path("00000666")
+
+      expect(page).to have_text("Repair work order created")
+      expect(page).to have_text("Work order number\n01552718")
+      expect(page).to have_text("lease, open DRS to book an appointment!")
+      expect(page).to have_link("Back to 1 Madeup Road", href: property_path("00000666"))
+      expect(page).to have_link("Start a new search", href: root_path)
     end
 
     scenario 'Raise a repair unsuccessfully', :js do

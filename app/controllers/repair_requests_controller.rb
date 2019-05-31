@@ -32,7 +32,7 @@ class RepairRequestsController < ApplicationController
     @repair_request.created_by_email = session[:current_user]["email"]
     respond_to do |format|
       if @repair_request.save
-        format.html { redirect_to work_order_path(@repair_request.work_orders.first.reference), notice: ['Repair raised!'] }
+        format.html { render :created }
       else
         @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
         @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
