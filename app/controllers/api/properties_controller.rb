@@ -5,6 +5,8 @@ module Api
 
       @property = Hackney::Property.find(reference)
 
+      # FIXME: this variable name is very misleading, Property#hierarchy exists
+      # and is in fact contained in this set along with Property#facilities.
       @property_hierarchy = @property.dwelling_work_orders_hierarchy(years_ago)
 
       @trades = @property_hierarchy.values.flatten.map(&:trade).uniq.sort

@@ -16,7 +16,7 @@
       <div class="hierarchy-hackney-checkbox">
         <% hierarchy.keys.each_with_index do |description, index| %>
           <div class="work-order-filter-options govuk-body-s">
-            <input onclick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="hierarchy-filter-checkbox tabelement" id="hierarchy-<%=index%>" type="radio" value="hierarchy-<%=index%>" name="hierarchy" <%= 'checked' if index == 0%>>
+            <input onclick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="hierarchy-filter-checkbox tabelement" id="hierarchy-<%=index%>" type="radio" value="hierarchy-<%=index%>" name="hierarchy" <%= 'checked' if description == @property.description %>>
             <label class="hackney-checkboxes__label" for="hierarchy-<%=index%>">
               <%= description %>
             </label>
