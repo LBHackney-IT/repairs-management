@@ -91,6 +91,10 @@ $govuk-breakpoints: (
   }
 }
 
+.hackney-panel {
+  background: hackney-colour('housing-2');
+}
+
 %hackney-link, .hackney-link {
   color: hackney-colour('housing-2');
   &:visited {
