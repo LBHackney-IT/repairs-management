@@ -38,4 +38,12 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  direct :drs do
+    if Rails.env.production?
+      "http://lbhoptappp01/opt-ondemand_hackney/pages/tab/job.xhtml"
+    else
+      "http://lbhoptappd01/opt-ondemand_hackney/pages/tab/job.xhtml"
+    end
+  end
 end
