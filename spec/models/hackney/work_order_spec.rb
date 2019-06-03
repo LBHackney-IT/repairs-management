@@ -163,4 +163,22 @@ describe Hackney::WorkOrder do
       end
     end
   end
+
+  describe "is_dlo?" do
+    it "works" do
+      expect(Hackney::WorkOrder.new(supplier_reference: "H10").is_dlo?).to be_truthy
+      expect(Hackney::WorkOrder.new(supplier_reference: "H01").is_dlo?).to be_truthy
+      expect(Hackney::WorkOrder.new(supplier_reference: "H07").is_dlo?).to be_truthy
+      expect(Hackney::WorkOrder.new(supplier_reference: "H05").is_dlo?).to be_truthy
+      expect(Hackney::WorkOrder.new(supplier_reference: "H08").is_dlo?).to be_truthy
+      expect(Hackney::WorkOrder.new(supplier_reference: "ENV").is_dlo?).to be_falsey
+      expect(Hackney::WorkOrder.new(supplier_reference: "SCC").is_dlo?).to be_falsey
+      expect(Hackney::WorkOrder.new(supplier_reference: "PCL").is_dlo?).to be_falsey
+      expect(Hackney::WorkOrder.new(supplier_reference: "H12").is_dlo?).to be_truthy
+      expect(Hackney::WorkOrder.new(supplier_reference: "AVP").is_dlo?).to be_falsey
+      expect(Hackney::WorkOrder.new(supplier_reference: "ELA").is_dlo?).to be_falsey
+      expect(Hackney::WorkOrder.new(supplier_reference: "EUC").is_dlo?).to be_falsey
+      expect(Hackney::WorkOrder.new(supplier_reference: "STA").is_dlo?).to be_falsey
+    end
+  end
 end

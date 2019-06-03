@@ -61,7 +61,8 @@ class Hackney::WorkOrder
       servitor_reference: attributes['servitorReference']&.strip,
       problem_description: attributes['problemDescription'],
       trade: attributes['trade'],
-      supplier_reference: attributes['supplierRef']
+      # FIXME: supplier reference naming inconsistency on API
+      supplier_reference: attributes['supplierRef'] || attributes['supplierReference']
     )
   end
 
@@ -91,5 +92,10 @@ class Hackney::WorkOrder
 
   def reports
     @_reports ||= Hackney::Report.for_work_order_reports(reference)
+  end
+
+  def is_dlo?
+    supplier_reference.present? or raise "is_dlo?: API responded with blank supplier reference"
+    !!(/\AH\d\d\z/ =~ supplier_reference)
   end
 end

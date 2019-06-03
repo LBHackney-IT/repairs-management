@@ -16,7 +16,12 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
           <span class="govuk-warning-text__assistive">Warning</span>
-          Please, open DRS to book an appointment!
+          Please,
+          <% if @repair_request.work_orders.first.is_dlo? %>
+            <%= link_to "open DRS to book an appointment!", drs_url %>
+          <% else %>
+            open UH to book an appointment!
+          <% end %>
         </strong>
       </div>
 
