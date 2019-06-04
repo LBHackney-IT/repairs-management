@@ -257,7 +257,7 @@ RSpec.describe 'Repair request' do
       stub_keyfax_get_startup_url
 
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
-      click_on 'Raise a repair on this property'
+      click_on 'Raise a repair on this dwelling'
 
       expect(page).to have_content "CC"
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
@@ -293,7 +293,7 @@ RSpec.describe 'Repair request' do
       stub_keyfax_get_startup_url
 
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
-      click_on 'Raise a repair on this property'
+      click_on 'Raise a repair on this dwelling'
 
       expect(page).to have_content "CC"
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
