@@ -27,11 +27,11 @@
 
       <ul class="govuk-list govuk-!-margin-top-9">
         <li>
-          <%= link_to "Raise new repair on #{@property.address}", new_property_repair_request_path(@property.reference), class: "govuk-link" %>
+          <%= link_to "Raise new repair on #{@property.first_line_of_address}", new_property_repair_request_path(@property.reference), class: "govuk-link" %>
         </li>
 
         <li>
-          <%= link_to "Back to #{@property.address}", property_path(@property.reference), class: "govuk-link" %>
+          <%= link_to "Back to #{@property.first_line_of_address}", property_path(@property.reference), class: "govuk-link" %>
         </li>
 
         <li>
