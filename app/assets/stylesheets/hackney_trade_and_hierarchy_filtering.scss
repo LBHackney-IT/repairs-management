@@ -10,6 +10,23 @@
     border-bottom: none;
   }
 }
+
+/* truncate addresses with "..." */
+.work-order-filter {
+  min-inline-size: auto;
+
+  .work-order-filter-options {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .work-orders-filter-option-address {
+    color: $govuk-secondary-text-colour;
+    padding-left: 5px;
+  }
+}
+
 .filter_heading {
   border-bottom: none;
   display: flex;
