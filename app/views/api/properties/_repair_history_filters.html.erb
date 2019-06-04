@@ -19,6 +19,11 @@
             <input onclick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="hierarchy-filter-checkbox tabelement" id="hierarchy-<%=index%>" type="radio" value="hierarchy-<%=index%>" name="hierarchy" <%= 'checked' if description == @property.description %>>
             <label class="hackney-checkboxes__label" for="hierarchy-<%=index%>">
               <%= description %>
+              <% if %w(Estate Block Sub-Block Dwelling).include? description %>
+                <small class="work-orders-filter-option-address">
+                  <%= @property.hierarchy.find {|p| p.description == description}.address %>
+                </small>
+              <% end %>
             </label>
           </div>
         <% end %>
