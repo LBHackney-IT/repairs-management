@@ -8,7 +8,7 @@
         </h1>
         <div class="govuk-panel__body">
           Work order number<br>
-          <strong class="govuk-!-font-size-48"><%= @repair_request.work_orders.first.reference %></strong>
+          <strong class="govuk-!-font-size-36"><%= @repair_request.work_orders.first.reference %></strong>
         </div>
       </div>
 
@@ -18,7 +18,7 @@
           <span class="govuk-warning-text__assistive">Warning</span>
           Please,
           <% if @repair_request.work_orders.first.is_dlo? %>
-            <%= link_to "open DRS to book an appointment!", drs_url %>
+            <%= link_to "open DRS", drs_url %> to book an appointment!
           <% else %>
             open UH to book an appointment!
           <% end %>
