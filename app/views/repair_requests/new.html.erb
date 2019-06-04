@@ -6,9 +6,11 @@
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+      <span class="govuk-caption-l">
+        New repair
+      </span>
       <h1 class="govuk-heading-l">
-        New repair for <%= @property.address %>
+        <%= @property.description %>: <%= @property.first_line_of_address %>
       </h1>
 
       <div class="hackney-warning-labels">
