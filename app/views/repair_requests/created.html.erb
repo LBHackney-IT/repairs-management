@@ -27,6 +27,10 @@
 
       <ul class="govuk-list govuk-!-margin-top-9">
         <li>
+          <%= link_to "Raise new repair on #{@property.address}", new_property_repair_request_path(@property.reference), class: "govuk-link" %>
+        </li>
+
+        <li>
           <%= link_to "Back to #{@property.address}", property_path(@property.reference), class: "govuk-link" %>
         </li>
 
