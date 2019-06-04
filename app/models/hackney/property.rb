@@ -92,4 +92,8 @@ class Hackney::Property
   def is_tmo?
     letting_area.to_s.downcase.include? "tmo"
   end
+
+  def first_line_of_address
+    address.match?(/\s\s/) ? address[/.+(?<=\s{2})/] : address
+  end
 end
