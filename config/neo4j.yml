@@ -1,11 +1,11 @@
 development:
   type: http
-  url: <%= "http://#{ ENV.fetch('NEO4J_HOST', 'localhost') }:7474" %>
+  url: <%= ENV['GRAPHENEDB_URL'] || ENV['NEO4J_URL'] || 'http://localhost:7474' %>
 
 test:
   type: http
-  url: http://neo4j_db_test:7474
+  url: <%= ENV['NEO4J_TEST_URL'] || 'http://localhost:7474' %>
 
 production:
   type: http
-  url: <%= ENV['GRAPHENEDB_URL'] %>
+  url: <%= ENV['GRAPHENEDB_URL'] || ENV['NEO4J_URL'] || 'http://localhost:7474' %>
