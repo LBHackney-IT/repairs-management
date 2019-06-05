@@ -39,11 +39,8 @@ Rails.application.routes.draw do
     end
   end
 
+  drs_url = ENV.fetch("DRS_URL") { raise "No DRS_URL supplied" }
   direct :drs do
-    if Rails.env.production?
-      "http://lbhoptappp01/opt-ondemand_hackney/pages/tab/job.xhtml"
-    else
-      "http://lbhoptappd01/opt-ondemand_hackney/pages/tab/job.xhtml"
-    end
+    drs_url
   end
 end
