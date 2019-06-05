@@ -24,13 +24,13 @@ require 'rspec/rails'
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 Capybara.register_driver :chrome_headless_driver do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    'chromeOptions' => {
-      'args' => ['headless', 'no-sandbox', 'disable-gpu', 'window-size=1920,1080']
-    }
-  )
+  options = ::Selenium::WebDriver::Chrome::Options.new
+  options.args << "--headless"
+  options.args << "--no-sandbox"
+  options.args << "--window-size=1920,1080"
+  options.args << "--disable-gpu"
 
-  Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities)
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
 Capybara.javascript_driver = :chrome_headless_driver
