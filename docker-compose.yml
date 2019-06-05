@@ -9,6 +9,8 @@ services:
       - DATABASE_HOST=pg_db
       - DATABASE_USERNAME=postgres
       - NEO4J_HOST=neo4j_db
+      - NEO4J_URL=http://neo4j_db:7474
+      - NEO4J_TEST_URL=http://neo4j_db_test:7474
       - REDIS_URL=redis://:somepassword@redis
       - DELAYED_JOB_WEB_USER=delayed_job@example.com
       - DELAYED_JOB_WEB_PASSWORD=password
@@ -60,6 +62,8 @@ services:
       - DATABASE_HOST=pg_db
       - DATABASE_USERNAME=postgres
       - NEO4J_HOST=neo4j_db
+      - NEO4J_URL=http://neo4j_db:7474
+      - NEO4J_TEST_URL=http://neo4j_db_test:7474
       - REDIS_URL=redis://:somepassword@redis
       - QUEUES=feed,default
       - LOG_LEVEL=info

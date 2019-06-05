@@ -28,6 +28,7 @@
 
 # Ignore local environments
 .env
+.env.*.local
 .DS_Store
 
 # vim swaps
