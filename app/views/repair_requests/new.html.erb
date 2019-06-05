@@ -10,7 +10,7 @@
         New repair
       </span>
       <h1 class="govuk-heading-l">
-        <%= @property.description %>: <%= @property.first_line_of_address %>
+        <%= @property.description.singularize %>: <%= @property.first_line_of_address %>
       </h1>
 
       <div class="hackney-warning-labels">
