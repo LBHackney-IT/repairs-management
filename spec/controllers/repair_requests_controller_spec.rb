@@ -1,0 +1,171 @@
+require 'rails_helper'
+
+RSpec.describe RepairRequestsController, type: :controller do
+  def fake_session
+    session[:current_user] = {
+      "name" => "Agent Piggy",
+      "email" => "agent.piggy@hackney.gov.uk"
+    }
+  end
+
+  def stub_property
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666")
+      .to_return(status: 200, body: {
+      "address": "1 Madeup Road",
+      "postcode": "SW1A 1AA",
+      "propertyReference": "00000666",
+      "maintainable": true,
+      "levelCode": 7,
+      "description": "Dwelling",
+      "tenureCode": "SEC",
+      "tenure": "Secure"
+    }.to_json)
+  end
+
+  describe "POST" do
+
+    context "with DLO work order" do
+      it "works" do
+        fake_session
+        stub_property
+
+        stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs").with(
+          headers: {
+            "Content-Type" => "application/json-patch+json"
+          },
+          body: {
+            "contact": {
+              "name": "Miss Piggy",
+              "telephoneNumber": "01234567890",
+            },
+            "workOrders": [{
+              "sorCode": "20110120",
+            }],
+            "priority": "E",
+            "propertyReference": "00000666",
+            "problemDescription": "It's broken",
+            "lbhEmail": "agent.piggy@hackney.gov.uk"
+          }.to_json
+        ).to_return(
+          status: 200,
+          body: {
+            "repairRequestReference" => "03210303",
+            "propertyReference" =>"00000666",
+            "problemDescription" => "It's broken",
+            "priority" => "E",
+            "contact" => {
+              "name" => "Miss Piggy",
+              "telephoneNumber" => "01234567890"
+            },
+            "workOrders"=> [
+              {
+                "workOrderReference" => "00060606",
+                "sorCode" => "20110120",
+                "supplierReference" => "H01"
+              }
+            ]
+          }.to_json
+        )
+
+        stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/00060606/issue").with(
+          headers: {
+            "Content-Type" => "application/json-patch+json"
+          },
+          body: {
+            "lbhEmail": "agent.piggy@hackney.gov.uk"
+          }.to_json
+        ).to_return(
+          status: 200,
+          body: {}.to_json
+        )
+
+        post :create, params: {
+          property_ref: "00000666",
+          hackney_repair_request: {
+            contact_attributes: {
+              name: "Miss Piggy",
+              telephone_number: "01234567890",
+            },
+            work_orders_attributes: [{
+              "sor_code": "20110120",
+            }],
+            "priority": "E",
+            description: "It's broken",
+          }
+        }
+
+        expect(response).to be_successful
+        expect(a_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs"))
+          .to have_been_made
+        expect(a_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/00060606/issue"))
+          .to have_been_made
+      end
+    end
+
+    context "with non-DLO work order" do
+      it "works" do
+        fake_session
+        stub_property
+
+        stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs").with(
+          headers: {
+            "Content-Type" => "application/json-patch+json"
+          },
+          body: {
+            "contact": {
+              "name": "Miss Piggy",
+              "telephoneNumber": "01234567890",
+            },
+            "workOrders": [{
+              "sorCode": "LME5R500",
+            }],
+            "priority": "E",
+            "propertyReference": "00000666",
+            "problemDescription": "It's broken",
+            "lbhEmail": "agent.piggy@hackney.gov.uk"
+          }.to_json
+        ).to_return(
+          status: 200,
+          body: {
+            "repairRequestReference" => "03210303",
+            "propertyReference" =>"00000666",
+            "problemDescription" => "It's broken",
+            "priority" => "E",
+            "contact" => {
+              "name" => "Miss Piggy",
+              "telephoneNumber" => "01234567890"
+            },
+            "workOrders"=> [
+              {
+                "workOrderReference" => "00060606",
+                "sorCode" => "LME5R500",
+                "supplierReference" => "ELA"
+              }
+            ]
+          }.to_json
+        )
+
+        post :create, params: {
+          property_ref: "00000666",
+          hackney_repair_request: {
+            contact_attributes: {
+              name: "Miss Piggy",
+              telephone_number: "01234567890",
+            },
+            work_orders_attributes: [{
+              "sor_code": "LME5R500",
+            }],
+            "priority": "E",
+            description: "It's broken",
+          }
+        }
+
+        expect(response).to be_successful
+        expect(a_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs"))
+          .to have_been_made
+        expect(a_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/00060606/issue"))
+          .not_to have_been_made
+      end
+    end
+  end
+end
