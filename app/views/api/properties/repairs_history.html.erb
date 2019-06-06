@@ -5,8 +5,10 @@
 <div class="govuk-grid-row">
   <%= render 'repair_history_filters', hierarchy: @property_hierarchy, work_orders_trades: @trades %>
 
+  <% #FIXME: this is ugly and duplicated in app/views/api/properties/_repair_history_filters.html.erb %>
+  <% default_filter_index = @property_hierarchy.keys.index(@property.description) || 0 %>
   <% @property_hierarchy.each_with_index do |(description, work_orders), index| %>
-    <div class="tabcontent <%= 'hidden' unless index == 0 %>" id="<%= description.parameterize %>-content">
+    <div class="tabcontent <%= 'hidden' unless index == default_filter_index %>" id="<%= description.parameterize %>-content">
       <div class="govuk-grid-column-three-quarters">
 
         <table class="govuk-table hackney-history hackney-work-order-table">
