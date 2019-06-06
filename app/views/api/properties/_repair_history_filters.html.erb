@@ -14,9 +14,11 @@
       </div>
 
       <div class="hierarchy-hackney-checkbox">
+        <% #FIXME: this is ugly and duplicated in app/views/api/properties/repairs_history.html.erb %>
+        <% default_filter_index = hierarchy.keys.index(@property.description) || 0 %>
         <% hierarchy.keys.each_with_index do |description, index| %>
           <div class="work-order-filter-options govuk-body-s">
-            <input onclick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="hierarchy-filter-checkbox tabelement" id="hierarchy-<%=index%>" type="radio" value="hierarchy-<%=index%>" name="hierarchy" <%= 'checked' if description == @property.description %>>
+            <input onclick="applyBuildingFilter('<%= description.parameterize %>-tab', '<%= description.parameterize %>-content')" class="hierarchy-filter-checkbox tabelement" id="hierarchy-<%=index%>" type="radio" value="hierarchy-<%=index%>" name="hierarchy" <%= 'checked' if index == default_filter_index %>>
             <label class="hackney-checkboxes__label" for="hierarchy-<%=index%>">
               <%= description %>
               <% if %w(Estate Block Sub-Block Dwelling).include? description %>
