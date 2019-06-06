@@ -42,6 +42,18 @@ RSpec.describe 'Repair request' do
         ]
       }.to_json
     )
+
+    stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/issue").with(
+      headers: {
+        "Content-Type" => "application/json-patch+json"
+      },
+      body: {
+        "lbhEmail": Helpers::Authentication::EMAIL
+      }.to_json
+    ).to_return(
+      status: 200,
+      body: {}.to_json
+    )
   end
 
   def stub_post_bad_repair_request
