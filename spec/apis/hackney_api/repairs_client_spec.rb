@@ -178,6 +178,26 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
+  describe '#post_work_order_issue' do
+    it 'issues a work order' do
+      stub_request(:post, "#{base_url}/#{api_version}/work_orders/00000666/issue").with(
+        headers: {
+          "Content-Type" => "application/json-patch+json"
+        },
+        body: {
+          "lbhEmail": "pudding@hackney.gov.uk"
+        }.to_json
+      ).to_return(status: 200, body: '{"works": true }')
+
+      expect(
+        api_client.post_work_order_issue(
+          "00000666",
+          created_by_email: "pudding@hackney.gov.uk"
+        )
+      ).to be == {"works" => true}
+    end
+  end
+
   describe '#get_property' do
     subject { api_client.get_property(reference) }
 
