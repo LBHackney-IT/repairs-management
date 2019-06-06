@@ -578,7 +578,7 @@ describe HackneyAPI::RepairsClient do
 
   describe '#post_work_order_note' do
 
-    subject { api_client.post_work_order_note("00000001", "It's all fine") }
+    subject { api_client.post_work_order_note("00000001", "It's all fine", "Celia") }
 
     context 'successful response' do
       it 'posts a note' do
@@ -587,7 +587,8 @@ describe HackneyAPI::RepairsClient do
               body: {
                 objectKey: "uhorder",
                 objectReference: "00000001",
-                text: "It's all fine"}.to_json)
+                text: "It's all fine",
+                lbhemail: "Celia" }.to_json)
         .to_return(status: 204)
 
         expect(subject).to eq(nil)

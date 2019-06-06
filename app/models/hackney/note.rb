@@ -24,7 +24,7 @@ class Hackney::Note
     HackneyAPI::RepairsClient.new.notes_feed(note_id, opts).map { |attrs| Hackney::Note.build(attrs) }
   end
 
-  def self.create_work_order_note(work_order_reference, text)
-    HackneyAPI::RepairsClient.new.post_work_order_note(work_order_reference, text)
+  def self.create_work_order_note(work_order_reference, text, created_by_email)
+    HackneyAPI::RepairsClient.new.post_work_order_note(work_order_reference, text, created_by_email)
   end
 end

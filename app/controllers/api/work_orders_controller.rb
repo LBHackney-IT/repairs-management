@@ -15,7 +15,8 @@ module Api
       notes_text = params[:note][:text]
 
       if notes_text.present? && notes_text.length <= 2000
-        Hackney::Note.create_work_order_note(reference, params[:note][:text])
+        created_by_email = session[:current_user]["email"]
+        Hackney::Note.create_work_order_note(reference, params[:note][:text], created_by_email)
         @notes_and_appointments = get_notes_and_appointments(@work_order)
 
         render 'notes_and_appointments'
