@@ -160,6 +160,17 @@ module HackneyAPI
       )
     end
 
+    def post_work_order_issue(reference, created_by_email:)
+      request(
+        http_method: :post,
+        endpoint: "#{API_VERSION}/work_orders/#{reference}/issue",
+        headers: {"Content-Type" => "application/json-patch+json"},
+        params: {
+          "lbhEmail": created_by_email
+        }.to_json
+      )
+    end
+
     def get_property(reference)
       request(
         http_method: :get,
