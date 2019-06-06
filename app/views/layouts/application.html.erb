@@ -75,8 +75,10 @@
   </header>
 
   <% if content_for :back_button %>
-    <div class="govuk-width-container">
-       <%= yield :back_button %>
+    <div class="hackney-width-container">
+      <div class="govuk-width-container">
+        <%= yield :back_button %>
+      </div>
     </div>
   <% end %>
 
