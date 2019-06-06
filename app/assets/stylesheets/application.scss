@@ -118,9 +118,10 @@ $govuk-breakpoints: (
 }
 
 .hackney-flash-messages-container {
+  margin-top: 30px;
+
   .hackney-notice-summary {
     border: 5px solid hackney-colour("housing-2");
-    margin-top: 30px;
     margin-bottom: 20px;
 
     &:focus {
