@@ -87,7 +87,7 @@ module HackneyAPI
       )
     end
 
-    def post_work_order_note(work_order_reference, text)
+    def post_work_order_note(work_order_reference, text, created_by_email)
       value = request(
         http_method: :post,
         endpoint: "#{API_VERSION}/notes",
@@ -95,7 +95,8 @@ module HackneyAPI
         params: {
           objectKey: "uhorder",
           objectReference: work_order_reference,
-          text: text
+          text: text,
+          lbhemail: created_by_email
         }.to_json
       )
 
