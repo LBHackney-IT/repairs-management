@@ -3,7 +3,13 @@
     <% if work_orders.any? %>
       Repairs history is showing jobs raised in the <strong>last 2 years</strong>.
     <% else %>
-      There are no work orders for this <%= property_description.downcase %> within the <strong>last 2 years</strong>.
+      There are no work orders for
+      <% if property_description.downcase == "facilities" %>
+        these facilities
+      <% else %>
+        this <%= property_description.downcase %>
+      <% end %>
+      within the <strong>last 2 years</strong>.
     <% end %>
   </p>
 
