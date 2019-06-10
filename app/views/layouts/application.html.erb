@@ -30,7 +30,12 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', '<%= ENV['GOOGLE_ANALYTICS'] %>');
+    gtag("config", "<%= ENV['GOOGLE_ANALYTICS'] %>", {
+      "page_title": "<%= controller_name + ?# + action_name %>",
+      "page_path": "<%= controller_name + ?# + action_name %>",
+      "user_id": "<%= anonymized_current_user_id %>",
+      "anonymize_ip": true
+    });
   </script>
   <% end %>
 
