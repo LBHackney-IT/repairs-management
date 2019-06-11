@@ -1,6 +1,5 @@
 module Api
   class PropertiesController < Api::ApiController
-
     def repairs_history
       years_ago = params[:years_ago]&.to_i || 2
 
