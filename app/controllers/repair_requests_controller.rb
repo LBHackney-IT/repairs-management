@@ -19,7 +19,8 @@ class RepairRequestsController < ApplicationController
       work_orders_attributes: [{
         sor_code: @keyfax_result&.sor_code,
         }],
-      priority: @keyfax_result&.priority
+      priority: @keyfax_result&.priority,
+      description: @keyfax_result&.fault_text
     )
 
     @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)

@@ -64,8 +64,7 @@
         </span>
 
         <%= form.error_messages :description %>
-        <% # FIXME: why value: @keyfax_result&.fault_text ??? %>
-        <%= form.text_area :description, value: @keyfax_result&.fault_text, class: 'govuk-textarea', rows: 5 %>
+        <%= form.text_area :description, class: 'govuk-textarea', rows: 5 %>
       <% end %>
 
       <%= form.fields_for :contact do |fields| %>
