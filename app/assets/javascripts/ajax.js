@@ -64,7 +64,7 @@ function postAjaxForm(event, destinationId) {
 
   sendAjaxRequest('POST', form.action, FD, csrfToken,
     function (request) { destination.innerHTML = request.response; },
-    function () { destination.innerHTML = "There was a problem submitting your form"; }
+    function () { destination.innerHTML = "There was a problem submitting your form. Please contact an administrator to check that your account is set up correctly."; }
   );
 }
 
