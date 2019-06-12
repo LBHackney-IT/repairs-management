@@ -82,7 +82,7 @@ class RepairRequestsController < ApplicationController
   end
 
   def sor_code_valid?
-    @keyfax_result.sor_code != 0
+    @keyfax_result.sor_code != "0"
   end
 
   def set_property
