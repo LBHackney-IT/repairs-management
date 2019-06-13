@@ -696,4 +696,15 @@ describe HackneyAPI::RepairsClient do
       end
     end
   end
+
+  it "doesn't cache GET errors" do
+    stub_request(:get, "#{base_url}/#{api_version}/properties/00000666")
+      .to_return({status: 500}, {status: 200})
+
+    expect { api_client.get_property("00000666") }
+      .to raise_error(HackneyAPI::RepairsClient::ApiError)
+
+    expect { api_client.get_property("00000666") }
+      .not_to raise_error
+  end
 end
