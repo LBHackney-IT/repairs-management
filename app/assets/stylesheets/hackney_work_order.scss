@@ -5,6 +5,10 @@
 .hackney-main-section-info {
   background-color: govuk-colour('white');
   padding: 2px;
+
+  .status { // Fallback for when status is not recognized
+    color: hackney-colour('status-not-complete');
+  }
   .status-100 { // Collated
     color: hackney-colour('status-planned');
   }
@@ -176,6 +180,7 @@
     }
     .status {
       color: govuk-colour('white');
+      background-color: hackney-colour('status-not-complete');
       padding: 4px 10px;
       font-weight: bold;
       display: inline-block;
