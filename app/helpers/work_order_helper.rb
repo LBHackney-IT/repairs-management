@@ -17,7 +17,7 @@ module WorkOrderHelper
      '600' => 'Statemented',
      '700' => 'Cancel Order',
      '900' => 'Complete'
-   }[work_order_status]
+   }[work_order_status] || "Unknown (#{work_order_status})"
   end
 
   def dlo_status_description(dlo_status)
