@@ -191,3 +191,13 @@ $govuk-breakpoints: (
 .govuk-back-link {
   margin-top: 30px;
 }
+
+.govuk-panel {
+  .govuk-link {
+    color: inherit;
+
+    &:visited {
+      color: inherit;
+    }
+  }
+}
