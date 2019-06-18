@@ -28,6 +28,10 @@ class Hackney::RepairRequest
     contact&.name
   end
 
+  def high_priority?
+    %w(E I).include? priority
+  end
+
   #
   # persistence
   #

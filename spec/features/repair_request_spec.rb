@@ -17,7 +17,7 @@ RSpec.describe 'Repair request' do
         "workOrders": [{
           "sorCode": "20110120",
         }],
-        "priority": "E",
+        "priority": "N",
         "propertyReference": "00000666",
         "problemDescription": "It's broken",
         "lbhEmail": Helpers::Authentication::EMAIL
@@ -28,7 +28,7 @@ RSpec.describe 'Repair request' do
         "repairRequestReference" => "03210303",
         "propertyReference" =>"00000666",
         "problemDescription" => "It's broken",
-        "priority" => "E",
+        "priority" => "N",
         "contact" => {
           "name" => "Miss Piggy",
           "telephoneNumber" => "01234567890"
@@ -69,7 +69,7 @@ RSpec.describe 'Repair request' do
         "workOrders": [{
           "sorCode": "Abcdefg",
         }],
-        "priority": "E",
+        "priority": "N",
         "propertyReference": "00000666",
         "problemDescription": "It's broken",
         "lbhEmail": Helpers::Authentication::EMAIL
@@ -105,7 +105,7 @@ RSpec.describe 'Repair request' do
           "faultText" => "Electric lighting: Communal; Block Lighting; 3; All lights out",
           "repairCode" => "20110120",
           "repairCodeDesc" => "LANDLORDS LIGHTING-FAULT",
-          "priority" => "E"
+          "priority" => "N"
         }.to_json
       )
   end
@@ -134,7 +134,7 @@ RSpec.describe 'Repair request' do
         "repairRequestReference" => "03210303",
         "propertyReference" =>"00000666",
         "problemDescription" => "It's broken",
-        "priority" => "E",
+        "priority" => "N",
         "contact" => {
           "name" => "Miss Piggy",
           "telephoneNumber" => "01234567890"
@@ -305,6 +305,7 @@ RSpec.describe 'Repair request' do
 
       visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
 
+      select "N - Normal"
       fill_in "Problem description", with: "It's broken"
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
@@ -344,6 +345,7 @@ RSpec.describe 'Repair request' do
 
       stub_post_bad_repair_request
 
+      select "N - Normal"
       fill_in "SOR Code", with: "Abcdefg"
       fill_in "Problem description", with: "It's broken"
       fill_in "Caller name", with: "Miss Piggy"
