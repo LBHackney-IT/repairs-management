@@ -8,7 +8,9 @@
         </h1>
         <div class="govuk-panel__body">
           Work order number<br>
-          <strong class="govuk-!-font-size-36"><%= @repair_request.work_orders.first.reference %></strong>
+          <strong class="govuk-!-font-size-36">
+            <%= link_to @repair_request.work_orders.first.reference, work_order_path(@repair_request.work_orders.first.reference), class: "govuk-link" %>
+          </strong>
         </div>
       </div>
 
@@ -18,7 +20,7 @@
           <span class="govuk-warning-text__assistive">Warning</span>
           Please,
           <% if @repair_request.work_orders.first.is_dlo? %>
-            <%= link_to "open DRS", drs_url, target: "_blank" %> to book an appointment!
+            <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %> to book an appointment!
           <% else %>
             open UH to book an appointment!
           <% end %>
@@ -26,6 +28,10 @@
       </div>
 
       <ul class="govuk-list govuk-!-margin-top-9">
+        <li>
+          <%= link_to "View work order #{@repair_request.work_orders.first.reference}", work_order_path(@repair_request.work_orders.first.reference), class: "govuk-link" %>
+        </li>
+
         <li>
           <%= link_to "Raise new repair on #{@property.first_line_of_address}", new_property_repair_request_path(@property.reference), class: "govuk-link" %>
         </li>
