@@ -206,3 +206,18 @@ describe Hackney::RepairRequest, '#save' do
     expect(repair_request.errors.added?("description", "Please provide a valid Problem")).to be_truthy
   end
 end
+
+describe Hackney::RepairRequest do
+  describe "#high_priority?" do
+    it "works" do
+      expect(Hackney::RepairRequest.new(priority: "E").high_priority?).to be_truthy
+      expect(Hackney::RepairRequest.new(priority: "I").high_priority?).to be_truthy
+      expect(Hackney::RepairRequest.new(priority: "K").high_priority?).to be_falsey
+      expect(Hackney::RepairRequest.new(priority: "O").high_priority?).to be_falsey
+      expect(Hackney::RepairRequest.new(priority: "U").high_priority?).to be_falsey
+      expect(Hackney::RepairRequest.new(priority: "V").high_priority?).to be_falsey
+      expect(Hackney::RepairRequest.new(priority: "N").high_priority?).to be_falsey
+      expect(Hackney::RepairRequest.new(priority: "L").high_priority?).to be_falsey
+    end
+  end
+end
