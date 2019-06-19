@@ -38,6 +38,9 @@
     },
     "X_API_KEY": {
       "required": true
+    },
+    "DRS_URL": {
+      "required": true
     }
   },
   "formation": {
