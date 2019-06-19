@@ -20,7 +20,8 @@ module Helpers
         "workOrderStatus" => "200",
         "dloStatus" => "1",
         "servitorReference" => "10162765",
-        "propertyReference" => "00014665"
+        "propertyReference" => "00014665",
+        "username" => "Celia"
       }
 
       unknown_keys = overrides.keys - base.keys
