@@ -201,6 +201,10 @@ $govuk-breakpoints: (
   .govuk-link {
     color: inherit;
 
+    &:link {
+      color: inherit;
+    }
+
     &:visited {
       color: inherit;
     }

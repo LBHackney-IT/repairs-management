@@ -10,7 +10,7 @@
     background-color: hackney-colour('housing-2');
   }
 
-  &:visited {
+  &:visited, &:link {
     color: white !important;
   }
 }
