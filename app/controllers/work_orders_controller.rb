@@ -18,6 +18,7 @@ class WorkOrdersController < ApplicationController
 
   def show
     @work_order = WorkOrderFacade.new(reference)
+    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@work_order.property.reference)
   end
 
 private

@@ -31,31 +31,8 @@
           </span><br>
           <%= property.postcode %>
         </p>
-        <div class="hackney-warning-labels">
-          <%
-          clazz = "govuk-body-s hackney-property-warning-label"
-          if property.can_raise_a_repair?
-          clazz += " hackney-property-warning-label-turquoise"
-          else
-          clazz += " hackney-property-warning-label-orange"
-          end
-          %>
-          <% if property.tenure.present? %>
-          <p class="<%= clazz %>">
-            <%= property.tenure %>
-          </p>
-          <% end %>
 
-          <% if property.is_tmo? %>
-          <p class="govuk-body-s hackney-property-warning-label hackney-property-warning-label-orange">
-            <%= property.letting_area %>
-          </p>
-          <% end %>
-
-          <% if @cautionary_contacts.present? %>
-            <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
-          <% end %>
-        </div>
+        <%= render :partial => 'shared/tenure_and_cautionary_contact_info', locals: { property: property } %>
 
       </div>
     </div>
