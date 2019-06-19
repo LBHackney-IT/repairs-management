@@ -83,7 +83,8 @@ module Helpers
                                   maintainable: true,
                                   level_code: 7,
                                   description: "Dwelling",
-                                  letting_area: "Lordship South TMO (SN) H2556")
+                                  letting_area: "Lordship South TMO (SN) H2556",
+                                  tenure: "Secure")
       {
         "address" => address,
         "postcode" => postcode,
@@ -91,7 +92,8 @@ module Helpers
         "maintainable" => maintainable,
         "levelCode" => level_code,
         "description" => description,
-        "lettingArea" => letting_area
+        "lettingArea" => letting_area,
+        "tenure" => tenure
       }
     end
 
