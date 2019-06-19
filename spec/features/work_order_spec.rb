@@ -268,9 +268,10 @@ RSpec.describe 'Work order' do
     expect(page).to have_content "Homerton High Street 12 Banister House\nE9 6BH"
 
     expect(page).to have_content 'Status: In Progress'
-    expect(page).to have_content "Mr Suleyman Erbas"
-    expect(page).to have_content "02012341234"
+    expect(page).to have_content 'Raised by Celia'
     expect(page).to have_content 'Target: 27 Jun 2018, 2:09pm'
+    expect(page).to have_content "Mr Suleyman Erbas"
+    expect(page).to have_content "02012 341234"
   end
 
   scenario 'Search for a work order by postcode', js: true do
