@@ -20,7 +20,7 @@
           <span class="govuk-warning-text__assistive">Warning</span>
           Please,
           <% if @repair_request.work_orders.first.is_dlo? %>
-            <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %> to book an appointment!
+            <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %>
           <% else %>
             open UH
           <% end %>
