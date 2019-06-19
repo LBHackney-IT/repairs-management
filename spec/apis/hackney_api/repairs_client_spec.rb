@@ -139,6 +139,28 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
+  describe ".clear_work_orders_cache_for_property" do
+    it "works" do
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/work_orders?propertyReference=00000666&since=06-06-0666&until=06-06-6666", "1")
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders?propertyReference=00000666&since=06-06-0666&until=06-06-6666")).to be_truthy
+
+      HackneyAPI::RepairsClient.clear_work_orders_cache_for_property("00000666")
+
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders?propertyReference=00000666&since=06-06-0666&until=06-06-6666")).to be_falsey
+    end
+  end
+
+  describe ".clear_repairs_cache_for_property" do
+    it "works" do
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/repairs?propertyReference=00000666", "2")
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/repairs?propertyReference=00000666")).to be_truthy
+
+      HackneyAPI::RepairsClient.clear_repairs_cache_for_property("00000666")
+
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/repairs?propertyReference=00000666")).to be_falsey
+    end
+  end
+
   describe '#post_repair_request' do
     pending "invalid SOR code 4896802H"
 
@@ -163,6 +185,9 @@ describe HackneyAPI::RepairsClient do
           "lbhEmail": "pudding@hackney.gov.uk"
         }.to_json
       ).to_return(status: 200, body: '{"works": true }')
+
+      expect(HackneyAPI::RepairsClient).to receive(:clear_work_orders_cache_for_property)
+      expect(HackneyAPI::RepairsClient).to receive(:clear_repairs_cache_for_property)
 
       expect(
         api_client.post_repair_request(
