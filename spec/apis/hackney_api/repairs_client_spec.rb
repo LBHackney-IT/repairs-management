@@ -142,22 +142,26 @@ describe HackneyAPI::RepairsClient do
   describe ".clear_work_orders_cache_for_property" do
     it "works" do
       API_REQUEST_CACHE.write("hackney-api-cache-/v1/work_orders?propertyReference=00000666&since=06-06-0666&until=06-06-6666", "1")
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/properties/00000666", "2")
       expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders?propertyReference=00000666&since=06-06-0666&until=06-06-6666")).to be_truthy
 
       HackneyAPI::RepairsClient.clear_work_orders_cache_for_property("00000666")
 
       expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders?propertyReference=00000666&since=06-06-0666&until=06-06-6666")).to be_falsey
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/properties/00000666")).to be_truthy
     end
   end
 
   describe ".clear_repairs_cache_for_property" do
     it "works" do
       API_REQUEST_CACHE.write("hackney-api-cache-/v1/repairs?propertyReference=00000666", "2")
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/properties/00000666", "2")
       expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/repairs?propertyReference=00000666")).to be_truthy
 
       HackneyAPI::RepairsClient.clear_repairs_cache_for_property("00000666")
 
       expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/repairs?propertyReference=00000666")).to be_falsey
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/properties/00000666")).to be_truthy
     end
   end
 
