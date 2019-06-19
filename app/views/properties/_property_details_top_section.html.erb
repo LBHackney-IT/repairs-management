@@ -28,9 +28,9 @@
           <span class="govuk-body-xs hackney-body-xs hackney-section-info-header">
             Property details
           </span><br>
-          <% format_address(property.address).each do |line| %>
-            <span class="govuk-!-font-weight-bold hackney-text-green"><%= line %></span><br>
-          <% end %>
+          <span class="govuk-!-font-weight-bold hackney-text-green">
+            <%= format_address(property.address) %>
+          </span><br>
           <span class="govuk-body-xs hackney-text-green hackney-body-xs">
             <%= property.postcode %>
           </span><br>
