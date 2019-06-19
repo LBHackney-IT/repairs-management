@@ -198,7 +198,18 @@ RSpec.describe 'Repair request' do
     # hierarchy
     #
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666/hierarchy")
-      .to_return(status: 200, body: [].to_json)
+      .to_return(status: 200, body: [
+      {
+        "address": "1 Madeup Road",
+        "postcode": "SW1A 1AA",
+        "propertyReference": "00000666",
+        "maintainable": true,
+        "levelCode": 7,
+        "description": "Dwelling",
+        "tenureCode": "SEC",
+        "tenure": "Secure"
+      }
+    ].to_json)
     #
     # facilities
     #
@@ -208,8 +219,24 @@ RSpec.describe 'Repair request' do
     #
     # work orders
     #
-    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
-      .to_return(status: 200, body: [].to_json)
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?propertyReference=00000666&since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
+      .to_return([
+        {
+          status: 200,
+          body: [].to_json
+        },
+        {
+          status: 200,
+          body: [{
+            "workOrderReference" => "01552718",
+            "sorCode" => "20110120",
+            "supplierReference" => "H01",
+            "propertyReference" => "00000666",
+            "created" => "2018-05-29T14:10:06",
+            "dateDue" => "2018-06-27T14:09:00",
+          }].to_json
+        }
+    ])
     #
     # related facilities
     #
@@ -294,6 +321,10 @@ RSpec.describe 'Repair request' do
       expect(page).to have_link("Raise new repair on 1 Madeup Road", href: new_property_repair_request_path("00000666"))
       expect(page).to have_link("Back to 1 Madeup Road", href: property_path("00000666"))
       expect(page).to have_link("Start a new search", href: root_path)
+
+      # ensure cache is cleared and it shows up on repair history
+      click_on "Back to 1 Madeup Road"
+      expect(page).to have_link "01552718", href: work_order_path("01552718")
     end
 
     scenario 'Raise a repair unsuccessfully', :js do

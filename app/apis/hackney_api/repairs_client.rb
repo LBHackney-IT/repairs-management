@@ -142,8 +142,20 @@ module HackneyAPI
       )
     end
 
+    # Try to clear cache for requests that have this work order.
+    # NOTE: there might be requests not covered here.
+    def self.clear_work_orders_cache_for_property(property_reference)
+      API_REQUEST_CACHE.delete_matched "*work_order*#{property_reference}*"
+    end
+
+    # Try to clear cache for requests that have this repair request.
+    # NOTE: there might be requests not covered here.
+    def self.clear_repairs_cache_for_property(property_reference)
+      API_REQUEST_CACHE.delete_matched "*repairs*#{property_reference}*"
+    end
+
     def post_repair_request(name:, phone:, sor_codes:, priority:, property_ref:, description:, created_by_email:)
-      request(
+      response = request(
         http_method: :post,
         endpoint: "#{API_VERSION}/repairs",
         headers: {"Content-Type" => "application/json-patch+json"},
@@ -159,6 +171,11 @@ module HackneyAPI
           "lbhEmail": created_by_email
         }.to_json
       )
+
+      self.class.clear_work_orders_cache_for_property(property_ref)
+      self.class.clear_repairs_cache_for_property(property_ref)
+
+      response
     end
 
     def post_work_order_issue(reference, created_by_email:)
