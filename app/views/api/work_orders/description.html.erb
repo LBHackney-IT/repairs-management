@@ -21,6 +21,12 @@
           </td>
         </tr>
         <tr>
+          <th scope="row">Agent:</th>
+          <td>
+            <%= @work_order.raised_by %>
+          </td>
+        </tr>
+        <tr>
           <th scope="row">Caller:</th>
           <td>
             <%= format_caller_name(@work_order.repair_request.contact_name) %>

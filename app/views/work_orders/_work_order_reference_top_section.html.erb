@@ -56,6 +56,12 @@
                 <%= work_order.created.to_s(:govuk_date_time_short) %>
               </td>
             </tr>
+            <tr>
+              <th scope="row">Agent:</th>
+              <td>
+                <%= work_order.raised_by %>
+              </td>
+            </tr>
           </tbody>
         </table>
 

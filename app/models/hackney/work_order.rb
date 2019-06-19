@@ -3,7 +3,8 @@ class Hackney::WorkOrder
 
   attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
                 :work_order_status, :dlo_status, :servitor_reference,
-                :problem_description, :trade, :supplier_reference, :sor_code
+                :problem_description, :trade, :supplier_reference, :sor_code,
+                :raised_by
 
   def self.find(reference)
     response = HackneyAPI::RepairsClient.new.get_work_order(reference)
@@ -61,6 +62,7 @@ class Hackney::WorkOrder
       servitor_reference: attributes['servitorReference']&.strip,
       problem_description: attributes['problemDescription'],
       trade: attributes['trade'],
+      raised_by: attributes['username']&.strip,
       # FIXME: supplier reference naming inconsistency on API
       supplier_reference: attributes['supplierRef'] || attributes['supplierReference']
     )
