@@ -12,34 +12,11 @@
       </span>
     </p>
 
-    <table class="govuk-table hackney-appointment-info">
-      <tbody class="govuk-body-xs hackney-body-xs">
-        <tr>
-          <th scope="row">Raised:</th>
-          <td>
-            <%= @work_order.created.to_s(:govuk_date_time_short) %>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Agent:</th>
-          <td>
-            <%= @work_order.raised_by %>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">Caller:</th>
-          <td>
-            <%= format_caller_name(@work_order.repair_request.contact_name) %>
-          </td>
-        </tr>
-        <tr>
-          <th></th>
-          <td>
-            <%= @work_order.repair_request.telephone_number %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <p class="govuk-body-xs hackney-body-xs">
+      Raised by <%= @work_order.raised_by %>
+      <br>
+      <%= @work_order.created.to_s(:govuk_date_time_short) %>
+    </p>
 
     <table>
       <tbody class="govuk-body-xs hackney-body-xs govuk-!-font-weight-bold">
@@ -49,6 +26,21 @@
           </td>
       </tbody>
     </table>
+
+    <table class="govuk-table hackney-appointment-info govuk-!-margin-bottom-0">
+      <tbody class="govuk-body-xs hackney-body-xs">
+        <tr>
+          <th scope="row">Caller:</th>
+          <td>
+            <%= format_caller_name(@work_order.repair_request.contact_name) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="govuk-body-xs hackney-body-xs govuk-!-margin-top-0">
+      <%= number_to_phone(@work_order.repair_request.telephone_number, pattern: /(\d{5})(\d{5,})$/, delimiter: " ") %>
+    </p>
   </div>
 </div>
 
@@ -61,7 +53,7 @@
     <% if @work_order.latest_appointment.present? %>
       <%= render 'latest_appointment', work_order: @work_order %>
     <% else %>
-      <span class="govuk-!-font-weight-bold">
+      <span class="govuk-!-font-weight-bold hackney-text-green">
         There are no booked appointments.
       </span>
     <% end %>

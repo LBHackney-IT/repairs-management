@@ -24,12 +24,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
       <div class="hackney-main-section-info">
-        <h5 class="govuk-body-s property-details">Property details:</h5>
-        <p class="govuk-body-s">
-          <span class="govuk-!-font-weight-bold">
-            <%= property.address %>
+        <p class="govuk-body-s hackney-body-s">
+          <span class="govuk-body-xs hackney-body-xs hackney-section-info-header">
+            Property details
           </span><br>
-          <%= property.postcode %>
+          <% format_address(property.address).each do |line| %>
+            <span class="govuk-!-font-weight-bold hackney-text-green"><%= line %></span><br>
+          <% end %>
+          <span class="govuk-body-xs hackney-text-green hackney-body-xs">
+            <%= property.postcode %>
+          </span><br>
         </p>
         <div class="hackney-warning-labels">
           <%
