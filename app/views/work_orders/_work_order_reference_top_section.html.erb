@@ -34,6 +34,9 @@
             <%= work_order.property.postcode %>
           </span><br>
         </p>
+
+        <%= render :partial => 'shared/tenure_and_cautionary_contact_info', locals: { property: work_order.property } %>
+
       </div>
     </div>
 

@@ -266,6 +266,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'TEST problem'
 
     expect(page).to have_content "Homerton High Street 12 Banister House\nE9 6BH"
+    expect(page).to have_content "Lordship South TMO (SN) H2556"
 
     expect(page).to have_content 'Status: In Progress'
     expect(page).to have_content "Mr Suleyman Erbas"
