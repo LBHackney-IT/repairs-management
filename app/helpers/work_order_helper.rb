@@ -71,7 +71,8 @@ module WorkOrderHelper
   end
 
   def format_address(address)
-    address.split("  ")
+    # NOTE: strip because chromium renders a underlined space at the end
+    sanitize address.split("  ").join("<br>").strip
   end
 
   def format_caller_name(name)

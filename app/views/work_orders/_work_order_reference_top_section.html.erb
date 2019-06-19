@@ -24,9 +24,11 @@
             <%= work_order.property.description %>
           </span><br>
           <span class="govuk-!-font-weight-bold">
-            <%= link_to property_path(work_order.property.reference), class: "govuk-link hackney-link" do %>
-              <%= sanitize format_address(work_order.property.address).join("<br>") %>
-            <% end %>
+            <%= link_to(
+              format_address(work_order.property.address),
+              property_path(work_order.property.reference),
+              class: "govuk-link hackney-link"
+            ) %>
           </span><br>
           <span class="govuk-body-xs hackney-text-green hackney-body-xs">
             <%= work_order.property.postcode %>
