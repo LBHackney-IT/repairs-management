@@ -18,15 +18,17 @@
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
           <span class="govuk-warning-text__assistive">Warning</span>
-          Please,
-          <% if @repair_request.work_orders.first.is_dlo? %>
-            <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %>
-          <% else %>
-            open UH
-          <% end %>
           <% if @repair_request.high_priority? %>
-            and check if an appointment can be booked for this work order!
+            Emergency and Immediate priority works orders do not require
+            booking in DRS. The Planning Team will pick up these repairs and
+            allocate resources.
           <% else %>
+            Please,
+            <% if @repair_request.work_orders.first.is_dlo? %>
+              <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %>
+            <% else %>
+              open UH
+            <% end %>
             to book an appointment!
           <% end %>
         </strong>
