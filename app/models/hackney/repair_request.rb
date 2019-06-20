@@ -51,7 +51,7 @@ class Hackney::RepairRequest
       sor_codes: work_orders&.map(&:sor_code) || [],
       priority: priority,
       property_ref: property_reference,
-      description: description,
+      description: description.squish,
       created_by_email: created_by_email
     )
     self.attributes = self.class.attributes_from_api(response)
