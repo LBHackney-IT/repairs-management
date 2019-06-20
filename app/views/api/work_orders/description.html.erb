@@ -18,27 +18,13 @@
       <%= @work_order.created.to_s(:govuk_date_time_short) %>
     </p>
 
-    <table>
-      <tbody class="govuk-body-xs hackney-body-xs govuk-!-font-weight-bold">
-        <th scope="row" class="govuk-!-font-weight-bold">Target:</th>
-          <td>
-            <%= @work_order.date_due.to_s(:govuk_date_time_short) %>
-          </td>
-      </tbody>
-    </table>
+    <p class="govuk-body-xs hackney-body-xs govuk-!-font-weight-bold">
+      Target: <%= @work_order.date_due.to_s(:govuk_date_time_short) %>
+    </p>
 
-    <table class="govuk-table hackney-appointment-info govuk-!-margin-bottom-0">
-      <tbody class="govuk-body-xs hackney-body-xs">
-        <tr>
-          <th scope="row">Caller:</th>
-          <td>
-            <%= format_caller_name(@work_order.repair_request.contact_name) %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p class="govuk-body-xs hackney-body-xs govuk-!-margin-top-0">
+    <p class="govuk-body-xs hackney-body-xs">
+      Caller: <%= format_caller_name(@work_order.repair_request.contact_name) %>
+      <br>
       <%= number_to_phone(@work_order.repair_request.telephone_number, pattern: /(\d{5})(\d{5,})$/, delimiter: " ") %>
     </p>
   </div>
