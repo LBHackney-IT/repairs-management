@@ -21,7 +21,10 @@
           <% if @repair_request.high_priority? %>
             Emergency and Immediate priority works orders do not require
             booking in DRS. The Planning Team will pick up these repairs and
-            allocate resources.
+            allocate the required resources. Please check that the Works Order
+            is visible in
+            <%= link_to "DRS", drs_url, target: "_blank", class: "govuk-link" %>
+            before raising another repair.
           <% else %>
             Please,
             <% if @repair_request.work_orders.first.is_dlo? %>
