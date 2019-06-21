@@ -205,6 +205,64 @@ describe Hackney::RepairRequest, '#save' do
 
     expect(repair_request.errors.added?("description", "Please provide a valid Problem")).to be_truthy
   end
+
+  it "removes extra whitespace from description" do
+    stub_request(:post, "https://hackneyrepairs/v1/repairs").with(
+      headers: {
+        "Content-Type" => "application/json-patch+json"
+      },
+      body: {
+        "contact": {
+          "name": "blablabla",
+          "telephoneNumber": "01234567890",
+        },
+        "workOrders": [
+          "sorCode": "08500820",
+        ],
+        "priority": "G",
+        "propertyReference": "00000018",
+        "problemDescription": "it's broken fix it please",
+        "lbhEmail": "pudding@hackney.gov.uk"
+      }.to_json
+    ).to_return(
+      status: 200,
+      body: {
+        "repairRequestReference" => "03210303",
+        "propertyReference" =>"00000018",
+        "problemDescription" => "it's broken fix it please",
+        "priority" => "G",
+        "contact" => {
+          "name" => "blablabla",
+          "telephoneNumber" => "01234567890"
+        },
+        "workOrders"=> [
+          {
+            "workOrderReference" => "01552718",
+            "sorCode" => "08500820",
+            "supplierReference" => "H01"
+          }
+        ]
+      }.to_json
+    )
+
+    repair_request = Hackney::RepairRequest.new(
+      contact_attributes: {
+        name: "blablabla",
+        telephone_number: "01234567890"
+      },
+      work_orders_attributes: [
+        { sor_code: "08500820" }
+      ],
+      priority: "G",
+      property_reference: "00000018",
+      description: "  it's broken   \n\n      fix it please  \n   ",
+      created_by_email: "pudding@hackney.gov.uk"
+    )
+
+    repair_request.save
+
+    expect(repair_request.description).to eq("it's broken fix it please")
+  end
 end
 
 describe Hackney::RepairRequest do
