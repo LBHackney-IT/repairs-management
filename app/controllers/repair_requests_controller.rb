@@ -20,11 +20,14 @@ class RepairRequestsController < ApplicationController
         sor_code: @keyfax_result&.sor_code,
         }],
       priority: @keyfax_result&.priority,
-      description: @keyfax_result&.fault_text
+      description: @problem_description
     )
 
     @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
     @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
+    @problem_description = @cautionary_contacts.map do |cautionary_contact|
+      cautionary_contact.alert_code
+    end.join("; ")
   end
 
   def create
@@ -38,6 +41,7 @@ class RepairRequestsController < ApplicationController
       else
         @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
         @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
+        @problem_description = @repair_request.description
         flash.now[:error] = @repair_request.errors["base"]
         format.html { render :new }
       end
