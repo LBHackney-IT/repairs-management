@@ -275,6 +275,13 @@ module HackneyAPI
       )
     end
 
+    def get_tasks_and_sor_codes_by_work_order_reference(reference)
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/work_orders/#{reference}/tasks"
+      )
+    end
+
     private
 
     def notes_endpoint(reference)
