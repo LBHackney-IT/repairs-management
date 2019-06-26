@@ -4,13 +4,13 @@
   </h1>
   <% if Flipper.enabled?(:raise_a_repair) %>
     <% if property.can_raise_a_repair? %>
-      <span class="govuk-heading-m hackney-page-header-raise-a-repair">
+      <span class="govuk-heading-m hackney-page-header-link-below">
         <strong>
           <%= link_to "Raise a repair on this #{property.description.downcase.singularize}", new_property_repair_request_path(property.reference), class: 'hackney-link hackney-link-no-visited' %>
         </strong>
       </span>
     <% else %>
-      <div class="govuk-warning-text hackney-page-header-no-raise-a-repair">
+      <div class="govuk-warning-text hackney-page-header-warning-below">
         <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
         <strong class="govuk-warning-text__text">
           <span class="govuk-warning-text__assistive">Warning</span>
