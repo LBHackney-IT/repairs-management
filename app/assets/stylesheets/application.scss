@@ -71,18 +71,18 @@ $govuk-breakpoints: (
   border-bottom: 1px solid govuk-colour("grey-2");
   padding-top: 10px;
   padding-bottom: 30px;
-}
 
-/* FIXME: this is a hack */
-.hackney-page-header-no-raise-a-repair {
-  margin-top: -20px;
-  margin-bottom: 20px;
-}
+  /* FIXME: this is a hack */
+  .hackney-page-header-link-below {
+    margin-top: -15px;
+    margin-bottom: 25px;
+  }
 
-/* FIXME: this is a hack */
-.hackney-page-header-raise-a-repair {
-  margin-top: -15px;
-  margin-bottom: 25px;
+  /* FIXME: this is a hack */
+  .hackney-page-header-warning-below {
+    margin-top: -20px;
+    margin-bottom: 20px;
+  }
 }
 
 .hackney-width-container {
