@@ -151,12 +151,14 @@ module HackneyAPI
     # Try to clear cache for requests that have this work order.
     # NOTE: there might be requests not covered here.
     def self.clear_work_orders_cache_for_property(property_reference)
+      property_reference.present? or raise "property reference required"
       API_REQUEST_CACHE.delete_matched "*work_order*#{property_reference}*"
     end
 
     # Try to clear cache for requests that have this repair request.
     # NOTE: there might be requests not covered here.
     def self.clear_repairs_cache_for_property(property_reference)
+      property_reference.present? or raise "property reference required"
       API_REQUEST_CACHE.delete_matched "*repairs*#{property_reference}*"
     end
 
