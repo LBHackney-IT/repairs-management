@@ -83,8 +83,12 @@ module HackneyAPI
     def get_work_order_notes(reference)
       request(
         http_method: :get,
-        endpoint: notes_endpoint(reference)
+        endpoint: "#{API_VERSION}/work_orders/#{reference}/notes"
       )
+    end
+
+    def self.clear_notes_cache_for_work_order(work_order_reference)
+      API_REQUEST_CACHE.expire("hackney-api-cache-/#{API_VERSION}/work_orders/#{work_order_reference}/notes", 0)
     end
 
     def post_work_order_note(work_order_reference, text, created_by_email)
@@ -100,7 +104,9 @@ module HackneyAPI
         }.to_json
       )
 
-      key = "hackney-api-cache-#{notes_endpoint(work_order_reference)}"
+      self.class.clear_notes_cache_for_work_order(work_order_reference)
+      value
+    end
 
       API_REQUEST_CACHE.expire(key, 0)
 
@@ -276,10 +282,6 @@ module HackneyAPI
     end
 
     private
-
-    def notes_endpoint(reference)
-      "#{API_VERSION}/work_orders/#{reference}/notes"
-    end
 
     def request(http_method:, endpoint:, cache_request: true, headers: {}, params: {})
       caller = caller_locations.first.label

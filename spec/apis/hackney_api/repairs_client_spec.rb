@@ -625,6 +625,18 @@ describe HackneyAPI::RepairsClient do
     end
   end
 
+  describe ".clear_notes_cache_for_work_order" do
+    it "works" do
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/work_orders/00000666/notes", "1")
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/work_orders/00000999/notes", "2")
+
+      HackneyAPI::RepairsClient.clear_notes_cache_for_work_order("00000666")
+
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders/00000666/notes")).to be_falsey
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders/00000999/notes")).to be_truthy
+    end
+  end
+
   describe '#post_work_order_note' do
 
     subject { api_client.post_work_order_note("00000001", "It's all fine", "Celia") }
