@@ -19,7 +19,7 @@ RSpec.describe 'Repair request' do
         }],
         "priority": "N",
         "propertyReference": "00000666",
-        "problemDescription": "CC It's broken",
+        "problemDescription": "CC Electric lighting: Communal; Block Lighting; 3; All lights out",
         "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
@@ -27,7 +27,7 @@ RSpec.describe 'Repair request' do
       body: {
         "repairRequestReference" => "03210303",
         "propertyReference" =>"00000666",
-        "problemDescription" => "CC It's broken",
+        "problemDescription" => "CC Electric lighting: Communal; Block Lighting; 3; All lights out", 
         "priority" => "N",
         "contact" => {
           "name" => "Miss Piggy",
@@ -298,7 +298,7 @@ RSpec.describe 'Repair request' do
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this dwelling'
 
-      expect(page).to have_content "CC"
+      page.should have_css('.hackney-cautionary-contact-table')
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
       expect(find_by_id('hackney_repair_request_description')).to have_content 'CC'
 
@@ -306,8 +306,9 @@ RSpec.describe 'Repair request' do
 
       visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
 
-      select "N - Normal"
-      fill_in "Problem description", with: "CC It's broken"
+      expect(find_by_id('hackney_repair_request_priority')).to have_content 'N - Normal'
+      expect(find_by_id('hackney_repair_request_description')).to have_content 'CC Electric lighting: Communal; Block Lighting; 3; All lights out'
+
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 

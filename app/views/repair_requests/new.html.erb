@@ -59,7 +59,7 @@
       <%= form.form_group :description do %>
         <%= form.label :description, "Problem description" %>
         <%= form.error_messages :description %>
-        <%= form.text_area :description, value: @problem_description, class: 'govuk-textarea govuk-!-margin-bottom-1', maxlength: 250, rows: 4, onkeyup: 'characterCount()' %>
+        <%= form.text_area :description, class: 'govuk-textarea govuk-!-margin-bottom-1', maxlength: 250, rows: 4, onkeyup: 'characterCount()' %>
         <span class="govuk-hint">
           You have <span id="counter" data-maximum-length="250">250</span> characters remaining.
           Anything over the limit should be added to the work order's notes.
