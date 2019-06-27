@@ -22,6 +22,8 @@ module HackneyAPI
 
     def initialize(opts = {})
       @base_url = opts.fetch(:base_url, ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL'))
+      # FIXME: good old normalization. naughty slashes breaking cache.
+      @base_url += "/" unless @base_url.ends_with?("/")
     end
 
     def get_work_orders
@@ -88,7 +90,7 @@ module HackneyAPI
     end
 
     def self.clear_notes_cache_for_work_order(work_order_reference)
-      API_REQUEST_CACHE.expire("hackney-api-cache-/#{API_VERSION}/work_orders/#{work_order_reference}/notes", 0)
+      API_REQUEST_CACHE.expire("hackney-api-cache-#{API_VERSION}/work_orders/#{work_order_reference}/notes", 0)
     end
 
     def post_work_order_note(work_order_reference, text, created_by_email)
@@ -111,11 +113,11 @@ module HackneyAPI
     # FIXME: maybe I'm gonna regret this?
     def self.clear_work_order_cache(reference)
       API_REQUEST_CACHE
-        .fetch("hackney-api-cache-/#{API_VERSION}/work_orders/#{reference}")
+        .fetch("hackney-api-cache-#{API_VERSION}/work_orders/#{reference}")
         &.dig("body", "propertyReference")
         &.tap {|x| clear_work_orders_cache_for_property(x) }
 
-      API_REQUEST_CACHE.expire("hackney-api-cache-/#{API_VERSION}/work_orders/#{reference}", 0)
+      API_REQUEST_CACHE.expire("hackney-api-cache-#{API_VERSION}/work_orders/#{reference}", 0)
     end
 
     def cancel_work_order(reference, created_by_email)
@@ -324,7 +326,7 @@ module HackneyAPI
       when HTTP_STATUS_NOT_FOUND
         raise RecordNotFoundError, [endpoint, params].join(', ')
       else
-        API_REQUEST_CACHE.expire("hackney-api-cache-/#{endpoint}", 0)
+        API_REQUEST_CACHE.expire("hackney-api-cache-#{endpoint}", 0)
         raise ApiError.new([endpoint, params, response.status, response.body].join(', '), response.body)
       end
     end
