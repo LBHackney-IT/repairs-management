@@ -14,17 +14,18 @@ class RepairRequestsController < ApplicationController
       end
     end
 
+    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
+    @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
+    cautionary_contact_alert_codes = @cautionary_contacts.map(&:alert_code).join("; ")
+
     @repair_request = Hackney::RepairRequest.new(
       contact_attributes: {},
       work_orders_attributes: [{
         sor_code: @keyfax_result&.sor_code,
         }],
       priority: @keyfax_result&.priority,
-      description: @keyfax_result&.fault_text
+      description: "#{cautionary_contact_alert_codes} #{@keyfax_result&.fault_text}"
     )
-
-    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
-    @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
   end
 
   def create

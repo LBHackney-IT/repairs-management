@@ -19,7 +19,7 @@ RSpec.describe 'Repair request' do
         }],
         "priority": "N",
         "propertyReference": "00000666",
-        "problemDescription": "It's broken",
+        "problemDescription": "CC Electric lighting: Communal; Block Lighting; 3; All lights out",
         "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
@@ -27,7 +27,7 @@ RSpec.describe 'Repair request' do
       body: {
         "repairRequestReference" => "03210303",
         "propertyReference" =>"00000666",
-        "problemDescription" => "It's broken",
+        "problemDescription" => "CC Electric lighting: Communal; Block Lighting; 3; All lights out",
         "priority" => "N",
         "contact" => {
           "name" => "Miss Piggy",
@@ -71,7 +71,7 @@ RSpec.describe 'Repair request' do
         }],
         "priority": "N",
         "propertyReference": "00000666",
-        "problemDescription": "It's broken",
+        "problemDescription": "CC It's broken",
         "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
@@ -298,15 +298,16 @@ RSpec.describe 'Repair request' do
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this dwelling'
 
-      expect(page).to have_content "CC"
+      expect(page).to have_css('.hackney-cautionary-contact-table')
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 
       stub_keyfax_get_results_response
 
       visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
 
-      select "N - Normal"
-      fill_in "Problem description", with: "It's broken"
+      expect(page).to have_select('Task priority', selected: 'N - Normal')
+      expect(page).to have_field('Problem description', with: 'CC Electric lighting: Communal; Block Lighting; 3; All lights out')
+
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 
@@ -340,20 +341,21 @@ RSpec.describe 'Repair request' do
       expect(page).to have_css(".hackney-property-warning-label-turquoise")
       click_on 'Raise a repair on this dwelling'
 
-      expect(page).to have_content "CC"
+      expect(page).to have_css('.hackney-cautionary-contact-table')
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 
       stub_post_bad_repair_request
 
       select "N - Normal"
       fill_in "SOR Code", with: "Abcdefg"
-      fill_in "Problem description", with: "It's broken"
+      fill_in "Problem description", with: "CC It's broken"
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 
       click_on 'Create works order'
 
       expect(current_path).to be == property_repair_requests_path('00000666')
+      expect(page).to have_field('Problem description', with: "CC It's broken")
     end
   end
 
