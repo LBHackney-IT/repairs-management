@@ -108,9 +108,28 @@ module HackneyAPI
       value
     end
 
-      API_REQUEST_CACHE.expire(key, 0)
+    # FIXME: maybe I'm gonna regret this?
+    def self.clear_work_order_cache(reference)
+      API_REQUEST_CACHE
+        .fetch("hackney-api-cache-/#{API_VERSION}/work_orders/#{reference}")
+        &.dig("body", "propertyReference")
+        &.tap {|x| clear_work_orders_cache_for_property(x) }
 
-      value
+      API_REQUEST_CACHE.expire("hackney-api-cache-/#{API_VERSION}/work_orders/#{reference}", 0)
+    end
+
+    def cancel_work_order(reference, created_by_email)
+      response = request(
+        http_method: :post,
+        endpoint: "#{API_VERSION}/work_orders/#{reference}/cancel",
+        headers: {"Content-Type" => "application/json-patch+json"},
+        params: {
+          lbhEmail: created_by_email
+        }.to_json
+      )
+
+      self.class.clear_work_order_cache(reference)
+      response
     end
 
     def get_work_order_reports(reference)

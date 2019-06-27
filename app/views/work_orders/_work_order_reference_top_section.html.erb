@@ -6,7 +6,7 @@
       </h1>
       <span class="govuk-heading-m hackney-page-header-link-below">
         <strong>
-          <a class="hackney-link hackney-link-no-visited" href="#">Cancel repair</a>
+          <%= link_to "Cancel repair", new_work_order_cancellation_path(work_order.reference), class: "hackney-link hackney-link-no-visited" %>
         </strong>
       </span>
     </div>
