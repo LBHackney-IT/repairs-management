@@ -652,9 +652,45 @@ describe HackneyAPI::RepairsClient do
                 lbhemail: "Celia" }.to_json)
         .to_return(status: 204)
 
+        expect(HackneyAPI::RepairsClient)
+          .to receive(:clear_notes_cache_for_work_order).with("00000001")
+
         expect(subject).to eq(nil)
       end
     end
+  end
+
+  describe ".clear_work_order_cache" do
+    it "works" do
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/work_orders/00000666",
+        { "body" => { "propertyReference" => "00000333" } })
+
+      API_REQUEST_CACHE.write("hackney-api-cache-/v1/work_orders/00000999", "still here")
+
+      expect(HackneyAPI::RepairsClient)
+        .to receive(:clear_work_orders_cache_for_property).with("00000333")
+
+      HackneyAPI::RepairsClient.clear_work_order_cache("00000666")
+
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders/00000666")).to be_falsey
+      expect(API_REQUEST_CACHE.exist?("hackney-api-cache-/v1/work_orders/00000999")).to be_truthy
+    end
+  end
+
+  describe "#cancel_work_order" do
+    it "works" do
+      stub_request(:post, "#{base_url}/#{api_version}/work_orders/00000666/cancel")
+        .with(
+          headers: { "Content-Type" => "application/json-patch+json" },
+          body: {
+            lbhEmail: "pudding"
+          }.to_json
+        ).to_return(status: 204)
+
+      expect(HackneyAPI::RepairsClient).to receive(:clear_work_order_cache)
+      expect(api_client.cancel_work_order("00000666", "pudding")).to eq(nil)
+    end
+
   end
 
   describe '#get_facilities_by_property_reference' do

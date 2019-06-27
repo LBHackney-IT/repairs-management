@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :work_orders, only: [:show], param: :ref do
     post :search, on: :collection
+    resource :cancellation, module: :work_orders, only: %i(new create)
   end
 
   resources :properties, only: [:show], param: :ref do

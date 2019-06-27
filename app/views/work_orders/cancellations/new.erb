@@ -1,0 +1,72 @@
+<% content_for :title, "Cancel Works Order: #{@work_order.reference}" %>
+<% content_for :back_button do %>
+  <%= link_to 'Back', work_order_path(@work_order.reference), class: 'govuk-back-link' %>
+<% end %>
+
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">
+        Cancel repair
+      </span>
+      <h1 class="govuk-heading-l">
+        Works order: <%= @work_order.reference %>
+      </h1>
+
+      <table class="govuk-table">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header" scope="col">
+            Property
+          </th>
+          <td class="govuk-table__cell">
+            <%= @work_order.property.description.singularize %>,
+            <%= @work_order.property.first_line_of_address %>
+          </td>
+        </tr>
+
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header" scope="col">
+            Trade
+          </th>
+          <td class="govuk-table__cell">
+            <%= @work_order.trade %>
+          </td>
+        </tr>
+
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header" scope="col">
+            Description
+          </th>
+          <td class="govuk-table__cell">
+            <%= @work_order.problem_description %>
+          </td>
+        </tr>
+      </table>
+
+      <!--
+      <h2 class="govuk-heading-m">
+        Reason to cancel
+      </h2>
+      -->
+
+      <%= govuk_form_with(
+        model: @cancellation,
+        url: work_order_cancellation_path(@work_order.reference),
+        local: true
+      ) do |form|
+      %>
+
+        <%= form.form_group :reason do %>
+          <%= form.label :reason, "Reason to cancel" %>
+          <%= form.error_messages :reason %>
+          <%= form.text_area :reason, class: 'govuk-textarea govuk-!-margin-bottom-1', maxlength: 200, rows: 4, onkeyup: 'characterCount(event)' %>
+          <span class="govuk-hint">
+            You have <span id="counter" data-maximum-length="200">200</span> characters remaining.
+          </span>
+        <% end %>
+
+        <%= form.submit 'Cancel repair', class: 'govuk-button hackney-focus-colour' %>
+      <% end %>
+    </div>
+  </div>
+</div>
