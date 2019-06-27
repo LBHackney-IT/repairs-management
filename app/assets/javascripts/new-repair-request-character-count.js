@@ -1,5 +1,5 @@
-function characterCount() {
-  var descriptionText = document.getElementById("hackney_repair_request_description");
+function characterCount(event) {
+  var descriptionText = event.target;
   var counter = document.getElementById("counter");
   var maxLength = counter.dataset.maximumLength;
 
