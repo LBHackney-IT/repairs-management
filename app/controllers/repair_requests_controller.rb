@@ -70,10 +70,6 @@ class RepairRequestsController < ApplicationController
     end
   end
 
-  def current_user_email
-    session[:current_user]["email"]
-  end
-
   def keyfax_session_started?
     params["guid"].present?
   end
