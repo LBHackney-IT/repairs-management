@@ -27,6 +27,7 @@ module Hackney
       attr_accessor :property
 
       def fetch_work_orders(property_references, years_ago)
+        property_references.present? or return []
         Hackney::WorkOrder.for_property(property_references: property_references,
                                         date_from: (Date.today - years_ago.years),
                                         date_to: Date.tomorrow)
