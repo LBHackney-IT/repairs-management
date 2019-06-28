@@ -11,6 +11,8 @@ RSpec.describe 'Work Order Cancellation' do
     #
     # stub minimum possible
     #
+
+    # get_work_order
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666")
       .to_return(
         status: 200,
@@ -26,6 +28,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
+    # get_property
     stub_request(:get, "#{API_URL}/v1/properties/00000333")
       .to_return(
         status: 200,
@@ -36,6 +39,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
+    # get_cautionary_contact_by_property_reference
     stub_request(:get, "#{API_URL}/v1/cautionary_contact/?reference=00000333")
       .to_return(
         status: 200,
@@ -45,6 +49,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
+    # get_repair_request
     stub_request(:get, "#{API_URL}/v1/repairs/00000999")
       .to_return(
         status: 200,
@@ -55,21 +60,27 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
+    # get_work_order_notes
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666/notes")
       .to_return(status: 200, body: "[]")
 
+    # get_work_order_appointments
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666/appointments")
       .to_return(status: 200, body: "[]")
 
+    # get_work_order_appointments_latest
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666/appointments/latest")
       .to_return(status: 404)
 
+    # get_property_block_work_orders_by_trade
     stub_request(:get, "#{API_URL}/v1/properties/00000333/block/work_orders?since=25-04-2006&trade=Plumbing&until=13-06-2006")
       .to_return(status: 200, body: "[]")
 
+    # get_property_hierarchy
     stub_request(:get, "#{API_URL}/v1/properties/00000333/hierarchy")
       .to_return(status: 200, body: "[]")
 
+    # get_facilities_by_property_reference
     stub_request(:get, "#{API_URL}/v1/properties/00000333/facilities")
       .to_return(
         status: 200,
@@ -78,6 +89,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
+    # get_work_order_reports
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666?include=mobilereports")
       .to_return(
         status: 200,
@@ -105,6 +117,8 @@ RSpec.describe 'Work Order Cancellation' do
     #
     # stub the change of state
     #
+
+    # cancel_work_order
     stub_request(:post, "#{API_URL}/v1/work_orders/00000666/cancel")
       .with(
         body: {
@@ -112,6 +126,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json, 
       ).to_return(status: 200, body: "{}")
 
+    # post_work_order_note
     stub_request(:post, "#{API_URL}/v1/notes")
       .with(
         body: {
@@ -122,6 +137,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       ).to_return(status: 200, body: "{}")
 
+    # get_work_order
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666")
       .to_return(
         status: 200,
@@ -137,6 +153,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
+    # get_work_order_notes
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666/notes")
       .to_return(
         status: 200,
