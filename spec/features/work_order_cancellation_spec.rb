@@ -112,7 +112,7 @@ RSpec.describe 'Work Order Cancellation' do
     expect(page).to have_content("Trade Plumbing")
     expect(page).to have_content("Description It's broken")
 
-    fill_in "Reason to cancel", with: "Reasonable Reason"
+    fill_in "Reason for cancelling", with: "Reasonable Reason"
 
     #
     # stub the change of state

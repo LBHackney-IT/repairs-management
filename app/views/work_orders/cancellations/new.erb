@@ -51,7 +51,7 @@
       %>
 
         <%= form.form_group :reason do %>
-          <%= form.label :reason, "Reason to cancel" %>
+          <%= form.label :reason, "Reason for cancelling" %>
           <%= form.error_messages :reason %>
           <%= form.text_area :reason, class: 'govuk-textarea govuk-!-margin-bottom-1', maxlength: 200, rows: 4, onkeyup: 'characterCount(event)' %>
           <span class="govuk-hint">
