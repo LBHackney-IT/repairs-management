@@ -3,15 +3,15 @@ require 'rails_helper'
 RSpec.describe 'Work Order Cancellation' do
   include Helpers::Authentication
 
+  API_URL = ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL')
+
   scenario 'Cancel a Work Order correctly', :js do
     sign_in
-
-    # FIXME: s/hackneyrepairs/#{ ENV["..."] }/g
 
     #
     # stub minimum possible
     #
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666")
       .to_return(
         status: 200,
         body: {
@@ -26,7 +26,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000333")
+    stub_request(:get, "#{API_URL}/v1/properties/00000333")
       .to_return(
         status: 200,
         body: {
@@ -36,7 +36,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
-    stub_request(:get, "https://hackneyrepairs/v1/cautionary_contact/?reference=00000333")
+    stub_request(:get, "#{API_URL}/v1/cautionary_contact/?reference=00000333")
       .to_return(
         status: 200,
         body: {
@@ -45,7 +45,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
-    stub_request(:get, "https://hackneyrepairs/v1/repairs/00000999")
+    stub_request(:get, "#{API_URL}/v1/repairs/00000999")
       .to_return(
         status: 200,
         body: {
@@ -55,22 +55,22 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666/notes")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666/notes")
       .to_return(status: 200, body: "[]")
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666/appointments")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666/appointments")
       .to_return(status: 200, body: "[]")
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666/appointments/latest")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666/appointments/latest")
       .to_return(status: 404)
 
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000333/block/work_orders?since=25-04-2006&trade=Plumbing&until=13-06-2006")
+    stub_request(:get, "#{API_URL}/v1/properties/00000333/block/work_orders?since=25-04-2006&trade=Plumbing&until=13-06-2006")
       .to_return(status: 200, body: "[]")
 
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000333/hierarchy")
+    stub_request(:get, "#{API_URL}/v1/properties/00000333/hierarchy")
       .to_return(status: 200, body: "[]")
 
-    stub_request(:get, "https://hackneyrepairs/v1/properties/00000333/facilities")
+    stub_request(:get, "#{API_URL}/v1/properties/00000333/facilities")
       .to_return(
         status: 200,
         body: {
@@ -78,7 +78,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666?include=mobilereports")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666?include=mobilereports")
       .to_return(
         status: 200,
         body: {
@@ -105,14 +105,14 @@ RSpec.describe 'Work Order Cancellation' do
     #
     # stub the change of state
     #
-    stub_request(:post, "https://hackneyrepairs/v1/work_orders/00000666/cancel")
+    stub_request(:post, "#{API_URL}/v1/work_orders/00000666/cancel")
       .with(
         body: {
           lbhEmail: Helpers::Authentication::EMAIL
         }.to_json, 
       ).to_return(status: 200, body: "{}")
 
-    stub_request(:post, "https://hackneyrepairs/v1/notes")
+    stub_request(:post, "#{API_URL}/v1/notes")
       .with(
         body: {
           objectKey: "uhorder",
@@ -122,7 +122,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       ).to_return(status: 200, body: "{}")
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666")
       .to_return(
         status: 200,
         body: {
@@ -137,7 +137,7 @@ RSpec.describe 'Work Order Cancellation' do
         }.to_json
       )
 
-    stub_request(:get, "https://hackneyrepairs/v1/work_orders/00000666/notes")
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666/notes")
       .to_return(
         status: 200,
         body: [
