@@ -170,8 +170,9 @@ RSpec.describe 'Work Order Cancellation' do
         ].to_json
       )
 
-    click_on "Cancel repair"
-
+    accept_alert "Warning! This is a DLO work order without a Servitor reference. Do you wish to continue?" do
+      click_on "Cancel repair"
+    end
 
     expect(page).to have_content("Repair cancelled")
     expect(page).to have_content("Work order 00000666 has been cancelled")
