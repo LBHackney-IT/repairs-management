@@ -4,11 +4,14 @@
       <h1 class="govuk-heading-l">
         Works order: <%= work_order.reference %>
       </h1>
-      <span class="govuk-heading-m hackney-page-header-link-below">
-        <strong>
-          <%= link_to "Cancel repair", new_work_order_cancellation_path(work_order.reference), class: "hackney-link hackney-link-no-visited" %>
-        </strong>
-      </span>
+      <% # FIXME: decide logic behind this? %>
+      <% if work_order.work_order_status != "700" %>
+        <span class="govuk-heading-m hackney-page-header-link-below">
+          <strong>
+            <%= link_to "Cancel repair", new_work_order_cancellation_path(work_order.reference), class: "hackney-link hackney-link-no-visited" %>
+          </strong>
+        </span>
+      <% end %>
     </div>
     <div class="govuk-grid-column-one-half hackney-grid-column-one-half">
       <h1 class="govuk-caption-m hackney-work-order-references hackney-body-m">
