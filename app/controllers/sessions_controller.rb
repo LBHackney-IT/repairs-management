@@ -25,7 +25,7 @@ class SessionsController < ApplicationController
     if review_app_login? && review_app_compare(params[:username], params[:password])
       session[:current_user] = {
         name: 'Review User',
-        email: ENV.fetch('REVIEW_USER_EMAIL')
+        email: ENV.fetch('REVIEW_USER_EMAIL') { raise "No REVIEW_USER_EMAIL provided" }
       }
       flash[:notice] = ["You have logged in as Review User"]
       redirect_to root_path
