@@ -15,7 +15,7 @@ RSpec.describe Hackney::WorkOrder::Cancellation, type: :model do
           body: {
             objectKey: "uhorder",
             objectReference: "00000666",
-            text: "Blah",
+            text: "Cancelled in Repairs Hub: Blah",
             lbhemail: "pudding@hackney.gov.uk"
           }.to_json
         ).to_return(status: 200, body: "{}")

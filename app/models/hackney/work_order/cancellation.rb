@@ -10,7 +10,11 @@ class Hackney::WorkOrder::Cancellation
   def save
     api = HackneyAPI::RepairsClient.new
     api.cancel_work_order(work_order_reference, created_by_email)
-    api.post_work_order_note(work_order_reference, reason, created_by_email)
+    api.post_work_order_note(
+      work_order_reference,
+      "Cancelled in Repairs Hub: #{reason}",
+      created_by_email
+    )
     true
   end
 end

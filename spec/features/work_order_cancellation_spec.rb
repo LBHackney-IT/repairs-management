@@ -133,7 +133,7 @@ RSpec.describe 'Work Order Cancellation' do
         body: {
           objectKey: "uhorder",
           objectReference: "00000666",
-          text: "Reasonable Reason",
+          text: "Cancelled in Repairs Hub: Reasonable Reason",
           lbhemail: Helpers::Authentication::EMAIL
         }.to_json
       ).to_return(status: 200, body: "{}")
@@ -163,7 +163,7 @@ RSpec.describe 'Work Order Cancellation' do
           {
             "workOrderReference": "00000666",
             "noteId": 6666666,
-            "text": "Reasonable Reason",
+            "text": "Cancelled in Repairs Hub: Reasonable Reason",
             "loggedAt": "2006-06-06T06:06:06",
             "loggedBy": "Pudding"
           }
@@ -190,6 +190,6 @@ RSpec.describe 'Work Order Cancellation' do
 
     click_on "Notes and appointments"
     expect(page).to have_content("by Pudding")
-    expect(page).to have_content("Reasonable Reason")
+    expect(page).to have_content("Cancelled in Repairs Hub: Reasonable Reason")
   end
 end
