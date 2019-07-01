@@ -12,7 +12,8 @@ class WorkOrders::CancellationsController < ApplicationController
       if @cancellation.save
         format.html { render :created }
       else
-        format.html { render :new, flash: { error: ["There was an error cancelling the work order."] } }
+        flash.now[:error] = @cancellation.errors["base"]
+        format.html { render :new }
       end
     end
   end
