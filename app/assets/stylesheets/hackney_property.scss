@@ -1,34 +1,25 @@
-.hackney-warning-labels {
+.hackney-property-alerts {
+  @extend %govuk-body-s;
+
   width: 50%;
-}
+  color: white;
+  padding: 0;
 
-.hackney-property-warning-label {
-  padding: 4px 8px;
-  color: white !important;
-  width: 100%;
-}
+  li {
+    margin-bottom: 5px;
+    padding: 4px 8px;
+  }
 
-.hackney-property-warning-label-turquoise {
-  background: hackney-colour("housing-2");
-}
+  li:last-child {
+    margin-bottom: 0;
+  }
 
-.hackney-property-warning-label-orange {
-  background: hackney-colour("warning");
-}
+  li.bg-orange {
+    background: hackney-colour("warning");
+  }
 
-.hackney-cautionary-contact {
-  color: white !important;
-}
-
-.hackney-cautionary-contact-table {
-  background-color: hackney-colour("warning");
-  display: inline-block;
-  margin: 10px;
-  width: 100%;
-  padding: 4px 8px;
-
-  th {
-    vertical-align: top;
+  li.bg-turquoise {
+    background: hackney-colour("housing-2");
   }
 }
 

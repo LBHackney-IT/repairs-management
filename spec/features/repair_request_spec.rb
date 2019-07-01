@@ -190,9 +190,10 @@ RSpec.describe 'Repair request' do
     #
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
       .to_return(status: 200, body: {
-      "results": [
-        { "alertCode" => "CC" }
-      ]
+      "results": {
+        "alertCodes": [ "CC" ],
+        "callerNotes": nil
+      }
     }.to_json)
     #
     # hierarchy
@@ -260,14 +261,13 @@ RSpec.describe 'Repair request' do
       }.to_json
     )
 
-    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=207044451").to_return(
-      status: 200,
-      body: {
-      "results": [
-        { "alertCode" => "CC" }
-        ]
-      }.to_json
-    )
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=207044451")
+      .to_return(status: 200, body: {
+      "results": {
+        "alertCodes": [ "CC" ],
+        "callerNotes": nil
+      }
+    }.to_json)
 
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451/hierarchy").to_return(
       status: 200,
@@ -295,10 +295,10 @@ RSpec.describe 'Repair request' do
 
       stub_keyfax_get_startup_url
 
-      expect(page).to have_css(".hackney-property-warning-label-turquoise")
+      expect(page).to have_text("Tenure: Secure")
       click_on 'Raise a repair on this dwelling'
 
-      expect(page).to have_css('.hackney-cautionary-contact-table')
+      expect(page).to have_content("Alert: CC")
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 
       stub_keyfax_get_results_response
@@ -329,7 +329,7 @@ RSpec.describe 'Repair request' do
       expect(page).to have_link "01552718", href: work_order_path("01552718")
     end
 
-    scenario 'Raise a repair unsuccessfully', :js do
+    scenario 'Fail to raise a repair', :js do
       stub_property_00000666
       stub_post_repair_request
 
@@ -338,10 +338,10 @@ RSpec.describe 'Repair request' do
 
       stub_keyfax_get_startup_url
 
-      expect(page).to have_css(".hackney-property-warning-label-turquoise")
+      expect(page).to have_text("Tenure: Secure")
       click_on 'Raise a repair on this dwelling'
 
-      expect(page).to have_css('.hackney-cautionary-contact-table')
+      expect(page).to have_content('Alert: CC')
       expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 
       stub_post_bad_repair_request
@@ -359,13 +359,13 @@ RSpec.describe 'Repair request' do
     end
   end
 
-  context 'Leasehold RTB tenure' do
+  context 'Temp Annex tenure' do
     scenario 'Cannot raise repair', :js do
       sign_in
       stub_property_temp_annex
       visit property_path('207044451')
 
-      expect(page).to have_css(".hackney-property-warning-label-orange")
+      expect(page).to have_text("Tenure: Temp Annex")
       expect(page).to have_text("Cannot raise a repair on this property due to tenure type")
     end
   end

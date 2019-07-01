@@ -1,25 +1,24 @@
-<div class="hackney-warning-labels">
-  <%
-  clazz = "govuk-body-s hackney-property-warning-label"
-  if property.can_raise_a_repair?
-  clazz += " hackney-property-warning-label-turquoise"
-  else
-  clazz += " hackney-property-warning-label-orange"
-  end
-  %>
-  <% if property.tenure.present? %>
-  <p class="<%= clazz %>">
-    <%= property.tenure %>
-  </p>
-  <% end %>
+<%# FIXME: partial referencing controller's instance variables %>
+<ul class="hackney-property-alerts">
+  <li class="bg-<%= property.can_raise_a_repair? ? "turquoise" : "orange" %>">
+    Tenure: <%= property.tenure %>
+  </li>
 
   <% if property.is_tmo? %>
-  <p class="govuk-body-s hackney-property-warning-label hackney-property-warning-label-orange">
-    <%= property.letting_area %>
-  </p>
+    <li class="bg-orange">
+      <%= property.letting_area %>
+    </li>
   <% end %>
 
-  <% if @cautionary_contacts.present? %>
-    <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
+  <% if @cautionary_contact.alert_codes.present? %>
+    <li class="bg-orange">
+      Alert: <strong><%= @cautionary_contact.alert_codes.join(" ") %></strong>
+    </li>
   <% end %>
-</div>
+</ul>
+
+<% @cautionary_contact.caller_notes.each do |note| %>
+  <p class="govuk-body-s color-secondary">
+    Caller notes: <%= note %>
+  </p>
+<% end %>

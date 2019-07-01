@@ -1,28 +1,18 @@
 class Hackney::CautionaryContact
   include ActiveModel::Model
 
-  attr_accessor :property_reference, :contact_number, :title, :forename, :surname, :caller_notes, :alert_code
+  attr_accessor :alert_codes, :caller_notes
 
   def self.find_by_property_reference(property_reference)
     response = HackneyAPI::RepairsClient.new.get_cautionary_contact_by_property_reference(property_reference)
-    response["results"].map do |attributes|
-      Hackney::CautionaryContact.new_from_api(attributes)
-    end
-  end
-
-  def self.new_from_api(attributes)
-    new(attributes_from_api(attributes))
+    new(attributes_from_api(response))
   end
 
   def self.attributes_from_api(attributes)
     {
-      property_reference: attributes['propertyReference'],
-      contact_number: attributes['contactNo'],
-      title: attributes['title'],
-      forename: attributes['forenames'],
-      surname: attributes['surename'],
-      caller_notes: attributes['callerNotes'],
-      alert_code: attributes['alertCode']
+      # FIXME: hack that normalizes Strings into Arrays
+      alert_codes: [attributes["results"]["alertCodes"]].flatten.select(&:present?),
+      caller_notes: [attributes["results"]["callerNotes"]].flatten.select(&:present?)
     }
   end
 end

@@ -14,9 +14,9 @@ class RepairRequestsController < ApplicationController
       end
     end
 
-    @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
+    @cautionary_contact = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
     @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
-    cautionary_contact_alert_codes = @cautionary_contacts.map(&:alert_code).join("; ")
+    cautionary_contact_alert_codes = @cautionary_contact.alert_codes.join("; ")
 
     @repair_request = Hackney::RepairRequest.new(
       contact_attributes: {},
@@ -37,7 +37,7 @@ class RepairRequestsController < ApplicationController
         issue_dlo_work_orders
         format.html { render :created }
       else
-        @cautionary_contacts = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
+        @cautionary_contact = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
         @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
         flash.now[:error] = @repair_request.errors["base"]
         format.html { render :new }

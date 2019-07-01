@@ -24,9 +24,7 @@ RSpec.describe 'Property' do
     #
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
       .to_return(status: 200, body: {
-      "results": [
-
-      ]
+      "results": {}
     }.to_json)
 
     #
