@@ -23,6 +23,7 @@ RSpec.describe 'Work Order Cancellation' do
           trade: "Plumbing",
           problemDescription: "It's broken",
           workOrderStatus: "200",
+          supplierReference: "H01",
           created: "2006-06-06T06:06:06",
           dateDue: "2006-06-06T06:06:06",
         }.to_json
@@ -148,6 +149,7 @@ RSpec.describe 'Work Order Cancellation' do
           trade: "Plumbing",
           problemDescription: "It's broken",
           workOrderStatus: "700",
+          supplierReference: "H01",
           created: "2006-06-06T06:06:06",
           dateDue: "2006-06-06T06:06:06",
         }.to_json
@@ -169,6 +171,19 @@ RSpec.describe 'Work Order Cancellation' do
       )
 
     click_on "Cancel repair"
+
+
+    expect(page).to have_content("Repair cancelled")
+    expect(page).to have_content("Work order 00000666 has been cancelled")
+    expect(page).to have_content("This works order did not have a Servitor reference.")
+
+    expect(page).to have_link("00000666", href: work_order_path("00000666"))
+
+    expect(page).to have_link("Raise new repair on 1 Madeup Road", href: new_property_repair_request_path("00000333"))
+    expect(page).to have_link("Back to 1 Madeup Road", href: property_path("00000333"))
+    expect(page).to have_link("Start a new search", href: root_path)
+
+    click_on "00000666"
 
     expect(current_path).to be == work_order_path("00000666")
     expect(page).to have_content("Status: Cancel Order")

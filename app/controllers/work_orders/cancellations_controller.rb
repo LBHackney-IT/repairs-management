@@ -10,7 +10,7 @@ class WorkOrders::CancellationsController < ApplicationController
 
     respond_to do |format|
       if @cancellation.save
-        format.html { redirect_to work_order_url(@cancellation.work_order_reference) }
+        format.html { render :created }
       else
         format.html { render :new, flash: { error: ["There was an error cancelling the work order."] } }
       end
