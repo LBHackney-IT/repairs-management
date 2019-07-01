@@ -311,7 +311,8 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Property details'
     expect(page).to have_content 'Homerton High Street 12 Banister House'
     expect(page).to have_content 'Lordship South TMO (SN) H2556'
-    expect(page).to have_content 'CC: Do not attend'
+    expect(page).to have_content 'Alert: CC'
+    expect(page).to have_content 'Caller notes: Do not attend, bad singing'
     expect(page).to have_content 'SA'
 
     expect(page).to have_css(".hackney-tabs-list > li > a", count: 2)

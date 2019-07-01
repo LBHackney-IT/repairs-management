@@ -813,26 +813,12 @@ module Helpers
 
     def cautionary_contact_response_body
       {
-        "results": [
-          {
-            "propertyReference" => "00014665",
-            "contactNo" => "01234567",
-            "title" => "MR",
-            "forenames" => "Tom",
-            "surename" => "Jones",
-            "callerNotes" => "Do not attend, bad singing",
-            "alertCode" => "CC"
-          },
-          {
-            "propertyReference" => "00014665",
-            "contactNo" => "01234567",
-            "title" => "MR",
-            "forenames" => "Tom",
-            "surename" => "Jones",
-            "callerNotes" => "",
-            "alertCode" => "SA"
-          }
-        ]
+        "results": {
+          "alertCodes": %w[CC SA],
+          "callerNotes": [
+            "Do not attend, bad singing"
+          ]
+        }
       }
     end
 

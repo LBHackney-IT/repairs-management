@@ -13,11 +13,7 @@
         <%= @property.description.singularize %>: <%= @property.first_line_of_address %>
       </h1>
 
-      <div class="hackney-warning-labels">
-        <% if @cautionary_contacts.present? %>
-          <%= render :partial => 'shared/cautionary_contact_table', locals: { cautionary_contacts: @cautionary_contacts } %>
-        <% end %>
-      </div>
+      <%= render partial: "shared/tenure_and_cautionary_contact_info", locals: { property: @property } %>
 
       <h2 class="govuk-heading-m">
         Repair task details
