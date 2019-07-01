@@ -14,28 +14,24 @@
         </div>
       </div>
 
-      <div class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-        <strong class="govuk-warning-text__text">
-          <span class="govuk-warning-text__assistive">Warning</span>
-          <% if @repair_request.high_priority? %>
-            Emergency and Immediate priority works orders do not require
-            booking in DRS. The Planning Team will pick up these repairs and
-            allocate the required resources. Please check that the Works Order
-            is visible in
-            <%= link_to "DRS", drs_url, target: "_blank", class: "govuk-link" %>
-            before raising another repair.
+      <%= render layout: "shared/govuk_warning_text" do %>
+        <% if @repair_request.high_priority? %>
+          Emergency and Immediate priority works orders do not require
+          booking in DRS. The Planning Team will pick up these repairs and
+          allocate the required resources. Please check that the Works Order
+          is visible in
+          <%= link_to "DRS", drs_url, target: "_blank", class: "govuk-link" %>
+          before raising another repair.
+        <% else %>
+          Please,
+          <% if @repair_request.work_orders.first.is_dlo? %>
+            <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %>
           <% else %>
-            Please,
-            <% if @repair_request.work_orders.first.is_dlo? %>
-              <%= link_to "open DRS", drs_url, target: "_blank", class: "govuk-link" %>
-            <% else %>
-              open UH
-            <% end %>
-            to book an appointment!
+            open UH
           <% end %>
-        </strong>
-      </div>
+          to book an appointment!
+        <% end %>
+      <% end %>
 
       <ul class="govuk-list govuk-!-margin-top-9">
         <li>
