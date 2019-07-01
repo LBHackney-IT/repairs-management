@@ -57,7 +57,6 @@ class Hackney::RepairRequest
     self.attributes = self.class.attributes_from_api(response)
     true
 
-    # FIXME: rescue is grabbing VCR errors
   rescue HackneyAPI::RepairsClient::ApiError => e
     self.class.errors_from_api(e.errors).each do |key, list|
       list.each do |msg|
