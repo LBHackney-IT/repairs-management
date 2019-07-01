@@ -59,7 +59,18 @@
           </span>
         <% end %>
 
-        <%= form.submit 'Cancel repair', class: 'govuk-button hackney-focus-colour' %>
+        <%=
+          confirm =
+            if @work_order.is_dlo? && @work_order.servitor_reference.blank?
+              "Warning! This is a DLO work order without a Servitor reference. Do you wish to continue?"
+            end
+
+          form.submit(
+            'Cancel repair',
+            class: 'govuk-button hackney-focus-colour',
+            data: { confirm: confirm }
+          )
+        %>
       <% end %>
     </div>
   </div>
