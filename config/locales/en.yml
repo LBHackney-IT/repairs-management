@@ -30,6 +30,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  errors:
+    messages:
+      blank: "%{attribute} cannot be blank."
+
   activemodel:
     attributes:
       hackney/repair_request/priority:
