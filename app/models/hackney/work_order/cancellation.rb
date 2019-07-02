@@ -21,9 +21,16 @@ class Hackney::WorkOrder::Cancellation
     )
     true
 
+  rescue HackneyAPI::RepairsClient::TimeoutError => e
+    # FIXME: this is duplicated in RepairRequest
+    errors.add("base", "The Hackney API timed out. Please, contact the development team.")
+    false
+
   rescue HackneyAPI::RepairsClient::ApiError => e
-    e.errors.each do |x|
-      errors.add("base", x["userMessage"])
+    # ensure we always have an array
+    [e.errors].flatten.each do |x|
+      # try hard to get a message
+      errors.add("base", x["message"] || x["userMessage"] || x["developerMessage"])
     end
     false
   end

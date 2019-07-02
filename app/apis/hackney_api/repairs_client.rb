@@ -4,6 +4,7 @@ module HackneyAPI
 
     class HackneyApiError < StandardError; end
     class RecordNotFoundError < HackneyApiError; end
+    class TimeoutError < HackneyApiError; end
     class ApiError < HackneyApiError;
       attr_reader :errors
 
@@ -325,6 +326,8 @@ module HackneyAPI
         response.body
       when HTTP_STATUS_NOT_FOUND
         raise RecordNotFoundError, [endpoint, params].join(', ')
+      when 504
+        raise TimeoutError, [endpoint, params].join(', ')
       else
         API_REQUEST_CACHE.expire("hackney-api-cache-#{endpoint}", 0)
         raise ApiError.new([endpoint, params, response.status, response.body].join(', '), response.body)
