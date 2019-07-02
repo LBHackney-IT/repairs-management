@@ -57,6 +57,11 @@ class Hackney::RepairRequest
     self.attributes = self.class.attributes_from_api(response)
     true
 
+  rescue HackneyAPI::RepairsClient::TimeoutError => e
+    # FIXME: this is duplicated in RepairRequest
+    errors.add("base", "The Hackney API timed out. Please, contact the development team.")
+    false
+
   rescue HackneyAPI::RepairsClient::ApiError => e
     self.class.errors_from_api(e.errors).each do |key, list|
       list.each do |msg|
@@ -84,7 +89,6 @@ class Hackney::RepairRequest
 
   private
 
-  # TODO: API should give better error descriptions
   def add_nested_errors
     errors.each do |key, msg|
       case key
@@ -96,13 +100,14 @@ class Hackney::RepairRequest
     end
   end
 
-  # TODO: API should give better error descriptions
   def self.errors_from_api(response)
     err = {}
-    response.each do |x|
+    # ensure we always have an array.
+    [response].flatten.each do |x|
       key = parse_json_pointer(x["source"])
       err[key] ||= []
-      err[key] << x["userMessage"]
+      # try hard to get a message
+      err[key] << (x["message"] || x["userMessage"] || x["developerMessage"])
     end
     err
   end
