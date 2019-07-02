@@ -341,7 +341,7 @@ module HackneyAPI
         end
         faraday.proxy = ENV['QUOTAGUARDSTATIC_URL']
         faraday.response :json
-        faraday.response :logger, Rails.logger unless Rails.env.test?
+        faraday.response :logger, Rails.logger, bodies: true
         faraday.adapter Faraday.default_adapter
       end
     end
