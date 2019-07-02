@@ -170,9 +170,13 @@ RSpec.describe 'Work Order Cancellation' do
         ].to_json
       )
 
-    accept_alert "Warning! This is a DLO work order without a Servitor reference. Do you wish to continue?" do
-      click_on "Cancel repair"
-    end
+    expect(page).to have_content <<~EOF.squish
+      This works order does not have a Servitor reference. Please wait 30
+      minutes and then cancel this works order. If the work was due to take
+      place today. Please call the Planners before cancelling the Works Order.
+    EOF
+
+    click_on "Cancel repair"
 
     expect(page).to have_content("Repair cancelled")
     expect(page).to have_content("Work order 00000666 has been cancelled")
