@@ -62,8 +62,8 @@
         <% if @work_order.is_dlo? && @work_order.servitor_reference.blank? %>
           <%= render layout: "shared/govuk_warning_text" do %>
             This works order does not have a Servitor reference. Please wait 30
-            minutes and then cancel this works order. If the work was due to take
-            place today. Please call the Planners before cancelling the Works
+            minutes and then cancel this Works Order. If the work was due to take
+            place today, please call the Planners before cancelling the Works
             Order.
           <% end %>
         <% end %>
