@@ -171,7 +171,7 @@ RSpec.describe 'Work Order Cancellation' do
       )
 
     expect(page).to have_content <<~EOF.squish
-      This works order does not have a Servitor reference. Please wait 30
+      This Works Order does not have a Servitor reference. Please wait 30
       minutes and then cancel this Works Order. If the work was due to take
       place today, please call the Planners before cancelling the Works Order.
     EOF
@@ -180,7 +180,7 @@ RSpec.describe 'Work Order Cancellation' do
 
     expect(page).to have_content("Repair cancelled")
     expect(page).to have_content("Work order 00000666 has been cancelled")
-    expect(page).to have_content("This works order did not have a Servitor reference.")
+    expect(page).to have_content("This Works Order did not have a Servitor reference.")
 
     expect(page).to have_link("00000666", href: work_order_path("00000666"))
 
