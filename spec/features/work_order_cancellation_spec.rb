@@ -172,8 +172,8 @@ RSpec.describe 'Work Order Cancellation' do
 
     expect(page).to have_content <<~EOF.squish
       This works order does not have a Servitor reference. Please wait 30
-      minutes and then cancel this works order. If the work was due to take
-      place today. Please call the Planners before cancelling the Works Order.
+      minutes and then cancel this Works Order. If the work was due to take
+      place today, please call the Planners before cancelling the Works Order.
     EOF
 
     click_on "Cancel repair"
