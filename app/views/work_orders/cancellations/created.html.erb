@@ -20,7 +20,7 @@
       <% if @work_order.is_dlo? %>
         <% if @work_order.servitor_reference.blank? %>
           <%= render layout: "shared/govuk_warning_text" do %>
-            This works order did not have a Servitor reference.
+            This Works Order did not have a Servitor reference.
           <% end %>
         <% end %>
       <% else %>
