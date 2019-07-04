@@ -32,21 +32,36 @@ class RepairRequestsController < ApplicationController
     @repair_request = Hackney::RepairRequest.new(repair_request_params)
     @repair_request.property_reference = @property.reference
     @repair_request.created_by_email = current_user_email
+
     respond_to do |format|
-      if @repair_request.save
-        issue_dlo_work_orders
-        format.html { render :created }
-      else
+      if params[:add_work_order]
         @cautionary_contact = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
         @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
-        flash.now[:error] = @repair_request.errors["base"]
+        @repair_request.work_orders << Hackney::WorkOrder.new
         format.html { render :new }
+      else
+        # cleanup blank stuff
+        @repair_request.work_orders.tap do |x|
+          x.reject! {|y| y.sor_code.blank? }
+          x << Hackney::WorkOrder.new if x.blank?
+        end
+
+        if @repair_request.save
+          issue_dlo_work_orders
+          format.html { render :created }
+        else
+          @cautionary_contact = Hackney::CautionaryContact.find_by_property_reference(@property.reference)
+          @keyfax_session = Hackney::KeyfaxSession.create(current_page_url: new_property_repair_request_url(@property.reference))
+          flash.now[:error] = @repair_request.errors["base"]
+          format.html { render :new }
+        end
       end
     end
   end
 
   private
 
+  # FIXME: work_orders and tasks are mixed up
   def issue_dlo_work_orders
     n_errors = 0
     @repair_request.work_orders.each do |work_order|
@@ -60,6 +75,8 @@ class RepairRequestsController < ApplicationController
           n_errors += 1
         end
       end
+      # FIXME: quick dirty fix. Must split work_orders and tasks anyway.
+      break
     end
 
     if 0 < n_errors
@@ -89,7 +106,7 @@ class RepairRequestsController < ApplicationController
   def repair_request_params
     params.require(:hackney_repair_request).permit([
       { contact_attributes: [:name, :telephone_number] },
-      { work_orders_attributes: [:sor_code] },
+      { work_orders_attributes: [:sor_code, :quantity] },
       :priority,
       :description
     ])

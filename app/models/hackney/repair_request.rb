@@ -48,7 +48,7 @@ class Hackney::RepairRequest
     response = HackneyAPI::RepairsClient.new.post_repair_request(
       name: contact_name,
       phone: telephone_number,
-      sor_codes: work_orders&.map(&:sor_code) || [],
+      work_orders: work_orders || [],
       priority: priority,
       property_ref: property_reference,
       description: description.squish,
@@ -122,6 +122,8 @@ class Hackney::RepairRequest
       "description"
     when /^\/workOrders\/(\d+)\/sorCode/i
       "work_orders[#{$1.to_i}].sor_code"
+    when /^\/workOrders\/(\d+)\/EstimatedUnits/i
+      "work_orders[#{$1.to_i}].quantity"
     else
       "base"
     end

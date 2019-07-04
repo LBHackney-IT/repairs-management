@@ -26,20 +26,48 @@
       ) do |form|
       %>
 
-      <%= form.fields_for :work_orders do |fields| %>
-        <%= fields.form_group :sor_code do %>
-          <%= fields.label :sor_code, "SOR Code" %>
-          <%= fields.error_messages :sor_code %>
-          <div class="govuk-grid-row" style="height: auto">
-            <div class="govuk-grid-column-one-half">
-              <%= fields.text_field :sor_code %>
-            </div>
-            <div class="govuk-grid-column-one-half">
-              <%= link_to "Launch Keyfax", @keyfax_session.launch_url, class: "govuk-button govuk-!-margin-bottom-0" %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
+        <table class="repair-request-sor-code-table">
+          <%= form.fields_for :work_orders, @repair_request.work_orders.first do |fields| %>
+            <tr>
+              <th>
+                <%= fields.label :sor_code, "SOR Code" %>
+              </th>
+              <th>
+                <%= fields.label :quantity, "Quantity" %>
+              </th>
+              <th>
+              </th>
+            </tr>
+          <% end %>
+
+          <% @repair_request.work_orders.each_with_index do |work_order, i| %>
+            <%= form.fields_for :work_orders, work_order, child_index: i do |fields| %>
+              <tr>
+                <td class="sor-code-column">
+                  <%= fields.form_group :sor_code do %>
+                    <%= fields.error_messages :sor_code %>
+                    <%= fields.text_field :sor_code %>
+                  <% end %>
+                </td>
+                <td class="quantity-column">
+                  <%= fields.form_group :quantity do %>
+                    <%= fields.error_messages :quantity %>
+                    <%= fields.text_field :quantity %>
+                  <% end %>
+                </td>
+                <td class="keyfax-column">
+                  <% if i == 0 %>
+                    <div class="govuk-form-group">
+                      <%= link_to "Launch Keyfax", @keyfax_session.launch_url, class: "govuk-button keyfax-button" %>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </table>
+
+        <%= form.submit "+ Add another SOR code", name: "add_work_order", class: "button-link govuk-link hackney-link govuk-body-s" %>
 
       <%= form.form_group :priority do %>
         <%= form.label :priority, "Task priority" %>
