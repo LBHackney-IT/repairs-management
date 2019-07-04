@@ -66,7 +66,14 @@ describe Hackney::RepairRequest, '#save' do
           "telephoneNumber": "01234567890",
         },
         "workOrders": [
-          "sorCode": "08500820",
+          {
+            "sorCode": "08500820",
+            "EstimatedUnits": 1,
+          },
+          {
+            "sorCode": "08500820",
+            "EstimatedUnits": 2,
+          }
         ],
         "priority": "G",
         "propertyReference": "00000018",
@@ -89,6 +96,11 @@ describe Hackney::RepairRequest, '#save' do
             "workOrderReference" => "01552718",
             "sorCode" => "08500820",
             "supplierReference" => "H01"
+          },
+          {
+            "workOrderReference" => "01552718",
+            "sorCode" => "08500820",
+            "supplierReference" => "H01"
           }
         ]
       }.to_json
@@ -100,7 +112,14 @@ describe Hackney::RepairRequest, '#save' do
         telephone_number: "01234567890"
       },
       work_orders_attributes: [
-        { sor_code: "08500820" }
+        {
+          sor_code: "08500820",
+          quantity: 1
+        },
+        {
+          sor_code: "08500820",
+          quantity: 2
+        }
       ],
       priority: "G",
       property_reference: "00000018",
@@ -127,8 +146,14 @@ describe Hackney::RepairRequest, '#save' do
           "telephoneNumber": "N/A",
         },
         "workOrders": [
-          { "sorCode": "" },
-          { "sorCode": "" }
+          {
+            "sorCode": "",
+            "EstimatedUnits": ""
+          },
+          {
+            "sorCode": "",
+            "EstimatedUnits": ""
+          }
         ],
         "priority": "G",
         "propertyReference": "00000018",
@@ -158,6 +183,18 @@ describe Hackney::RepairRequest, '#save' do
         },
         {
           "code" => 400,
+          "source" => "/workOrders/0/EstimatedUnits",
+          "developerMessage" => "EstimatedUnits is invalid",
+          "userMessage" => "Bad quantity"
+        },
+        {
+          "code" => 400,
+          "source" => "/workOrders/1/EstimatedUnits",
+          "developerMessage" => "EstimatedUnits is invalid",
+          "userMessage" => "Bad quantity"
+        },
+        {
+          "code" => 400,
           "source" => "/contact/name",
           "developerMessage" => "Contact Name cannot be empty",
           "userMessage" => "Please provide a name for the contact"
@@ -177,8 +214,14 @@ describe Hackney::RepairRequest, '#save' do
         telephone_number: ""
       },
       work_orders_attributes: [
-        { sor_code: "" },
-        { sor_code: "" }
+        {
+          sor_code: "",
+          quantity: ""
+        },
+        {
+          sor_code: "",
+          quantity: ""
+        }
       ],
       priority: "G",
       property_reference: "00000018",
@@ -203,6 +246,12 @@ describe Hackney::RepairRequest, '#save' do
     expect(repair_request.errors.added?("work_orders[1].sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
     expect(repair_request.work_orders[1].errors.added?("sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
 
+    expect(repair_request.errors.added?("work_orders[0].quantity", "Bad quantity")).to be_truthy
+    expect(repair_request.work_orders[0].errors.added?("quantity", "Bad quantity")).to be_truthy
+
+    expect(repair_request.errors.added?("work_orders[1].quantity", "Bad quantity")).to be_truthy
+    expect(repair_request.work_orders[1].errors.added?("quantity", "Bad quantity")).to be_truthy
+
     expect(repair_request.errors.added?("description", "Please provide a valid Problem")).to be_truthy
   end
 
@@ -217,7 +266,10 @@ describe Hackney::RepairRequest, '#save' do
           "telephoneNumber": "01234567890",
         },
         "workOrders": [
-          "sorCode": "08500820",
+          {
+            "sorCode": "08500820",
+            "EstimatedUnits": 1
+          }
         ],
         "priority": "G",
         "propertyReference": "00000018",
@@ -251,7 +303,10 @@ describe Hackney::RepairRequest, '#save' do
         telephone_number: "01234567890"
       },
       work_orders_attributes: [
-        { sor_code: "08500820" }
+        {
+          sor_code: "08500820",
+          quantity: 1
+        }
       ],
       priority: "G",
       property_reference: "00000018",

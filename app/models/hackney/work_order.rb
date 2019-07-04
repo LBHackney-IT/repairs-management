@@ -6,6 +6,8 @@ class Hackney::WorkOrder
                 :problem_description, :trade, :supplier_reference, :sor_code,
                 :raised_by
 
+  attr_accessor :quantity
+
   def self.find(reference)
     response = HackneyAPI::RepairsClient.new.get_work_order(reference)
     build(response)

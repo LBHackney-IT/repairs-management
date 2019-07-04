@@ -16,6 +16,7 @@ RSpec.describe 'Repair request' do
         },
         "workOrders": [{
           "sorCode": "20110120",
+          "EstimatedUnits": ?1
         }],
         "priority": "N",
         "propertyReference": "00000666",
@@ -68,6 +69,7 @@ RSpec.describe 'Repair request' do
         },
         "workOrders": [{
           "sorCode": "Abcdefg",
+          "EstimatedUnits": "666"
         }],
         "priority": "N",
         "propertyReference": "00000666",
@@ -308,6 +310,7 @@ RSpec.describe 'Repair request' do
       expect(page).to have_select('Task priority', selected: 'N - Normal')
       expect(page).to have_field('Problem description', with: 'CC Electric lighting: Communal; Block Lighting; 3; All lights out')
 
+      fill_in "Quantity", with: 1
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 
@@ -348,6 +351,7 @@ RSpec.describe 'Repair request' do
 
       select "N - Normal"
       fill_in "SOR Code", with: "Abcdefg"
+      fill_in "Quantity", with: 666
       fill_in "Problem description", with: "CC It's broken"
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
@@ -369,4 +373,6 @@ RSpec.describe 'Repair request' do
       expect(page).to have_text("Cannot raise a repair on this property due to tenure type")
     end
   end
+
+  pending 'Multiple SOR Codes'
 end

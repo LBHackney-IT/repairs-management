@@ -181,7 +181,14 @@ describe HackneyAPI::RepairsClient do
             "telephoneNumber": "01234567890",
           },
           "workOrders": [
-            "sorCode": "08500820",
+            {
+              "sorCode": "08500820",
+              "EstimatedUnits": 1
+            },
+            {
+              "sorCode": "08500820",
+              "EstimatedUnits": 2
+            }
           ],
           "priority": "G",
           "propertyReference": "00000018",
@@ -197,7 +204,10 @@ describe HackneyAPI::RepairsClient do
         api_client.post_repair_request(
           name: "blablabla",
           phone: "01234567890",
-          sor_codes: ["08500820"],
+          work_orders: [
+            Hackney::WorkOrder.new(sor_code: "08500820", quantity: 1),
+            Hackney::WorkOrder.new(sor_code: "08500820", quantity: 2)
+          ],
           priority: "G",
           property_ref: "00000018",
           description: "it's broken fix it",

@@ -184,7 +184,7 @@ module HackneyAPI
       API_REQUEST_CACHE.delete_matched "*repairs*#{property_reference}*"
     end
 
-    def post_repair_request(name:, phone:, sor_codes:, priority:, property_ref:, description:, created_by_email:)
+    def post_repair_request(name:, phone:, work_orders:, priority:, property_ref:, description:, created_by_email:)
       response = request(
         http_method: :post,
         endpoint: "#{API_VERSION}/repairs",
@@ -194,7 +194,12 @@ module HackneyAPI
             "name": name,
             "telephoneNumber": phone,
           },
-          "workOrders": sor_codes.map {|x| { "sorCode": x } },
+          "workOrders": work_orders.map do |work_order|
+            {
+              "sorCode": work_order.sor_code,
+              "EstimatedUnits": work_order.quantity
+            }
+          end,
           "priority": priority,
           "propertyReference": property_ref,
           "problemDescription": description,

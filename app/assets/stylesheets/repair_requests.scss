@@ -1,0 +1,30 @@
+.repair-request-sor-code-table {
+  th {
+    text-align: left;
+  }
+
+  td {
+    @include govuk-responsive-padding(6, "right");
+    text-align: left;
+    vertical-align: bottom;
+  }
+
+  td.sor-code-column {
+    width: 50%;
+  }
+
+  td.quantity-column {
+    width: 25%;
+  }
+
+  td.keyfax-column {
+    width: 25%;
+    padding: 0;
+    min-width: 165px;
+  }
+
+  /* FIXME: not great */
+  .keyfax-button {
+    margin-bottom: 2px;
+  }
+}

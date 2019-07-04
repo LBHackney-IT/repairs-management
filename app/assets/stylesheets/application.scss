@@ -17,6 +17,7 @@ $govuk-breakpoints: (
 @import "hackney_address_list";
 @import "hackney_document";
 @import "hackney_property";
+@import "repair_requests";
 
 .hackney-template {
   min-width: 1024px;
@@ -213,4 +214,13 @@ $govuk-breakpoints: (
 
 .color-secondary {
   color: $govuk-secondary-text-colour;
+}
+
+.button-link {
+  @extend %govuk-link;
+
+  text-decoration: underline;
+  padding: 0;
+  border: none;
+  background-color: inherit;
 }
