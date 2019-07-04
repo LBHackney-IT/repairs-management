@@ -41,6 +41,12 @@
     },
     "DRS_URL": {
       "required": true
+    },
+    "ANONYMIZED_USER_ID_SALT": {
+      "required": true
+    },
+    "REVIEW_USER_EMAIL": {
+      "required": true
     }
   },
   "formation": {
