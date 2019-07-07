@@ -30,6 +30,16 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  repair_requests:
+    create:
+      error_issuing: >-
+        There was an error issuing the work order and it may not appear in DRS.
+        This can still be done through UH. If the problem persists, please
+        contact the development team.
+
+    new:
+      keyfax_session_cancelled: Keyfax session cancelled
+
   errors:
     messages:
       blank: "%{attribute} cannot be blank."

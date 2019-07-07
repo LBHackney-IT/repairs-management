@@ -20,6 +20,26 @@ RSpec.describe RepairRequestsController, type: :controller do
       "tenureCode": "SEC",
       "tenure": "Secure"
     }.to_json)
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
+      .to_return(status: 200, body: {
+      "results": {
+        "alertCodes": [ "CC" ],
+        "callerNotes": nil
+      }
+    }.to_json)
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/keyfax/get_startup_url/?returnurl=#{new_property_repair_request_url('00000666')}")
+      .to_return(
+        status: 200,
+        body: {
+          "body": {
+            "startupResult": {
+              "launchUrl": "https://www.keyfax.com",
+              "guid": "123456789"
+            }
+          }
+        }.to_json)
   end
 
   describe "POST" do
