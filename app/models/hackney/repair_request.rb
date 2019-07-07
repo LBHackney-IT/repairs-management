@@ -1,8 +1,13 @@
 class Hackney::RepairRequest
   include ActiveModel::Model
 
-  attr_accessor :reference, :description, :contact, :priority, :work_orders,
-    :property_reference, :created_by_email
+  attr_accessor :reference
+  attr_accessor :description
+  attr_accessor :contact
+  attr_accessor :priority
+  attr_accessor :tasks
+  attr_accessor :property_reference
+  attr_accessor :created_by_email
 
   NULL_OBJECT = self.new(description: 'Repair info missing')
 
@@ -35,9 +40,9 @@ class Hackney::RepairRequest
   #
   # persistence
   #
-  def work_orders_attributes=(a)
+  def tasks_attributes=(a)
     a = a.values if a.is_a?(Hash)
-    self.work_orders = a.map {|x| Hackney::WorkOrder.new(x)}
+    self.tasks = a.map {|x| Hackney::Task.new(x)}
   end
 
   def contact_attributes=(a)
@@ -48,7 +53,7 @@ class Hackney::RepairRequest
     response = HackneyAPI::RepairsClient.new.post_repair_request(
       name: contact_name,
       phone: telephone_number,
-      work_orders: work_orders || [],
+      tasks: tasks || [],
       priority: priority,
       property_ref: property_reference,
       description: description.squish,
@@ -82,7 +87,8 @@ class Hackney::RepairRequest
       description: a['problemDescription'],
       contact: Hackney::Contact.build(a['contact'] || {}),
       priority: a['priority'],
-      work_orders: (a['workOrders'] || []).map {|y| Hackney::WorkOrder.build(y)},
+      # FIXME: this should've been named "tasks" on the API
+      tasks: (a['workOrders'] || []).map {|y| Hackney::Task.new_from_api(y)},
       property_reference: a['propertyReference']
     }
   end
@@ -94,8 +100,8 @@ class Hackney::RepairRequest
       case key
       when /^contact\.(.*)$/i
         contact.errors.add($1, msg)
-      when /^work_orders\[(\d+)\]\.(.*)$/i
-        work_orders[$1.to_i].errors.add($2, msg)
+      when /^tasks\[(\d+)\]\.(.*)$/i
+        tasks[$1.to_i].errors.add($2, msg)
       end
     end
   end
@@ -120,10 +126,12 @@ class Hackney::RepairRequest
       "contact.name"
     when /^\/problemDescription/i
       "description"
-    when /^\/workOrders\/(\d+)\/sorCode/i
-      "work_orders[#{$1.to_i}].sor_code"
-    when /^\/workOrders\/(\d+)\/EstimatedUnits/i
-      "work_orders[#{$1.to_i}].quantity"
+    # FIXME: this should've been named "tasks" on the API
+    when /^\/(tasks|workOrders)\/(\d+)\/sorCode/i
+      "tasks[#{$2.to_i}].sor_code"
+    # FIXME: this should've been named "tasks" on the API
+    when /^\/(tasks|workOrders)\/(\d+)\/EstimatedUnits/i
+      "tasks[#{$2.to_i}].estimated_cost"
     else
       "base"
     end

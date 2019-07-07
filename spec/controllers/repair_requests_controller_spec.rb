@@ -44,7 +44,7 @@ RSpec.describe RepairRequestsController, type: :controller do
 
   describe "POST" do
 
-    context "with DLO work order" do
+    context "with DLO task" do
       it "works" do
         fake_session
         stub_property
@@ -82,7 +82,7 @@ RSpec.describe RepairRequestsController, type: :controller do
               {
                 "workOrderReference" => "00060606",
                 "sorCode" => "20110120",
-                "supplierReference" => "H01"
+                "supplierRef" => "H01"
               }
             ]
           }.to_json
@@ -107,9 +107,9 @@ RSpec.describe RepairRequestsController, type: :controller do
               name: "Miss Piggy",
               telephone_number: "01234567890",
             },
-            work_orders_attributes: [{
+            tasks_attributes: [{
               "sor_code": "20110120",
-              "quantity": 1
+              "estimated_cost": 1
             }],
             "priority": "E",
             description: "It's broken",
@@ -124,7 +124,7 @@ RSpec.describe RepairRequestsController, type: :controller do
       end
     end
 
-    context "with non-DLO work order" do
+    context "with non-DLO task" do
       it "works" do
         fake_session
         stub_property
@@ -162,7 +162,7 @@ RSpec.describe RepairRequestsController, type: :controller do
               {
                 "workOrderReference" => "00060606",
                 "sorCode" => "LME5R500",
-                "supplierReference" => "ELA"
+                "supplierRef" => "ELA"
               }
             ]
           }.to_json
@@ -175,9 +175,9 @@ RSpec.describe RepairRequestsController, type: :controller do
               name: "Miss Piggy",
               telephone_number: "01234567890",
             },
-            work_orders_attributes: [{
+            tasks_attributes: [{
               "sor_code": "LME5R500",
-              "quantity": 1
+              "estimated_cost": 1
             }],
             "priority": "E",
             description: "It's broken",

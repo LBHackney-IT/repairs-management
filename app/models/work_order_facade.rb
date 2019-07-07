@@ -1,7 +1,7 @@
 class WorkOrderFacade
   delegate :reference, :servitor_reference, :problem_description, :latest_appointment,
            :date_due, :repair_request, :property, :created, :dlo_status,
-           :work_order_status, :notes, :appointments, :raised_by, :reports, to: :hackney
+           :work_order_status, :notes, :appointments, :raised_by, :user_name, :reports, to: :hackney
 
   def initialize(reference)
     @reference = reference

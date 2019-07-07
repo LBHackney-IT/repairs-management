@@ -1,22 +1,38 @@
 class Hackney::WorkOrder
   include ActiveModel::Model
 
-  attr_accessor :reference, :rq_ref, :prop_ref, :created, :date_due,
-                :work_order_status, :dlo_status, :servitor_reference,
-                :problem_description, :trade, :supplier_reference, :sor_code,
-                :raised_by
+  # FIXME: Task and WorkOrder are somewhat mixed in the API
 
-  attr_accessor :quantity
+  attr_accessor :sor_code
+  attr_accessor :sor_code_description
+  attr_accessor :trade
+  attr_accessor :reference
+  attr_accessor :rq_ref
+  attr_accessor :problem_description
+  attr_accessor :created
+  attr_accessor :auth_date
+  attr_accessor :estimated_cost
+  attr_accessor :actual_cost
+  attr_accessor :completed_on
+  attr_accessor :date_due
+  attr_accessor :work_order_status
+  attr_accessor :dlo_status
+  attr_accessor :servitor_reference
+  attr_accessor :prop_ref
+  attr_accessor :supplier_reference
+  attr_accessor :raised_by
+  attr_accessor :user_name
+  attr_accessor :authorised_by
 
   def self.find(reference)
     response = HackneyAPI::RepairsClient.new.get_work_order(reference)
-    build(response)
+    new_from_api(response)
   end
 
   def self.find_all(references)
     if references.any?
       response = HackneyAPI::RepairsClient.new.get_work_orders_by_references(references)
-      response.map { |r| build(r) }
+      response.map { |r| new_from_api(r) }
     else
       []
     end
@@ -28,7 +44,7 @@ class Hackney::WorkOrder
 
   def self.feed(previous_reference)
     response = HackneyAPI::RepairsClient.new.work_order_feed(previous_reference)
-    response.map { |hash| build(hash) }
+    response.map { |hash| new_from_api(hash) }
   end
 
   def self.for_property(property_references:, date_from:, date_to:)
@@ -37,7 +53,7 @@ class Hackney::WorkOrder
       date_from: date_from,
       date_to: date_to
     ).map do |attributes|
-      build(attributes)
+      new_from_api(attributes)
     end
   end
 
@@ -48,26 +64,17 @@ class Hackney::WorkOrder
       date_from: date_from,
       date_to: date_to
     ).map do |attributes|
-      build(attributes)
+      new_from_api(attributes)
     end
   end
 
-  def self.build(attributes)
-    new(
-      reference: attributes['workOrderReference']&.strip,
-      rq_ref: attributes['repairRequestReference']&.strip,
-      prop_ref: attributes['propertyReference']&.strip,
-      created: attributes['created']&.to_datetime,
-      date_due: attributes['dateDue']&.to_datetime,
-      work_order_status: attributes['workOrderStatus']&.strip,
-      dlo_status: attributes['dloStatus']&.strip,
-      servitor_reference: attributes['servitorReference']&.strip,
-      problem_description: attributes['problemDescription'],
-      trade: attributes['trade'],
-      raised_by: attributes['username']&.strip,
-      # FIXME: supplier reference naming inconsistency on API
-      supplier_reference: attributes['supplierRef'] || attributes['supplierReference']
-    )
+  def self.new_from_api(api_attributes)
+    new(attributes_from_api(api_attributes))
+  end
+
+  # FIXME: bad naming
+  def self.build(api_attributes)
+    new_from_api(api_attributes)
   end
 
   def repair_request
@@ -101,5 +108,41 @@ class Hackney::WorkOrder
   def is_dlo?
     supplier_reference.present? or raise "is_dlo?: API responded with blank supplier reference"
     !!(/\AH\d\d\z/ =~ supplier_reference)
+  end
+
+  def tasks
+    @tasks ||= Hackney::Task.for_work_order(reference)
+  end
+
+  private
+
+  def self.attributes_from_api(api_attributes)
+    # FIXME: is this still necessary?
+    stripped = api_attributes
+      .map {|k, v| [k, v.try(:strip) || v] }
+      .to_h
+
+    {
+      sor_code:                 api_attributes["sorCode"],
+      sor_code_description:     api_attributes["sorCodeDescription"],
+      trade:                    api_attributes["trade"],
+      reference:                api_attributes["workOrderReference"],
+      rq_ref:                   api_attributes["repairRequestReference"],
+      problem_description:      api_attributes["problemDescription"],
+      created:                  api_attributes["created"]&.to_datetime,
+      auth_date:                api_attributes["authDate"]&.to_datetime,
+      estimated_cost:           api_attributes["estimatedCost"],
+      actual_cost:              api_attributes["actualCost"],
+      completed_on:             api_attributes["completedOn"],
+      date_due:                 api_attributes["dateDue"]&.to_datetime,
+      work_order_status:        api_attributes["workOrderStatus"],
+      dlo_status:               api_attributes["dloStatus"],
+      servitor_reference:       api_attributes["servitorReference"],
+      prop_ref:                 api_attributes["propertyReference"],
+      supplier_reference:       api_attributes["supplierRef"],
+      raised_by:                api_attributes["userLogin"],
+      user_name:                api_attributes["username"],
+      authorised_by:            api_attributes["authorisedBy"],
+    }
   end
 end

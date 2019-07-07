@@ -1,0 +1,42 @@
+<div class="hackney-task__header">
+  <h2 class='hackney-heading'>
+    Tasks and SOR codes
+  </h2>
+</div>
+
+<table class="govuk-table hackney-tasks-table">
+  <thead class="govuk-table__head">
+  <tr>
+    <th class="govuk-table__header" scope="col">SOR</th>
+    <th class="govuk-table__header" scope="col">Description</th>
+    <th class="govuk-table__header" scope="col">Date added</th>
+    <th class="govuk-table__header" scope="col">Quantity (est.)</th>
+    <th class="govuk-table__header" scope="col">Quantity (actual)</th>
+    <th class="govuk-table__header" scope="col">State</th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+    <% @tasks.each do |task| %>
+      <tr class="govuk-table__row hackney-tasks-rows">
+        <td class="govuk-table__cell">
+          <%= task.sor_code %>
+        </td>
+        <td class="govuk-table__cell">
+          <%= task.sor_code_description %>
+        </td>
+        <td class="govuk-table__cell">
+          <%= task.created_at.to_date.strftime("%e %b %Y") %>
+        </td>
+        <td class="govuk-table__cell">
+          <%= task.estimated_cost %>
+        </td>
+        <td class="govuk-table__cell">
+          <%= task.actual_cost %>
+        </td>
+        <td class="govuk-table__cell">
+          ???
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

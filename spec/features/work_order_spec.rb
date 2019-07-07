@@ -4,6 +4,38 @@ RSpec.describe 'Work order' do
   include Helpers::Authentication
   include Helpers::HackneyRepairsRequestStubs
 
+  API_URL = ENV.fetch('HACKNEY_REPAIRS_API_BASE_URL')
+
+  def stub_work_order_tasks(work_order_reference = "01551932")
+    stub_request(:get, "#{API_URL}/v1/work_orders/#{work_order_reference}/tasks")
+      .to_return(
+        status: 200,
+        body: [
+          {
+            "sorCode":                "20060030",
+            "sorCodeDescription":     "SOR code description",
+            "trade":                  "Trade",
+            "workOrderReference":     work_order_reference,
+            "repairRequestReference": "00000333",
+            "problemDescription":     "Problem description",
+            "created":                "2006-06-06T06:06:06",
+            "authDate":               "2006-06-06T06:06:07",
+            "estimatedCost":          6.66,
+            "actualCost":             66.6,
+            "completedOn":            "2006-06-06T06:06:08",
+            "dateDue":                "2006-06-06T06:06:09",
+            "workOrderStatus":        "200",
+            "dloStatus":              "1",
+            "servitorReference":      "00000999",
+            "propertyReference":      "00000111",
+            "supplierRef":            "H01",
+            "userLogin":              "PUDDING",
+            "username":               "Pudding",
+            "authorisedBy":           "AUTHORIZER"
+          }
+        ].to_json)
+  end
+
   let(:repairs_history_property_references) { %w(00014665 00024665 00072698 00072699 00072700) }
   let(:property_reference1) { '00014665' }
   let(:property_reference2) { '00024665' }
@@ -32,6 +64,7 @@ RSpec.describe 'Work order' do
     stub_hackney_repairs_work_orders
     stub_hackney_repairs_repair_requests
     stub_hackney_repairs_properties
+    stub_work_order_tasks
 
     level = HackneyAPI::RepairsClient::LEVEL_FACILITIES
     stub_hackney_property_by_postcode(reference: 'E9 6BH', min_level: level, max_level: level)
@@ -133,7 +166,7 @@ RSpec.describe 'Work order' do
       expect(page).to have_link("87654321", href: work_order_path("87654321"))
     end
 
-    click_on('Notes and appointments')
+    click_on('Notes')
     expect(find('div[data-note-id="4000"]')).to have_content '2 September 2018, 11:32am by Servitor'
     expect(find('div[data-note-id="4000"]+p')).to have_content 'Further works required; Tiler required to renew splash back and reseal bath'
     expect(find('div[data-note-id="3000"]')).to have_content '23 August 2018, 10:12am by MOSHEA'
@@ -317,7 +350,7 @@ RSpec.describe 'Work order' do
 
     expect(page).to have_css(".hackney-tabs-list > li > a", count: 2)
 
-    expect(page.all('.hackney-tabs-list > li > a').map(&:text)).not_to have_content 'Notes and appointments'
+    expect(page.all('.hackney-tabs-list > li > a').map(&:text)).not_to have_content 'Notes'
 
     within("#repair-history-tab") do
       expect(page).to have_css("h2", text: "Repairs history")
@@ -390,7 +423,7 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
-    click_on('Notes and appointments')
+    click_on('Notes')
     expect(page).to have_content 'There are no notes or appointments for this work order.'
   end
 
@@ -457,7 +490,7 @@ RSpec.describe 'Work order' do
 
     visit work_order_path('01551932')
 
-    click_on('Notes and appointments')
+    click_on('Notes')
     expect(page).to have_content "29 May 2018, 2:51pm to 5 June 2018, 2:51pm\nAppointment: Planned\nOperative name: (PLM) Brian Liverpool\nPhone number: +447535847993\nCreated:\nData source: DRS"
   end
 
@@ -607,5 +640,21 @@ RSpec.describe 'Work order' do
       "Plumbing",
       "Something is wrong"
     ]
+  end
+
+  scenario "Show work order tasks", :js do
+    visit work_order_path("01551932")
+
+    click_on "Tasks and SORs"
+
+    within("#tasks-tab") do
+      expect(page).to have_content("Tasks and SOR codes")
+      expect(page).to have_content("20060030")
+      expect(page).to have_content("SOR code description")
+      expect(page).to have_content("6 Jun 2006")
+      expect(page).to have_content("6.66")
+      expect(page).to have_content("66.6")
+      expect(page).to have_content("???")
+    end
   end
 end

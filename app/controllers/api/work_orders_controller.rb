@@ -25,6 +25,10 @@ module Api
       end
     end
 
+    def tasks
+      @tasks = Hackney::Task.for_work_order(reference)
+    end
+
     def documents
       @reports = Hackney::WorkOrder.find(reference).reports
     end

@@ -15,7 +15,12 @@
     </li>
     <li class="govuk-tabs__list-item">
       <a class="govuk-tabs__tab" href="#notes-tab">
-        Notes and appointments
+        Notes
+      </a>
+    </li>
+    <li class="govuk-tabs__list-item">
+      <a class="govuk-tabs__tab" href="#tasks-tab">
+        Tasks and SORs
       </a>
     </li>
     <li class="govuk-tabs__list-item">
@@ -37,6 +42,7 @@
 
   <%= render 'properties/property_repairs_history', property_reference: @work_order.property.reference %>
   <%= render 'work_order_notes', work_order_reference: @work_order.reference %>
+  <%= render 'work_order_tasks', work_order_reference: @work_order.reference %>
   <%= render 'work_order_possibly_related', work_order_reference: @work_order.reference %>
   <%= render 'work_order_related', work_order_reference: @work_order.reference %>
   <%= render 'work_order_documents', work_order_reference: @work_order.reference %>

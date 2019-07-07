@@ -49,6 +49,13 @@ module HackneyAPI
       )
     end
 
+    def get_work_order_tasks(work_order_reference)
+      request(
+        http_method: :get,
+        endpoint: "#{API_VERSION}/work_orders/#{work_order_reference}/tasks",
+      )
+    end
+
     def work_order_feed(previous_reference)
       request(
         http_method: :get,
@@ -184,7 +191,7 @@ module HackneyAPI
       API_REQUEST_CACHE.delete_matched "*repairs*#{property_reference}*"
     end
 
-    def post_repair_request(name:, phone:, work_orders:, priority:, property_ref:, description:, created_by_email:)
+    def post_repair_request(name:, phone:, tasks:, priority:, property_ref:, description:, created_by_email:)
       response = request(
         http_method: :post,
         endpoint: "#{API_VERSION}/repairs",
@@ -194,10 +201,11 @@ module HackneyAPI
             "name": name,
             "telephoneNumber": phone,
           },
-          "workOrders": work_orders.map do |work_order|
+          # FIXME: this should have been named "tasks" on the API side
+          "workOrders": tasks.map do |task|
             {
-              "sorCode": work_order.sor_code,
-              "EstimatedUnits": work_order.quantity
+              "sorCode": task.sor_code,
+              "EstimatedUnits": task.estimated_cost
             }
           end,
           "priority": priority,

@@ -27,21 +27,21 @@
       %>
 
         <table class="repair-request-sor-code-table">
-          <%= form.fields_for :work_orders, @repair_request.work_orders.first do |fields| %>
+          <%= form.fields_for :tasks, @repair_request.tasks.first do |fields| %>
             <tr>
               <th>
                 <%= fields.label :sor_code, "SOR Code" %>
               </th>
               <th>
-                <%= fields.label :quantity, "Quantity" %>
+                <%= fields.label :estimated_cost, "Quantity" %>
               </th>
               <th>
               </th>
             </tr>
           <% end %>
 
-          <% @repair_request.work_orders.each_with_index do |work_order, i| %>
-            <%= form.fields_for :work_orders, work_order, child_index: i do |fields| %>
+          <% @repair_request.tasks.each_with_index do |task, i| %>
+            <%= form.fields_for :tasks, task, child_index: i do |fields| %>
               <tr>
                 <td class="sor-code-column">
                   <%= fields.form_group :sor_code do %>
@@ -50,9 +50,9 @@
                   <% end %>
                 </td>
                 <td class="quantity-column">
-                  <%= fields.form_group :quantity do %>
-                    <%= fields.error_messages :quantity %>
-                    <%= fields.text_field :quantity %>
+                  <%= fields.form_group :estimated_cost do %>
+                    <%= fields.error_messages :estimated_cost %>
+                    <%= fields.text_field :estimated_cost %>
                   <% end %>
                 </td>
                 <td class="keyfax-column">
@@ -67,7 +67,7 @@
           <% end %>
         </table>
 
-        <%= form.submit "+ Add another SOR code", name: "add_work_order", class: "button-link govuk-link hackney-link govuk-body-s" %>
+        <%= form.submit "+ Add another SOR code", name: "add_task", class: "button-link govuk-link hackney-link govuk-body-s" %>
 
       <%= form.form_group :priority do %>
         <%= form.label :priority, "Task priority" %>

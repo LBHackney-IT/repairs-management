@@ -13,7 +13,7 @@
     </p>
 
     <p class="govuk-body-xs hackney-body-xs">
-      Raised by <%= @work_order.raised_by %>
+      Raised by <%= @work_order.user_name %>
       <br>
       <%= @work_order.created.to_s(:govuk_date_time_short) %>
     </p>
