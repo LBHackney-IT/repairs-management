@@ -145,3 +145,6 @@ VCR.configure do |config|
     ENV['HACKNEY_REPAIRS_API_BASE_URL']
   end
 end
+
+# VCR is annoying when not being useful
+VCR.turn_off!
