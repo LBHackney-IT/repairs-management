@@ -1,0 +1,12 @@
+<div class="govuk-tabs__panel hackney-tabs-info" id="tasks-tab">
+  <p class="govuk-caption-m ajax-loading">Loading tasks data</p>
+</div>
+
+<script>
+  window.addEventListener("load", function() {
+    var endpoint = "/api/work_orders/<%= work_order_reference %>/tasks"
+    var ajaxTab = document.getElementById('tasks-tab');
+
+    handleAjaxResponse(endpoint, ajaxTab);
+  })
+</script>

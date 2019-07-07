@@ -38,7 +38,7 @@ RSpec.describe 'Repair request' do
           {
             "workOrderReference" => "01552718",
             "sorCode" => "20110120",
-            "supplierReference" => "H01"
+            "supplierRef" => "H01"
           }
         ]
       }.to_json
@@ -145,7 +145,7 @@ RSpec.describe 'Repair request' do
           {
             "workOrderReference" => "01552718",
             "sorCode" => "20110120",
-            "supplierReference" => "H01"
+            "supplierRef" => "H01"
           }
         ]
       }.to_json
@@ -310,7 +310,7 @@ RSpec.describe 'Repair request' do
       expect(page).to have_select('Task priority', selected: 'N - Normal')
       expect(page).to have_field('Problem description', with: 'CC Electric lighting: Communal; Block Lighting; 3; All lights out')
 
-      fill_in "Quantity", with: 1
+      expect(page).to have_field("Quantity", with: 1)
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 

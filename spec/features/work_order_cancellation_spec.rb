@@ -23,7 +23,7 @@ RSpec.describe 'Work Order Cancellation' do
           trade: "Plumbing",
           problemDescription: "It's broken",
           workOrderStatus: "200",
-          supplierReference: "H01",
+          supplierRef: "H01",
           created: "2006-06-06T06:06:06",
           dateDue: "2006-06-06T06:06:06",
         }.to_json
@@ -63,6 +63,10 @@ RSpec.describe 'Work Order Cancellation' do
 
     # get_work_order_notes
     stub_request(:get, "#{API_URL}/v1/work_orders/00000666/notes")
+      .to_return(status: 200, body: "[]")
+
+    # get_work_order_tasks
+    stub_request(:get, "#{API_URL}/v1/work_orders/00000666/tasks")
       .to_return(status: 200, body: "[]")
 
     # get_work_order_appointments
@@ -149,7 +153,7 @@ RSpec.describe 'Work Order Cancellation' do
           trade: "Plumbing",
           problemDescription: "It's broken",
           workOrderStatus: "700",
-          supplierReference: "H01",
+          supplierRef: "H01",
           created: "2006-06-06T06:06:06",
           dateDue: "2006-06-06T06:06:06",
         }.to_json
@@ -193,7 +197,7 @@ RSpec.describe 'Work Order Cancellation' do
     expect(current_path).to be == work_order_path("00000666")
     expect(page).to have_content("Status: Cancel Order")
 
-    click_on "Notes and appointments"
+    click_on "Notes"
     expect(page).to have_content("by Pudding")
     expect(page).to have_content("Cancelled in Repairs Hub: Reasonable Reason")
   end

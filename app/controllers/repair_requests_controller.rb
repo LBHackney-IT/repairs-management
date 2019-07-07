@@ -8,8 +8,8 @@ class RepairRequestsController < ApplicationController
     @repair_request = new_repair_request(
       contact_attributes: {
       },
-      work_orders: [
-        new_work_order(
+      tasks: [
+        new_task(
           sor_code: @keyfax_result&.sor_code,
         )
       ],
@@ -25,11 +25,11 @@ class RepairRequestsController < ApplicationController
     @repair_request = new_repair_request(repair_request_params)
 
     respond_to do |format|
-      if params[:add_work_order]
-        @repair_request.work_orders << new_work_order
+      if params[:add_task]
+        @repair_request.tasks << new_task
         format.html { render :new }
       else
-        normalize_work_orders(@repair_request)
+        normalize_tasks(@repair_request)
         if @repair_request.save
           issue_dlo_work_orders
           format.html { render :created }
@@ -43,12 +43,11 @@ class RepairRequestsController < ApplicationController
 
   private
 
-  # FIXME: work_orders and tasks are mixed up
   def issue_dlo_work_orders
-    work_order = @repair_request.work_orders.first
-    if work_order.is_dlo?
+    task = @repair_request.tasks.first
+    if task.is_dlo?
       HackneyAPI::RepairsClient.new.post_work_order_issue(
-        work_order.reference,
+        task.work_order_reference,
         created_by_email: current_user_email
       )
     end
@@ -62,7 +61,7 @@ class RepairRequestsController < ApplicationController
   def set_property
     @property = Hackney::Property.find(params[:property_ref])
   end
-  
+
   def set_cautionary_contact
     @cautionary_contact =
       Hackney::CautionaryContact.find_by_property_reference(params[:property_ref])
@@ -96,17 +95,17 @@ class RepairRequestsController < ApplicationController
     end
   end
 
-  # cleanup blank stuff and ensure at least one work order is present
-  def normalize_work_orders(repair_request)
-    repair_request.work_orders.tap do |work_orders|
-      work_orders.reject! {|y| y.sor_code.blank? }
-      @repair_request.work_orders << new_work_order if work_orders.blank?
+  # cleanup blank stuff and ensure at least one task is present
+  def normalize_tasks(repair_request)
+    repair_request.tasks.tap do |tasks|
+      tasks.reject! {|task| task.sor_code.blank? }
+      tasks << new_task if tasks.blank?
     end
   end
 
-  def new_work_order(attributes = {})
-    Hackney::WorkOrder.new(attributes).tap do |work_order|
-      work_order.quantity ||= 1
+  def new_task(attributes = {})
+    Hackney::Task.new(attributes).tap do |task|
+      task.estimated_cost ||= 1
     end
   end
 
@@ -120,13 +119,13 @@ class RepairRequestsController < ApplicationController
           ]
         },
         {
-          work_orders_attributes: [
+          tasks_attributes: [
             :sor_code,
-            :quantity
+            :estimated_cost
           ]
         },
         :priority,
         :description
-      ])
+    ])
   end
 end

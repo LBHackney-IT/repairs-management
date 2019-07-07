@@ -33,6 +33,7 @@ Rails.application.routes.draw do
         get :description
         get :documents
         get :notes_and_appointments
+        get :tasks
         get :possibly_related_work_orders
         get :related_work_orders
         post :notes
