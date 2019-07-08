@@ -1,13 +1,18 @@
 class Hackney::RepairRequest
   include ActiveModel::Model
+  include ActiveModel::Attributes
 
-  attr_accessor :reference
-  attr_accessor :description
   attr_accessor :contact
-  attr_accessor :priority
+  attribute :recharge, ActiveModel::Type::Boolean.new
   attr_accessor :tasks
+  attr_accessor :reference
+  attr_accessor :priority
   attr_accessor :property_reference
+  attr_accessor :description
   attr_accessor :created_by_email
+  attr_accessor :user_login
+  attr_accessor :user_name
+  attr_accessor :created_at
 
   NULL_OBJECT = self.new(description: 'Repair info missing')
 
@@ -19,9 +24,13 @@ class Hackney::RepairRequest
     build(response)
   end
 
-  # TODO: improve naming
-  def self.build(attributes)
-    new(attributes_from_api(attributes))
+  # FIXME: bad naming
+  def self.build(api_attributes)
+    new_from_api(api_attributes)
+  end
+
+  def self.new_from_api(api_attributes)
+    new(attributes_from_api(api_attributes))
   end
 
   # FIXME: this is view logic and shouldn't be here
@@ -57,6 +66,7 @@ class Hackney::RepairRequest
       priority: priority,
       property_ref: property_reference,
       description: description.squish,
+      recharge: recharge,
       created_by_email: created_by_email
     )
     self.attributes = self.class.attributes_from_api(response)
@@ -77,23 +87,31 @@ class Hackney::RepairRequest
     false
   end
 
+  private
+
   #
   # read attributes from API
   #
 
-  def self.attributes_from_api(a)
+  def self.attributes_from_api(api_attributes)
+    # FIXME: is this still necessary?
+    stripped = api_attributes.transform_values {|v| v.try(:strip) || v }
+
     {
-      reference: a['repairRequestReference']&.strip,
-      description: a['problemDescription'],
-      contact: Hackney::Contact.build(a['contact'] || {}),
-      priority: a['priority'],
-      # FIXME: this should've been named "tasks" on the API
-      tasks: (a['workOrders'] || []).map {|y| Hackney::Task.new_from_api(y)},
-      property_reference: a['propertyReference']
+      contact:              Hackney::Contact.build(api_attributes["contact"] || {}),
+      recharge:             api_attributes["isRecharge"],
+      # FIXME: naming is wrong on the API
+      tasks:                api_attributes["workOrders"]&.map {|x| Hackney::Task.new_from_api(x) } || [],
+      reference:            api_attributes["repairRequestReference"],
+      priority:             api_attributes["priority"],
+      property_reference:   api_attributes["propertyReference"],
+      description:          api_attributes["problemDescription"],
+      created_by_email:     api_attributes[""],
+      user_login:           api_attributes["uhUserLogin"],
+      user_name:            api_attributes["uhUsername"],
+      created_at:           api_attributes["createdDate"]&.to_datetime,
     }
   end
-
-  private
 
   def add_nested_errors
     errors.each do |key, msg|
@@ -126,6 +144,8 @@ class Hackney::RepairRequest
       "contact.name"
     when /^\/problemDescription/i
       "description"
+    when /^\/isRecharge/i
+      "recharge"
     # FIXME: this should've been named "tasks" on the API
     when /^\/(tasks|workOrders)\/(\d+)\/sorCode/i
       "tasks[#{$2.to_i}].sor_code"

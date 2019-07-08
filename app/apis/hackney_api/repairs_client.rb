@@ -191,7 +191,7 @@ module HackneyAPI
       API_REQUEST_CACHE.delete_matched "*repairs*#{property_reference}*"
     end
 
-    def post_repair_request(name:, phone:, tasks:, priority:, property_ref:, description:, created_by_email:)
+    def post_repair_request(name:, phone:, tasks:, priority:, property_ref:, description:, recharge:, created_by_email:)
       response = request(
         http_method: :post,
         endpoint: "#{API_VERSION}/repairs",
@@ -211,6 +211,7 @@ module HackneyAPI
           "priority": priority,
           "propertyReference": property_ref,
           "problemDescription": description,
+          "isRecharge": recharge,
           "lbhEmail": created_by_email
         }.to_json
       )

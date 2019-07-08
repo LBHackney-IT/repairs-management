@@ -65,6 +65,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             "priority": "E",
             "propertyReference": "00000666",
             "problemDescription": "It's broken",
+            "isRecharge": true,
             "lbhEmail": "agent.piggy@hackney.gov.uk"
           }.to_json
         ).to_return(
@@ -113,6 +114,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             }],
             "priority": "E",
             description: "It's broken",
+            recharge: "1",
           }
         }
 
@@ -145,6 +147,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             "priority": "E",
             "propertyReference": "00000666",
             "problemDescription": "It's broken",
+            "isRecharge": true,
             "lbhEmail": "agent.piggy@hackney.gov.uk"
           }.to_json
         ).to_return(
@@ -181,6 +184,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             }],
             "priority": "E",
             description: "It's broken",
+            "recharge": "1",
           }
         }
 

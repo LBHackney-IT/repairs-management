@@ -193,6 +193,7 @@ describe HackneyAPI::RepairsClient do
           "priority": "G",
           "propertyReference": "00000018",
           "problemDescription": "it's broken fix it",
+          "isRecharge": true,
           "lbhEmail": "pudding@hackney.gov.uk"
         }.to_json
       ).to_return(status: 200, body: '{"works": true }')
@@ -211,6 +212,7 @@ describe HackneyAPI::RepairsClient do
           priority: "G",
           property_ref: "00000018",
           description: "it's broken fix it",
+          recharge: true,
           created_by_email: "pudding@hackney.gov.uk"
         )
       ).to be == {"works" => true}
