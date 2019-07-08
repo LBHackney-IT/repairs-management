@@ -78,6 +78,7 @@ describe Hackney::RepairRequest, '#save' do
         "priority": "G",
         "propertyReference": "00000018",
         "problemDescription": "it's broken fix it",
+        "isRecharge": true,
         "lbhEmail": "pudding@hackney.gov.uk"
       }.to_json
     ).to_return(
@@ -124,6 +125,7 @@ describe Hackney::RepairRequest, '#save' do
       priority: "G",
       property_reference: "00000018",
       description: "it's broken fix it",
+      recharge: true,
       created_by_email: "pudding@hackney.gov.uk"
     )
 
@@ -158,6 +160,7 @@ describe Hackney::RepairRequest, '#save' do
         "priority": "G",
         "propertyReference": "00000018",
         "problemDescription": "",
+        "isRecharge": true,
         "lbhEmail": "pudding@hackney.gov.uk"
       }.to_json
     ).to_return(
@@ -204,7 +207,13 @@ describe Hackney::RepairRequest, '#save' do
           "source" => "/contact/telephoneNumber",
           "developerMessage" => "Contact Telephone number is invalid",
           "userMessage" => "Telephone number must contain minimum of 10 and maximum of 11 digits"
-        }
+        },
+        {
+          "code" => 400,
+          "source" => "/isRecharge",
+          "developerMessage" => "Developers",
+          "userMessage" => "Bad recharge"
+        },
       ].to_json
     )
 
@@ -226,6 +235,7 @@ describe Hackney::RepairRequest, '#save' do
       priority: "G",
       property_reference: "00000018",
       description: "",
+      recharge: true,
       created_by_email: "pudding@hackney.gov.uk"
     )
 
@@ -253,6 +263,7 @@ describe Hackney::RepairRequest, '#save' do
     expect(repair_request.tasks[1].errors.added?("estimated_units", "Bad estimated_units")).to be_truthy
 
     expect(repair_request.errors.added?("description", "Please provide a valid Problem")).to be_truthy
+    expect(repair_request.errors.added?("recharge", "Bad recharge")).to be_truthy
   end
 
   it "removes extra whitespace from description" do
@@ -274,6 +285,7 @@ describe Hackney::RepairRequest, '#save' do
         "priority": "G",
         "propertyReference": "00000018",
         "problemDescription": "it's broken fix it please",
+        "isRecharge": true,
         "lbhEmail": "pudding@hackney.gov.uk"
       }.to_json
     ).to_return(
@@ -311,6 +323,7 @@ describe Hackney::RepairRequest, '#save' do
       priority: "G",
       property_reference: "00000018",
       description: "  it's broken   \n\n      fix it please  \n   ",
+      recharge: true,
       created_by_email: "pudding@hackney.gov.uk"
     )
 

@@ -90,6 +90,16 @@
         </span>
       <% end %>
 
+      <%= form.form_group :recharge do %>
+        <div class="govuk-checkboxes">
+          <div class="govuk-checkboxes__item">
+            <%= form.error_messages :recharge %>
+            <%= form.check_box :recharge %>
+            <%= form.check_box_label :recharge, "Recharge repair to tenant" %>
+          </div>
+        </div>
+      <% end %>
+
       <%= form.fields_for :contact do |fields| %>
         <%= fields.form_group :name do %>
           <%= fields.label :name, "Caller name" %>

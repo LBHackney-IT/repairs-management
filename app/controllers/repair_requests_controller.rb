@@ -124,7 +124,8 @@ class RepairRequestsController < ApplicationController
           ]
         },
         :priority,
-        :description
+        :description,
+        :recharge
     ])
   end
 end

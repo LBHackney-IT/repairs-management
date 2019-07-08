@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'Repair request' do
   include Helpers::Authentication
-  # include Helpers::HackneyRepairsRequestStubs
 
   def stub_post_repair_request
     stub_request(:post, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/repairs").with(
@@ -21,6 +20,7 @@ RSpec.describe 'Repair request' do
         "priority": "N",
         "propertyReference": "00000666",
         "problemDescription": "CC Electric lighting: Communal; Block Lighting; 3; All lights out",
+        "isRecharge": false,
         "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
@@ -74,6 +74,7 @@ RSpec.describe 'Repair request' do
         "priority": "N",
         "propertyReference": "00000666",
         "problemDescription": "CC It's broken",
+        "isRecharge": false,
         "lbhEmail": Helpers::Authentication::EMAIL
       }.to_json
     ).to_return(
@@ -84,7 +85,13 @@ RSpec.describe 'Repair request' do
   end
 
   def stub_keyfax_get_startup_url
+    # FIXME: have to visit a page in order to have current_url
     uri = URI(current_url)
+    unless uri.host
+      visit root_path
+      uri = URI(current_url)
+    end
+
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/keyfax/get_startup_url/?returnurl=#{new_property_repair_request_url('00000666', host: uri.host, port: uri.port)}")
     .to_return(
       status: 200,
@@ -150,6 +157,19 @@ RSpec.describe 'Repair request' do
         ]
       }.to_json
     )
+
+    stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?propertyReference=00000666&since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
+      .to_return({
+          status: 200,
+          body: [{
+            "workOrderReference" => "01552718",
+            "sorCode" => "20110120",
+            "supplierReference" => "H01",
+            "propertyReference" => "00000666",
+            "created" => "2018-05-29T14:10:06",
+            "dateDue" => "2018-06-27T14:09:00",
+          }].to_json
+      })
 
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders/01552718/appointments/latest").to_return(
       status: 200,
@@ -223,23 +243,12 @@ RSpec.describe 'Repair request' do
     # work orders
     #
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/work_orders?propertyReference=00000666&since=#{2.years.ago.strftime("%d-%m-%Y")}&until=#{1.day.from_now.strftime("%d-%m-%Y")}")
-      .to_return([
+      .to_return(
         {
           status: 200,
           body: [].to_json
         },
-        {
-          status: 200,
-          body: [{
-            "workOrderReference" => "01552718",
-            "sorCode" => "20110120",
-            "supplierReference" => "H01",
-            "propertyReference" => "00000666",
-            "created" => "2018-05-29T14:10:06",
-            "dateDue" => "2018-06-27T14:09:00",
-          }].to_json
-        }
-    ])
+      )
     #
     # related facilities
     #
@@ -287,35 +296,57 @@ RSpec.describe 'Repair request' do
       .to_return(status: 200, body: [].to_json)
   end
 
+  scenario "Reach new repair request form through property page", :js do
+    sign_in
+    stub_property_00000666
+    visit property_path('00000666')
+
+    stub_keyfax_get_startup_url
+    click_on 'Raise a repair on this dwelling'
+
+    expect(current_path).to be == new_property_repair_request_path("00000666")
+    expect(page).to have_content("New repair")
+    expect(page).to have_content("Dwelling: 1 Madeup Road")
+    expect(page).to have_content("Alert: CC")
+    expect(page).to have_text("Tenure: Secure")
+    expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
+
+    expect(page).to have_field("SOR Code")
+    expect(page).to have_field("Quantity", with: 1)
+    expect(page).to have_select('Task priority', selected: 'N - Normal')
+    expect(page).to have_field('Problem description', with: 'CC ')
+    # FIXME: `visible: false` needed because govuk css sets `opacity: 0`
+    expect(page).to have_field("Recharge repair to tenant", visible: false)
+    expect(page).to have_field("Caller name")
+    expect(page).to have_field("Contact number")
+  end
+
+  scenario "Reach new repair request form from KeyFax", :js do
+    sign_in
+    stub_property_00000666
+    stub_keyfax_get_startup_url
+    stub_keyfax_get_results_response
+
+    visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
+
+    expect(page).to have_field("SOR Code", with: "20110120")
+    expect(page).to have_select('Task priority', selected: 'N - Normal')
+    expect(page).to have_field('Problem description', with: 'CC Electric lighting: Communal; Block Lighting; 3; All lights out')
+  end
+
   context 'Secure tenure' do
     scenario 'Raise a repair successfully', :js do
-      stub_property_00000666
-      stub_post_repair_request
-
       sign_in
-      visit property_path('00000666')
-
+      stub_property_00000666
       stub_keyfax_get_startup_url
-
-      expect(page).to have_text("Tenure: Secure")
-      click_on 'Raise a repair on this dwelling'
-
-      expect(page).to have_content("Alert: CC")
-      expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
-
       stub_keyfax_get_results_response
-
       visit new_property_repair_request_path('00000666', status: "1", guid: '123456789')
 
-      expect(page).to have_select('Task priority', selected: 'N - Normal')
-      expect(page).to have_field('Problem description', with: 'CC Electric lighting: Communal; Block Lighting; 3; All lights out')
-
-      expect(page).to have_field("Quantity", with: 1)
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 
+      stub_post_repair_request
       stub_work_order
-
       click_on 'Create works order'
 
       expect(current_path).to be == property_repair_requests_path("00000666")
@@ -329,33 +360,23 @@ RSpec.describe 'Repair request' do
 
       # ensure cache is cleared and it shows up on repair history
       click_on "Back to 1 Madeup Road"
-      expect(page).to have_link "01552718", href: work_order_path("01552718")
+      expect(page).to have_link("01552718", href: work_order_path("01552718"))
     end
 
     scenario 'Fail to raise a repair', :js do
-      stub_property_00000666
-      stub_post_repair_request
-
       sign_in
-      visit property_path('00000666')
-
+      stub_property_00000666
       stub_keyfax_get_startup_url
+      visit new_property_repair_request_path('00000666')
 
-      expect(page).to have_text("Tenure: Secure")
-      click_on 'Raise a repair on this dwelling'
-
-      expect(page).to have_content('Alert: CC')
-      expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
-
-      stub_post_bad_repair_request
-
-      select "N - Normal"
       fill_in "SOR Code", with: "Abcdefg"
       fill_in "Quantity", with: 666
       fill_in "Problem description", with: "CC It's broken"
+      select "N - Normal", from: "Task priority"
       fill_in "Caller name", with: "Miss Piggy"
       fill_in "Contact number", with: "01234567890"
 
+      stub_post_bad_repair_request
       click_on 'Create works order'
 
       expect(current_path).to be == property_repair_requests_path('00000666')
