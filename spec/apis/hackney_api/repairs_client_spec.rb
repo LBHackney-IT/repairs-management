@@ -205,8 +205,8 @@ describe HackneyAPI::RepairsClient do
           name: "blablabla",
           phone: "01234567890",
           tasks: [
-            Hackney::WorkOrder.new(sor_code: "08500820", estimated_cost: 1),
-            Hackney::WorkOrder.new(sor_code: "08500820", estimated_cost: 2)
+            Hackney::Task.new(sor_code: "08500820", estimated_units: 1),
+            Hackney::Task.new(sor_code: "08500820", estimated_units: 2)
           ],
           priority: "G",
           property_ref: "00000018",

@@ -114,11 +114,11 @@ describe Hackney::RepairRequest, '#save' do
       tasks_attributes: [
         {
           sor_code: "08500820",
-          estimated_cost: 1
+          estimated_units: 1
         },
         {
           sor_code: "08500820",
-          estimated_cost: 2
+          estimated_units: 2
         }
       ],
       priority: "G",
@@ -185,13 +185,13 @@ describe Hackney::RepairRequest, '#save' do
           "code" => 400,
           "source" => "/workOrders/0/EstimatedUnits",
           "developerMessage" => "EstimatedUnits is invalid",
-          "userMessage" => "Bad estimated_cost"
+          "userMessage" => "Bad estimated_units"
         },
         {
           "code" => 400,
           "source" => "/workOrders/1/EstimatedUnits",
           "developerMessage" => "EstimatedUnits is invalid",
-          "userMessage" => "Bad estimated_cost"
+          "userMessage" => "Bad estimated_units"
         },
         {
           "code" => 400,
@@ -216,11 +216,11 @@ describe Hackney::RepairRequest, '#save' do
       tasks_attributes: [
         {
           sor_code: "",
-          estimated_cost: ""
+          estimated_units: ""
         },
         {
           sor_code: "",
-          estimated_cost: ""
+          estimated_units: ""
         }
       ],
       priority: "G",
@@ -246,11 +246,11 @@ describe Hackney::RepairRequest, '#save' do
     expect(repair_request.errors.added?("tasks[1].sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
     expect(repair_request.tasks[1].errors.added?("sor_code", "If Repair request has workOrders you must provide a valid sorCode")).to be_truthy
 
-    expect(repair_request.errors.added?("tasks[0].estimated_cost", "Bad estimated_cost")).to be_truthy
-    expect(repair_request.tasks[0].errors.added?("estimated_cost", "Bad estimated_cost")).to be_truthy
+    expect(repair_request.errors.added?("tasks[0].estimated_units", "Bad estimated_units")).to be_truthy
+    expect(repair_request.tasks[0].errors.added?("estimated_units", "Bad estimated_units")).to be_truthy
 
-    expect(repair_request.errors.added?("tasks[1].estimated_cost", "Bad estimated_cost")).to be_truthy
-    expect(repair_request.tasks[1].errors.added?("estimated_cost", "Bad estimated_cost")).to be_truthy
+    expect(repair_request.errors.added?("tasks[1].estimated_units", "Bad estimated_units")).to be_truthy
+    expect(repair_request.tasks[1].errors.added?("estimated_units", "Bad estimated_units")).to be_truthy
 
     expect(repair_request.errors.added?("description", "Please provide a valid Problem")).to be_truthy
   end
@@ -305,7 +305,7 @@ describe Hackney::RepairRequest, '#save' do
       tasks_attributes: [
         {
           sor_code: "08500820",
-          estimated_cost: 1
+          estimated_units: 1
         }
       ],
       priority: "G",

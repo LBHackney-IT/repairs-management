@@ -33,7 +33,7 @@
                 <%= fields.label :sor_code, "SOR Code" %>
               </th>
               <th>
-                <%= fields.label :estimated_cost, "Quantity" %>
+                <%= fields.label :estimated_units, "Quantity" %>
               </th>
               <th>
               </th>
@@ -50,9 +50,9 @@
                   <% end %>
                 </td>
                 <td class="quantity-column">
-                  <%= fields.form_group :estimated_cost do %>
-                    <%= fields.error_messages :estimated_cost %>
-                    <%= fields.text_field :estimated_cost %>
+                  <%= fields.form_group :estimated_units do %>
+                    <%= fields.error_messages :estimated_units %>
+                    <%= fields.text_field :estimated_units %>
                   <% end %>
                 </td>
                 <td class="keyfax-column">

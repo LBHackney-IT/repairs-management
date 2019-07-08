@@ -105,7 +105,7 @@ class RepairRequestsController < ApplicationController
 
   def new_task(attributes = {})
     Hackney::Task.new(attributes).tap do |task|
-      task.estimated_cost ||= 1
+      task.estimated_units ||= 1
     end
   end
 
@@ -121,7 +121,7 @@ class RepairRequestsController < ApplicationController
         {
           tasks_attributes: [
             :sor_code,
-            :estimated_cost
+            :estimated_units
           ]
         },
         :priority,
