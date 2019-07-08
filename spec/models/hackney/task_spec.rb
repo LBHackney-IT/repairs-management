@@ -39,7 +39,9 @@ describe Hackney::Task do
         "userLogin"               => "PUDDING",
         "username"                => "Pudding",
         "authorisedBy"            => "AUTHORIZER",
-        "EstimatedUnits"          => 666
+        "EstimatedUnits"          => 666,
+        "unitType"                => "Itm",
+        "taskStatus"              => "200",
       })
 
       expect(task.sor_code).to be ==                  "66666666"
@@ -63,6 +65,8 @@ describe Hackney::Task do
       expect(task.user_name).to be ==                 "Pudding"
       expect(task.authorised_by).to be ==             "AUTHORIZER"
       expect(task.estimated_units).to be ==           666
+      expect(task.unit_type).to be ==                 "Itm"
+      expect(task.status).to be ==                    "200"
     end
   end
 
