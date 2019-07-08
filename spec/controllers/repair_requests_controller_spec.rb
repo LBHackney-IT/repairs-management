@@ -109,7 +109,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             },
             tasks_attributes: [{
               "sor_code": "20110120",
-              "estimated_cost": 1
+              "estimated_units": 1
             }],
             "priority": "E",
             description: "It's broken",
@@ -177,7 +177,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             },
             tasks_attributes: [{
               "sor_code": "LME5R500",
-              "estimated_cost": 1
+              "estimated_units": 1
             }],
             "priority": "E",
             description: "It's broken",

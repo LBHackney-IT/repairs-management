@@ -23,6 +23,7 @@ class Hackney::Task
   attr_accessor :user_login
   attr_accessor :user_name
   attr_accessor :authorised_by
+  attr_accessor :estimated_units
 
   def self.for_work_order(work_order_reference)
     HackneyAPI::RepairsClient
@@ -66,6 +67,7 @@ class Hackney::Task
       user_login:               api_attributes["userLogin"],
       user_name:                api_attributes["username"],
       authorised_by:            api_attributes["authorisedBy"],
+      estimated_units:          api_attributes["EstimatedUnits"],
     }
   end
 end

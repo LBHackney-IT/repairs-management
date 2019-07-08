@@ -131,7 +131,7 @@ class Hackney::RepairRequest
       "tasks[#{$2.to_i}].sor_code"
     # FIXME: this should've been named "tasks" on the API
     when /^\/(tasks|workOrders)\/(\d+)\/EstimatedUnits/i
-      "tasks[#{$2.to_i}].estimated_cost"
+      "tasks[#{$2.to_i}].estimated_units"
     else
       "base"
     end

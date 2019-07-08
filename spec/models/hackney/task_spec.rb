@@ -38,7 +38,8 @@ describe Hackney::Task do
         "supplierRef"             => "H01",
         "userLogin"               => "PUDDING",
         "username"                => "Pudding",
-        "authorisedBy"            => "AUTHORIZER"
+        "authorisedBy"            => "AUTHORIZER",
+        "EstimatedUnits"          => 666
       })
 
       expect(task.sor_code).to be ==                  "66666666"
@@ -61,6 +62,7 @@ describe Hackney::Task do
       expect(task.user_login).to be ==                "PUDDING"
       expect(task.user_name).to be ==                 "Pudding"
       expect(task.authorised_by).to be ==             "AUTHORIZER"
+      expect(task.estimated_units).to be ==           666
     end
   end
 
