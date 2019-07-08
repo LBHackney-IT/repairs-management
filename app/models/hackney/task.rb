@@ -29,9 +29,7 @@ class Hackney::Task
     HackneyAPI::RepairsClient
       .new
       .get_work_order_tasks(work_order_reference)
-      .map do |api_attributes|
-      new_from_api(api_attributes)
-    end
+      .map { |api_attributes| new_from_api(api_attributes) }
   end
 
   def self.new_from_api(api_attributes)
