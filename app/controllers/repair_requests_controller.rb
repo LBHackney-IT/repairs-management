@@ -55,7 +55,6 @@ class RepairRequestsController < ApplicationController
   rescue HackneyAPI::RepairsClient::ApiError => e
     flash.now[:error] ||= []
     flash.now[:error] << t(".error_issuing")
-    EOF
   end
 
   def set_property
