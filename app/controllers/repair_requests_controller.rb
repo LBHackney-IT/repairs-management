@@ -54,7 +54,7 @@ class RepairRequestsController < ApplicationController
 
   rescue HackneyAPI::RepairsClient::ApiError => e
     flash.now[:error] ||= []
-    flash.now[:error] << t(".error_issuing")
+    flash.now[:error] += e.errors.map {|err| err["userMessage"] }
   end
 
   def set_property
