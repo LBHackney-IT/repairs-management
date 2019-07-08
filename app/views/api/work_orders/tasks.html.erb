@@ -11,8 +11,8 @@
     <th class="govuk-table__header" scope="col">Description</th>
     <th class="govuk-table__header" scope="col">Date added</th>
     <th class="govuk-table__header" scope="col">Quantity (est.)</th>
-    <th class="govuk-table__header" scope="col">Quantity (actual)</th>
-    <th class="govuk-table__header" scope="col">State</th>
+    <th class="govuk-table__header" scope="col">Cost (est.)</th>
+    <th class="govuk-table__header" scope="col">Status</th>
   </tr>
   </thead>
   <tbody class="govuk-table__body">
@@ -28,13 +28,18 @@
           <%= task.created_at.to_date.strftime("%e %b %Y") %>
         </td>
         <td class="govuk-table__cell">
+          <%= task.estimated_units %> <small class="color-secondary"><%= task.unit_type %></small>
+        </td>
+        <td class="govuk-table__cell">
           <%= task.estimated_cost %>
         </td>
         <td class="govuk-table__cell">
-          <%= task.actual_cost %>
-        </td>
-        <td class="govuk-table__cell">
-          ???
+          <%=
+            task.class.human_attribute_name(
+              "status.#{task.status}",
+              default: :"activemodel.attributes.hackney/task/status.?"
+            )
+          %>
         </td>
       </tr>
     <% end %>

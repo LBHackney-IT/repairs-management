@@ -31,7 +31,10 @@ RSpec.describe 'Work order' do
             "supplierRef":            "H01",
             "userLogin":              "PUDDING",
             "username":               "Pudding",
-            "authorisedBy":           "AUTHORIZER"
+            "authorisedBy":           "AUTHORIZER",
+            "EstimatedUnits":         "6",
+            "unitType":               "Itm",
+            "taskStatus":             "200",
           }
         ].to_json)
   end
@@ -649,12 +652,20 @@ RSpec.describe 'Work order' do
 
     within("#tasks-tab") do
       expect(page).to have_content("Tasks and SOR codes")
+
+      expect(page).to have_content("SOR")
+      expect(page).to have_content("Description")
+      expect(page).to have_content("Date added")
+      expect(page).to have_content("Quantity (est.)")
+      expect(page).to have_content("Cost (est.)")
+      expect(page).to have_content("Status")
+
       expect(page).to have_content("20060030")
       expect(page).to have_content("SOR code description")
       expect(page).to have_content("6 Jun 2006")
+      expect(page).to have_content("6 Itm")
       expect(page).to have_content("6.66")
-      expect(page).to have_content("66.6")
-      expect(page).to have_content("???")
+      expect(page).to have_content("Allocated")
     end
   end
 end

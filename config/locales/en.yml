@@ -76,3 +76,21 @@ en:
         X:  "GAS - EXTRA WORK"
         Y:  "VOID - 10 WKG DAYS"
         Z:  "VOIDS INITIATIVE"
+
+      hackney/task/status:
+        ?:    Unknown
+        0:    Open
+        100:  Defined
+        200:  Allocated
+        300:  Issued
+        400:  Partially Complete
+        500:  Awaiting Invoice
+        505:  Awaiting Further Invoice
+        510:  Invoice On Hold
+        550:  Awaiting Approval
+        555:  Awaiting Further Approval
+        600:  Defective
+        700:  Cancelled
+        799:  System Cancelled
+        800:  Varied
+        900:  Complete
