@@ -118,9 +118,7 @@ class Hackney::WorkOrder
 
   def self.attributes_from_api(api_attributes)
     # FIXME: is this still necessary?
-    stripped = api_attributes
-      .map {|k, v| [k, v.try(:strip) || v] }
-      .to_h
+    stripped = api_attributes.transform_values {|v| v.try(:strip) || v }
 
     {
       sor_code:                 stripped["sorCode"],
