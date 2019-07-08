@@ -1,4 +1,15 @@
 .repair-request-sor-code-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr {
+    &:last-child {
+      .govuk-form-group {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
   th {
     text-align: left;
   }
@@ -7,24 +18,27 @@
     @include govuk-responsive-padding(6, "right");
     text-align: left;
     vertical-align: bottom;
+    padding: 0 15px 0 0;
   }
 
   td.sor-code-column {
-    width: 50%;
   }
 
   td.quantity-column {
-    width: 25%;
+    width: 20%;
   }
 
   td.keyfax-column {
-    width: 25%;
+    width: 154px;
     padding: 0;
-    min-width: 165px;
   }
 
   /* FIXME: not great */
   .keyfax-button {
     margin-bottom: 2px;
   }
+}
+
+input[name='add_work_order'] {
+    margin-bottom: 30px;
 }
