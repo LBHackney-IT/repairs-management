@@ -4,6 +4,8 @@
   color: govuk-colour('white');
   padding: 15px 0;
   position: relative;
+  /* FIXME: necessary so search icon won't enlarge nav */
+  min-height: 25px;
 
   a {
     color: inherit;
