@@ -8,7 +8,7 @@ RSpec.describe 'Authentication' do
 
     expect(page).to have_current_path('/login')
 
-    click_link 'Sign in with Microsoft'
+    click_on 'Sign in with Microsoft'
 
     expect(page).to have_current_path('/')
     expect(page).to have_content 'You have logged in as Mike Ross'

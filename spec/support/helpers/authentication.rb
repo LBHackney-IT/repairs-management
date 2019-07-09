@@ -21,7 +21,11 @@ module Helpers
     end
 
     def sign_in
-      visit '/auth/azureactivedirectory'
+      # FIXME: when running on CircleCI, session is randomly not cleared at the
+      # end of tests, causing the below to fail
+      visit '/logout'
+      visit '/login'
+      click_on 'Sign in with Microsoft'
     end
   end
 end
