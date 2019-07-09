@@ -20,7 +20,7 @@ module GovukFormHelper
 
     def label(*args)
       options = args.extract_options!
-      options[:class] = "govuk-label " + options[:class].to_s
+      options[:class] = "govuk-label " + options.fetch(:class, "")
       args << options
       super
     end
