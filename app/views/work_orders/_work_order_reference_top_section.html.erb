@@ -1,24 +1,19 @@
 <% content_for :page_header do %>
-  <div class="govuk-grid-row hackney-grid-row">
-    <div class="govuk-grid-column-one-half hackney-grid-column-one-half">
-      <h1 class="govuk-heading-l">
-        Works order: <%= work_order.reference %>
-      </h1>
-      <% # FIXME: decide logic behind this? %>
-      <% if work_order.work_order_status != "700" %>
-        <span class="govuk-heading-m hackney-page-header-link-below">
-          <strong>
-            <%= link_to "Cancel repair", new_work_order_cancellation_path(work_order.reference), class: "hackney-link hackney-link-no-visited" %>
-          </strong>
-        </span>
-      <% end %>
-    </div>
-    <div class="govuk-grid-column-one-half hackney-grid-column-one-half">
-      <h1 class="govuk-caption-m hackney-work-order-references hackney-body-m">
-        Servitor ref: <%= work_order.servitor_reference %>
-      </h1>
-    </div>
-  </div>
+  <h1 class="govuk-heading-l">
+    Works order: <%= work_order.reference %>
+  <small class="color-secondary govuk-!-margin-left-9 govuk-body-m hackney-body-m">
+    Servitor ref:
+    <%= work_order.servitor_reference.present? ? work_order.servitor_reference : "N/A" %>
+  </small>
+  </h1>
+  <% # FIXME: decide logic behind this? %>
+  <% if work_order.work_order_status != "700" %>
+    <span class="govuk-heading-m hackney-page-header-link-below">
+      <strong>
+        <%= link_to "Cancel repair", new_work_order_cancellation_path(work_order.reference), class: "hackney-link hackney-link-no-visited" %>
+      </strong>
+    </span>
+  <% end %>
 
   <p class="govuk-body-m hackney-body-m">
     <%= work_order.problem_description %>
