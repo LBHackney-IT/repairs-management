@@ -39,6 +39,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'omniauth'
 gem 'omniauth-azure-activedirectory'
 gem 'omniauth-google-oauth2'
+gem "omniauth-rails_csrf_protection"
 gem 'sentry-raven'
 
 gem 'neo4j'
