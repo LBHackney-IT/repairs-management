@@ -183,11 +183,11 @@ describe HackneyAPI::RepairsClient do
           "workOrders": [
             {
               "sorCode": "08500820",
-              "EstimatedUnits": 1
+              "estimatedUnits": 1
             },
             {
               "sorCode": "08500820",
-              "EstimatedUnits": 2
+              "estimatedUnits": 2
             }
           ],
           "priority": "G",

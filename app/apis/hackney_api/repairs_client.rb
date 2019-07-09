@@ -205,7 +205,7 @@ module HackneyAPI
           "workOrders": tasks.map do |task|
             {
               "sorCode": task.sor_code,
-              "EstimatedUnits": task.estimated_units
+              "estimatedUnits": task.estimated_units
             }
           end,
           "priority": priority,

@@ -39,7 +39,7 @@ describe Hackney::Task do
         "userLogin"               => "PUDDING",
         "username"                => "Pudding",
         "authorisedBy"            => "AUTHORIZER",
-        "EstimatedUnits"          => 666,
+        "estimatedUnits"          => 666,
         "unitType"                => "Itm",
         "taskStatus"              => "200",
       })

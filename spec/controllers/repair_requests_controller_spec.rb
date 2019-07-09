@@ -60,7 +60,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             },
             "workOrders": [{
               "sorCode": "20110120",
-              "EstimatedUnits": ?1
+              "estimatedUnits": ?1
             }],
             "priority": "E",
             "propertyReference": "00000666",
@@ -142,7 +142,7 @@ RSpec.describe RepairRequestsController, type: :controller do
             },
             "workOrders": [{
               "sorCode": "LME5R500",
-              "EstimatedUnits": ?1
+              "estimatedUnits": ?1
             }],
             "priority": "E",
             "propertyReference": "00000666",

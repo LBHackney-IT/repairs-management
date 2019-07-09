@@ -32,7 +32,7 @@ RSpec.describe 'Work order' do
             "userLogin":              "PUDDING",
             "username":               "Pudding",
             "authorisedBy":           "AUTHORIZER",
-            "EstimatedUnits":         "6",
+            "estimatedUnits":         "6",
             "unitType":               "Itm",
             "taskStatus":             "200",
           }

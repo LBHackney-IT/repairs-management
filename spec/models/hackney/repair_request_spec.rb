@@ -68,11 +68,11 @@ describe Hackney::RepairRequest, '#save' do
         "workOrders": [
           {
             "sorCode": "08500820",
-            "EstimatedUnits": 1,
+            "estimatedUnits": 1,
           },
           {
             "sorCode": "08500820",
-            "EstimatedUnits": 2,
+            "estimatedUnits": 2,
           }
         ],
         "priority": "G",
@@ -150,11 +150,11 @@ describe Hackney::RepairRequest, '#save' do
         "workOrders": [
           {
             "sorCode": "",
-            "EstimatedUnits": ""
+            "estimatedUnits": ""
           },
           {
             "sorCode": "",
-            "EstimatedUnits": ""
+            "estimatedUnits": ""
           }
         ],
         "priority": "G",
@@ -186,14 +186,14 @@ describe Hackney::RepairRequest, '#save' do
         },
         {
           "code" => 400,
-          "source" => "/workOrders/0/EstimatedUnits",
-          "developerMessage" => "EstimatedUnits is invalid",
+          "source" => "/workOrders/0/estimatedUnits",
+          "developerMessage" => "estimatedUnits is invalid",
           "userMessage" => "Bad estimated_units"
         },
         {
           "code" => 400,
-          "source" => "/workOrders/1/EstimatedUnits",
-          "developerMessage" => "EstimatedUnits is invalid",
+          "source" => "/workOrders/1/estimatedUnits",
+          "developerMessage" => "estimatedUnits is invalid",
           "userMessage" => "Bad estimated_units"
         },
         {
@@ -279,7 +279,7 @@ describe Hackney::RepairRequest, '#save' do
         "workOrders": [
           {
             "sorCode": "08500820",
-            "EstimatedUnits": 1
+            "estimatedUnits": 1
           }
         ],
         "priority": "G",

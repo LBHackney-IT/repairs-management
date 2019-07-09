@@ -150,7 +150,7 @@ class Hackney::RepairRequest
     when /^\/(tasks|workOrders)\/(\d+)\/sorCode/i
       "tasks[#{$2.to_i}].sor_code"
     # FIXME: this should've been named "tasks" on the API
-    when /^\/(tasks|workOrders)\/(\d+)\/EstimatedUnits/i
+    when /^\/(tasks|workOrders)\/(\d+)\/estimatedUnits/i
       "tasks[#{$2.to_i}].estimated_units"
     else
       "base"

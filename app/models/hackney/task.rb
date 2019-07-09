@@ -69,7 +69,7 @@ class Hackney::Task
       user_login:               api_attributes["userLogin"],
       user_name:                api_attributes["username"],
       authorised_by:            api_attributes["authorisedBy"],
-      estimated_units:          api_attributes["EstimatedUnits"],
+      estimated_units:          api_attributes["estimatedUnits"],
       status:                   api_attributes["taskStatus"],
       unit_type:                api_attributes["unitType"],
     }

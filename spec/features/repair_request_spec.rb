@@ -15,7 +15,7 @@ RSpec.describe 'Repair request' do
         },
         "workOrders": [{
           "sorCode": "20110120",
-          "EstimatedUnits": ?1
+          "estimatedUnits": ?1
         }],
         "priority": "N",
         "propertyReference": "00000666",
@@ -69,7 +69,7 @@ RSpec.describe 'Repair request' do
         },
         "workOrders": [{
           "sorCode": "Abcdefg",
-          "EstimatedUnits": "666"
+          "estimatedUnits": "666"
         }],
         "priority": "N",
         "propertyReference": "00000666",
