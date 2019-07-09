@@ -5,7 +5,7 @@
   tr {
     &:last-child {
       .govuk-form-group {
-        margin-bottom: 20px;
+        @include govuk-responsive-margin(4, "bottom");
       }
     }
   }
@@ -15,10 +15,9 @@
   }
 
   td {
-    @include govuk-responsive-padding(6, "right");
     text-align: left;
     vertical-align: bottom;
-    padding: 0 15px 0 0;
+    @include govuk-responsive-padding(3, "right");
   }
 
   td.sor-code-column {
@@ -29,8 +28,9 @@
   }
 
   td.keyfax-column {
-    width: 154px;
     padding: 0;
+    @include govuk-responsive-padding(6, "left");
+    width: 154px;
   }
 
   /* FIXME: not great */
@@ -39,6 +39,6 @@
   }
 }
 
-input[name='add_work_order'] {
-    margin-bottom: 30px;
+input[name='add_task'] {
+    @include govuk-responsive-margin(6, "bottom");
 }
