@@ -1,10 +1,11 @@
 #work-order-heading-section {
-  padding-bottom: 30px;
+  //padding-bottom: 30px;
 }
 
 .hackney-main-section-info {
   background-color: govuk-colour('white');
   padding: 2px;
+  @include govuk-responsive-margin(6, "bottom");
 
   .status { // Fallback for when status is not recognized
     color: hackney-colour('status-not-complete');
