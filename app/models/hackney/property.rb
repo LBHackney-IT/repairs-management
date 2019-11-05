@@ -8,6 +8,8 @@ class Hackney::Property
   attr_accessor :reference, :level_code, :description, :major_reference, :address,
                 :postcode, :tenure, :tenure_code, :letting_area
 
+  attr_accessor :property_type_code, :property_type_description
+
   def self.find(property_reference)
     response = HackneyAPI::RepairsClient.new.get_property(property_reference)
     build(response)
@@ -54,7 +56,9 @@ class Hackney::Property
       postcode: attributes['postcode'],
       tenure: attributes['tenure'],
       tenure_code: attributes['tenureCode'],
-      letting_area: attributes['lettingArea']
+      letting_area: attributes['lettingArea'],
+      property_type_code: attributes['propertyTypeCode'],
+      property_type_description: attributes['propertyTypeDescription']
     )
   end
 
@@ -91,6 +95,10 @@ class Hackney::Property
 
   def is_tmo?
     letting_area.to_s.downcase.include? "tmo"
+  end
+
+  def new_build?
+    property_type_code == 'NBD'
   end
 
   def first_line_of_address

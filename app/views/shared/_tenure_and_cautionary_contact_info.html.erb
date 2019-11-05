@@ -4,6 +4,12 @@
     Tenure: <%= property.tenure %>
   </li>
 
+  <% if property.new_build? %>
+    <li class="bg-orange">
+      Type: <%= property.property_type_description %> (<%= property.property_type_code %>)
+    </li>
+  <% end %>
+
   <% if property.is_tmo? %>
     <li class="bg-orange">
       <%= property.letting_area %>

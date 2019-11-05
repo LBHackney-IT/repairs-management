@@ -16,7 +16,7 @@ RSpec.describe 'Property' do
       "levelCode": 7,
       "description": "Dwelling",
       "tenureCode": "SEC",
-      "tenure": "Secure"
+      "tenure": "Secure",
     }.to_json)
 
     #
@@ -197,6 +197,53 @@ RSpec.describe 'Property' do
       expect(page).to have_link("1-2 & 5-7 & 11-13 & 17-19 Madeup Road",            href: property_path("00000665"))
       expect(page).to have_link("Lift 666 1-2 & 5-7 & 11-13 & 17-19 Madeup Road",   href: property_path("00000667"))
       expect(page).to have_link("Community Hall & Tmo Office 14 Madeup Road",       href: property_path("00000668"))
+    end
+  end
+
+  describe "Property type" do
+    scenario 'shows if new build' do
+      stub_property_00000666
+
+      stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666")
+        .to_return(status: 200, body: {
+        "address": "1 Madeup Road",
+        "postcode": "SW1A 1AA",
+        "propertyReference": "00000666",
+        "maintainable": true,
+        "levelCode": 7,
+        "description": "Dwelling",
+        "tenureCode": "SEC",
+        "tenure": "Secure",
+        "propertyTypeCode": "NBD",
+        "propertyTypeDescription": "New Build Dwellings ",
+      }.to_json)
+
+      sign_in
+      visit property_path('00000666')
+      expect(page).to have_content("1 Madeup Road")
+      expect(page).to have_content("Type: New Build Dwellings (NBD)")
+    end
+
+    scenario "doesn't show if not new build" do
+      stub_property_00000666
+
+      stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/00000666")
+        .to_return(status: 200, body: {
+        "address": "1 Madeup Road",
+        "postcode": "SW1A 1AA",
+        "propertyReference": "00000666",
+        "maintainable": true,
+        "levelCode": 7,
+        "description": "Dwelling",
+        "tenureCode": "SEC",
+        "tenure": "Secure",
+        "propertyTypeCode": "ASD",
+        "propertyTypeDescription": "Other Code",
+      }.to_json)
+
+      sign_in
+      visit property_path('00000666')
+      expect(page).not_to have_content("Type: Other Code (ASD)")
     end
   end
 end
