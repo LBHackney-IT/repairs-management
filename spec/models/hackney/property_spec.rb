@@ -359,4 +359,14 @@ describe Hackney::Property do
       expect(Hackney::Property.new(letting_area: 'Housing neighbourhood').is_tmo?).to be_falsey
     end
   end
+
+  describe '#new_build?' do
+    it 'works' do
+      property = Hackney::Property.new
+      property.property_type_code = 'NBD'
+      expect(property.new_build?).to be_truthy
+      property.property_type_code = 'ASD'
+      expect(property.new_build?).to be_falsey
+    end
+  end
 end
