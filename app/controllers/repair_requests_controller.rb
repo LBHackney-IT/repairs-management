@@ -15,7 +15,7 @@ class RepairRequestsController < ApplicationController
       ],
       priority: @keyfax_result&.priority || "N",
       description: "%{alerts} %{text}" % {
-        alerts: @cautionary_contact.alert_codes.join("; "),
+        alerts: @cautionary_contact.contact_alerts.map(&:code).join("; "),
         text: @keyfax_result&.fault_text
       }
     )
