@@ -212,10 +212,13 @@ RSpec.describe 'Repair request' do
     #
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
       .to_return(status: 200, body: {
-      "results": {
-        "alertCodes": [ "CC" ],
-        "callerNotes": nil
-      }
+      "contactAlerts": [
+        {
+          "alertCode": "CC",
+          "alertDescription": "Cautionary Contact"
+        },
+      ],
+      "callerNotes": nil
     }.to_json)
     #
     # hierarchy
@@ -274,10 +277,13 @@ RSpec.describe 'Repair request' do
 
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=207044451")
       .to_return(status: 200, body: {
-      "results": {
-        "alertCodes": [ "CC" ],
-        "callerNotes": nil
-      }
+      "contactAlerts": [
+        {
+          "alertCode": "CC",
+          "alertDescription": "Cautionary Contact"
+        },
+      ],
+      "callerNotes": nil
     }.to_json)
 
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties/207044451/hierarchy").to_return(
@@ -307,7 +313,7 @@ RSpec.describe 'Repair request' do
     expect(current_path).to be == new_property_repair_request_path("00000666")
     expect(page).to have_content("New repair")
     expect(page).to have_content("Dwelling: 1 Madeup Road")
-    expect(page).to have_content("Alert: CC")
+    expect(page).to have_content 'Contact Alert: Cautionary Contact (CC)'
     expect(page).to have_text("Tenure: Secure")
     expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
 

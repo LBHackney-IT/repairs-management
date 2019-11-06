@@ -813,12 +813,25 @@ module Helpers
 
     def cautionary_contact_response_body
       {
-        "results": {
-          "alertCodes": %w[CC SA],
-          "callerNotes": [
-            "Do not attend, bad singing"
-          ]
-        }
+        "contactAlerts": [
+          {
+            "alertCode": "VA",
+            "alertDescription": "Verbal Abuse or Threat of"
+          },
+          {
+            "alertCode": "CV",
+            "alertDescription": "No Lone Visits"
+          }
+        ],
+        "addressAlerts": [
+          {
+            "alertCode": "DIS",
+            "alertDescription": "Property under Disrepair"
+          }
+        ],
+        "callerNotes": [
+          "Do not attend, bad singing"
+        ]
       }
     end
 

@@ -16,9 +16,15 @@
     </li>
   <% end %>
 
-  <% if @cautionary_contact.alert_codes.present? %>
+  <% @cautionary_contact.address_alerts.each do |a| %>
     <li class="bg-orange">
-      Alert: <strong><%= @cautionary_contact.alert_codes.join(" ") %></strong>
+      Address Alert: <%= a.description %> (<strong><%= a.code %></strong>)
+    </li>
+  <% end %>
+
+  <% @cautionary_contact.contact_alerts.each do |a| %>
+    <li class="bg-orange">
+      Contact Alert: <%= a.description %> (<strong><%= a.code %></strong>)
     </li>
   <% end %>
 </ul>
