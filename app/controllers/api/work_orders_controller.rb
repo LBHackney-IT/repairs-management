@@ -2,6 +2,7 @@ module Api
   class WorkOrdersController < Api::ApiController
     def description
       @work_order = Hackney::WorkOrder.find(reference)
+      @latest_appointment = @work_order.latest_appointment
     end
 
     def notes_and_appointments
