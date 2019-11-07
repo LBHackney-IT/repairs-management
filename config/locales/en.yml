@@ -30,6 +30,24 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  api:
+    errors:
+      repairs_api_timeout:
+        title: "The Repairs API timed out"
+        description: >-
+          The Repairs API is taking too long to respond. Please, try again and
+          if the error persists, contact support.
+
+      repairs_api_error:
+        title: "There was a problem with the Repairs API"
+        description: >-
+          Please, contact support.
+
+      standard_error:
+        title: "There was a problem with Repairs Hub"
+        description: >-
+          Please, contact support.
+
   repair_requests:
     create:
       error_issuing: >-

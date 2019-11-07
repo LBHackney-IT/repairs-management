@@ -1,6 +1,6 @@
 function handleAjaxResponse(endpoint, ajaxTab) {
-  var errorHandler = function() {
-    ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
+  var errorHandler = function(request) {
+    ajaxTab.innerHTML = request.response;
   };
 
   var successHandler = function(request) {
@@ -15,8 +15,8 @@ function handleAjaxRepairsHistoryFiveYears(endpoint) {
 
   var ajaxTab = document.getElementById('repair-history-tab');
 
-  var errorHandler = function() {
-    ajaxTab.innerHTML = 'There was a problem with an API while fetching data.'
+  var errorHandler = function(request) {
+    ajaxTab.innerHTML = request.response;
   };
 
   var successHandler = function(request) {
@@ -40,7 +40,7 @@ function sendAjaxRequest(method, endpoint, formData, csrfToken, successHandler, 
       if (request.status === 200) {
         successHandler(request);
       } else {
-        errorHandler();
+        errorHandler(request);
       }
     }
   };
