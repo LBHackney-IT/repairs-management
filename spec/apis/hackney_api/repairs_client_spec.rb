@@ -574,7 +574,7 @@ describe HackneyAPI::RepairsClient do
     end
 
     context 'not found error' do
-      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}").to_return(status: 404) }
+      before { stub_request(:get, "#{base_url}/#{api_version}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}").to_return(body: '[]') }
 
       it 'returns an empty response' do
         expect(subject).to eq([])
