@@ -36,8 +36,8 @@
       <span class="hackney-section-info-header govuk-body-xs hackney-body-xs">
         Appointment details
       </span><br>
-    <% if @work_order.latest_appointment.present? %>
-      <%= render 'latest_appointment', work_order: @work_order %>
+    <% if @latest_appointment.present? %>
+      <%= render 'latest_appointment', work_order: @work_order, latest_appointment: @latest_appointment %>
     <% else %>
       <span class="govuk-!-font-weight-bold hackney-text-green">
         There are no booked appointments.

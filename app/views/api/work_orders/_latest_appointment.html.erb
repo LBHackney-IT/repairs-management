@@ -1,9 +1,9 @@
-<span class="govuk-!-font-weight-bold hackney-appointment-<%= appointment_status_color(work_order.latest_appointment.status, work_order.latest_appointment.outcome) %>">
-  <%= appointment_status(work_order.latest_appointment.status, work_order.latest_appointment.outcome).capitalize  %>
+<span class="govuk-!-font-weight-bold hackney-appointment-<%= appointment_status_color(latest_appointment.status, latest_appointment.outcome) %>">
+  <%= appointment_status(latest_appointment.status, latest_appointment.outcome).capitalize  %>
 </span><br>
-<% if work_order.latest_appointment.begin_date %>
-  <span class="govuk-body-xs hackney-body-xs hackney-appointment-<%= appointment_status_color(work_order.latest_appointment.status, work_order.latest_appointment.outcome) %>">
-    <%= format_appointment_date_short(work_order.latest_appointment) %>
+<% if latest_appointment.begin_date %>
+  <span class="govuk-body-xs hackney-body-xs hackney-appointment-<%= appointment_status_color(latest_appointment.status, latest_appointment.outcome) %>">
+    <%= format_appointment_date_short(latest_appointment) %>
   </span>
 <% end %>
 
@@ -25,7 +25,7 @@
     <tr>
       <th scope="row">Operative:</th>
       <td>
-        <%= work_order.latest_appointment.assigned_worker %>
+        <%= latest_appointment.assigned_worker %>
       </td>
     </tr>
   </tbody>
