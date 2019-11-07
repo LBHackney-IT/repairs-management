@@ -32,7 +32,5 @@ class Hackney::Appointment
       Hackney::Appointment.build(attributes)
     end
     appointments.sort_by { |a| a.end_date }
-  rescue HackneyAPI::RepairsClient::RecordNotFoundError
-    nil # Ewww... the api currently returns 404 for no appointments... so patch it like this until the api is more sensible
   end
 end

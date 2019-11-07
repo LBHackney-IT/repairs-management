@@ -16,8 +16,6 @@ class Hackney::Note
   def self.for_work_order(work_order_reference)
     HackneyAPI::RepairsClient.new.get_work_order_notes(work_order_reference)
       .map { |attributes| Hackney::Note.build(attributes) }
-  rescue HackneyAPI::RepairsClient::ApiError
-    [] # The API currently returns 500 for notes... so patch it like this until the API is working
   end
 
   def self.feed(note_id, opts={})

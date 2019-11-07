@@ -42,7 +42,7 @@ describe Hackney::WorkOrder do
     end
 
     it 'returns an empty response' do
-      stub_hackney_repairs_work_order_block_by_trade(trade: trade, reference: reference, date_to: date_to, date_from: date_from, status: 404)
+      stub_hackney_repairs_work_order_block_by_trade(trade: trade, reference: reference, date_to: date_to, date_from: date_from, body: [])
 
       expect(subject).to eq([])
     end

@@ -159,8 +159,6 @@ module HackneyAPI
           until: date_to.strftime("%d-%m-%Y")
         }
       )
-    rescue HackneyAPI::RepairsClient::RecordNotFoundError
-      [] # Handle the case when there are no work orders for a given property. Delete this once API is updated to handle the case
     end
 
     def get_repair_requests_by_property(reference)
@@ -286,8 +284,6 @@ module HackneyAPI
         http_method: :get,
         endpoint: "#{API_VERSION}/properties/#{reference}/block/work_orders?trade=#{trade}&since=#{date_from}&until=#{date_to}"
       )
-    rescue HackneyAPI::RepairsClient::RecordNotFoundError
-      []
     end
 
     def get_cautionary_contact_by_property_reference(reference)
