@@ -90,8 +90,8 @@
     workOrdersHeadingSection.innerHTML += response;
   };
 
-  function handleWorkOrdersHeadingSectionApiError() {
-    document.getElementById('work-order-loading-data').innerHTML = 'There was a problem with an API while fetching data.'
+  function handleWorkOrdersHeadingSectionApiError(response) {
+    document.getElementById('work-order-loading-data').innerHTML = response;
   };
 
   var xhttpWorkOrderHeadingSection = new XMLHttpRequest();
@@ -101,7 +101,7 @@
       if (xhttpWorkOrderHeadingSection.status == 200) {
         loadWorkOrderHeadingSection(xhttpWorkOrderHeadingSection.response);
       } else {
-        handleWorkOrdersHeadingSectionApiError();
+        handleWorkOrdersHeadingSectionApiError(xhttpWorkOrderHeadingSection.response);
       }
     }
   }
