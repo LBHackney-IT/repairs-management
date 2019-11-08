@@ -350,7 +350,7 @@ RSpec.describe 'Work order' do
     expect(page).to have_content 'Contact Alert: Verbal Abuse or Threat of (VA)'
     expect(page).to have_content 'Contact Alert: No Lone Visits (CV)'
     expect(page).to have_content 'Address Alert: Property under Disrepair (DIS)'
-    expect(page).to have_content 'Caller notes: Do not attend, bad singing'
+    expect(page).to have_content "Caller notes: **Do not attend, bad singing**\nPudding Pudding at 6 Jun 2006, 6:06am"
 
     expect(page).to have_css(".hackney-tabs-list > li > a", count: 2)
 

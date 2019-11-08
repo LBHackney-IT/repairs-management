@@ -830,7 +830,12 @@ module Helpers
           }
         ],
         "callerNotes": [
-          "Do not attend, bad singing"
+          {
+            "uhUserName": "PPUDDING",
+            "uhUserFullName": "Pudding Pudding",
+            "noteText": "**Do not attend, bad singing**",
+            "dateCreated": "2006-06-06T06:06:06"
+          }
         ]
       }
     end

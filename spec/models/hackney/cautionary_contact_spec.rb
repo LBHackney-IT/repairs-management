@@ -23,7 +23,12 @@ describe Hackney::CautionaryContact do
           }
         ],
         "callerNotes": [
-          "Do not attend, bad singing"
+          {
+            "uhUserName": "PPUDDING",
+            "uhUserFullName": "Pudding Pudding",
+            "noteText": "**Do not attend, bad singing**",
+            "dateCreated": "2006-06-06T06:06:06"
+          }
         ]
       }.with_indifferent_access)
 
@@ -36,7 +41,7 @@ describe Hackney::CautionaryContact do
           Hackney::CautionaryContact::Alert.new("CV", "No Lone Visits")
         ],
         caller_notes: [
-          "Do not attend, bad singing"
+          Hackney::CautionaryContact::CallerNote.new("PPUDDING", "Pudding Pudding", "**Do not attend, bad singing**", "2006-06-06T06:06:06")
         ]
       })
     end

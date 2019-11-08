@@ -31,6 +31,13 @@
 
 <% @cautionary_contact.caller_notes.each do |note| %>
   <p class="govuk-body-s color-secondary">
-    Caller notes: <%= note %>
+    Caller notes: <%= note.note_text %><br>
+    <small>
+      <strong><%= note.uh_user_full_name %></strong>
+      <% if note.date_created.present? %>
+        at
+        <strong><%= note.date_created.to_s(:govuk_date_time_short) %></strong>
+      <% end %>
+    </small>
   </p>
 <% end %>
