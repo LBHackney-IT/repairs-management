@@ -13,6 +13,7 @@ module Neo4j
       protected
 
       def wait_and_retry(session)
+        logger.info("Trying to connect to neo4j...")
         Timeout.timeout(5*60) do
           begin
             session.constraints
@@ -23,6 +24,12 @@ module Neo4j
         end
       rescue Timeout::Error
         raise Timeout::Error, 'Timeout while waiting for connection to neo4j database'
+      end
+
+      private
+
+      def logger
+        @logger = Logger.new(STDOUT)
       end
     end
   end
