@@ -18,7 +18,8 @@ RSpec.describe RepairRequestsController, type: :controller do
       "levelCode": 7,
       "description": "Dwelling",
       "tenureCode": "SEC",
-      "tenure": "Secure"
+      "tenure": "Secure",
+      "tenancyAgreementReference": "000006/66",
     }.to_json)
 
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/cautionary_contact/?reference=00000666")
@@ -40,6 +41,10 @@ RSpec.describe RepairRequestsController, type: :controller do
             }
           }
         }.to_json)
+
+    stub_request(:get, "#{ ENV['TENANCY_API_URL'] }/tenancies/000006%252F66/contacts").to_return(
+      status: 200,
+      body: [].to_json)
   end
 
   describe "POST" do

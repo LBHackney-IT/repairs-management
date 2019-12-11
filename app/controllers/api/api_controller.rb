@@ -10,6 +10,7 @@ module Api
       title =       t('api.errors.repairs_api_error.title')
       description = t('api.errors.repairs_api_error.description')
       description = e.errors["userMessage"] if e.errors["userMessage"].present?
+      # FIXME: log errors
       Appsignal.set_error(e)
       ajax_error(title, description)
     end
@@ -17,6 +18,7 @@ module Api
     def handle_api_timeout_error(e)
       title =       t('api.errors.repairs_api_timeout.title')
       description = t('api.errors.repairs_api_timeout.description')
+      # FIXME: log errors
       Appsignal.set_error(e)
       ajax_error(title, description)
     end
@@ -25,6 +27,7 @@ module Api
       title =       t('api.errors.standard_error.title')
       description = t('api.errors.standard_error.description')
       description = e.message if e.message != e.class.name 
+      # FIXME: log errors
       Appsignal.set_error(e)
       ajax_error(title, description)
     end
