@@ -100,6 +100,47 @@
         </div>
       <% end %>
 
+      <% if @contacts %>
+        <table class="govuk-table">
+          <caption class="govuk-table__caption">Contacts</caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header" scope="col">Name</th>
+              <th class="govuk-table__header" scope="col">Telephone 1</th>
+              <th class="govuk-table__header" scope="col">Telephone 2</th>
+              <th class="govuk-table__header" scope="col">Telephone 3</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <% @contacts.each do |contact| %>
+              <tr class="govuk-table__row">
+                <td class="govuk-table__cell"><%= contact.full_name %></td>
+                <td class="govuk-table__cell"><%= contact.telephone1 %></td>
+                <td class="govuk-table__cell"><%= contact.telephone2 %></td>
+                <td class="govuk-table__cell"><%= contact.telephone3 %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% elsif !@contacts.nil? %>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            No contact details available for this property
+          </strong>
+        </div>
+      <% else %>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            No contact details available because there is no tenancy agreement
+            reference on this property
+          </strong>
+        </div>
+      <% end %>
+
       <%= form.fields_for :contact do |fields| %>
         <%= fields.form_group :name do %>
           <%= fields.label :name, "Caller name" %>

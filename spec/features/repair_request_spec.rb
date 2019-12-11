@@ -205,7 +205,8 @@ RSpec.describe 'Repair request' do
       "levelCode": 7,
       "description": "Dwelling",
       "tenureCode": "SEC",
-      "tenure": "Secure"
+      "tenure": "Secure",
+      "tenancyAgreementReference": "000006/66",
     }.to_json)
     #
     # cautionary contacts
@@ -257,6 +258,29 @@ RSpec.describe 'Repair request' do
     #
     stub_request(:get, "#{ ENV['HACKNEY_REPAIRS_API_BASE_URL'] }/v1/properties?max_level=6&min_level=6&postcode=SW1A%201AA")
       .to_return(status: 200, body: { "results":[]}.to_json)
+    #
+    # tenancy contacts
+    #
+    stub_request(:get, "#{ ENV['TENANCY_API_URL'] }/tenancies/000006%252F66/contacts").to_return(
+      status: 200,
+      body: {
+        data: {
+          contacts: [
+            {
+              full_name: "Tenant Zero",
+              telephone1: "01234567801",
+              telephone2: "01234567802",
+              telephone3: "01234567803",
+            },
+            {
+              full_name: "Tenant One",
+              telephone1: "01234567811",
+              telephone2: "01234567812",
+              telephone3: "01234567813",
+            }
+          ]
+        }
+      }.to_json)
   end
 
   def stub_property_temp_annex
@@ -316,6 +340,15 @@ RSpec.describe 'Repair request' do
     expect(page).to have_content 'Contact Alert: Cautionary Contact (CC)'
     expect(page).to have_text("Tenure: Secure")
     expect(page).to have_link("Launch Keyfax", href: "https://www.keyfax.com")
+
+    expect(page).to have_content("Tenant Zero")
+    expect(page).to have_content("Tenant One")
+    expect(page).to have_content("01234567801")
+    expect(page).to have_content("01234567802")
+    expect(page).to have_content("01234567803")
+    expect(page).to have_content("01234567811")
+    expect(page).to have_content("01234567812")
+    expect(page).to have_content("01234567813")
 
     expect(page).to have_field("SOR Code")
     expect(page).to have_field("Quantity", with: 1)

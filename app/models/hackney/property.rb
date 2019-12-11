@@ -10,6 +10,8 @@ class Hackney::Property
 
   attr_accessor :property_type_code, :property_type_description
 
+  attr_accessor :tenancy_agreement_reference
+
   def self.find(property_reference)
     response = HackneyAPI::RepairsClient.new.get_property(property_reference)
     build(response)
@@ -58,7 +60,8 @@ class Hackney::Property
       tenure_code: attributes['tenureCode'],
       letting_area: attributes['lettingArea'],
       property_type_code: attributes['propertyTypeCode'],
-      property_type_description: attributes['propertyTypeDescription']
+      property_type_description: attributes['propertyTypeDescription'],
+      tenancy_agreement_reference: attributes['tenancyAgreementReference'],
     )
   end
 

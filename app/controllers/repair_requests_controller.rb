@@ -1,5 +1,6 @@
 class RepairRequestsController < ApplicationController
   before_action :set_property
+  before_action :set_contacts
   before_action :set_cautionary_contact
   before_action :create_and_set_keyfax_session
   before_action :set_keyfax_result
@@ -59,6 +60,14 @@ class RepairRequestsController < ApplicationController
 
   def set_property
     @property = Hackney::Property.find(params[:property_ref])
+  end
+
+  def set_contacts
+    # FIXME: CGI.escape(). see: models/tenancy/contact.rb
+    @contacts =
+      if @property.tenancy_agreement_reference.present?
+        Tenancy::Contact.all(params: {tenancy_id: CGI.escape(@property.tenancy_agreement_reference)})
+      end
   end
 
   def set_cautionary_contact
