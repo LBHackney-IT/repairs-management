@@ -10,22 +10,26 @@ services:
 
 addons:
   chrome: stable
+  apt:
+    sources:
+      - sourceline: 'ppa:openjdk-r/ppa'
+      - sourceline: 'deb https://debian.neo4j.com stable 3.5'
+        key_url: 'https://debian.neo4j.com/neotechnology.gpg.key'
+    packages:
+      - neo4j
 
 cache:
   yarn: true
-  directories:
-    - node_modules
+  bundler: true
 
 before_script:
-  - wget -O - https://debian.neo4j.com/neotechnology.gpg.key | sudo apt-key add -
-  - echo 'deb https://debian.neo4j.com stable 3.5' | sudo tee /etc/apt/sources.list.d/neo4j.list
-  - sudo apt-get update
-  - sudo apt-get install neo4j
   - yarn install
   - cp config/neo4j.yml.travis config/neo4j.yml
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
 
 script:
-  - bundle exec rails db:schema:load RAILS_ENV=test
-  - bundle exec rspec
+  - sudo PAGER=cat systemctl status neo4j -l
+  - 'cypher-shell -a localhost:7474 -u neo4j -p neo4j'
+  - bundle exec rails db:migrate RAILS_ENV=test
+  - bundle exec rspec --fail-fast

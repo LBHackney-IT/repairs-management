@@ -14,7 +14,7 @@ module Neo4j
 
       def wait_and_retry(session)
         logger.info("Trying to connect to neo4j...")
-        Timeout.timeout(5*60) do
+        Timeout.timeout(ENV.fetch("NEO4J_WAIT_FOR_CONNECTION", 5*60).to_i) do
           begin
             session.constraints
           rescue Neo4j::Core::CypherSession::ConnectionFailedError
